@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://GameContent/Blue_Bullet_Death_Particle_Gradient.tres" type="Gradient" id=1]
+[ext_resource path="res://GameContent/Bullet_Death_Particles.gd" type="Script" id=2]
+
+[node name="Player_Death_Particles" type="CPUParticles2D"]
+amount = 75
+lifetime = 0.6
+explosiveness = 1.0
+emission_shape = 2
+emission_rect_extents = Vector2( 30, 30 )
+spread = 180.0
+gravity = Vector2( 0, 0 )
+initial_velocity = 734.5
+initial_velocity_random = 0.94
+angular_velocity = 318.58
+angular_velocity_random = 0.67
+damping = 100.0
+scale_amount = 8.0
+color_ramp = ExtResource( 1 )
+hue_variation = 0.01
+hue_variation_random = 0.94
+script = ExtResource( 2 )
+
+[node name="Death_Timer" type="Timer" parent="."]
+wait_time = 0.6
+one_shot = true
+autostart = true

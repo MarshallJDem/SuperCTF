@@ -1,0 +1,74 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://GameContent/Player.gd" type="Script" id=1]
+[ext_resource path="res://GameContent/player_atlas.png" type="Texture" id=2]
+[ext_resource path="res://GameContent/Center_Pivot.gd" type="Script" id=3]
+[ext_resource path="res://GameContent/Camera.gd" type="Script" id=4]
+[ext_resource path="res://GameContent/Area2D.gd" type="Script" id=5]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 18.2792
+
+[sub_resource type="CapsuleShape2D" id=2]
+radius = 5.8237
+height = 4.92609
+
+[node name="Player" type="KinematicBody2D"]
+script = ExtResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="."]
+scale = Vector2( 3.14816, 3.14816 )
+texture = ExtResource( 2 )
+hframes = 8
+
+[node name="Center_Pivot" type="Position2D" parent="."]
+script = ExtResource( 3 )
+
+[node name="Camera" type="Camera2D" parent="Center_Pivot"]
+position = Vector2( 100, 0 )
+zoom = Vector2( 1.75, 1.75 )
+smoothing_enabled = true
+smoothing_speed = 10.0
+drag_margin_left = 0.0
+drag_margin_top = 0.0
+drag_margin_right = 0.0
+drag_margin_bottom = 0.0
+editor_draw_drag_margin = true
+script = ExtResource( 4 )
+
+[node name="Shake_Timer" type="Timer" parent="Center_Pivot/Camera"]
+one_shot = true
+
+[node name="Smooth_Timer" type="Timer" parent="Center_Pivot/Camera"]
+wait_time = 2.0
+one_shot = true
+
+[node name="Area2D" type="Area2D" parent="." groups=[
+"Player_Bodies",
+]]
+script = ExtResource( 5 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource( 1 )
+
+[node name="Flag_Holder" type="Node2D" parent="."]
+
+[node name="Respawn_Timer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+
+[node name="Invincibility_Timer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="Laser_Timer" type="Timer" parent="."]
+wait_time = 0.75
+one_shot = true
+
+[node name="Teleport_Timer" type="Timer" parent="."]
+one_shot = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0.48835, 13.0633 )
+rotation = 1.5708
+shape = SubResource( 2 )

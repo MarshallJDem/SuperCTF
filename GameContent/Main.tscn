@@ -1,0 +1,227 @@
+[gd_scene load_steps=18 format=2]
+
+[ext_resource path="res://GameContent/Main.gd" type="Script" id=1]
+[ext_resource path="res://GameContent/Player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://GameContent/NetworkController.tscn" type="PackedScene" id=3]
+[ext_resource path="res://GameContent/UI_Layer.gd" type="Script" id=4]
+[ext_resource path="res://GameContent/LineEdit.gd" type="Script" id=5]
+[ext_resource path="res://GameContent/Game_Played_Outline.tres" type="DynamicFont" id=6]
+[ext_resource path="res://GameContent/Game_Played_Outline_Large.tres" type="DynamicFont" id=7]
+[ext_resource path="res://GameContent/Game_Played_Large_Blue.tres" type="DynamicFont" id=8]
+[ext_resource path="res://GameContent/Game_Played_Large_Red.tres" type="DynamicFont" id=9]
+[ext_resource path="res://Hover_Button_Style.tres" type="StyleBox" id=10]
+[ext_resource path="res://Pressed_Button_Style.tres" type="StyleBox" id=11]
+[ext_resource path="res://Normal_Button_Style.tres" type="StyleBox" id=12]
+[ext_resource path="res://GameContent/Wall.tscn" type="PackedScene" id=13]
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0, 0, 0, 0.145098 )
+
+[sub_resource type="StyleBoxFlat" id=2]
+content_margin_left = 8.0
+bg_color = Color( 0, 0, 0, 0 )
+
+[sub_resource type="StyleBoxFlat" id=4]
+content_margin_left = 8.0
+content_margin_top = 8.0
+bg_color = Color( 1, 1, 1, 0 )
+
+[sub_resource type="Gradient" id=1]
+colors = PoolColorArray( 0, 0, 0, 1, 1, 1, 1, 0 )
+
+[node name="MainScene" type="Node2D"]
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_horizontal_guides_": [  ]
+}
+
+[node name="Test_Player" parent="." instance=ExtResource( 2 )]
+
+[node name="Players" type="Node" parent="."]
+
+[node name="NetworkController" parent="." instance=ExtResource( 3 )]
+
+[node name="HTTPRequest_GameServerCheckUser" type="HTTPRequest" parent="NetworkController"]
+
+[node name="HTTPRequest_GameServerMakeAvailable" type="HTTPRequest" parent="NetworkController"]
+
+[node name="HTTPRequest_GameServerPollStatus" type="HTTPRequest" parent="NetworkController"]
+
+[node name="HTTPRequest_GetMatchData" type="HTTPRequest" parent="NetworkController"]
+
+[node name="HTTPRequest_GameServerEndMatch" type="HTTPRequest" parent="NetworkController"]
+
+[node name="UI_Layer" type="CanvasLayer" parent="."]
+script = ExtResource( 4 )
+
+[node name="LineEdit" type="LineEdit" parent="UI_Layer"]
+margin_top = 337.0
+margin_right = 294.0
+margin_bottom = 381.0
+mouse_filter = 2
+custom_styles/focus = SubResource( 3 )
+custom_styles/normal = SubResource( 2 )
+custom_colors/font_color = Color( 0.243137, 0.243137, 0.243137, 1 )
+placeholder_text = "Press ENTER to chat"
+script = ExtResource( 5 )
+
+[node name="Chat_Box" type="RichTextLabel" parent="UI_Layer"]
+margin_right = 292.0
+margin_bottom = 334.0
+custom_styles/normal = SubResource( 4 )
+bbcode_enabled = true
+scroll_active = false
+scroll_following = true
+
+[node name="Score_Label" type="Label" parent="UI_Layer"]
+anchor_right = 1.0
+margin_top = 10.0
+margin_bottom = 100.0
+custom_fonts/font = ExtResource( 6 )
+align = 1
+
+[node name="Countdown_Label" type="Label" parent="UI_Layer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_fonts/font = ExtResource( 7 )
+align = 1
+valign = 1
+
+[node name="Big_Label_Blue" type="Label" parent="UI_Layer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -32.6702
+margin_right = 29.3298
+grow_horizontal = 2
+grow_vertical = 2
+custom_fonts/font = ExtResource( 8 )
+custom_colors/font_color = Color( 0, 0.180392, 1, 1 )
+align = 1
+valign = 1
+
+[node name="Big_Label_Red" type="Label" parent="UI_Layer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -32.6702
+margin_right = 29.3298
+grow_horizontal = 2
+grow_vertical = 2
+custom_fonts/font = ExtResource( 9 )
+custom_colors/font_color = Color( 1, 0, 0, 1 )
+align = 1
+valign = 1
+
+[node name="Leave_Match_Button" type="Button" parent="UI_Layer"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -52.0042
+margin_top = 146.099
+margin_right = 73.9958
+margin_bottom = 213.099
+custom_styles/hover = ExtResource( 10 )
+custom_styles/pressed = ExtResource( 11 )
+custom_styles/normal = ExtResource( 12 )
+custom_colors/font_color = Color( 0.172549, 0.172549, 0.172549, 1 )
+text = "Leave Match"
+
+[node name="Environment" type="Node" parent="."]
+
+[node name="Node2D" type="Node2D" parent="Environment"]
+position = Vector2( -4000, -1350 )
+z_index = -4096
+
+[node name="ColorRect" type="ColorRect" parent="Environment/Node2D"]
+show_behind_parent = true
+margin_right = 7999.0
+margin_bottom = 2700.0
+
+[node name="CPUParticles2D2" type="CPUParticles2D" parent="Environment"]
+position = Vector2( -461.929, -21.5548 )
+z_index = -4096
+emitting = false
+amount = 2500
+lifetime = 1.78
+explosiveness = 0.77
+emission_shape = 2
+emission_rect_extents = Vector2( 5000, 2500 )
+flag_align_y = true
+spread = 0.0
+flatness = 1.0
+gravity = Vector2( 0, 0 )
+initial_velocity = 53.1
+initial_velocity_random = 1.0
+angular_velocity = 63.72
+angular_velocity_random = 0.19
+angle = 720.0
+angle_random = 1.0
+scale_amount = 168.14
+scale_amount_random = 1.0
+color_ramp = SubResource( 1 )
+hue_variation_random = 1.0
+
+[node name="Wall" parent="Environment" instance=ExtResource( 13 )]
+position = Vector2( -4000, 0 )
+scale = Vector2( 1.993, 1350 )
+
+[node name="Wall2" parent="Environment" instance=ExtResource( 13 )]
+position = Vector2( 4000, 0 )
+scale = Vector2( 2, 1350 )
+
+[node name="Wall3" parent="Environment" instance=ExtResource( 13 )]
+position = Vector2( 0, -1350 )
+scale = Vector2( 4000, 2 )
+
+[node name="Wall4" parent="Environment" instance=ExtResource( 13 )]
+position = Vector2( 0.472, 1350 )
+scale = Vector2( 4000, 2 )
+
+[node name="Wall5" parent="Environment" instance=ExtResource( 13 )]
+position = Vector2( -2900, 0 )
+scale = Vector2( 2, 300 )
+
+[node name="Wall8" parent="Environment" instance=ExtResource( 13 )]
+position = Vector2( -3400, 0 )
+scale = Vector2( 2, 200 )
+
+[node name="Wall7" parent="Environment" instance=ExtResource( 13 )]
+position = Vector2( 2900, 0 )
+scale = Vector2( 2, 300 )
+
+[node name="Wall9" parent="Environment" instance=ExtResource( 13 )]
+position = Vector2( 3400, 0 )
+scale = Vector2( 2, 200 )
+
+[node name="Wall14" parent="Environment" instance=ExtResource( 13 )]
+position = Vector2( -2200.44, 885.37 )
+scale = Vector2( 500, 2 )
+
+[node name="Wall15" parent="Environment" instance=ExtResource( 13 )]
+position = Vector2( -2205.85, -909.938 )
+scale = Vector2( 500, 2 )
+
+[node name="Wall16" parent="Environment" instance=ExtResource( 13 )]
+position = Vector2( 2099.7, -929.292 )
+scale = Vector2( 500, 2 )
+
+[node name="Wall17" parent="Environment" instance=ExtResource( 13 )]
+position = Vector2( 2133.86, 869.432 )
+scale = Vector2( 500, 2 )
+
+[node name="Wall13" parent="Environment" instance=ExtResource( 13 )]
+position = Vector2( -395.686, 342.89 )
+scale = Vector2( 250, 2 )
+
+[node name="Wall12" parent="Environment" instance=ExtResource( 13 )]
+position = Vector2( -400, -350 )
+scale = Vector2( 250, 2 )
+
+[node name="Wall10" parent="Environment" instance=ExtResource( 13 )]
+position = Vector2( 400, 350 )
+scale = Vector2( 250, 2 )
+
+[node name="Wall11" parent="Environment" instance=ExtResource( 13 )]
+position = Vector2( 400, -350 )
+scale = Vector2( 250, 2 )

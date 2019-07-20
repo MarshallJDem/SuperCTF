@@ -1,0 +1,40 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=4
+
+_global_script_classes=[  ]
+_global_script_class_icons={
+
+}
+
+[application]
+
+config/name="CTF"
+run/main_scene="res://TitleScreen.tscn"
+config/icon="res://icon.png"
+
+[autoload]
+
+Globals="*res://Globals.gd"
+
+[display]
+
+window/size/width=876
+window/size/height=504
+mouse_cursor/custom_image="res://crosshair.png"
+mouse_cursor/custom_image_hotspot=Vector2( 18, 18 )
+
+[rendering]
+
+quality/driver/driver_name="GLES2"
+quality/intended_usage/framebuffer_allocation=0
+quality/intended_usage/framebuffer_allocation.mobile=0
+vram_compression/import_etc=true
+vram_compression/import_etc2=false
+environment/default_clear_color=Color( 0.945098, 0.945098, 0.945098, 1 )

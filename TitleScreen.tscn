@@ -1,0 +1,202 @@
+[gd_scene load_steps=21 format=2]
+
+[ext_resource path="res://TitleScreen.gd" type="Script" id=1]
+[ext_resource path="res://UI_Layer.gd" type="Script" id=2]
+[ext_resource path="res://GameContent/Game_Played_Outline_Medium.tres" type="DynamicFont" id=3]
+[ext_resource path="res://GameContent/Flag.tscn" type="PackedScene" id=4]
+[ext_resource path="res://GameContent/Flag.gd" type="Script" id=5]
+[ext_resource path="res://flag_frames/flagBlue1.png" type="Texture" id=6]
+[ext_resource path="res://flag_frames/flagBlue2.png" type="Texture" id=7]
+[ext_resource path="res://flag_frames/flagBlue3.png" type="Texture" id=8]
+[ext_resource path="res://flag_frames/flagBlue4.png" type="Texture" id=9]
+[ext_resource path="res://flag_frames/flagRed1.png" type="Texture" id=10]
+[ext_resource path="res://flag_frames/flagRed2.png" type="Texture" id=11]
+[ext_resource path="res://flag_frames/flagRed3.png" type="Texture" id=12]
+[ext_resource path="res://flag_frames/flagRed4.png" type="Texture" id=13]
+[ext_resource path="res://GameContent/Flag_Area2D.gd" type="Script" id=14]
+[ext_resource path="res://Hover_Button_Style.tres" type="StyleBox" id=15]
+[ext_resource path="res://Pressed_Button_Style.tres" type="StyleBox" id=16]
+[ext_resource path="res://Normal_Button_Style.tres" type="StyleBox" id=17]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ) ],
+"loop": true,
+"name": "default",
+"speed": 7.0
+} ]
+
+[sub_resource type="SpriteFrames" id=2]
+animations = [ {
+"frames": [ ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ) ],
+"loop": true,
+"name": "default",
+"speed": 7.0
+} ]
+
+[sub_resource type="CapsuleShape2D" id=3]
+radius = 4.43372
+height = 57.2865
+
+[node name="TitleScreen" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="HTTPRequest_FindMatch" type="HTTPRequest" parent="."]
+
+[node name="HTTPRequest_CancelQueue" type="HTTPRequest" parent="."]
+
+[node name="HTTPRequest_PollPlayerStatus" type="HTTPRequest" parent="."]
+
+[node name="HTTPRequest_GetMatchData" type="HTTPRequest" parent="."]
+
+[node name="HTTPRequest_CreateGuest" type="HTTPRequest" parent="."]
+
+[node name="UI_Layer" type="CanvasLayer" parent="."]
+script = ExtResource( 2 )
+
+[node name="Label" type="Label" parent="UI_Layer"]
+editor/display_folded = true
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -342.0
+margin_top = -23.0
+margin_right = 343.0
+margin_bottom = 218.0
+rect_pivot_offset = Vector2( -436, 173 )
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color = Color( 1, 0.588235, 0.588235, 1 )
+text = "SUPER"
+align = 1
+
+[node name="Flag" parent="UI_Layer/Label" instance=ExtResource( 4 )]
+position = Vector2( -29.9691, 467.181 )
+
+[node name="Flag2" type="Node2D" parent="UI_Layer/Label" groups=[
+"Flags",
+]]
+position = Vector2( 657.012, 458.316 )
+z_as_relative = false
+script = ExtResource( 5 )
+
+[node name="Blue_Sprite" type="AnimatedSprite" parent="UI_Layer/Label/Flag2"]
+position = Vector2( 20.7922, -30.4714 )
+scale = Vector2( 4.57399, 4.57399 )
+frames = SubResource( 1 )
+frame = 1
+playing = true
+
+[node name="Red_Sprite" type="AnimatedSprite" parent="UI_Layer/Label/Flag2"]
+visible = false
+position = Vector2( 20.7922, -30.4714 )
+scale = Vector2( 4.57399, 4.57399 )
+frames = SubResource( 2 )
+frame = 1
+playing = true
+
+[node name="Area2D" type="Area2D" parent="UI_Layer/Label/Flag2" groups=[
+"Flag_Bodies",
+]]
+position = Vector2( 20.7922, -30.4714 )
+script = ExtResource( 14 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="UI_Layer/Label/Flag2/Area2D"]
+position = Vector2( -20.3827, -0.261612 )
+shape = SubResource( 3 )
+
+[node name="Label2" type="Label" parent="UI_Layer"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -342.0
+margin_top = 136.0
+margin_right = 343.0
+margin_bottom = 377.0
+rect_pivot_offset = Vector2( -436, 173 )
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color = Color( 0.647059, 0.678431, 1, 1 )
+text = "CTF"
+align = 1
+
+[node name="CancelQueueButton" type="Button" parent="UI_Layer"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -84.0
+margin_top = 400.0
+margin_right = 84.0
+margin_bottom = 460.0
+custom_styles/hover = ExtResource( 15 )
+custom_styles/pressed = ExtResource( 16 )
+custom_styles/normal = ExtResource( 17 )
+custom_colors/font_color = Color( 0.113725, 0.113725, 0.113725, 1 )
+text = "Cancel"
+
+[node name="FindMatchButton" type="Button" parent="UI_Layer"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -124.0
+margin_top = 390.0
+margin_right = 124.0
+margin_bottom = 470.0
+custom_styles/hover = ExtResource( 15 )
+custom_styles/pressed = ExtResource( 16 )
+custom_styles/normal = ExtResource( 17 )
+custom_colors/font_color = Color( 0.137255, 0.137255, 0.137255, 1 )
+text = "Find Match"
+
+[node name="PlayAsGuestButton" type="Button" parent="UI_Layer"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -114.0
+margin_top = 401.108
+margin_right = 114.0
+margin_bottom = 461.108
+custom_styles/hover = ExtResource( 15 )
+custom_styles/pressed = ExtResource( 16 )
+custom_styles/normal = ExtResource( 17 )
+custom_colors/font_color = Color( 0.109804, 0.109804, 0.109804, 1 )
+text = "Play as Guest"
+
+[node name="SignInButton" type="Button" parent="UI_Layer"]
+visible = false
+margin_left = 289.07
+margin_top = 221.078
+margin_right = 584.07
+margin_bottom = 286.078
+text = "Sign In"
+
+[node name="LogoutButton" type="Button" parent="UI_Layer"]
+margin_left = 10.0761
+margin_top = 13.1523
+margin_right = 129.076
+margin_bottom = 61.1523
+custom_styles/hover = ExtResource( 15 )
+custom_styles/pressed = ExtResource( 16 )
+custom_styles/normal = ExtResource( 17 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Logout"
+
+[node name="CreateAccountButton" type="Button" parent="UI_Layer"]
+visible = false
+margin_left = 334.369
+margin_top = 290.723
+margin_right = 538.369
+margin_bottom = 343.723
+custom_colors/font_color = Color( 0.431373, 0.74902, 1, 1 )
+text = "Create Account"
+
+[node name="SplashBackground" type="ColorRect" parent="UI_Layer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 1, 1, 1, 0 )
+
+[node name="SplashStartButton" type="Button" parent="UI_Layer"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -205.166
+margin_top = 389.503
+margin_right = 203.834
+margin_bottom = 459.503
+custom_styles/hover = ExtResource( 15 )
+custom_styles/pressed = ExtResource( 16 )
+custom_styles/normal = ExtResource( 17 )
+custom_colors/font_color = Color( 0.137255, 0.137255, 0.137255, 1 )
+text = "START"
