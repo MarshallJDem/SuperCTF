@@ -1,32 +1,38 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://GameContent/Main.gd" type="Script" id=1]
 [ext_resource path="res://GameContent/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://GameContent/NetworkController.tscn" type="PackedScene" id=3]
 [ext_resource path="res://GameContent/UI_Layer.gd" type="Script" id=4]
-[ext_resource path="res://GameContent/LineEdit.gd" type="Script" id=5]
-[ext_resource path="res://GameContent/Game_Played_Outline.tres" type="DynamicFont" id=6]
-[ext_resource path="res://GameContent/Game_Played_Outline_Large.tres" type="DynamicFont" id=7]
-[ext_resource path="res://GameContent/Game_Played_Large_Blue.tres" type="DynamicFont" id=8]
-[ext_resource path="res://GameContent/Game_Played_Large_Red.tres" type="DynamicFont" id=9]
-[ext_resource path="res://Hover_Button_Style.tres" type="StyleBox" id=10]
-[ext_resource path="res://Pressed_Button_Style.tres" type="StyleBox" id=11]
-[ext_resource path="res://Normal_Button_Style.tres" type="StyleBox" id=12]
-[ext_resource path="res://GameContent/Wall.tscn" type="PackedScene" id=13]
+[ext_resource path="res://fonts/Pixel_Chat.tres" type="DynamicFont" id=5]
+[ext_resource path="res://GameContent/LineEdit.gd" type="Script" id=6]
+[ext_resource path="res://fonts/Pixel_SubTitle.tres" type="DynamicFont" id=7]
+[ext_resource path="res://fonts/Pixel_Title.tres" type="DynamicFont" id=8]
+[ext_resource path="res://Hover_Button_Style.tres" type="StyleBox" id=9]
+[ext_resource path="res://Pressed_Button_Style.tres" type="StyleBox" id=10]
+[ext_resource path="res://Normal_Button_Style.tres" type="StyleBox" id=11]
+[ext_resource path="res://Assets/GUI/Bullet-GUI.png" type="Texture" id=12]
+[ext_resource path="res://Assets/GUI/Laser-GUI.png" type="Texture" id=13]
+[ext_resource path="res://Assets/GUI/Teleport-GUI.png" type="Texture" id=14]
+[ext_resource path="res://Assets/GUI/Forcefield-GUI.png" type="Texture" id=15]
+[ext_resource path="res://GameContent/Wall.tscn" type="PackedScene" id=16]
+[ext_resource path="res://Assets/Sound/GameMusic.ogg" type="AudioStream" id=17]
+[ext_resource path="res://Assets/Sound/score.wav" type="AudioStream" id=18]
+[ext_resource path="res://Assets/Sound/Countdown.wav" type="AudioStream" id=19]
 
-[sub_resource type="StyleBoxFlat" id=3]
+[sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0, 0, 0, 0.145098 )
 
 [sub_resource type="StyleBoxFlat" id=2]
 content_margin_left = 8.0
 bg_color = Color( 0, 0, 0, 0 )
 
-[sub_resource type="StyleBoxFlat" id=4]
+[sub_resource type="StyleBoxFlat" id=3]
 content_margin_left = 8.0
 content_margin_top = 8.0
 bg_color = Color( 1, 1, 1, 0 )
 
-[sub_resource type="Gradient" id=1]
+[sub_resource type="Gradient" id=4]
 colors = PoolColorArray( 0, 0, 0, 1, 1, 1, 1, 0 )
 
 [node name="MainScene" type="Node2D"]
@@ -59,31 +65,45 @@ margin_top = 337.0
 margin_right = 294.0
 margin_bottom = 381.0
 mouse_filter = 2
-custom_styles/focus = SubResource( 3 )
+custom_styles/focus = SubResource( 1 )
 custom_styles/normal = SubResource( 2 )
+custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color = Color( 0.243137, 0.243137, 0.243137, 1 )
 placeholder_text = "Press ENTER to chat"
-script = ExtResource( 5 )
+script = ExtResource( 6 )
 
 [node name="Chat_Box" type="RichTextLabel" parent="UI_Layer"]
 margin_right = 292.0
 margin_bottom = 334.0
-custom_styles/normal = SubResource( 4 )
+custom_styles/normal = SubResource( 3 )
+custom_fonts/mono_font = ExtResource( 5 )
+custom_fonts/bold_italics_font = ExtResource( 5 )
+custom_fonts/italics_font = ExtResource( 5 )
+custom_fonts/bold_font = ExtResource( 5 )
+custom_fonts/normal_font = ExtResource( 5 )
 bbcode_enabled = true
 scroll_active = false
 scroll_following = true
 
-[node name="Score_Label" type="Label" parent="UI_Layer"]
+[node name="Score_Label" type="RichTextLabel" parent="UI_Layer"]
 anchor_right = 1.0
 margin_top = 10.0
 margin_bottom = 100.0
-custom_fonts/font = ExtResource( 6 )
-align = 1
+size_flags_stretch_ratio = 0.0
+custom_fonts/mono_font = ExtResource( 7 )
+custom_fonts/bold_italics_font = ExtResource( 7 )
+custom_fonts/italics_font = ExtResource( 7 )
+custom_fonts/bold_font = ExtResource( 7 )
+custom_fonts/normal_font = ExtResource( 7 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+scroll_active = false
 
 [node name="Countdown_Label" type="Label" parent="UI_Layer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_fonts/font = ExtResource( 7 )
+custom_fonts/font = ExtResource( 8 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 align = 1
 valign = 1
 
@@ -94,7 +114,7 @@ margin_left = -32.6702
 margin_right = 29.3298
 grow_horizontal = 2
 grow_vertical = 2
-custom_fonts/font = ExtResource( 8 )
+custom_fonts/font = ExtResource( 7 )
 custom_colors/font_color = Color( 0, 0.180392, 1, 1 )
 align = 1
 valign = 1
@@ -106,7 +126,7 @@ margin_left = -32.6702
 margin_right = 29.3298
 grow_horizontal = 2
 grow_vertical = 2
-custom_fonts/font = ExtResource( 9 )
+custom_fonts/font = ExtResource( 7 )
 custom_colors/font_color = Color( 1, 0, 0, 1 )
 align = 1
 valign = 1
@@ -121,11 +141,94 @@ margin_left = -52.0042
 margin_top = 146.099
 margin_right = 73.9958
 margin_bottom = 213.099
-custom_styles/hover = ExtResource( 10 )
-custom_styles/pressed = ExtResource( 11 )
-custom_styles/normal = ExtResource( 12 )
+custom_styles/hover = ExtResource( 9 )
+custom_styles/pressed = ExtResource( 10 )
+custom_styles/normal = ExtResource( 11 )
+custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color = Color( 0.172549, 0.172549, 0.172549, 1 )
 text = "Leave Match"
+
+[node name="Ability_GUIs" type="Control" parent="UI_Layer"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -20.0
+margin_top = -40.0
+margin_right = 20.0
+margin_bottom = -20.0
+
+[node name="Bullet_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
+position = Vector2( -297.036, -50 )
+scale = Vector2( 5, 5 )
+texture = ExtResource( 12 )
+hframes = 2
+
+[node name="Laser_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
+position = Vector2( -100, -50 )
+scale = Vector2( 5, 5 )
+texture = ExtResource( 13 )
+hframes = 2
+
+[node name="Teleport_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
+position = Vector2( -498, -104 )
+scale = Vector2( 5, 5 )
+texture = ExtResource( 14 )
+offset = Vector2( 119.6, 10.8 )
+hframes = 2
+
+[node name="Forcefield_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
+position = Vector2( -300, -104 )
+scale = Vector2( 5, 5 )
+texture = ExtResource( 15 )
+offset = Vector2( 119.6, 10.8 )
+hframes = 2
+
+[node name="Bullet_GUI_Text" type="Label" parent="UI_Layer/Ability_GUIs"]
+margin_left = -360.895
+margin_top = -144.108
+margin_right = -226.895
+margin_bottom = -129.108
+custom_fonts/font = ExtResource( 5 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "FIRE BULLET"
+align = 1
+valign = 1
+
+[node name="Laser_GUI_Text" type="Label" parent="UI_Layer/Ability_GUIs"]
+margin_left = -163.859
+margin_top = -144.108
+margin_right = -29.8591
+margin_bottom = -129.108
+custom_fonts/font = ExtResource( 5 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "asdfasdf"
+align = 1
+valign = 1
+
+[node name="Teleport_GUI_Text" type="Label" parent="UI_Layer/Ability_GUIs"]
+margin_left = 35.1126
+margin_top = -144.108
+margin_right = 169.113
+margin_bottom = -129.108
+rect_pivot_offset = Vector2( -533.113, 40.108 )
+custom_fonts/font = ExtResource( 5 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "asdfasdf"
+align = 1
+valign = 1
+
+[node name="Forcefield_GUI_Text" type="Label" parent="UI_Layer/Ability_GUIs"]
+margin_left = 230.159
+margin_top = -144.108
+margin_right = 364.159
+margin_bottom = -129.108
+rect_pivot_offset = Vector2( -533.113, 40.108 )
+custom_fonts/font = ExtResource( 5 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "asdfasdf"
+align = 1
+valign = 1
 
 [node name="Environment" type="Node" parent="."]
 
@@ -159,69 +262,81 @@ angle = 720.0
 angle_random = 1.0
 scale_amount = 168.14
 scale_amount_random = 1.0
-color_ramp = SubResource( 1 )
+color_ramp = SubResource( 4 )
 hue_variation_random = 1.0
 
-[node name="Wall" parent="Environment" instance=ExtResource( 13 )]
+[node name="Wall" parent="Environment" instance=ExtResource( 16 )]
 position = Vector2( -4000, 0 )
 scale = Vector2( 1.993, 1350 )
 
-[node name="Wall2" parent="Environment" instance=ExtResource( 13 )]
+[node name="Wall2" parent="Environment" instance=ExtResource( 16 )]
 position = Vector2( 4000, 0 )
 scale = Vector2( 2, 1350 )
 
-[node name="Wall3" parent="Environment" instance=ExtResource( 13 )]
+[node name="Wall3" parent="Environment" instance=ExtResource( 16 )]
 position = Vector2( 0, -1350 )
 scale = Vector2( 4000, 2 )
 
-[node name="Wall4" parent="Environment" instance=ExtResource( 13 )]
+[node name="Wall4" parent="Environment" instance=ExtResource( 16 )]
 position = Vector2( 0.472, 1350 )
 scale = Vector2( 4000, 2 )
 
-[node name="Wall5" parent="Environment" instance=ExtResource( 13 )]
+[node name="Wall5" parent="Environment" instance=ExtResource( 16 )]
 position = Vector2( -2900, 0 )
 scale = Vector2( 2, 300 )
 
-[node name="Wall8" parent="Environment" instance=ExtResource( 13 )]
+[node name="Wall8" parent="Environment" instance=ExtResource( 16 )]
 position = Vector2( -3400, 0 )
 scale = Vector2( 2, 200 )
 
-[node name="Wall7" parent="Environment" instance=ExtResource( 13 )]
+[node name="Wall7" parent="Environment" instance=ExtResource( 16 )]
 position = Vector2( 2900, 0 )
 scale = Vector2( 2, 300 )
 
-[node name="Wall9" parent="Environment" instance=ExtResource( 13 )]
+[node name="Wall9" parent="Environment" instance=ExtResource( 16 )]
 position = Vector2( 3400, 0 )
 scale = Vector2( 2, 200 )
 
-[node name="Wall14" parent="Environment" instance=ExtResource( 13 )]
+[node name="Wall14" parent="Environment" instance=ExtResource( 16 )]
 position = Vector2( -2200.44, 885.37 )
 scale = Vector2( 500, 2 )
 
-[node name="Wall15" parent="Environment" instance=ExtResource( 13 )]
+[node name="Wall15" parent="Environment" instance=ExtResource( 16 )]
 position = Vector2( -2205.85, -909.938 )
 scale = Vector2( 500, 2 )
 
-[node name="Wall16" parent="Environment" instance=ExtResource( 13 )]
+[node name="Wall16" parent="Environment" instance=ExtResource( 16 )]
 position = Vector2( 2099.7, -929.292 )
 scale = Vector2( 500, 2 )
 
-[node name="Wall17" parent="Environment" instance=ExtResource( 13 )]
+[node name="Wall17" parent="Environment" instance=ExtResource( 16 )]
 position = Vector2( 2133.86, 869.432 )
 scale = Vector2( 500, 2 )
 
-[node name="Wall13" parent="Environment" instance=ExtResource( 13 )]
+[node name="Wall13" parent="Environment" instance=ExtResource( 16 )]
 position = Vector2( -395.686, 342.89 )
 scale = Vector2( 250, 2 )
 
-[node name="Wall12" parent="Environment" instance=ExtResource( 13 )]
+[node name="Wall12" parent="Environment" instance=ExtResource( 16 )]
 position = Vector2( -400, -350 )
 scale = Vector2( 250, 2 )
 
-[node name="Wall10" parent="Environment" instance=ExtResource( 13 )]
+[node name="Wall10" parent="Environment" instance=ExtResource( 16 )]
 position = Vector2( 400, 350 )
 scale = Vector2( 250, 2 )
 
-[node name="Wall11" parent="Environment" instance=ExtResource( 13 )]
+[node name="Wall11" parent="Environment" instance=ExtResource( 16 )]
 position = Vector2( 400, -350 )
 scale = Vector2( 250, 2 )
+
+[node name="Music_Audio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 17 )
+autoplay = true
+
+[node name="Score_Audio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 18 )
+volume_db = 2.0
+
+[node name="Countdown_Audio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 19 )
+volume_db = 2.0

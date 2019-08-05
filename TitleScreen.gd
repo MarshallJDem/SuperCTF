@@ -24,7 +24,7 @@ func _process(delta):
 	# If were in queue, poll player status if we're not already polling it
 	if(isInMMQueue && $HTTPRequest_PollPlayerStatus.get_http_client_status() == 0):
 		$HTTPRequest_PollPlayerStatus.request(Globals.mainServerIP + "pollPlayerStatus", ["authorization: Bearer " + Globals.userToken]);
-
+	$UI_Layer.update_title_color($Titlemusic_Audio.get_playback_position() + 3.7);
 
 func create_guest():
 	$HTTPRequest_CreateGuest.request(Globals.mainServerIP + "createGuest");
@@ -44,6 +44,10 @@ func start():
 		$UI_Layer.set_view($UI_Layer.VIEW_MAIN);
 	else: # Else show them login
 		$UI_Layer.set_view($UI_Layer.VIEW_START);
+	
+	$Titlemusic_Audio.play(0.0);
+	OS.window_fullscreen = true;
+	
 
 # Called when the find match HTTP request completes
 func _HTTP_FindMatch_Completed(result, response_code, headers, body):

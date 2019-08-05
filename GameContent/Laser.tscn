@@ -7,8 +7,8 @@ radius = 20.0
 height = 5000.0
 
 [node name="Laser" type="Node2D" groups=[
-"Lasers",
 "Projectiles",
+"Lasers",
 ]]
 z_index = 4011
 z_as_relative = false

@@ -7,6 +7,5 @@ func _ready():
 	
 
 func _death_timer_ended():
-	print("die");
 	queue_free();
 	

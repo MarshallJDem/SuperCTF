@@ -15,13 +15,18 @@ var userToken;
 var mainServerIP = "http://24.15.0.98:42401/";
 
 var game_just_started = true;
-
-var testing = false;
-
 var is_typing_in_chat = false;
 
+# ----- Constants -----
+
 # The amount of delay to lerp over for lag interpolation for players
-var player_lerp_time = 50; # In millis
+var player_lerp_time = 100; # In millis
+# Whether or not lasers should destroy bullets
+var lasers_destroy_bullets = true;
+# Wheter to run in testing mode (for development uses)
+var testing = false;
+var forcefield_cooldown = 3;
+
 
 func write_save_data():
 	var file = File.new()
@@ -54,3 +59,5 @@ func _input(event):
 			return;
 		if event.scancode == KEY_F:
 			OS.window_fullscreen = !OS.window_fullscreen;
+		if event.scancode == KEY_1:
+			player_lerp_time = 100;

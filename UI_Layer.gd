@@ -11,8 +11,31 @@ func _ready():
 	$CreateAccountButton.connect("pressed", self, "_create_account_pressed");
 	$LogoutButton.connect("pressed", self, "_logout_pressed");
 	$SplashStartButton.connect("pressed", self, "_splash_start_pressed");
-	
+	$Searching_Text_Timer.connect("timeout", self, "_searching_text_timer_ended");
 	disable_buttons();
+
+var current_search_dot_count = 0;
+# Called when the Searching text timer ends
+func _searching_text_timer_ended():
+	current_search_dot_count += 1;
+	if current_search_dot_count > 3:
+		current_search_dot_count = 0;
+	$Searching_Text.text = "Searching";
+	for i in current_search_dot_count:
+		$Searching_Text.text += ".";
+
+var current_color = 0;
+# Called every frame by Titlescreen with the latest playback position
+func update_title_color(playback_position):
+	var current_color = int(playback_position) % 3;
+	var color = "#FFFFFF";
+	if current_color == 0:
+		color = "#000000";
+	elif current_color == 1:
+		color = "#4C70BA";
+	else:
+		color = "#ff0000";
+	$Label2.bbcode_text = "[color=" + color + "]" + "CTF" + "[/color]";
 
 # Disables all the situational buttons
 func disable_buttons():
@@ -23,6 +46,7 @@ func disable_buttons():
 	$CreateAccountButton.visible = false;
 	$SplashStartButton.visible = false;
 	$SplashBackground.visible = false;
+	$Searching_Text.visible = false;
 
 func set_view(state):
 	disable_buttons();
@@ -37,6 +61,7 @@ func set_view(state):
 			$FindMatchButton.visible = true;
 		VIEW_IN_QUEUE:
 			$CancelQueueButton.visible = true;
+			$Searching_Text.visible = true;
 		VIEW_SPLASH:
 			$LogoutButton.visible = false;
 			$SplashStartButton.visible = true;
@@ -55,7 +80,6 @@ func _create_account_pressed():
 func _logout_pressed():
 	get_parent().logout();
 func _splash_start_pressed():
-	OS.window_fullscreen = true;
 	get_parent().start();
 
 

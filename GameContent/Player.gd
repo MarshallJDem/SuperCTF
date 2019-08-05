@@ -1,10 +1,9 @@
 extends KinematicBody2D
 
-# TODO set to false when not testing
 var control = false;
 var player_id = 0;
 var team_id = -1;
-const BASE_SPEED = 500;
+const BASE_SPEED = 625;
 const AIMING_SPEED = 150;
 const SPRINT_SPEED = 250;
 const TELEPORT_SPEED = 7500;
@@ -31,10 +30,14 @@ var lerp_end_pos = Vector2(0,0);
 var sprintEnabled = false;
 # Whether the player can currently teleport
 var can_teleport = true;
+var can_place_forcefield = true;
+var max_forcefield_distance = 5000;
+var remote_db_level = -10;
+
 
 var bullet_atlas_blue = preload("res://GameContent/bullet_atlas_blue.png");
 var bullet_atlas_red = preload("res://GameContent/bullet_atlas_red.png");
-	
+
 func _ready():
 	camera_ref = $Center_Pivot/Camera;
 	
@@ -42,12 +45,19 @@ func _ready():
 		activate_camera();
 		control = true
 	
-	if is_network_master():
+	if is_network_master() || Globals.testing:
 		activate_camera();
+		$Laser_Timer.wait_time += 0.1;
+		$Laser_Charge_Audio.set_pitch_scale(float(0.5)/$Laser_Timer.wait_time);
+	else:
+		$Laser_Charge_Audio.set_volume_db(remote_db_level);
+		$Laser_Fire_Audio.set_volume_db(remote_db_level);
+	
 	$Respawn_Timer.connect("timeout", self, "_respawn_timer_ended");
 	$Invincibility_Timer.connect("timeout", self, "_invincibility_timer_ended");
 	$Laser_Timer.connect("timeout", self, "_laser_timer_ended");
 	$Teleport_Timer.connect("timeout", self, "_teleport_timer_ended");
+	$Forcefield_Timer.connect("timeout", self, "_forcefield_timer_ended");
 	lerp_start_pos = position;
 	lerp_end_pos = position;
 
@@ -69,6 +79,11 @@ func _input(event):
 						camera_ref.lag_smooth();
 						$Teleport_Timer.start();
 						can_teleport = false;
+			if event.scancode == KEY_E:
+				# If were not holding a flag, create forcefield
+				if $Flag_Holder.get_child_count() == 0:
+					if can_place_forcefield:
+						forcefield_placed();
 			if event.scancode == KEY_1:
 				Globals.player_lerp_time = 10;
 			if event.scancode == KEY_2:
@@ -123,10 +138,28 @@ func _process(delta):
 		var x =  (t * 10);
 		$Sprite.modulate = Color(1,1,1,(sin( (PI / 2) + (x * (1 + (t * ((2 * PI) - 1))))) + 1)/2)
 	z_index = global_position.y + 15;
+	# Old
 	# If we are a puppet and not the server, then lerp our position
 	if !is_network_master() and !get_tree().is_network_server() and !Globals.testing:
 		position = lerp(lerp_start_pos, lerp_end_pos, clamp(float(OS.get_ticks_msec() - time_of_last_received_pos)/float(Globals.player_lerp_time), 0.0, 1.0));
-
+	
+	if is_network_master():
+		rpc_unreliable_id(1, "send_position", position, get_tree().get_network_unique_id());
+#
+	# Experimental
+#	if !is_network_master() and !get_tree().is_network_server():
+#		var pre_process_pos = position;
+#		if position == target_pos:
+#			position += last_velocity;
+#		else:
+#			if position.distance_to(target_pos) < 12:
+#				position = target_pos;
+#			else:
+#				var direction = position.direction_to(target_pos);
+#				position += direction * 12;
+#		print(position.distance_to(pre_process_pos));
+#
+	
 remote func send_start_laser(direction, player_pos, look_frame):
 	if get_tree().is_network_server():# Only run if it's the server
 		var players = get_tree().get_root().get_node("MainScene/NetworkController").players;
@@ -145,10 +178,39 @@ func start_laser(direction, player_pos, look_frame):
 	$Laser_Timer.start();
 	speed= AIMING_SPEED;
 	camera_ref.shake($Laser_Timer.wait_time, 1, true);
+	$Laser_Charge_Audio.play();
 
 func _laser_timer_ended():
 	shoot_laser();
 	speed = BASE_SPEED;
+
+# Called when the player attempts to place a forcefield
+# This function will either place it in the appropriate spot or deny it (bad location or something)
+func forcefield_placed():
+	var distance = get_global_mouse_position().distance_to(position);
+	var forcefield_position = get_global_mouse_position();
+	if distance > max_forcefield_distance:
+		var direction = (get_global_mouse_position() - global_position).normalized();
+		forcefield_position = global_position + (direction * max_forcefield_distance);
+	rpc("spawn_forcefield", forcefield_position);
+	can_place_forcefield = false;
+	$Forcefield_Timer.wait_time = Globals.forcefield_cooldown;
+	$Forcefield_Timer.start();
+	if Globals.testing:
+		var forcefield = load("res://GameContent/Forcefield.tscn").instance();
+		get_tree().get_root().get_node("MainScene").add_child(forcefield);
+# Called when the forcefield cooldown timer ends
+func _forcefield_timer_ended():
+	can_place_forcefield = true;
+
+# Called by client telling everyone to spawn a forcefield in a spot
+# NOTE - in future this should be handled by servers - not the client.
+remotesync func spawn_forcefield(pos):
+	var forcefield = load("res://GameContent/Forcefield.tscn").instance();
+	get_tree().get_root().get_node("MainScene").add_child(forcefield);
+	forcefield.position = pos;
+	forcefield.player_id = player_id;
+	forcefield.team_id = team_id;
 
 
 # Shoots a laser shot
@@ -163,6 +225,7 @@ func shoot_laser():
 	laser.rotation = -get_vector_angle(laser_direction);
 	laser.player_id = player_id;
 	laser.team_id = team_id;
+	$Laser_Fire_Audio.play();
 
 
 func _draw():
@@ -188,6 +251,18 @@ func shoot_bullet():
 
 # Spawns a bullet given various initializaiton parameters
 func spawn_bullet(pos, player_id, direction, bullet_name = null):
+	
+	# If this was fired by another player, compensate for player lerp speed
+	if player_id != get_tree().get_network_unique_id() && !get_tree().is_network_server():
+		var t = Timer.new()
+		t.set_wait_time(float(Globals.player_lerp_time)/float(1000.0))
+		t.set_one_shot(true)
+		self.add_child(t)
+		t.start()
+		yield(t, "timeout")
+		t.queue_free();
+		print("waited");
+	
 	var bullet = load("res://GameContent/Bullet.tscn").instance();
 	bullet.position = pos;
 	bullet.direction = direction;
@@ -205,6 +280,8 @@ func spawn_bullet(pos, player_id, direction, bullet_name = null):
 	else:
 		bullet.name = bullet.name + "-" + str(player_id) + "-" + str(bullets_shot);
 		print("Made: " + bullet.name);
+	
+	
 	return bullet;
 
 
@@ -237,15 +314,15 @@ func move_on_inputs(teleport = false):
 	
 	if teleport:
 		rpc("create_ghost_trail", previous_pos, new_pos);
+		if Globals.testing:
+			$Teleport_Audio.play();
 	
-	
-	if(change != Vector2(0,0)): # If the position has changed
-		rpc_unreliable_id(1, "send_position", position, get_tree().get_network_unique_id());
 
 func _teleport_timer_ended():
 	can_teleport = true;
 
 remotesync func create_ghost_trail(start, end):
+	$Teleport_Audio.play();
 	for i in range(6):
 		var node = load("res://GameContent/Ghost_Trail.tscn").instance();
 		get_tree().get_root().get_node("MainScene").add_child(node);
@@ -292,6 +369,12 @@ func set_look_direction(frame):
 	$Sprite.frame =  frame;
 	
 
+# Experimental
+#var last_position = Vector2(0,0);
+#var target_pos = Vector2(0,0);
+#var received_pos_this_frame = false;
+#var last_velocity = Vector2(0,0);
+
 # Updates this player's position with the new given position. Only ever called remotely
 func update_position(new_pos):
 	# Instantly update position for server
@@ -304,6 +387,13 @@ func update_position(new_pos):
 	time_of_last_received_pos = OS.get_ticks_msec();
 	lerp_start_pos = position;
 	lerp_end_pos = new_pos;
+	
+	# Experimental
+#	target_pos = new_pos;
+#	received_pos_this_frame = true;
+#	# Last Velocity
+#	last_velocity = new_pos - last_position;
+#	last_position = new_pos;
 
 # Activates the camera on this player
 func activate_camera():
@@ -312,7 +402,6 @@ func activate_camera():
 # De-activates the camera on this player
 func deactivate_camera():
 	camera_ref.current = false;
-	
 
 # Called when this player is hit by a projectile
 func hit_by_projectile(attacker_id, projectile_type):
@@ -337,7 +426,10 @@ func die():
 		$Respawn_Timer.start();
 	# Drop the flag if you have one
 	drop_current_flag($Flag_Holder.get_global_position());
-	pass
+	if is_network_master():
+		$Death_Audio.play();
+	else:
+		$Killed_Audio.play();
 
 func spawn_death_particles():
 	var particles = load("res://GameContent/Player_Death_Particles.tscn").instance();
@@ -373,6 +465,9 @@ func respawn():
 
 # Takes the given flag
 func take_flag(flag_id):
+	if is_network_master():
+		get_tree().get_root().get_node("MainScene").speedup_music();
+	$Flag_Pickup_Audio.play();
 	for flag in get_tree().get_nodes_in_group("Flags"):
 		if flag.flag_id == flag_id:
 			flag.re_parent($Flag_Holder);
@@ -382,6 +477,10 @@ func take_flag(flag_id):
 
 # Drops the currently held flag (If there is one)
 func drop_current_flag(flag_position):
+	
+	if is_network_master():
+		get_tree().get_root().get_node("MainScene").slowdown_music();
+	$Flag_Drop_Audio.play();
 	# Only run if there is a flag in the Flag_Holder
 	if $Flag_Holder.get_child_count() > 0:
 		# Just get the first flag because there should only ever be one
@@ -397,7 +496,6 @@ func start_temporary_invincibility():
 	invincible = true;
 # Called by timer when invincibility is over
 func _invincibility_timer_ended():
-	$Sprite.modulate = Color(1,1,1,1);
 	# If we're the server, make the call to actually end invinciblity
 	if get_tree().is_network_server():
 		rpc("receive_end_invinciblity");

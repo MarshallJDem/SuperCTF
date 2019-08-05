@@ -1,16 +1,17 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://GameContent/Bullet.gd" type="Script" id=1]
 [ext_resource path="res://GameContent/bullet_atlas_blue.png" type="Texture" id=2]
 [ext_resource path="res://GameContent/Bullet_Area2D.gd" type="Script" id=3]
+[ext_resource path="res://Assets/Sound/Bullet_Shot_1.wav" type="AudioStream" id=4]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 10.2389
 height = 25.0454
 
 [node name="Bullet" type="Node2D" groups=[
-"Bullets",
 "Projectiles",
+"Bullets",
 ]]
 script = ExtResource( 1 )
 
@@ -30,7 +31,12 @@ position = Vector2( 7.53479, 0.1992 )
 rotation = 1.57079
 shape = SubResource( 1 )
 
-[node name="Death_Timer" type="Timer" parent="."]
+[node name="Death_Timer2" type="Timer" parent="."]
 wait_time = 5.0
 one_shot = true
 autostart = true
+
+[node name="Shot_Audio" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 4 )
+autoplay = true
+attenuation = 0.287175

@@ -27,9 +27,8 @@ animations = [ {
 "speed": 7.0
 } ]
 
-[sub_resource type="CapsuleShape2D" id=3]
-radius = 4.43372
-height = 57.2865
+[sub_resource type="ConvexPolygonShape2D" id=3]
+points = PoolVector2Array( 0, 0, 42, 10, 42, 45, 0, 65 )
 
 [node name="Flag" type="Node2D" groups=[
 "Flags",
@@ -58,5 +57,5 @@ position = Vector2( 20.7922, -30.4714 )
 script = ExtResource( 10 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2( -20.3827, -0.261612 )
+position = Vector2( -22.7604, -32.0995 )
 shape = SubResource( 3 )

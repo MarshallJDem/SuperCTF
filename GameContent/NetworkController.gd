@@ -88,6 +88,7 @@ func start_server():
 	get_tree().set_network_peer(server);
 	print("Making Game Server Available");
 	$HTTPRequest_GameServerMakeAvailable.request(Globals.mainServerIP + "makeGameServerAvailable?publicToken=" + str("RANDOMTOKEN"), ["authorization: Bearer " + (Globals.serverPrivateToken)], false);
+	AudioServer.set_bus_volume_db(0, -500);
 
 var pollServerStatus = false;
 func _HTTP_GameServerMakeAvailable_Completed(result, response_code, headers, body):
@@ -140,7 +141,7 @@ func start_match():
 # Sets the score of the game to the given score. This should only ever be called by the server
 remotesync func set_scores(new_scores):
 	scores = new_scores;
-	get_tree().get_root().get_node("MainScene/UI_Layer/Score_Label").text = str(scores[0]) + ' - ' + str(scores[1]);
+	get_tree().get_root().get_node("MainScene/UI_Layer").set_score_text(scores[0], scores[1]);
 	print("current scores: " + str(scores));
 	
 # Sets the team of a player
@@ -262,7 +263,9 @@ func server_disconnect():
 # Called when a player scores a point
 remotesync func round_ended(scoring_team_id, scoring_player_id):
 	print("Player : " + str(scoring_player_id) + " won a point for team : " + str(scoring_team_id));
+	get_tree().get_root().get_node("MainScene").slowdown_music();
 	get_tree().get_root().get_node("MainScene/UI_Layer").set_big_label_text(str(players[scoring_player_id]['name']) + "\nSCORED!", scoring_team_id);
+	get_tree().get_root().get_node("MainScene/Score_Audio").play();
 	var scoring_player = get_tree().get_root().get_node("MainScene/Players/" + str(scoring_player_id));
 	round_is_ended = true;
 	print("Round_is_ended");
@@ -302,6 +305,7 @@ remotesync func load_new_round():
 	print("Loading New Round");
 	round_is_ended = false;
 	reset_game_objects();
+	get_tree().get_root().get_node("MainScene/Countdown_Audio").play();
 	# If we're the server, instruct other to spawn game nodes
 	if get_tree().is_network_server():
 		# Spawn players
@@ -323,6 +327,7 @@ remotesync func load_new_round():
 # Starts the currently loaded round
 remotesync func start_round():
 	print("Starting Round");
+	get_tree().get_root().get_node("MainScene").slowdown_music();
 	# If we are not the server
 	if !get_tree().is_network_server():
 		var local_player = get_tree().get_root().get_node("MainScene/Players/" + str(get_tree().get_network_unique_id()));

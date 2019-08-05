@@ -1,10 +1,17 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://GameContent/Player.gd" type="Script" id=1]
 [ext_resource path="res://GameContent/player_atlas.png" type="Texture" id=2]
 [ext_resource path="res://GameContent/Center_Pivot.gd" type="Script" id=3]
 [ext_resource path="res://GameContent/Camera.gd" type="Script" id=4]
 [ext_resource path="res://GameContent/Area2D.gd" type="Script" id=5]
+[ext_resource path="res://Assets/Sound/Local_Death.wav" type="AudioStream" id=6]
+[ext_resource path="res://Assets/Sound/Kill.wav" type="AudioStream" id=7]
+[ext_resource path="res://Assets/Sound/Laser_Charge.wav" type="AudioStream" id=8]
+[ext_resource path="res://Assets/Sound/Laser_Fire.wav" type="AudioStream" id=9]
+[ext_resource path="res://Assets/Sound/Flag_Pickup.wav" type="AudioStream" id=10]
+[ext_resource path="res://Assets/Sound/Flag_Drop.wav" type="AudioStream" id=11]
+[ext_resource path="res://Assets/Sound/Teleport.wav" type="AudioStream" id=12]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 18.2792
@@ -51,10 +58,13 @@ script = ExtResource( 5 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource( 1 )
 
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource( 1 )
+
 [node name="Flag_Holder" type="Node2D" parent="."]
 
 [node name="Respawn_Timer" type="Timer" parent="."]
-wait_time = 5.0
+wait_time = 3.0
 one_shot = true
 
 [node name="Invincibility_Timer" type="Timer" parent="."]
@@ -62,13 +72,42 @@ wait_time = 2.0
 one_shot = true
 
 [node name="Laser_Timer" type="Timer" parent="."]
-wait_time = 0.75
+wait_time = 0.4
 one_shot = true
 
 [node name="Teleport_Timer" type="Timer" parent="."]
+one_shot = true
+
+[node name="Forcefield_Timer" type="Timer" parent="."]
 one_shot = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0.48835, 13.0633 )
 rotation = 1.5708
 shape = SubResource( 2 )
+
+[node name="Death_Audio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+volume_db = 5.0
+
+[node name="Killed_Audio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )
+volume_db = 10.0
+
+[node name="Laser_Charge_Audio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 8 )
+pitch_scale = 1.25
+
+[node name="Laser_Fire_Audio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 9 )
+
+[node name="Flag_Pickup_Audio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 10 )
+
+[node name="Flag_Drop_Audio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 11 )
+
+[node name="Teleport_Audio" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 12 )
+pitch_scale = 0.5
+attenuation = 0.233258

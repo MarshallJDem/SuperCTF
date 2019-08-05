@@ -1,8 +1,8 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://TitleScreen.gd" type="Script" id=1]
 [ext_resource path="res://UI_Layer.gd" type="Script" id=2]
-[ext_resource path="res://GameContent/Game_Played_Outline_Medium.tres" type="DynamicFont" id=3]
+[ext_resource path="res://fonts/Pixel_Title.tres" type="DynamicFont" id=3]
 [ext_resource path="res://GameContent/Flag.tscn" type="PackedScene" id=4]
 [ext_resource path="res://GameContent/Flag.gd" type="Script" id=5]
 [ext_resource path="res://flag_frames/flagBlue1.png" type="Texture" id=6]
@@ -17,6 +17,9 @@
 [ext_resource path="res://Hover_Button_Style.tres" type="StyleBox" id=15]
 [ext_resource path="res://Pressed_Button_Style.tres" type="StyleBox" id=16]
 [ext_resource path="res://Normal_Button_Style.tres" type="StyleBox" id=17]
+[ext_resource path="res://fonts/Pixel_Button.tres" type="DynamicFont" id=18]
+[ext_resource path="res://fonts/Pixel_Button_Title.tres" type="DynamicFont" id=19]
+[ext_resource path="res://Assets/Sound/CTFTitlescreen.ogg" type="AudioStream" id=20]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -58,13 +61,14 @@ script = ExtResource( 2 )
 editor/display_folded = true
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -342.0
-margin_top = -23.0
-margin_right = 343.0
-margin_bottom = 218.0
+margin_left = -332.477
+margin_top = -2.59436
+margin_right = 352.523
+margin_bottom = 238.406
+rect_scale = Vector2( 1, 0.76 )
 rect_pivot_offset = Vector2( -436, 173 )
 custom_fonts/font = ExtResource( 3 )
-custom_colors/font_color = Color( 1, 0.588235, 0.588235, 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "SUPER"
 align = 1
 
@@ -82,7 +86,7 @@ script = ExtResource( 5 )
 position = Vector2( 20.7922, -30.4714 )
 scale = Vector2( 4.57399, 4.57399 )
 frames = SubResource( 1 )
-frame = 1
+frame = 2
 playing = true
 
 [node name="Red_Sprite" type="AnimatedSprite" parent="UI_Layer/Label/Flag2"]
@@ -90,7 +94,7 @@ visible = false
 position = Vector2( 20.7922, -30.4714 )
 scale = Vector2( 4.57399, 4.57399 )
 frames = SubResource( 2 )
-frame = 1
+frame = 2
 playing = true
 
 [node name="Area2D" type="Area2D" parent="UI_Layer/Label/Flag2" groups=[
@@ -103,55 +107,64 @@ script = ExtResource( 14 )
 position = Vector2( -20.3827, -0.261612 )
 shape = SubResource( 3 )
 
-[node name="Label2" type="Label" parent="UI_Layer"]
+[node name="Label2" type="RichTextLabel" parent="UI_Layer"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -342.0
-margin_top = 136.0
-margin_right = 343.0
-margin_bottom = 377.0
+margin_left = -176.034
+margin_top = 184.974
+margin_right = 221.966
+margin_bottom = 425.974
 rect_pivot_offset = Vector2( -436, 173 )
-custom_fonts/font = ExtResource( 3 )
-custom_colors/font_color = Color( 0.647059, 0.678431, 1, 1 )
+custom_fonts/mono_font = ExtResource( 3 )
+custom_fonts/bold_italics_font = ExtResource( 3 )
+custom_fonts/italics_font = ExtResource( 3 )
+custom_fonts/bold_font = ExtResource( 3 )
+custom_fonts/normal_font = ExtResource( 3 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "CTF"
 text = "CTF"
-align = 1
+scroll_active = false
 
 [node name="CancelQueueButton" type="Button" parent="UI_Layer"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -84.0
-margin_top = 400.0
-margin_right = 84.0
-margin_bottom = 460.0
+margin_left = -80.0195
+margin_top = 433.786
+margin_right = 87.9805
+margin_bottom = 503.786
 custom_styles/hover = ExtResource( 15 )
 custom_styles/pressed = ExtResource( 16 )
 custom_styles/normal = ExtResource( 17 )
+custom_fonts/font = ExtResource( 18 )
 custom_colors/font_color = Color( 0.113725, 0.113725, 0.113725, 1 )
 text = "Cancel"
 
 [node name="FindMatchButton" type="Button" parent="UI_Layer"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -124.0
-margin_top = 390.0
-margin_right = 124.0
-margin_bottom = 470.0
+margin_left = -122.01
+margin_top = 423.171
+margin_right = 125.99
+margin_bottom = 503.171
 custom_styles/hover = ExtResource( 15 )
 custom_styles/pressed = ExtResource( 16 )
 custom_styles/normal = ExtResource( 17 )
+custom_fonts/font = ExtResource( 18 )
 custom_colors/font_color = Color( 0.137255, 0.137255, 0.137255, 1 )
 text = "Find Match"
 
 [node name="PlayAsGuestButton" type="Button" parent="UI_Layer"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -114.0
-margin_top = 401.108
-margin_right = 114.0
-margin_bottom = 461.108
+margin_left = -126.771
+margin_top = 420.234
+margin_right = 134.229
+margin_bottom = 503.234
 custom_styles/hover = ExtResource( 15 )
 custom_styles/pressed = ExtResource( 16 )
 custom_styles/normal = ExtResource( 17 )
+custom_fonts/font = ExtResource( 18 )
 custom_colors/font_color = Color( 0.109804, 0.109804, 0.109804, 1 )
 text = "Play as Guest"
 
@@ -164,15 +177,16 @@ margin_bottom = 286.078
 text = "Sign In"
 
 [node name="LogoutButton" type="Button" parent="UI_Layer"]
-margin_left = 10.0761
-margin_top = 13.1523
-margin_right = 129.076
-margin_bottom = 61.1523
+margin_left = 10.0
+margin_top = 13.0
+margin_right = 184.0
+margin_bottom = 95.0
 custom_styles/hover = ExtResource( 15 )
 custom_styles/pressed = ExtResource( 16 )
 custom_styles/normal = ExtResource( 17 )
+custom_fonts/font = ExtResource( 18 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Logout"
+text = "LOGOUT"
 
 [node name="CreateAccountButton" type="Button" parent="UI_Layer"]
 visible = false
@@ -191,12 +205,31 @@ color = Color( 1, 1, 1, 0 )
 [node name="SplashStartButton" type="Button" parent="UI_Layer"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -205.166
-margin_top = 389.503
-margin_right = 203.834
-margin_bottom = 459.503
+margin_left = -205.483
+margin_top = 428.425
+margin_right = 203.517
+margin_bottom = 498.425
 custom_styles/hover = ExtResource( 15 )
 custom_styles/pressed = ExtResource( 16 )
 custom_styles/normal = ExtResource( 17 )
+custom_fonts/font = ExtResource( 19 )
 custom_colors/font_color = Color( 0.137255, 0.137255, 0.137255, 1 )
 text = "START"
+
+[node name="Searching_Text" type="Label" parent="UI_Layer"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -86.22
+margin_top = 515.669
+margin_right = 114.78
+margin_bottom = 562.669
+custom_fonts/font = ExtResource( 18 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Searching"
+
+[node name="Searching_Text_Timer" type="Timer" parent="UI_Layer"]
+wait_time = 0.3
+autostart = true
+
+[node name="Titlemusic_Audio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 20 )

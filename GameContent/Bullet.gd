@@ -4,13 +4,13 @@ var total_time = 0;
 var frame_order = [0, 1, 2, 3, 4];
 var animation_duration = 0.5;
 var direction = Vector2(0,0);
-var speed = 750;
+var speed = 875;
 var player_id;
 var team_id;
 var show_death_particles = true;
 
 func _ready():
-	$Death_Timer.connect("timeout", self, "_death_timer_ended");
+	$Death_Timer2.connect("timeout", self, "_death_timer_ended");
 	rotation = Vector2(0,0).angle_to_point(direction) + PI;
 
 func _process(delta):
@@ -18,6 +18,11 @@ func _process(delta):
 	animate_frames();
 	move(delta);
 
+# stupid workaround neccessary to make particles not flash random colors upon spawning
+func _physics_process(delta):
+	if should_die:
+		die();
+	
 # Given an amount of delta time, moves the bullet in its trajectory direction using its speed
 func move(delta):
 	position = position + (direction * speed * delta);
@@ -37,13 +42,14 @@ func die():
 	#Only show particles if we havn't already done so from a preliminary death
 	if show_death_particles:
 		spawn_death_particles();
-	get_parent().remove_child(self);
-	self.queue_free();
+	queue_free();
 
+var should_die = false;
 # Called when the death timer finishes
 # NOTE- we can trust each client to handle it's own bullet deaths because the server detects collisions anyways
 func _death_timer_ended():
-	die();
+	should_die = true;
+	pass;
 
 # Called if the bullet dies locally on the machine. For now we handle it as just making it look like bullet death
 func preliminary_death():

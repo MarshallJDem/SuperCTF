@@ -1,4 +1,4 @@
-extends Node2D
+   extends Node2D
 
 # The ID of the player who shot this laser
 var player_id = -1;
