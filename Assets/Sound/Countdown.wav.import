@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Countdown.wav-5d0442efc71f89fc9a3d68fd803ce449.sample"
+
+[deps]
+
+source_file="res://Assets/Sound/Countdown.wav"
+dest_files=[ "res://.import/Countdown.wav-5d0442efc71f89fc9a3d68fd803ce449.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

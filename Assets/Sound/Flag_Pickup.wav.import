@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Flag_Pickup.wav-63a89800c8ae500192eb176c1f77f3cb.sample"
+
+[deps]
+
+source_file="res://Assets/Sound/Flag_Pickup.wav"
+dest_files=[ "res://.import/Flag_Pickup.wav-63a89800c8ae500192eb176c1f77f3cb.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0
