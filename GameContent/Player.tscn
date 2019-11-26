@@ -1,7 +1,7 @@
 [gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://GameContent/Player.gd" type="Script" id=1]
-[ext_resource path="res://GameContent/player_atlas.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Player/player-idle-B.png" type="Texture" id=2]
 [ext_resource path="res://GameContent/Center_Pivot.gd" type="Script" id=3]
 [ext_resource path="res://GameContent/Camera.gd" type="Script" id=4]
 [ext_resource path="res://GameContent/Area2D.gd" type="Script" id=5]
@@ -26,7 +26,8 @@ script = ExtResource( 1 )
 [node name="Sprite" type="Sprite" parent="."]
 scale = Vector2( 3.14816, 3.14816 )
 texture = ExtResource( 2 )
-hframes = 8
+vframes = 3
+hframes = 5
 
 [node name="Center_Pivot" type="Position2D" parent="."]
 script = ExtResource( 3 )

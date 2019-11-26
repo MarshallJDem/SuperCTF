@@ -426,6 +426,7 @@ func die():
 		$Respawn_Timer.start();
 	# Drop the flag if you have one
 	drop_current_flag($Flag_Holder.get_global_position());
+	position = start_pos;
 	if is_network_master():
 		$Death_Audio.play();
 	else:

@@ -12,7 +12,7 @@ var matchID;
 var userToken;
 
 #Main Server
-var mainServerIP = "http://24.15.0.98:42401/";
+var mainServerIP = "http://127.0.0.1:42401/";
 
 var game_just_started = true;
 var is_typing_in_chat = false;
@@ -23,8 +23,8 @@ var is_typing_in_chat = false;
 var player_lerp_time = 100; # In millis
 # Whether or not lasers should destroy bullets
 var lasers_destroy_bullets = true;
-# Wheter to run in testing mode (for development uses)
-var testing = false;
+# Whether to run in testing mode (for development uses)
+var testing = true;
 var forcefield_cooldown = 3;
 
 

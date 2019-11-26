@@ -10,7 +10,7 @@ var		scores		= [];
 var server = null;
 var client = null;
 
-var player_atlas_blue = preload("res://GameContent/player_atlas_blue.png");
+var player_atlas_blue = preload("res://Assets/Player/player-idle-B.png");
 var player_atlas_red = preload("res://GameContent/player_atlas_red.png");
 
 var round_is_ended = false;

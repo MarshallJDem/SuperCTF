@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://GameContent/Main.gd" type="Script" id=1]
 [ext_resource path="res://GameContent/Player.tscn" type="PackedScene" id=2]
@@ -34,6 +34,9 @@ bg_color = Color( 1, 1, 1, 0 )
 
 [sub_resource type="Gradient" id=4]
 colors = PoolColorArray( 0, 0, 0, 1, 1, 1, 1, 0 )
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 1, 1 )
 
 [node name="MainScene" type="Node2D"]
 script = ExtResource( 1 )
@@ -265,21 +268,114 @@ scale_amount_random = 1.0
 color_ramp = SubResource( 4 )
 hue_variation_random = 1.0
 
-[node name="Wall" parent="Environment" instance=ExtResource( 16 )]
+[node name="Wall" type="KinematicBody2D" parent="Environment"]
+editor/display_folded = true
 position = Vector2( -4000, 0 )
 scale = Vector2( 1.993, 1350 )
+z_index = -4015
 
-[node name="Wall2" parent="Environment" instance=ExtResource( 16 )]
+[node name="ColorRect" type="ColorRect" parent="Environment/Wall"]
+margin_left = -1.0
+margin_top = -1.0
+margin_right = 1.0
+margin_bottom = 1.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/Wall"]
+shape = SubResource( 5 )
+
+[node name="Area2D" type="Area2D" parent="Environment/Wall" groups=[
+"Wall_Bodies",
+]]
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Environment/Wall/Area2D"]
+shape = SubResource( 5 )
+
+[node name="Wall2" type="KinematicBody2D" parent="Environment"]
+editor/display_folded = true
 position = Vector2( 4000, 0 )
 scale = Vector2( 2, 1350 )
+z_index = -4015
 
-[node name="Wall3" parent="Environment" instance=ExtResource( 16 )]
+[node name="ColorRect" type="ColorRect" parent="Environment/Wall2"]
+margin_left = -1.0
+margin_top = -1.0
+margin_right = 1.0
+margin_bottom = 1.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/Wall2"]
+shape = SubResource( 5 )
+
+[node name="Area2D" type="Area2D" parent="Environment/Wall2" groups=[
+"Wall_Bodies",
+]]
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Environment/Wall2/Area2D"]
+shape = SubResource( 5 )
+
+[node name="Bound3" parent="Environment" instance=ExtResource( 16 )]
+position = Vector2( 4500, 0 )
+scale = Vector2( 502, 2350 )
+
+[node name="Bound4" parent="Environment" instance=ExtResource( 16 )]
+visible = false
+position = Vector2( -4500, 0 )
+scale = Vector2( 502, 2350 )
+
+[node name="Wall3" type="KinematicBody2D" parent="Environment"]
+editor/display_folded = true
 position = Vector2( 0, -1350 )
 scale = Vector2( 4000, 2 )
+z_index = -4015
 
-[node name="Wall4" parent="Environment" instance=ExtResource( 16 )]
+[node name="ColorRect" type="ColorRect" parent="Environment/Wall3"]
+margin_left = -1.0
+margin_top = -1.0
+margin_right = 1.0
+margin_bottom = 1.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/Wall3"]
+shape = SubResource( 5 )
+
+[node name="Area2D" type="Area2D" parent="Environment/Wall3" groups=[
+"Wall_Bodies",
+]]
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Environment/Wall3/Area2D"]
+shape = SubResource( 5 )
+
+[node name="Bound" parent="Environment" instance=ExtResource( 16 )]
+position = Vector2( 0, -1850 )
+scale = Vector2( 5000, 502 )
+
+[node name="Bound2" parent="Environment" instance=ExtResource( 16 )]
+position = Vector2( 0, 1850 )
+scale = Vector2( 5000, 502 )
+
+[node name="Wall4" type="KinematicBody2D" parent="Environment"]
+editor/display_folded = true
 position = Vector2( 0.472, 1350 )
 scale = Vector2( 4000, 2 )
+z_index = -4015
+
+[node name="ColorRect" type="ColorRect" parent="Environment/Wall4"]
+margin_left = -1.0
+margin_top = -1.0
+margin_right = 1.0
+margin_bottom = 1.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/Wall4"]
+shape = SubResource( 5 )
+
+[node name="Area2D" type="Area2D" parent="Environment/Wall4" groups=[
+"Wall_Bodies",
+]]
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Environment/Wall4/Area2D"]
+shape = SubResource( 5 )
 
 [node name="Wall5" parent="Environment" instance=ExtResource( 16 )]
 position = Vector2( -2900, 0 )
