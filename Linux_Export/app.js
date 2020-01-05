@@ -12,19 +12,21 @@ var con = mysql.createPool({
   host: "localhost",
   user: "root",
   password: "",
-  database: "CTFDB"
+  database: "ctfdb"
 });
 
-const hostname = '10.0.1.17';
+//const hostname = '192.168.0.123';
+const hostname = '172.26.3.161';
 const port = 42401;
 
 var MMqueue = {};
 var AvailableServers = {};
 
+/* Re-enable for https stuff. Probably eventually have to do this...
 const options = {
   key: fs.readFileSync('HTTPSKeys/server.key'),
   cert: fs.readFileSync('HTTPSKeys/server.cert')
-};
+};*/
 
 const server = http.createServer((req, res) => {
   var q = url.parse(req.url, true);
@@ -221,15 +223,6 @@ function _createGuest(q, res){
   var sql = `INSERT INTO players (token, type, name) VALUES ('${newToken}', 'G', 'Guest${ Math.floor(Math.random() * 999) + 1}');`;
   return queryDB(sql).then(result =>{
     console.log('Created new guest of ID: ' + String(result.insertId));
-    console.log('Created new guest of ID: ' + String(result.insertId));
-    console.log('Created new guest of ID: ' + String(result.insertId));
-    console.log('Created new guest of ID: ' + String(result.insertId));
-    console.log('Created new guest of ID: ' + String(result.insertId));
-    console.log('Created new guest of ID: ' + String(result.insertId));
-    console.log('Created new guest of ID: ' + String(result.insertId));
-    console.log('Created new guest of ID: ' + String(result.insertId));
-    console.log('Created new guest of ID: ' + String(result.insertId));
-    console.log('Created new guest of ID: ' + String(result.insertId));
     return RESPONSE_200(res, JSON.stringify({token : newToken}))
   }).catch(err =>{
     console.error(err);
@@ -315,7 +308,6 @@ function _makeGameServerAvailable(req, q, res){
       return RESPONSE_400(res);
     }
   }).catch(() =>{
-    console.error("An invalid server auth token was received: " + String(token))
     return RESPONSE_401(res);
   })
 }
@@ -485,12 +477,6 @@ function deleteParty(partyHostID){
 
 // Adds a party to the matchmaking queue.
 function addPartyToMMQueue(partyHostID){
-  console.log("ADDING PARTY TO QUEUE")
-  console.log("ADDING PARTY TO QUEUE")
-  console.log("ADDING PARTY TO QUEUE")
-  console.log("ADDING PARTY TO QUEUE")
-  console.log("ADDING PARTY TO QUEUE")
-  console.log("ADDING PARTY TO QUEUE")
   // Get Party Data
   return queryDB(`SELECT * FROM parties WHERE partyHostID = ${partyHostID};`).then(result =>{
     if(result[0]){
@@ -498,11 +484,13 @@ function addPartyToMMQueue(partyHostID){
       var players = JSON.parse(party.players);
       let promises = [];
       var statusesEqualZero = true;
+      console.log(`ADD PARTY TO MMQUEUE ( HOSTID = ${partyHostID} ), PLAYERS = ${players}`);
       // Get the statuses of each player in the party and make sure they are not already in queue nor in a match
       for(var i=0; i<players.length; i++){
         promises.push(queryDB(`SELECT status FROM players WHERE uid = ${players[i]}`).then(result =>{
           if(result[0].status){
             if(String(result[0].status) !== String(0)){
+              console.log(`*PLAYER ${players[i]} IS NOT OF STATUS 0 (IDLE)! ADDING TO QUEUE WILL FAIL.`);
               statusesEqualZero = false;
             }
           }else{
@@ -519,6 +507,7 @@ function addPartyToMMQueue(partyHostID){
       Promise.all(promises).then(result =>{
         // Deny this request if one or more players don't have a status of 0 (idle)
         if(!statusesEqualZero){
+          console.log(`*CANCELING ADDING PARTY OF HOSTID: ${partyHostID} TO MMQUEUE. ONE OR MORE PLAYERS ARE NOT OF STATUS 0 (IDLE)`)
           return null;
         }else{ // Otherwise carry on with request
           MMqueue[String(party.partyHostID)] = Object.keys(players).length;
@@ -542,7 +531,7 @@ function addPartyToMMQueue(partyHostID){
       })
 
     }else{
-      console.error('PARTY DOESNT EXIST')
+      console.error('PARTY DOES NOT EXIST')
       // Party doesn't exist
       return null;
     }
