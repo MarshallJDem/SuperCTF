@@ -19,7 +19,9 @@ func _ready():
 		$UI_Layer.set_view($UI_Layer.VIEW_SPLASH);
 	else:
 		start();
-
+	if Globals.isServer:
+		get_tree().change_scene("res://GameContent/Main.tscn");
+		
 func _process(delta):
 	# If were in queue, poll player status if we're not already polling it
 	if(isInMMQueue && $HTTPRequest_PollPlayerStatus.get_http_client_status() == 0):

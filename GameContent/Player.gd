@@ -58,6 +58,7 @@ func _ready():
 	$Laser_Timer.connect("timeout", self, "_laser_timer_ended");
 	$Teleport_Timer.connect("timeout", self, "_teleport_timer_ended");
 	$Forcefield_Timer.connect("timeout", self, "_forcefield_timer_ended");
+	$Animation_Timer.connect("timeout", self, "_animation_timer_ended");
 	lerp_start_pos = position;
 	lerp_end_pos = position;
 
@@ -347,14 +348,19 @@ func look_to_mouse():
 	var pos = get_global_mouse_position();
 	var dist = pos - position;
 	var angle = get_vector_angle(dist);
-	var adjustedAngle = angle + (2 * PI / 16)
+	var adjustedAngle = PI + ((2 * PI) - angle) + PI/8;
 	if adjustedAngle > 2 * PI:
 		adjustedAngle = adjustedAngle - (2 * PI);
-	var frame = int(8 * (adjustedAngle) / (2 * PI));
+	var frame = int(8 * (adjustedAngle) / (2 * PI)) % 8;
+	frame += animation_set_frame * 8;
 	if frame != $Sprite.frame: # If it changed since last time
 		set_look_direction(frame);
 		rpc_unreliable_id(1, "send_look_direction", frame, get_tree().get_network_unique_id());
-
+var animation_set_frame = 0;
+# Called when the animation timer fires
+func _animation_timer_ended():
+	animation_set_frame += 1;
+	animation_set_frame = animation_set_frame % 3;
 # Gets the angle that a vector is making
 func get_vector_angle(dist):
 	var angle = (-(PI / 2) if dist.y < 0 else ( 3 * PI / 2)) if dist.x == 0 else atan(dist.y / dist.x);

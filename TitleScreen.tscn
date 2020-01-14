@@ -86,7 +86,7 @@ script = ExtResource( 5 )
 position = Vector2( 20.7922, -30.4714 )
 scale = Vector2( 4.57399, 4.57399 )
 frames = SubResource( 1 )
-frame = 2
+frame = 1
 playing = true
 
 [node name="Red_Sprite" type="AnimatedSprite" parent="UI_Layer/Label/Flag2"]
@@ -94,7 +94,7 @@ visible = false
 position = Vector2( 20.7922, -30.4714 )
 scale = Vector2( 4.57399, 4.57399 )
 frames = SubResource( 2 )
-frame = 2
+frame = 1
 playing = true
 
 [node name="Area2D" type="Area2D" parent="UI_Layer/Label/Flag2" groups=[

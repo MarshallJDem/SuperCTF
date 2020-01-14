@@ -1,7 +1,7 @@
 [gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://GameContent/Player.gd" type="Script" id=1]
-[ext_resource path="res://Assets/Player/player-idle-B.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Player/player_idle_B.png" type="Texture" id=2]
 [ext_resource path="res://GameContent/Center_Pivot.gd" type="Script" id=3]
 [ext_resource path="res://GameContent/Camera.gd" type="Script" id=4]
 [ext_resource path="res://GameContent/Area2D.gd" type="Script" id=5]
@@ -27,14 +27,14 @@ script = ExtResource( 1 )
 scale = Vector2( 3.14816, 3.14816 )
 texture = ExtResource( 2 )
 vframes = 3
-hframes = 5
+hframes = 8
 
 [node name="Center_Pivot" type="Position2D" parent="."]
 script = ExtResource( 3 )
 
 [node name="Camera" type="Camera2D" parent="Center_Pivot"]
 position = Vector2( 100, 0 )
-zoom = Vector2( 1.75, 1.75 )
+zoom = Vector2( 1.5, 1.5 )
 smoothing_enabled = true
 smoothing_speed = 10.0
 drag_margin_left = 0.0
@@ -81,6 +81,10 @@ one_shot = true
 
 [node name="Forcefield_Timer" type="Timer" parent="."]
 one_shot = true
+
+[node name="Animation_Timer" type="Timer" parent="."]
+wait_time = 0.1
+autostart = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0.48835, 13.0633 )

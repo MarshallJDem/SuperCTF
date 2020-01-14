@@ -10,7 +10,7 @@ var		scores		= [];
 var server = null;
 var client = null;
 
-var player_atlas_blue = preload("res://Assets/Player/player-idle-B.png");
+var player_atlas_blue = preload("res://Assets/Player/player_idle_B.png");
 var player_atlas_red = preload("res://GameContent/player_atlas_red.png");
 
 var round_is_ended = false;
@@ -37,11 +37,11 @@ func _ready():
 	$HTTPRequest_GameServerMakeAvailable.connect("request_completed", self, "_HTTP_GameServerMakeAvailable_Completed");
 	$HTTPRequest_GameServerEndMatch.connect("request_completed", self, "_HTTP_GameServerEndMatch_Completed");
 	$HTTPRequest_GetMatchData.connect("request_completed", self, "_HTTP_GetMatchData_Completed");
-	if(Globals.isServer || Globals.testing):
+	if(Globals.isServer):
 		start_server();
 	else:
 		join_server();
-
+		
 func _process(delta):
 	if server != null and server.is_listening():
 		server.poll();
@@ -116,7 +116,7 @@ func _HTTP_GetMatchData_Completed(result, response_code, headers, body):
 	if get_tree().is_network_server():
 		if(response_code == 200):
 			var json = JSON.parse(body.get_string_from_utf8());
-			# Have to parse again because players is stores as a JSON string
+			# Have to parse again because players is stored as a JSON string
 			Globals.allowedPlayers = JSON.parse(json.result.players).result;
 			print(Globals.allowedPlayers);
 
@@ -210,8 +210,6 @@ remote func user_ready(id, userToken):
 	print("User Ready");
 	if get_tree().is_network_server():
 		player_check_queue.push_back({"networkID":id, "userToken":userToken});
-
-
 
 # The server calls this for everyone telling them to register a new player
 remotesync func register_new_player(id, name, team_id, user_id):
