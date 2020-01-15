@@ -30,6 +30,10 @@ window/size/height=504
 mouse_cursor/custom_image="res://crosshair.png"
 mouse_cursor/custom_image_hotspot=Vector2( 18, 18 )
 
+[network]
+
+ssl/certificates="res://HTTPSKeys/server.crt"
+
 [rendering]
 
 quality/driver/driver_name="GLES2"
