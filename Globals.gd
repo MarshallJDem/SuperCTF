@@ -4,7 +4,7 @@ extends Node
 var serverIP;
 var serverPublicToken;
 var serverPrivateToken = "privatetoken42402";
-var isServer = true;
+var isServer = false;
 var allowedPlayers = [];
 var matchID;
 
