@@ -121,14 +121,16 @@ func _HTTP_GetMatchData_Completed(result, response_code, headers, body):
 			# Have to parse again because players is stored as a JSON string
 			Globals.allowedPlayers = JSON.parse(json.result.players).result;
 			print(Globals.allowedPlayers);
+			# Jacob is dumb
 
 # Joins a server
 func join_server():
 	print("joining server");
 	player_name = 'Client';
 	client = WebSocketClient.new();
-	client.trusted_ssl_certificate = load("res://HTTPSKeys/linux_fullchain.crt");
+	#client.trusted_ssl_certificate = load("res://HTTPSKeys/linux_fullchain.crt");
 	var url = "wss://" + Globals.serverIP;
+	client.set_verify_ssl_enabled(false);
 	var error = client.connect_to_url(url, PoolStringArray(), true);
 	get_tree().set_network_peer(client);
 
