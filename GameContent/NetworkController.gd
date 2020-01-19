@@ -129,7 +129,7 @@ func join_server():
 	client = WebSocketClient.new();
 	#client.trusted_ssl_certificate = load("res://HTTPSKeys/linux_fullchain.crt");
 	var url = "wss://" + Globals.serverIP;
-	#client.set_verify_ssl_enabled(false);
+	client.set_verify_ssl_enabled(false);
 	var error = client.connect_to_url(url, PoolStringArray(), true);
 	get_tree().set_network_peer(client);
 
