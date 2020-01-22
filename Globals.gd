@@ -12,7 +12,7 @@ var matchID;
 var userToken;
 
 #Main Server
-var mainServerIP = "https://www.superctf.com:42401/";
+var mainServerIP = "http://www.superctf.com:42401/";
 
 var game_just_started = true;
 var is_typing_in_chat = false;
