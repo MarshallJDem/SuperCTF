@@ -10,7 +10,7 @@ var		scores		= [];
 var server = null;
 var client = null;
 
-var player_atlas_blue = preload("res://Assets/Player/player_idle_B.png");
+var player_atlas_blue = preload("res://Assets/Player/idle_combined_B.png");
 var player_atlas_red = preload("res://GameContent/player_atlas_red.png");
 
 var round_is_ended = false;
@@ -84,6 +84,8 @@ func start_server():
 	reset_game();
 	player_name = 'Server';
 	server = WebSocketServer.new();
+	server.private_key = load("res://HTTPSKeys/self_signed.key");
+	server.ssl_certificate = load("res://HTTPSKeys/self_signed.crt");
 	server.listen(PORT, PoolStringArray(), true);
 	get_tree().set_network_peer(server);
 	print("Making Game Server Available");
@@ -125,7 +127,9 @@ func join_server():
 	print("joining server");
 	player_name = 'Client';
 	client = WebSocketClient.new();
+	#client.trusted_ssl_certificate = load("res://HTTPSKeys/linux_fullchain.crt");
 	var url = "ws://" + Globals.serverIP;
+	#client.set_verify_ssl_enabled(false);
 	var error = client.connect_to_url(url, PoolStringArray(), true);
 	get_tree().set_network_peer(client);
 

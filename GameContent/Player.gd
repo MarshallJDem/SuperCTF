@@ -114,8 +114,8 @@ func _input(event):
 					if $Laser_Timer.time_left == 0:
 						if $Flag_Holder.get_child_count() == 0:
 							var direction = (get_global_mouse_position() - global_position).normalized();
-							rpc_id(1, "send_start_laser", direction, position, $Sprite.frame);
-							start_laser(direction, position, $Sprite.frame);
+							rpc_id(1, "send_start_laser", direction, position, $Sprite_Top.frame);
+							start_laser(direction, position, $Sprite_Top.frame);
 							sprintEnabled = false;
 						else: # Otherwise drop our flag
 							drop_current_flag($Flag_Holder.get_global_position());
@@ -130,14 +130,14 @@ func _process(delta):
 			look_to_mouse();
 		else:
 			speed = AIMING_SPEED * ($Laser_Timer.time_left / $Laser_Timer.wait_time);
-			
+		# Move around as long as we aren't typing in chat
 		if !Globals.is_typing_in_chat:
 			move_on_inputs();
 	update();
 	if $Invincibility_Timer.time_left > 0:
 		var t = $Invincibility_Timer.time_left / $Invincibility_Timer.wait_time 
 		var x =  (t * 10);
-		$Sprite.modulate = Color(1,1,1,(sin( (PI / 2) + (x * (1 + (t * ((2 * PI) - 1))))) + 1)/2)
+		$Sprite_Top.modulate = Color(1,1,1,(sin( (PI / 2) + (x * (1 + (t * ((2 * PI) - 1))))) + 1)/2)
 	z_index = global_position.y + 15;
 	# Old
 	# If we are a puppet and not the server, then lerp our position
@@ -161,20 +161,21 @@ func _process(delta):
 #		print(position.distance_to(pre_process_pos));
 #
 	
-remote func send_start_laser(direction, player_pos, look_frame):
+remote func send_start_laser(direction, player_pos, frame):
 	if get_tree().is_network_server():# Only run if it's the server
 		var players = get_tree().get_root().get_node("MainScene/NetworkController").players;
 		for i in players: # For each player
 			if i != player_id && i != 1: # Don't do it for the player who sent it or for the server
-				get_tree().get_root().get_node("MainScene/Players/" + str(player_id)).rpc_id(i, "receive_start_laser", direction, player_pos, look_frame);
-		start_laser(direction, player_pos, look_frame); # Also call it locally for the server
+				get_tree().get_root().get_node("MainScene/Players/" + str(player_id)).rpc_id(i, "receive_start_laser", direction, player_pos, frame);
+		start_laser(direction, player_pos, frame); # Also call it locally for the server
 
-remote func receive_start_laser(direction, player_pos, look_frame):
-	start_laser(direction, player_pos, look_frame);
+remote func receive_start_laser(direction, player_pos, frame):
+	start_laser(direction, player_pos, frame);
 
-func start_laser(direction, player_pos, look_frame):
+func start_laser(direction, player_pos, frame):
 	position = player_pos;
-	$Sprite.frame = look_frame;
+	$Sprite_Top.frame = frame;
+	$Sprite_Bottom.frame = frame;
 	laser_direction = direction;
 	$Laser_Timer.start();
 	speed= AIMING_SPEED;
@@ -285,17 +286,15 @@ func spawn_bullet(pos, player_id, direction, bullet_name = null):
 	
 	return bullet;
 
+# A vector 2D representing the last movement key directions pressed
+var last_movement_input = Vector2(0,0);
 
 # Checks the current pressed keys and calculates a new player position using the KinematicBody2D
 func move_on_inputs(teleport = false):
 	var input = Vector2(0,0);
 	input.x = (1 if Input.is_key_pressed(KEY_D) else 0) - (1 if Input.is_key_pressed(KEY_A) else 0)
 	input.y = (1 if Input.is_key_pressed(KEY_S) else 0) - (1 if Input.is_key_pressed(KEY_W) else 0)
-	# For teleporting toward mouse position
-#	if teleport:
-#		input.x = (get_global_mouse_position().x - position.x)# / (get_global_mouse_position().x - position.x)
-#		input.y = (get_global_mouse_position().y - position.y)# / (get_global_mouse_position().y - position.y)
-#		input = input.normalized()
+	last_movement_input = input;
 	
 	# Distribute values evenly so that distance is equal even when moving at angle
 	var c = 1;
@@ -330,14 +329,18 @@ remotesync func create_ghost_trail(start, end):
 		node.position = start;
 		node.position.x = node.position.x + ((i) * (end.x - start.x)/4)
 		node.position.y = node.position.y + ((i) * (end.y - start.y)/4)
-		#node.get_node("Death_Timer").wait_time = (i + 1) * 10;
 		node.get_node("Death_Timer").start((i) * 0.05 + 0.0001);
-		node.texture = $Sprite.texture
-		node.hframes = $Sprite.hframes
-		node.vframes = $Sprite.vframes
-		node.frame = $Sprite.frame
-		node.scale = $Sprite.scale
-	# If this is a puppet, use this ghost trail to also update its position
+		node.get_node("Sprite_Top").texture = $Sprite_Top.texture
+		node.get_node("Sprite_Top").hframes = $Sprite_Top.hframes
+		node.get_node("Sprite_Top").vframes = $Sprite_Top.vframes
+		node.get_node("Sprite_Top").frame = $Sprite_Top.frame
+		node.get_node("Sprite_Top").scale = $Sprite_Top.scale
+		node.get_node("Sprite_Bottom").texture = $Sprite_Bottom.texture
+		node.get_node("Sprite_Bottom").hframes = $Sprite_Bottom.hframes
+		node.get_node("Sprite_Bottom").vframes = $Sprite_Bottom.vframes
+		node.get_node("Sprite_Bottom").frame = $Sprite_Bottom.frame
+		node.get_node("Sprite_Bottom").scale = $Sprite_Bottom.scale
+	# If this is a puppet, use this ghost trail as an oppurtunity to also update its position
 	if !is_network_master():
 		lerp_start_pos = end;
 		lerp_end_pos = end;
@@ -352,15 +355,16 @@ func look_to_mouse():
 	if adjustedAngle > 2 * PI:
 		adjustedAngle = adjustedAngle - (2 * PI);
 	var frame = int(8 * (adjustedAngle) / (2 * PI)) % 8;
-	frame += animation_set_frame * 8;
-	if frame != $Sprite.frame: # If it changed since last time
+	frame += animation_set_frame * $Sprite_Top.hframes;
+	if frame != $Sprite_Top.frame: # If it changed since last time
 		set_look_direction(frame);
 		rpc_unreliable_id(1, "send_look_direction", frame, get_tree().get_network_unique_id());
 var animation_set_frame = 0;
 # Called when the animation timer fires
 func _animation_timer_ended():
-	animation_set_frame += 1;
-	animation_set_frame = animation_set_frame % 3;
+	#animation_set_frame += 1;
+	animation_set_frame = animation_set_frame % $Sprite_Top.vframes;
+	
 # Gets the angle that a vector is making
 func get_vector_angle(dist):
 	var angle = (-(PI / 2) if dist.y < 0 else ( 3 * PI / 2)) if dist.x == 0 else atan(dist.y / dist.x);
@@ -372,14 +376,9 @@ func get_vector_angle(dist):
 
 # Set the direction that the player is "looking" at by changing sprite frame
 func set_look_direction(frame):
-	$Sprite.frame =  frame;
+	$Sprite_Top.frame = frame;
+	$Sprite_Bottom.frame = frame;
 	
-
-# Experimental
-#var last_position = Vector2(0,0);
-#var target_pos = Vector2(0,0);
-#var received_pos_this_frame = false;
-#var last_velocity = Vector2(0,0);
 
 # Updates this player's position with the new given position. Only ever called remotely
 func update_position(new_pos):
@@ -583,4 +582,5 @@ remotesync func receive_respawn():
 remotesync func receive_end_invinciblity():
 	invincible = false;
 	$Invincibility_Timer.stop();
-	$Sprite.modulate = Color(1,1,1,1);
+	$Sprite_Top.modulate = Color(1,1,1,1);
+	$Sprite_Bottom.modulate = Color(1,1,1,1);

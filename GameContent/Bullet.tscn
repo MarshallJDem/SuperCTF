@@ -1,25 +1,24 @@
 [gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://GameContent/Bullet.gd" type="Script" id=1]
-[ext_resource path="res://GameContent/bullet_atlas_blue.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Weapons/bullet_b.png" type="Texture" id=2]
 [ext_resource path="res://GameContent/Bullet_Area2D.gd" type="Script" id=3]
 [ext_resource path="res://Assets/Sound/Bullet_Shot_1.wav" type="AudioStream" id=4]
 
 [sub_resource type="CapsuleShape2D" id=1]
-radius = 10.2389
-height = 25.0454
+radius = 15.3828
+height = 0.671213
 
 [node name="Bullet" type="Node2D" groups=[
-"Projectiles",
 "Bullets",
+"Projectiles",
 ]]
 script = ExtResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
-scale = Vector2( 3, 3 )
+scale = Vector2( 5, 5 )
 texture = ExtResource( 2 )
-vframes = 5
-frame = 3
+hframes = 6
 
 [node name="Area2D" type="Area2D" parent="." groups=[
 "Bullet_Bodies",
@@ -27,7 +26,7 @@ frame = 3
 script = ExtResource( 3 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2( 7.53479, 0.1992 )
+position = Vector2( -0.0421219, 0.12109 )
 rotation = 1.57079
 shape = SubResource( 1 )
 
@@ -40,3 +39,7 @@ autostart = true
 stream = ExtResource( 4 )
 autoplay = true
 attenuation = 0.287175
+
+[node name="Animation_Timer" type="Timer" parent="."]
+wait_time = 0.08
+autostart = true

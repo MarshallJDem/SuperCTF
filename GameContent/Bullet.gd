@@ -1,8 +1,5 @@
 extends Node2D
 
-var total_time = 0;
-var frame_order = [0, 1, 2, 3, 4];
-var animation_duration = 0.5;
 var direction = Vector2(0,0);
 var speed = 875;
 var player_id;
@@ -11,12 +8,12 @@ var show_death_particles = true;
 
 func _ready():
 	$Death_Timer2.connect("timeout", self, "_death_timer_ended");
+	$Animation_Timer.connect("timeout", self, "_animation_timer_ended");
 	rotation = Vector2(0,0).angle_to_point(direction) + PI;
 
 func _process(delta):
-	total_time = total_time + delta;
-	animate_frames();
 	move(delta);
+	self.z_index = self.position.y;
 
 # stupid workaround neccessary to make particles not flash random colors upon spawning
 func _physics_process(delta):
@@ -26,14 +23,10 @@ func _physics_process(delta):
 # Given an amount of delta time, moves the bullet in its trajectory direction using its speed
 func move(delta):
 	position = position + (direction * speed * delta);
-
-# Determines and sets a new animation frame for the bullet based on game time
-func animate_frames():
-	var frame = fmod(total_time, animation_duration);
-	frame = frame / animation_duration;
-	frame = int(frame * frame_order.size());
-	$Sprite.frame = frame_order[frame];
-
+	
+# Called when the animation timer fires
+func _animation_timer_ended():
+	$Sprite.frame = ($Sprite.frame + 1) % $Sprite.hframes;
 # Called by server to terminate this bullet early
 remotesync func receive_death():
 	die();

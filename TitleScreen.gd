@@ -22,14 +22,18 @@ func _ready():
 	if Globals.isServer:
 		get_tree().change_scene("res://GameContent/Main.tscn");
 		
+var stat = 0;
 func _process(delta):
 	# If were in queue, poll player status if we're not already polling it
 	if(isInMMQueue && $HTTPRequest_PollPlayerStatus.get_http_client_status() == 0):
 		$HTTPRequest_PollPlayerStatus.request(Globals.mainServerIP + "pollPlayerStatus", ["authorization: Bearer " + Globals.userToken]);
 	$UI_Layer.update_title_color($Titlemusic_Audio.get_playback_position() + 3.7);
+	if stat != $HTTPRequest_CreateGuest.get_http_client_status():
+		stat = $HTTPRequest_CreateGuest.get_http_client_status();
+		print(stat);
 
 func create_guest():
-	$HTTPRequest_CreateGuest.request(Globals.mainServerIP + "createGuest");
+	$HTTPRequest_CreateGuest.request("https://www.superctf.com:42401/createGuest");
 func join_MM_queue():
 	print("Token : " + Globals.userToken);
 	$HTTPRequest_FindMatch.request(Globals.mainServerIP + "joinMMQueue", ["authorization: Bearer " + Globals.userToken]);
@@ -48,7 +52,7 @@ func start():
 		$UI_Layer.set_view($UI_Layer.VIEW_START);
 	
 	$Titlemusic_Audio.play(0.0);
-	OS.window_fullscreen = true;
+	#OS.window_fullscreen = true;
 	
 
 # Called when the find match HTTP request completes

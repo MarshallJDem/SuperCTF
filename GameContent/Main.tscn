@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://GameContent/Main.gd" type="Script" id=1]
 [ext_resource path="res://GameContent/Player.tscn" type="PackedScene" id=2]
@@ -16,9 +16,11 @@
 [ext_resource path="res://Assets/GUI/Teleport-GUI.png" type="Texture" id=14]
 [ext_resource path="res://Assets/GUI/Forcefield-GUI.png" type="Texture" id=15]
 [ext_resource path="res://GameContent/Wall.tscn" type="PackedScene" id=16]
-[ext_resource path="res://Assets/Sound/GameMusic.ogg" type="AudioStream" id=17]
-[ext_resource path="res://Assets/Sound/score.wav" type="AudioStream" id=18]
-[ext_resource path="res://Assets/Sound/Countdown.wav" type="AudioStream" id=19]
+[ext_resource path="res://GameContent/Wall_H_M_B.tscn" type="PackedScene" id=17]
+[ext_resource path="res://GameContent/Wall_V_M_B.tscn" type="PackedScene" id=18]
+[ext_resource path="res://Assets/Sound/GameMusic.ogg" type="AudioStream" id=19]
+[ext_resource path="res://Assets/Sound/score.wav" type="AudioStream" id=20]
+[ext_resource path="res://Assets/Sound/Countdown.wav" type="AudioStream" id=21]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0, 0, 0, 0.145098 )
@@ -41,7 +43,8 @@ extents = Vector2( 1, 1 )
 [node name="MainScene" type="Node2D"]
 script = ExtResource( 1 )
 __meta__ = {
-"_edit_horizontal_guides_": [  ]
+"_edit_horizontal_guides_": [  ],
+"_edit_vertical_guides_": [  ]
 }
 
 [node name="Test_Player" parent="." instance=ExtResource( 2 )]
@@ -243,6 +246,9 @@ z_index = -4096
 show_behind_parent = true
 margin_right = 7999.0
 margin_bottom = 2700.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="CPUParticles2D2" type="CPUParticles2D" parent="Environment"]
 position = Vector2( -461.929, -21.5548 )
@@ -269,7 +275,6 @@ color_ramp = SubResource( 4 )
 hue_variation_random = 1.0
 
 [node name="Wall" type="KinematicBody2D" parent="Environment"]
-editor/display_folded = true
 position = Vector2( -4000, 0 )
 scale = Vector2( 1.993, 1350 )
 z_index = -4015
@@ -292,7 +297,6 @@ shape = SubResource( 5 )
 shape = SubResource( 5 )
 
 [node name="Wall2" type="KinematicBody2D" parent="Environment"]
-editor/display_folded = true
 position = Vector2( 4000, 0 )
 scale = Vector2( 2, 1350 )
 z_index = -4015
@@ -315,6 +319,7 @@ shape = SubResource( 5 )
 shape = SubResource( 5 )
 
 [node name="Bound3" parent="Environment" instance=ExtResource( 16 )]
+visible = false
 position = Vector2( 4500, 0 )
 scale = Vector2( 502, 2350 )
 
@@ -324,7 +329,6 @@ position = Vector2( -4500, 0 )
 scale = Vector2( 502, 2350 )
 
 [node name="Wall3" type="KinematicBody2D" parent="Environment"]
-editor/display_folded = true
 position = Vector2( 0, -1350 )
 scale = Vector2( 4000, 2 )
 z_index = -4015
@@ -347,15 +351,16 @@ shape = SubResource( 5 )
 shape = SubResource( 5 )
 
 [node name="Bound" parent="Environment" instance=ExtResource( 16 )]
-position = Vector2( 0, -1850 )
+visible = false
+position = Vector2( 0, -1854.72 )
 scale = Vector2( 5000, 502 )
 
 [node name="Bound2" parent="Environment" instance=ExtResource( 16 )]
-position = Vector2( 0, 1850 )
-scale = Vector2( 5000, 502 )
+visible = false
+position = Vector2( 0, 1840.43 )
+scale = Vector2( 5000, 501.078 )
 
 [node name="Wall4" type="KinematicBody2D" parent="Environment"]
-editor/display_folded = true
 position = Vector2( 0.472, 1350 )
 scale = Vector2( 4000, 2 )
 z_index = -4015
@@ -377,62 +382,68 @@ shape = SubResource( 5 )
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="Environment/Wall4/Area2D"]
 shape = SubResource( 5 )
 
-[node name="Wall5" parent="Environment" instance=ExtResource( 16 )]
-position = Vector2( -2900, 0 )
-scale = Vector2( 2, 300 )
+[node name="Wall_H_M_B" parent="Environment" instance=ExtResource( 17 )]
+position = Vector2( -2200, 850 )
+z_index = 850
 
-[node name="Wall8" parent="Environment" instance=ExtResource( 16 )]
-position = Vector2( -3400, 0 )
-scale = Vector2( 2, 200 )
+[node name="Wall_H_M_B2" parent="Environment" instance=ExtResource( 17 )]
+position = Vector2( -2200, -850 )
+z_index = -850
 
-[node name="Wall7" parent="Environment" instance=ExtResource( 16 )]
-position = Vector2( 2900, 0 )
-scale = Vector2( 2, 300 )
+[node name="Wall_H_M_B3" parent="Environment" instance=ExtResource( 17 )]
+position = Vector2( 2200, -850 )
+z_index = -850
 
-[node name="Wall9" parent="Environment" instance=ExtResource( 16 )]
-position = Vector2( 3400, 0 )
-scale = Vector2( 2, 200 )
+[node name="Wall_H_M_B4" parent="Environment" instance=ExtResource( 17 )]
+position = Vector2( 2200, 850 )
+z_index = 850
 
-[node name="Wall14" parent="Environment" instance=ExtResource( 16 )]
-position = Vector2( -2200.44, 885.37 )
-scale = Vector2( 500, 2 )
-
-[node name="Wall15" parent="Environment" instance=ExtResource( 16 )]
-position = Vector2( -2205.85, -909.938 )
-scale = Vector2( 500, 2 )
-
-[node name="Wall16" parent="Environment" instance=ExtResource( 16 )]
-position = Vector2( 2099.7, -929.292 )
-scale = Vector2( 500, 2 )
-
-[node name="Wall17" parent="Environment" instance=ExtResource( 16 )]
-position = Vector2( 2133.86, 869.432 )
-scale = Vector2( 500, 2 )
-
-[node name="Wall13" parent="Environment" instance=ExtResource( 16 )]
-position = Vector2( -395.686, 342.89 )
-scale = Vector2( 250, 2 )
-
-[node name="Wall12" parent="Environment" instance=ExtResource( 16 )]
-position = Vector2( -400, -350 )
-scale = Vector2( 250, 2 )
-
-[node name="Wall10" parent="Environment" instance=ExtResource( 16 )]
+[node name="Wall_H_M_B5" parent="Environment" instance=ExtResource( 17 )]
 position = Vector2( 400, 350 )
-scale = Vector2( 250, 2 )
+scale = Vector2( 2, 3 )
+z_index = 350
 
-[node name="Wall11" parent="Environment" instance=ExtResource( 16 )]
+[node name="Wall_H_M_B6" parent="Environment" instance=ExtResource( 17 )]
+position = Vector2( -400, 350 )
+scale = Vector2( 2, 3 )
+z_index = 350
+
+[node name="Wall_H_M_B7" parent="Environment" instance=ExtResource( 17 )]
+position = Vector2( -400, -350 )
+scale = Vector2( 2, 3 )
+z_index = -350
+
+[node name="Wall_H_M_B8" parent="Environment" instance=ExtResource( 17 )]
 position = Vector2( 400, -350 )
-scale = Vector2( 250, 2 )
+scale = Vector2( 2, 3 )
+z_index = -350
+
+[node name="Wall_V_M_B" parent="Environment" instance=ExtResource( 18 )]
+position = Vector2( -2900, 0 )
+z_index = 233
+
+[node name="Wall_V_M_B2" parent="Environment" instance=ExtResource( 18 )]
+position = Vector2( 2900, 0 )
+z_index = 233
+
+[node name="Wall_V_M_B3" parent="Environment" instance=ExtResource( 18 )]
+position = Vector2( 3400, 0 )
+scale = Vector2( 2, 2.07 )
+z_index = 175
+
+[node name="Wall_V_M_B4" parent="Environment" instance=ExtResource( 18 )]
+position = Vector2( -3400, 0 )
+scale = Vector2( 2, 2.07 )
+z_index = 175
 
 [node name="Music_Audio" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 17 )
+stream = ExtResource( 19 )
 volume_db = -80.0
 
 [node name="Score_Audio" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 18 )
+stream = ExtResource( 20 )
 volume_db = 2.0
 
 [node name="Countdown_Audio" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 19 )
+stream = ExtResource( 21 )
 volume_db = 2.0
