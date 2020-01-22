@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/player-running-base-B.png-031e8ebdb02020c7b4d84de3261ef1a2.stex"
+path="res://.import/bullet_y.png-60c47400966c2a10554309b7b599f1b9.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Player/player-running-base-B.png"
-dest_files=[ "res://.import/player-running-base-B.png-031e8ebdb02020c7b4d84de3261ef1a2.stex" ]
+source_file="res://Assets/Weapons/bullet_y.png"
+dest_files=[ "res://.import/bullet_y.png-60c47400966c2a10554309b7b599f1b9.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=true
+flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2

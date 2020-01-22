@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/player-running-top-B.png-db0d3dcbe2e9d991249685b4b82e93a0.stex"
+path="res://.import/wall_1_B.png-2637121b634bf915a433553d8947a139.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Player/player-running-top-B.png"
-dest_files=[ "res://.import/player-running-top-B.png-db0d3dcbe2e9d991249685b4b82e93a0.stex" ]
+source_file="res://Assets/Environment/wall_1_B.png"
+dest_files=[ "res://.import/wall_1_B.png-2637121b634bf915a433553d8947a139.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=true
+flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2

@@ -2,8 +2,12 @@
 
 [ext_resource path="res://Ghost_Trail.gd" type="Script" id=1]
 
-[node name="Ghost_Trail" type="Sprite"]
+[node name="Ghost_Trail" type="Node2D"]
 script = ExtResource( 1 )
 
 [node name="Death_Timer" type="Timer" parent="."]
 one_shot = true
+
+[node name="Sprite_Top" type="Sprite" parent="."]
+
+[node name="Sprite_Bottom" type="Sprite" parent="."]
