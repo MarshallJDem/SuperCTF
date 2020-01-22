@@ -16,11 +16,11 @@
 [ext_resource path="res://Assets/GUI/Teleport-GUI.png" type="Texture" id=14]
 [ext_resource path="res://Assets/GUI/Forcefield-GUI.png" type="Texture" id=15]
 [ext_resource path="res://GameContent/Wall.tscn" type="PackedScene" id=16]
-[ext_resource path="res://Assets/Sound/GameMusic.ogg" type="AudioStream" id=17]
-[ext_resource path="res://Assets/Sound/score.wav" type="AudioStream" id=18]
-[ext_resource path="res://Assets/Sound/Countdown.wav" type="AudioStream" id=19]
-[ext_resource path="res://GameContent/Wall_H_M_B.tscn" type="PackedScene" id=20]
-[ext_resource path="res://GameContent/Wall_V_M_B.tscn" type="PackedScene" id=21]
+[ext_resource path="res://GameContent/Wall_H_M_B.tscn" type="PackedScene" id=17]
+[ext_resource path="res://GameContent/Wall_V_M_B.tscn" type="PackedScene" id=18]
+[ext_resource path="res://Assets/Sound/GameMusic.ogg" type="AudioStream" id=19]
+[ext_resource path="res://Assets/Sound/score.wav" type="AudioStream" id=20]
+[ext_resource path="res://Assets/Sound/Countdown.wav" type="AudioStream" id=21]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0, 0, 0, 0.145098 )
@@ -382,68 +382,68 @@ shape = SubResource( 5 )
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="Environment/Wall4/Area2D"]
 shape = SubResource( 5 )
 
-[node name="Wall_H_M_B" parent="Environment" instance=ExtResource( 20 )]
+[node name="Wall_H_M_B" parent="Environment" instance=ExtResource( 17 )]
 position = Vector2( -2200, 850 )
 z_index = 850
 
-[node name="Wall_H_M_B2" parent="Environment" instance=ExtResource( 20 )]
+[node name="Wall_H_M_B2" parent="Environment" instance=ExtResource( 17 )]
 position = Vector2( -2200, -850 )
 z_index = -850
 
-[node name="Wall_H_M_B3" parent="Environment" instance=ExtResource( 20 )]
+[node name="Wall_H_M_B3" parent="Environment" instance=ExtResource( 17 )]
 position = Vector2( 2200, -850 )
 z_index = -850
 
-[node name="Wall_H_M_B4" parent="Environment" instance=ExtResource( 20 )]
+[node name="Wall_H_M_B4" parent="Environment" instance=ExtResource( 17 )]
 position = Vector2( 2200, 850 )
 z_index = 850
 
-[node name="Wall_H_M_B5" parent="Environment" instance=ExtResource( 20 )]
+[node name="Wall_H_M_B5" parent="Environment" instance=ExtResource( 17 )]
 position = Vector2( 400, 350 )
 scale = Vector2( 2, 3 )
 z_index = 350
 
-[node name="Wall_H_M_B6" parent="Environment" instance=ExtResource( 20 )]
+[node name="Wall_H_M_B6" parent="Environment" instance=ExtResource( 17 )]
 position = Vector2( -400, 350 )
 scale = Vector2( 2, 3 )
 z_index = 350
 
-[node name="Wall_H_M_B7" parent="Environment" instance=ExtResource( 20 )]
+[node name="Wall_H_M_B7" parent="Environment" instance=ExtResource( 17 )]
 position = Vector2( -400, -350 )
 scale = Vector2( 2, 3 )
 z_index = -350
 
-[node name="Wall_H_M_B8" parent="Environment" instance=ExtResource( 20 )]
+[node name="Wall_H_M_B8" parent="Environment" instance=ExtResource( 17 )]
 position = Vector2( 400, -350 )
 scale = Vector2( 2, 3 )
 z_index = -350
 
-[node name="Wall_V_M_B" parent="Environment" instance=ExtResource( 21 )]
+[node name="Wall_V_M_B" parent="Environment" instance=ExtResource( 18 )]
 position = Vector2( -2900, 0 )
 z_index = 233
 
-[node name="Wall_V_M_B2" parent="Environment" instance=ExtResource( 21 )]
+[node name="Wall_V_M_B2" parent="Environment" instance=ExtResource( 18 )]
 position = Vector2( 2900, 0 )
 z_index = 233
 
-[node name="Wall_V_M_B3" parent="Environment" instance=ExtResource( 21 )]
+[node name="Wall_V_M_B3" parent="Environment" instance=ExtResource( 18 )]
 position = Vector2( 3400, 0 )
 scale = Vector2( 2, 2.07 )
 z_index = 175
 
-[node name="Wall_V_M_B4" parent="Environment" instance=ExtResource( 21 )]
+[node name="Wall_V_M_B4" parent="Environment" instance=ExtResource( 18 )]
 position = Vector2( -3400, 0 )
 scale = Vector2( 2, 2.07 )
 z_index = 175
 
 [node name="Music_Audio" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 17 )
+stream = ExtResource( 19 )
 volume_db = -80.0
 
 [node name="Score_Audio" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 18 )
+stream = ExtResource( 20 )
 volume_db = 2.0
 
 [node name="Countdown_Audio" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 19 )
+stream = ExtResource( 21 )
 volume_db = 2.0
