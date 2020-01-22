@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/CTF.png-babf9894b5c8e5a525edbe23662b7044.stex"
+path="res://.import/CTF.png-cb5dc036813f8df1d7ff9c2e2b75c6ca.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://HTML5 Export/CTF.png"
-dest_files=[ "res://.import/CTF.png-babf9894b5c8e5a525edbe23662b7044.stex" ]
+source_file="res://HTML5_Export/CTF.png"
+dest_files=[ "res://.import/CTF.png-cb5dc036813f8df1d7ff9c2e2b75c6ca.stex" ]
 
 [params]
 
