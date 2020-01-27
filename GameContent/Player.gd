@@ -35,8 +35,8 @@ var max_forcefield_distance = 5000;
 var remote_db_level = -10;
 
 
-var bullet_atlas_blue = preload("res://GameContent/bullet_atlas_blue.png");
-var bullet_atlas_red = preload("res://GameContent/bullet_atlas_red.png");
+var bullet_atlas_blue = preload("res://Assets/Weapons/bullet_b.png");
+var bullet_atlas_red = preload("res://Assets/Weapons/bullet_r.png");
 
 func _ready():
 	camera_ref = $Center_Pivot/Camera;
@@ -247,9 +247,10 @@ func _draw():
 func shoot_bullet():
 	var direction = (get_global_mouse_position() - global_position).normalized()
 	bullets_shot = bullets_shot + 1;
-	var bullet = spawn_bullet(position, get_tree().get_network_unique_id(), direction, null);
+	var bullet_start = position + get_node("Bullet_Starts/" + String($Sprite_Top.frame % $Sprite_Top.hframes)).position;
+	var bullet = spawn_bullet(bullet_start, get_tree().get_network_unique_id(), direction, null);
 	camera_ref.shake();
-	rpc_id(1, "send_bullet", position, get_tree().get_network_unique_id(), direction, bullet.name);
+	rpc_id(1, "send_bullet", bullet_start, get_tree().get_network_unique_id(), direction, bullet.name);
 
 # Spawns a bullet given various initializaiton parameters
 func spawn_bullet(pos, player_id, direction, bullet_name = null):

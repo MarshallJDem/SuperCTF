@@ -33,7 +33,7 @@ func _process(delta):
 		print(stat);
 
 func create_guest():
-	$HTTPRequest_CreateGuest.request("https://www.superctf.com:42401/createGuest");
+	$HTTPRequest_CreateGuest.request(Globals.mainServerIP + "createGuest");
 func join_MM_queue():
 	print("Token : " + Globals.userToken);
 	$HTTPRequest_FindMatch.request(Globals.mainServerIP + "joinMMQueue", ["authorization: Bearer " + Globals.userToken]);

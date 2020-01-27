@@ -10,8 +10,8 @@ var		scores		= [];
 var server = null;
 var client = null;
 
-var player_atlas_blue = preload("res://Assets/Player/idle_combined_B.png");
-var player_atlas_red = preload("res://GameContent/player_atlas_red.png");
+var player_atlas_blue = preload("res://Assets/Player/running_top_B.png");
+var player_atlas_red = preload("res://Assets/Player/running_top_B.png");
 
 var round_is_ended = false;
 
@@ -84,8 +84,8 @@ func start_server():
 	reset_game();
 	player_name = 'Server';
 	server = WebSocketServer.new();
-	#server.private_key = load("res://HTTPSKeys/self_signed.key");
-	#server.ssl_certificate = load("res://HTTPSKeys/self_signed.crt");
+	#server.private_key = load("res://HTTPSKeys/private_key.key");
+	#server.ssl_certificate = load("res://HTTPSKeys/certificate.crt");
 	server.listen(PORT, PoolStringArray(), true);
 	get_tree().set_network_peer(server);
 	print("Making Game Server Available");
@@ -234,9 +234,9 @@ remotesync func spawn_player(id, position):
 	player.position = position;
 	player.start_pos = position;
 	if players[id]["team_id"] == 0:
-		player.get_node("Sprite").set_texture(player_atlas_blue);
+		player.get_node("Sprite_Top").set_texture(player_atlas_blue);
 	elif players[id]["team_id"] == 1:
-		player.get_node("Sprite").set_texture(player_atlas_red);
+		player.get_node("Sprite_Top").set_texture(player_atlas_red);
 	
 	get_tree().get_root().get_node("MainScene/Players").add_child(player);
 

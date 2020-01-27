@@ -1,23 +1,26 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://GameContent/Player.gd" type="Script" id=1]
-[ext_resource path="res://Assets/Player/universal_bottom_B.png" type="Texture" id=2]
-[ext_resource path="res://GameContent/Center_Pivot.gd" type="Script" id=3]
-[ext_resource path="res://GameContent/Camera.gd" type="Script" id=4]
-[ext_resource path="res://GameContent/Area2D.gd" type="Script" id=5]
-[ext_resource path="res://Assets/Sound/Local_Death.wav" type="AudioStream" id=6]
-[ext_resource path="res://Assets/Sound/Kill.wav" type="AudioStream" id=7]
-[ext_resource path="res://Assets/Sound/Laser_Charge.wav" type="AudioStream" id=8]
-[ext_resource path="res://Assets/Sound/Laser_Fire.wav" type="AudioStream" id=9]
-[ext_resource path="res://Assets/Sound/Flag_Pickup.wav" type="AudioStream" id=10]
-[ext_resource path="res://Assets/Sound/Flag_Drop.wav" type="AudioStream" id=11]
-[ext_resource path="res://Assets/Sound/Teleport.wav" type="AudioStream" id=12]
-[ext_resource path="res://Assets/Player/running_top_B.png" type="Texture" id=13]
+[ext_resource path="res://Assets/Player/running_top_B.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Player/universal_bottom_B.png" type="Texture" id=3]
+[ext_resource path="res://GameContent/Center_Pivot.gd" type="Script" id=4]
+[ext_resource path="res://GameContent/Camera.gd" type="Script" id=5]
+[ext_resource path="res://GameContent/Area2D.gd" type="Script" id=6]
+[ext_resource path="res://Assets/Sound/Local_Death.wav" type="AudioStream" id=7]
+[ext_resource path="res://Assets/Sound/Kill.wav" type="AudioStream" id=8]
+[ext_resource path="res://Assets/Sound/Laser_Charge.wav" type="AudioStream" id=9]
+[ext_resource path="res://Assets/Sound/Laser_Fire.wav" type="AudioStream" id=10]
+[ext_resource path="res://Assets/Sound/Flag_Pickup.wav" type="AudioStream" id=11]
+[ext_resource path="res://Assets/Sound/Flag_Drop.wav" type="AudioStream" id=12]
+[ext_resource path="res://Assets/Sound/Teleport.wav" type="AudioStream" id=13]
 
-[sub_resource type="CircleShape2D" id=1]
-radius = 18.8211
+[sub_resource type="CapsuleShape2D" id=1]
+radius = 15.9012
 
 [sub_resource type="CapsuleShape2D" id=2]
+radius = 15.941
+
+[sub_resource type="CapsuleShape2D" id=3]
 radius = 6.264
 height = 13.3095
 
@@ -26,18 +29,18 @@ script = ExtResource( 1 )
 
 [node name="Sprite_Top" type="Sprite" parent="."]
 scale = Vector2( 3.148, 3.148 )
-texture = ExtResource( 13 )
+texture = ExtResource( 2 )
 vframes = 4
 hframes = 8
 
 [node name="Sprite_Bottom" type="Sprite" parent="."]
 scale = Vector2( 3.148, 3.148 )
-texture = ExtResource( 2 )
+texture = ExtResource( 3 )
 vframes = 4
 hframes = 8
 
 [node name="Center_Pivot" type="Position2D" parent="."]
-script = ExtResource( 3 )
+script = ExtResource( 4 )
 
 [node name="Camera" type="Camera2D" parent="Center_Pivot"]
 position = Vector2( 100, 0 )
@@ -49,7 +52,7 @@ drag_margin_top = 0.0
 drag_margin_right = 0.0
 drag_margin_bottom = 0.0
 editor_draw_drag_margin = true
-script = ExtResource( 4 )
+script = ExtResource( 5 )
 
 [node name="Shake_Timer" type="Timer" parent="Center_Pivot/Camera"]
 one_shot = true
@@ -61,16 +64,42 @@ one_shot = true
 [node name="Area2D" type="Area2D" parent="." groups=[
 "Player_Bodies",
 ]]
-script = ExtResource( 5 )
+script = ExtResource( 6 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource( 1 )
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="Area2D"]
 position = Vector2( 0, -0.0845375 )
-shape = SubResource( 1 )
+shape = SubResource( 2 )
 
 [node name="Flag_Holder" type="Node2D" parent="."]
+
+[node name="Bullet_Starts" type="Node" parent="."]
+
+[node name="0" type="Node2D" parent="Bullet_Starts"]
+position = Vector2( 0.124931, -33.1067 )
+
+[node name="1" type="Node2D" parent="Bullet_Starts"]
+position = Vector2( 28.2344, -10.869 )
+
+[node name="2" type="Node2D" parent="Bullet_Starts"]
+position = Vector2( 34.1062, 16.366 )
+
+[node name="3" type="Node2D" parent="Bullet_Starts"]
+position = Vector2( 23.2372, 27.6098 )
+
+[node name="4" type="Node2D" parent="Bullet_Starts"]
+position = Vector2( 0.124939, 31.7325 )
+
+[node name="5" type="Node2D" parent="Bullet_Starts"]
+position = Vector2( -23.612, 27.7347 )
+
+[node name="6" type="Node2D" parent="Bullet_Starts"]
+position = Vector2( -32.8569, 16.9906 )
+
+[node name="7" type="Node2D" parent="Bullet_Starts"]
+position = Vector2( -24.1117, -11.8685 )
 
 [node name="Respawn_Timer" type="Timer" parent="."]
 wait_time = 3.0
@@ -97,30 +126,30 @@ autostart = true
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( -0.0261458, 31.547 )
 rotation = 1.5708
-shape = SubResource( 2 )
+shape = SubResource( 3 )
 
 [node name="Death_Audio" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 6 )
+stream = ExtResource( 7 )
 volume_db = 5.0
 
 [node name="Killed_Audio" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 7 )
+stream = ExtResource( 8 )
 volume_db = 10.0
 
 [node name="Laser_Charge_Audio" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 8 )
+stream = ExtResource( 9 )
 pitch_scale = 1.25
 
 [node name="Laser_Fire_Audio" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 9 )
-
-[node name="Flag_Pickup_Audio" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 10 )
 
-[node name="Flag_Drop_Audio" type="AudioStreamPlayer" parent="."]
+[node name="Flag_Pickup_Audio" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 11 )
 
-[node name="Teleport_Audio" type="AudioStreamPlayer2D" parent="."]
+[node name="Flag_Drop_Audio" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 12 )
+
+[node name="Teleport_Audio" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 13 )
 pitch_scale = 0.5
 attenuation = 0.233258
