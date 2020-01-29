@@ -84,8 +84,8 @@ func start_server():
 	reset_game();
 	player_name = 'Server';
 	server = WebSocketServer.new();
-	#server.private_key = load("res://HTTPSKeys/private_key.key");
-	#server.ssl_certificate = load("res://HTTPSKeys/certificate.crt");
+	server.private_key = load("res://HTTPS_Keys/linux_privkey.key");
+	server.ssl_certificate = load("res://HTTPS_Keys/linux_cert.crt");
 	server.listen(PORT, PoolStringArray(), true);
 	get_tree().set_network_peer(server);
 	print("Making Game Server Available");
@@ -128,8 +128,7 @@ func join_server():
 	player_name = 'Client';
 	client = WebSocketClient.new();
 	#client.trusted_ssl_certificate = load("res://HTTPSKeys/linux_fullchain.crt");
-	var url = "ws://" + Globals.serverIP;
-	#client.set_verify_ssl_enabled(false);
+	var url = "wss://" + Globals.serverIP;
 	var error = client.connect_to_url(url, PoolStringArray(), true);
 	get_tree().set_network_peer(client);
 

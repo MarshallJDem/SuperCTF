@@ -12,7 +12,7 @@ var matchID;
 var userToken;
 
 #Main Server
-var mainServerIP = "http://www.superctf.com:42401/";
+var mainServerIP = "https://www.superctf.com:42401/";
 
 var game_just_started = true;
 var is_typing_in_chat = false;
@@ -24,7 +24,7 @@ var player_lerp_time = 100; # In millis
 # Whether or not lasers should destroy bullets
 var lasers_destroy_bullets = true;
 # Whether to run in testing mode (for development uses)
-var testing = true;
+var testing = false;
 var forcefield_cooldown = 3;
 
 
