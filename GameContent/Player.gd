@@ -352,10 +352,9 @@ func look_to_mouse():
 	var pos = get_global_mouse_position();
 	var dist = pos - position;
 	var angle = get_vector_angle(dist);
-	var adjustedAngle = PI + ((2 * PI) - angle) + PI/8;
-	if adjustedAngle > 2 * PI:
-		adjustedAngle = adjustedAngle - (2 * PI);
-	var frame = int(8 * (adjustedAngle) / (2 * PI)) % 8;
+	var adjustedAngle = -1 * (angle + (PI/8));
+	var octant = (adjustedAngle / (2 * PI)) * 8
+	var frame = int((octant + 9) + 4) % 8;
 	frame += animation_set_frame * $Sprite_Top.hframes;
 	if frame != $Sprite_Top.frame: # If it changed since last time
 		set_look_direction(frame);
