@@ -162,13 +162,15 @@ func _process(delta):
 	if is_network_master():
 		rpc_unreliable_id(1, "send_position", position, get_tree().get_network_unique_id());
 	
+	
 	# Idle Animation
-	if last_position == position:
+	var diff = last_position - position;
+	if sqrt(pow(diff.x, 2) + pow(diff.y, 2)) < 1:
 		if team_id == 1:
 			$Sprite_Top.set_texture(idle_top_atlas_red);
 		else:
 			$Sprite_Top.set_texture(idle_top_atlas_blue);
-		$Sprite_Bottom.frame = $Sprite_Top.frame - (animation_set_frame * $Sprite_Top.hframes);
+		$Sprite_Bottom.frame = $Sprite_Top.frame % $Sprite_Top.hframes;
 	else:
 		if team_id == 1:
 			$Sprite_Top.set_texture(running_top_atlas_red);
@@ -424,13 +426,6 @@ func update_position(new_pos):
 	time_of_last_received_pos = OS.get_ticks_msec();
 	lerp_start_pos = position;
 	lerp_end_pos = new_pos;
-	
-	# Experimental
-#	target_pos = new_pos;
-#	received_pos_this_frame = true;
-#	# Last Velocity
-#	last_velocity = new_pos - last_position;
-#	last_position = new_pos;
 
 # Activates the camera on this player
 func activate_camera():
