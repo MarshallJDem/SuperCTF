@@ -41,13 +41,13 @@ var bullet_atlas_blue = preload("res://Assets/Weapons/bullet_b.png");
 var bullet_atlas_red = preload("res://Assets/Weapons/bullet_r.png");
 
 var running_top_atlas_blue = preload("res://Assets/Player/running_top_B.png");
-var running_top_atlas_red = preload("res://Assets/Player/running_top_B.png");
+var running_top_atlas_red = preload("res://Assets/Player/running_top_R.png");
 
 var shooting_top_atlas_blue = preload("res://Assets/Player/shooting_top_B.png");
-var shooting_top_atlas_red = preload("res://Assets/Player/shooting_top_B.png");
+var shooting_top_atlas_red = preload("res://Assets/Player/shooting_top_R.png");
 
 var idle_top_atlas_blue = preload("res://Assets/Player/idle_top_B.png");
-var idle_top_atlas_red = preload("res://Assets/Player/idle_top_B.png");
+var idle_top_atlas_red = preload("res://Assets/Player/idle_top_R.png");
 
 func _ready():
 	camera_ref = $Center_Pivot/Camera;
