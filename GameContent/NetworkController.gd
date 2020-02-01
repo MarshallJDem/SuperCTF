@@ -10,8 +10,6 @@ var		scores		= [];
 var server = null;
 var client = null;
 
-var player_atlas_blue = preload("res://Assets/Player/running_top_B.png");
-var player_atlas_red = preload("res://Assets/Player/running_top_B.png");
 
 var round_is_ended = false;
 
@@ -232,10 +230,6 @@ remotesync func spawn_player(id, position):
 	player.team_id = players[id]["team_id"];
 	player.position = position;
 	player.start_pos = position;
-	if players[id]["team_id"] == 0:
-		player.get_node("Sprite_Top").set_texture(player_atlas_blue);
-	elif players[id]["team_id"] == 1:
-		player.get_node("Sprite_Top").set_texture(player_atlas_red);
 	
 	get_tree().get_root().get_node("MainScene/Players").add_child(player);
 

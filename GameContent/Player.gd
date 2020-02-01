@@ -33,13 +33,26 @@ var can_teleport = true;
 var can_place_forcefield = true;
 var max_forcefield_distance = 5000;
 var remote_db_level = -10;
+# The position the player was in last frame
+var last_position = Vector2(0,0);
 
 
 var bullet_atlas_blue = preload("res://Assets/Weapons/bullet_b.png");
 var bullet_atlas_red = preload("res://Assets/Weapons/bullet_r.png");
 
+var running_top_atlas_blue = preload("res://Assets/Player/running_top_B.png");
+var running_top_atlas_red = preload("res://Assets/Player/running_top_B.png");
+
+var shooting_top_atlas_blue = preload("res://Assets/Player/shooting_top_B.png");
+var shooting_top_atlas_red = preload("res://Assets/Player/shooting_top_B.png");
+
+var idle_top_atlas_blue = preload("res://Assets/Player/idle_top_B.png");
+var idle_top_atlas_red = preload("res://Assets/Player/idle_top_B.png");
+
 func _ready():
 	camera_ref = $Center_Pivot/Camera;
+	
+	last_position = position;
 	
 	if Globals.testing:
 		activate_camera();
@@ -59,6 +72,8 @@ func _ready():
 	$Teleport_Timer.connect("timeout", self, "_teleport_timer_ended");
 	$Forcefield_Timer.connect("timeout", self, "_forcefield_timer_ended");
 	$Animation_Timer.connect("timeout", self, "_animation_timer_ended");
+	$Shoot_Animation_Timer.connect("timeout", self, "_shoot_animation_timer_ended");
+	$Shoot_Animation_Timer.wait_time = $Animation_Timer.wait_time * $Sprite_Top.vframes;
 	lerp_start_pos = position;
 	lerp_end_pos = position;
 
@@ -146,20 +161,29 @@ func _process(delta):
 	
 	if is_network_master():
 		rpc_unreliable_id(1, "send_position", position, get_tree().get_network_unique_id());
-#
-	# Experimental
-#	if !is_network_master() and !get_tree().is_network_server():
-#		var pre_process_pos = position;
-#		if position == target_pos:
-#			position += last_velocity;
-#		else:
-#			if position.distance_to(target_pos) < 12:
-#				position = target_pos;
-#			else:
-#				var direction = position.direction_to(target_pos);
-#				position += direction * 12;
-#		print(position.distance_to(pre_process_pos));
-#
+	
+	# Idle Animation
+	if last_position == position:
+		if team_id == 1:
+			$Sprite_Top.set_texture(idle_top_atlas_red);
+		else:
+			$Sprite_Top.set_texture(idle_top_atlas_blue);
+		$Sprite_Bottom.frame = $Sprite_Top.frame - (animation_set_frame * $Sprite_Top.hframes);
+	else:
+		if team_id == 1:
+			$Sprite_Top.set_texture(running_top_atlas_red);
+		else:
+			$Sprite_Top.set_texture(running_top_atlas_blue);
+		$Sprite_Bottom.frame = $Sprite_Top.frame;
+		
+	# Shooting Animation (Overrides idleness)
+	if $Shoot_Animation_Timer.time_left > 0:
+		if team_id == 1:
+			$Sprite_Top.set_texture(shooting_top_atlas_red);
+		else:
+			$Sprite_Top.set_texture(shooting_top_atlas_blue);
+		
+	last_position = position;
 	
 remote func send_start_laser(direction, player_pos, frame):
 	if get_tree().is_network_server():# Only run if it's the server
@@ -250,6 +274,8 @@ func shoot_bullet():
 	var bullet_start = position + get_node("Bullet_Starts/" + String($Sprite_Top.frame % $Sprite_Top.hframes)).position;
 	var bullet = spawn_bullet(bullet_start, get_tree().get_network_unique_id(), direction, null);
 	camera_ref.shake();
+	$Shoot_Animation_Timer.start();
+	animation_set_frame = 0;
 	rpc_id(1, "send_bullet", bullet_start, get_tree().get_network_unique_id(), direction, bullet.name);
 
 # Spawns a bullet given various initializaiton parameters
@@ -362,9 +388,15 @@ func look_to_mouse():
 var animation_set_frame = 0;
 # Called when the animation timer fires
 func _animation_timer_ended():
-	#animation_set_frame += 1;
+	animation_set_frame += 1;
 	animation_set_frame = animation_set_frame % $Sprite_Top.vframes;
-	
+
+func _shoot_animation_timer_ended():
+	if team_id == 1:
+		$Sprite_Top.set_texture(running_top_atlas_red);
+	else:
+		$Sprite_Top.set_texture(running_top_atlas_blue);
+
 # Gets the angle that a vector is making
 func get_vector_angle(dist):
 	var angle = (-(PI / 2) if dist.y < 0 else ( 3 * PI / 2)) if dist.x == 0 else atan(dist.y / dist.x);

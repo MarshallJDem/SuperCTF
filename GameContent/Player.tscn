@@ -34,6 +34,7 @@ vframes = 4
 hframes = 8
 
 [node name="Sprite_Bottom" type="Sprite" parent="."]
+position = Vector2( 0, -0.3 )
 scale = Vector2( 3.148, 3.148 )
 texture = ExtResource( 3 )
 vframes = 4
@@ -122,6 +123,9 @@ one_shot = true
 [node name="Animation_Timer" type="Timer" parent="."]
 wait_time = 0.08
 autostart = true
+
+[node name="Shoot_Animation_Timer" type="Timer" parent="."]
+one_shot = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( -0.0261458, 31.547 )
