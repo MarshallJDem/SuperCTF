@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=2]
+[gd_scene load_steps=31 format=2]
 
 [ext_resource path="res://GameContent/Main.gd" type="Script" id=1]
 [ext_resource path="res://GameContent/Player.tscn" type="PackedScene" id=2]
@@ -23,6 +23,8 @@
 [ext_resource path="res://Assets/Sound/Countdown.wav" type="AudioStream" id=21]
 [ext_resource path="res://Assets/Environment/wall_1_R.png" type="Texture" id=22]
 [ext_resource path="res://Assets/Environment/wall_3_R.png" type="Texture" id=23]
+[ext_resource path="res://Assets/Environment/border_wall_H.png" type="Texture" id=24]
+[ext_resource path="res://Assets/Environment/border_wall_V.png" type="Texture" id=25]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0, 0, 0, 0.145098 )
@@ -79,6 +81,9 @@ custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color = Color( 0.243137, 0.243137, 0.243137, 1 )
 placeholder_text = "Press ENTER to chat"
 script = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Chat_Box" type="RichTextLabel" parent="UI_Layer"]
 margin_right = 292.0
@@ -275,28 +280,6 @@ scale_amount_random = 1.0
 color_ramp = SubResource( 4 )
 hue_variation_random = 1.0
 
-[node name="Wall" type="KinematicBody2D" parent="Environment"]
-position = Vector2( -4000, 0 )
-scale = Vector2( 1.993, 1350 )
-z_index = -4015
-
-[node name="ColorRect" type="ColorRect" parent="Environment/Wall"]
-margin_left = -1.0
-margin_top = -1.0
-margin_right = 1.0
-margin_bottom = 1.0
-color = Color( 0, 0, 0, 1 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/Wall"]
-shape = SubResource( 5 )
-
-[node name="Area2D" type="Area2D" parent="Environment/Wall" groups=[
-"Wall_Bodies",
-]]
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="Environment/Wall/Area2D"]
-shape = SubResource( 5 )
-
 [node name="Wall2" type="KinematicBody2D" parent="Environment"]
 position = Vector2( 4000, 0 )
 scale = Vector2( 2, 1350 )
@@ -329,28 +312,6 @@ visible = false
 position = Vector2( -4500, 0 )
 scale = Vector2( 502, 2350 )
 
-[node name="Wall3" type="KinematicBody2D" parent="Environment"]
-position = Vector2( 0, -1350 )
-scale = Vector2( 4000, 2 )
-z_index = -4015
-
-[node name="ColorRect" type="ColorRect" parent="Environment/Wall3"]
-margin_left = -1.0
-margin_top = -1.0
-margin_right = 1.0
-margin_bottom = 1.0
-color = Color( 0, 0, 0, 1 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/Wall3"]
-shape = SubResource( 5 )
-
-[node name="Area2D" type="Area2D" parent="Environment/Wall3" groups=[
-"Wall_Bodies",
-]]
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="Environment/Wall3/Area2D"]
-shape = SubResource( 5 )
-
 [node name="Bound" parent="Environment" instance=ExtResource( 16 )]
 visible = false
 position = Vector2( 0, -1854.72 )
@@ -360,28 +321,6 @@ scale = Vector2( 5000, 502 )
 visible = false
 position = Vector2( 0, 1840.43 )
 scale = Vector2( 5000, 501.078 )
-
-[node name="Wall4" type="KinematicBody2D" parent="Environment"]
-position = Vector2( 0.472, 1350 )
-scale = Vector2( 4000, 2 )
-z_index = -4015
-
-[node name="ColorRect" type="ColorRect" parent="Environment/Wall4"]
-margin_left = -1.0
-margin_top = -1.0
-margin_right = 1.0
-margin_bottom = 1.0
-color = Color( 0, 0, 0, 1 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/Wall4"]
-shape = SubResource( 5 )
-
-[node name="Area2D" type="Area2D" parent="Environment/Wall4" groups=[
-"Wall_Bodies",
-]]
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="Environment/Wall4/Area2D"]
-shape = SubResource( 5 )
 
 [node name="Wall_H_M_B" parent="Environment" instance=ExtResource( 17 )]
 position = Vector2( -2200, 850 )
@@ -397,7 +336,7 @@ z_index = -850
 texture = ExtResource( 22 )
 
 [node name="Wall_H_M_B4" parent="Environment" instance=ExtResource( 17 )]
-position = Vector2( 2201.47, 851.469 )
+position = Vector2( 2201.47, 851.684 )
 z_index = 850
 texture = ExtResource( 22 )
 
@@ -442,6 +381,56 @@ texture = ExtResource( 23 )
 position = Vector2( -3400, 0 )
 scale = Vector2( 2, 2.07 )
 z_index = 175
+
+[node name="Border_Wall_H" type="Sprite" parent="Environment"]
+position = Vector2( 0, 1355.53 )
+scale = Vector2( 2.965, 2.965 )
+z_index = 1500
+texture = ExtResource( 24 )
+offset = Vector2( 0, -5 )
+region_rect = Rect2( 10, 10, 10, 10 )
+
+[node name="Wall14" parent="Environment/Border_Wall_H" instance=ExtResource( 16 )]
+visible = false
+position = Vector2( -0.034, 1.469 )
+scale = Vector2( 1359.11, 5.042 )
+
+[node name="Border_Wall_H2" type="Sprite" parent="Environment"]
+position = Vector2( 0.092, -1355.8 )
+scale = Vector2( 2.965, 2.965 )
+z_index = -1500
+texture = ExtResource( 24 )
+offset = Vector2( 0, -5 )
+region_rect = Rect2( 10, 10, 10, 10 )
+
+[node name="Wall14" parent="Environment/Border_Wall_H2" instance=ExtResource( 16 )]
+visible = false
+position = Vector2( -0.034, 1.303 )
+scale = Vector2( 1352.3, 4.572 )
+
+[node name="Wall_V_M_B5" type="Sprite" parent="Environment"]
+position = Vector2( -3989.53, -15.61 )
+scale = Vector2( 2.965, 2.965 )
+z_index = 1500
+texture = ExtResource( 25 )
+region_rect = Rect2( 10, 10, 10, 10 )
+
+[node name="Wall14" parent="Environment/Wall_V_M_B5" instance=ExtResource( 16 )]
+visible = false
+position = Vector2( -4.05, -0.562 )
+scale = Vector2( 2.836, 467.012 )
+
+[node name="Wall_V_M_B6" type="Sprite" parent="Environment"]
+position = Vector2( 3989.53, -15.61 )
+scale = Vector2( -2.965, 2.965 )
+z_index = 1500
+texture = ExtResource( 25 )
+region_rect = Rect2( 10, 10, 10, 10 )
+
+[node name="Wall14" parent="Environment/Wall_V_M_B6" instance=ExtResource( 16 )]
+visible = false
+position = Vector2( -3.974, -0.547 )
+scale = Vector2( 2.984, 466.302 )
 
 [node name="Music_Audio" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 19 )

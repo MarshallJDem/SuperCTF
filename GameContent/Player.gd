@@ -283,16 +283,16 @@ func shoot_bullet():
 # Spawns a bullet given various initializaiton parameters
 func spawn_bullet(pos, player_id, direction, bullet_name = null):
 	
-	# If this was fired by another player, compensate for player lerp speed
-	if player_id != get_tree().get_network_unique_id() && !get_tree().is_network_server():
-		var t = Timer.new()
-		t.set_wait_time(float(Globals.player_lerp_time)/float(1000.0))
-		t.set_one_shot(true)
-		self.add_child(t)
-		t.start()
-		yield(t, "timeout")
-		t.queue_free();
-		print("waited");
+#	# If this was fired by another player, compensate for player lerp speed
+#	if player_id != get_tree().get_network_unique_id() && !get_tree().is_network_server():
+#		var t = Timer.new()
+#		t.set_wait_time(float(Globals.player_lerp_time)/float(1000.0))
+#		t.set_one_shot(true)
+#		self.add_child(t)
+#		t.start()
+#		yield(t, "timeout")
+#		t.queue_free();
+#		print("waited");
 	
 	var bullet = load("res://GameContent/Bullet.tscn").instance();
 	bullet.position = pos;
