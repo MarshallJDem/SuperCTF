@@ -154,12 +154,13 @@ func _process(delta):
 		var x =  (t * 10);
 		$Sprite_Top.modulate = Color(1,1,1,(sin( (PI / 2) + (x * (1 + (t * ((2 * PI) - 1))))) + 1)/2)
 	z_index = global_position.y + 15;
-	# Old
+	
+	
 	# If we are a puppet and not the server, then lerp our position
-	if !is_network_master() and !get_tree().is_network_server() and !Globals.testing:
+	if !Globals.testing and !is_network_master() and !get_tree().is_network_server():
 		position = lerp(lerp_start_pos, lerp_end_pos, clamp(float(OS.get_ticks_msec() - time_of_last_received_pos)/float(Globals.player_lerp_time), 0.0, 1.0));
 	
-	if is_network_master():
+	if !Globals.testing and is_network_master():
 		rpc_unreliable_id(1, "send_position", position, get_tree().get_network_unique_id());
 	
 	
@@ -386,7 +387,8 @@ func look_to_mouse():
 	frame += animation_set_frame * $Sprite_Top.hframes;
 	if frame != $Sprite_Top.frame: # If it changed since last time
 		set_look_direction(frame);
-		rpc_unreliable_id(1, "send_look_direction", frame, get_tree().get_network_unique_id());
+		if !Globals.testing:
+			rpc_unreliable_id(1, "send_look_direction", frame, get_tree().get_network_unique_id());
 var animation_set_frame = 0;
 # Called when the animation timer fires
 func _animation_timer_ended():
