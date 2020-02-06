@@ -1,6 +1,7 @@
 extends KinematicBody2D
 
 var control = false;
+var IS_CONTROLLED_BY_MOUSE = false;
 var player_id = 0;
 var team_id = -1;
 const BASE_SPEED = 625;
@@ -110,13 +111,14 @@ func _input(event):
 				Globals.player_lerp_time = 150;
 			if event.scancode == KEY_5:
 				Globals.player_lerp_time = 200;
-		elif event is InputEventMouseButton:
+		elif IS_CONTROLLED_BY_MOUSE and event is InputEventMouseButton:
 			if event.button_index == BUTTON_LEFT:
 				if event.pressed: # Click down
 					# Only accepts clicks if we're not aiming a laser
 					if $Laser_Timer.time_left == 0:
 						if $Flag_Holder.get_child_count() == 0:
-							shoot_bullet();
+							if $Shoot_Cooldown_Timer.time_left == 0:
+								shoot_bullet((get_global_mouse_position() - global_position).normalized());
 							sprintEnabled = false;
 						else: # Otherwise drop our flag
 							drop_current_flag($Flag_Holder.get_global_position());
@@ -142,12 +144,15 @@ func _process(delta):
 	if control:
 		# Don't look around if we're shooting a laser
 		if $Laser_Timer.time_left == 0:
-			look_to_mouse();
+			if IS_CONTROLLED_BY_MOUSE:
+				look_to_mouse();
 		else:
 			speed = AIMING_SPEED * ($Laser_Timer.time_left / $Laser_Timer.wait_time);
-		# Move around as long as we aren't typing in chat
+		# Move & Shoot around as long as we aren't typing in chat
 		if !Globals.is_typing_in_chat:
 			move_on_inputs();
+			if !IS_CONTROLLED_BY_MOUSE:
+				shoot_on_inputs();
 	update();
 	if $Invincibility_Timer.time_left > 0:
 		var t = $Invincibility_Timer.time_left / $Invincibility_Timer.wait_time 
@@ -271,8 +276,8 @@ func _draw():
 
 
 # Shoots a bullet shot
-func shoot_bullet():
-	var direction = (get_global_mouse_position() - global_position).normalized()
+func shoot_bullet(direction):
+	$Shoot_Cooldown_Timer.start();
 	bullets_shot = bullets_shot + 1;
 	var bullet_start = position + get_node("Bullet_Starts/" + String($Sprite_Top.frame % $Sprite_Top.hframes)).position;
 	var bullet = spawn_bullet(bullet_start, get_tree().get_network_unique_id(), direction, null);
@@ -346,7 +351,13 @@ func move_on_inputs(teleport = false):
 		rpc("create_ghost_trail", previous_pos, new_pos);
 		if Globals.testing:
 			$Teleport_Audio.play();
-	
+
+func shoot_on_inputs():
+	var input = Vector2(0,0);
+	input.x = (1 if Input.is_key_pressed(KEY_RIGHT) else 0) - (1 if Input.is_key_pressed(KEY_LEFT) else 0)
+	input.y = (1 if Input.is_key_pressed(KEY_DOWN) else 0) - (1 if Input.is_key_pressed(KEY_UP) else 0)
+	if $Shoot_Cooldown_Timer.time_left == 0 and input != Vector2.ZERO:
+		shoot_bullet(input);
 
 func _teleport_timer_ended():
 	can_teleport = true;

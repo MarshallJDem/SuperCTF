@@ -127,6 +127,10 @@ autostart = true
 [node name="Shoot_Animation_Timer" type="Timer" parent="."]
 one_shot = true
 
+[node name="Shoot_Cooldown_Timer" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( -0.0261458, 31.547 )
 rotation = 1.5708
