@@ -37,3 +37,7 @@ func update_camera_offset_from_arrow_keys():
 		$'..'.camera_ref.position.x = 0;
 	else:
 		$'..'.camera_ref.position.x = 100;
+	
+	# Override just disable this feature:
+	$'..'.camera_ref.position.x = 0;
+	

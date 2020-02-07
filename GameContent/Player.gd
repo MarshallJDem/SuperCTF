@@ -144,8 +144,7 @@ func _process(delta):
 	if control:
 		# Don't look around if we're shooting a laser
 		if $Laser_Timer.time_left == 0:
-			if IS_CONTROLLED_BY_MOUSE:
-				look_to_mouse();
+			update_look_direction();
 		else:
 			speed = AIMING_SPEED * ($Laser_Timer.time_left / $Laser_Timer.wait_time);
 		# Move & Shoot around as long as we aren't typing in chat
@@ -281,7 +280,7 @@ func shoot_bullet(direction):
 	bullets_shot = bullets_shot + 1;
 	var bullet_start = position + get_node("Bullet_Starts/" + String($Sprite_Top.frame % $Sprite_Top.hframes)).position;
 	var bullet = spawn_bullet(bullet_start, get_tree().get_network_unique_id(), direction, null);
-	camera_ref.shake();
+	#camera_ref.shake();
 	$Shoot_Animation_Timer.start();
 	animation_set_frame = 0;
 	rpc_id(1, "send_bullet", bullet_start, get_tree().get_network_unique_id(), direction, bullet.name);
@@ -388,8 +387,22 @@ remotesync func create_ghost_trail(start, end):
 		position = end;
 	
 # Changes the sprite's frame to make it "look" at the mouse
-func look_to_mouse():
-	var pos = get_global_mouse_position();
+var previous_look_input = Vector2(0,0);
+func update_look_direction():
+	var pos;
+	if IS_CONTROLLED_BY_MOUSE:
+		pos = get_global_mouse_position();
+	else:
+		var input = Vector2(0,0);
+		input.x = (1 if Input.is_key_pressed(KEY_RIGHT) else 0) - (1 if Input.is_key_pressed(KEY_LEFT) else 0)
+		input.y = (1 if Input.is_key_pressed(KEY_DOWN) else 0) - (1 if Input.is_key_pressed(KEY_UP) else 0)
+		if input == Vector2(0,0):
+			input.x = (1 if Input.is_key_pressed(KEY_D) else 0) - (1 if Input.is_key_pressed(KEY_A) else 0)
+			input.y = (1 if Input.is_key_pressed(KEY_S) else 0) - (1 if Input.is_key_pressed(KEY_W) else 0)
+			if input == Vector2(0,0):
+				input = previous_look_input;
+		previous_look_input = input;
+		pos = position + (input * 100) + Vector2(1,1); # Add 1,1 to prevent 0 edge cases
 	var dist = pos - position;
 	var angle = get_vector_angle(dist);
 	var adjustedAngle = -1 * (angle + (PI/8));
