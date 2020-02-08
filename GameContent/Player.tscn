@@ -27,16 +27,16 @@ height = 13.3095
 [node name="Player" type="KinematicBody2D"]
 script = ExtResource( 1 )
 
-[node name="Sprite_Top" type="Sprite" parent="."]
-scale = Vector2( 3.148, 3.148 )
-texture = ExtResource( 2 )
-vframes = 4
-hframes = 8
-
 [node name="Sprite_Bottom" type="Sprite" parent="."]
 position = Vector2( 0, -0.3 )
 scale = Vector2( 3.148, 3.148 )
 texture = ExtResource( 3 )
+vframes = 4
+hframes = 8
+
+[node name="Sprite_Top" type="Sprite" parent="."]
+scale = Vector2( 3.148, 3.148 )
+texture = ExtResource( 2 )
 vframes = 4
 hframes = 8
 
@@ -82,28 +82,28 @@ __meta__ = {
 [node name="Bullet_Starts" type="Node" parent="."]
 
 [node name="0" type="Node2D" parent="Bullet_Starts"]
-position = Vector2( 0.124931, -33.1067 )
+position = Vector2( 0.125, -28.098 )
 
 [node name="1" type="Node2D" parent="Bullet_Starts"]
-position = Vector2( 28.2344, -10.869 )
+position = Vector2( 21.754, -7.58 )
 
 [node name="2" type="Node2D" parent="Bullet_Starts"]
-position = Vector2( 34.1062, 16.366 )
+position = Vector2( 26.857, 12.326 )
 
 [node name="3" type="Node2D" parent="Bullet_Starts"]
-position = Vector2( 23.2372, 27.6098 )
+position = Vector2( 20.74, 18.077 )
 
 [node name="4" type="Node2D" parent="Bullet_Starts"]
-position = Vector2( 0.124939, 31.7325 )
+position = Vector2( 0.125, 28.694 )
 
 [node name="5" type="Node2D" parent="Bullet_Starts"]
-position = Vector2( -23.612, 27.7347 )
+position = Vector2( -19.815, 18.138 )
 
 [node name="6" type="Node2D" parent="Bullet_Starts"]
-position = Vector2( -32.8569, 16.9906 )
+position = Vector2( -28.042, 13.234 )
 
 [node name="7" type="Node2D" parent="Bullet_Starts"]
-position = Vector2( -24.1117, -11.8685 )
+position = Vector2( -21.746, -6.633 )
 
 [node name="Respawn_Timer" type="Timer" parent="."]
 wait_time = 3.0

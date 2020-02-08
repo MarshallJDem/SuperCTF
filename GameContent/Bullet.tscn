@@ -43,3 +43,7 @@ attenuation = 0.287175
 [node name="Animation_Timer" type="Timer" parent="."]
 wait_time = 0.08
 autostart = true
+
+[node name="Lag_Comp_Timer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true

@@ -26,6 +26,7 @@ var lasers_destroy_bullets = true;
 # Whether to run in testing mode (for development uses)
 var testing = true;
 var forcefield_cooldown = 3;
+var lag_comp_headstart_dist = 50;
 
 
 func write_save_data():

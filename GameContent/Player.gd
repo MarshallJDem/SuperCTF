@@ -279,31 +279,32 @@ func shoot_bullet(direction):
 	$Shoot_Cooldown_Timer.start();
 	bullets_shot = bullets_shot + 1;
 	var bullet_start = position + get_node("Bullet_Starts/" + String($Sprite_Top.frame % $Sprite_Top.hframes)).position;
-	var bullet = spawn_bullet(bullet_start, get_tree().get_network_unique_id(), direction, null);
+	var bullet = spawn_bullet(bullet_start, get_tree().get_network_unique_id(), direction,OS.get_system_time_msecs(), null);
 	#camera_ref.shake();
 	$Shoot_Animation_Timer.start();
 	animation_set_frame = 0;
-	rpc_id(1, "send_bullet", bullet_start, get_tree().get_network_unique_id(), direction, bullet.name);
+	rpc_id(1, "send_bullet", bullet_start, get_tree().get_network_unique_id(), direction, OS.get_system_time_msecs(), bullet.name);
 
 # Spawns a bullet given various initializaiton parameters
-func spawn_bullet(pos, player_id, direction, bullet_name = null):
+func spawn_bullet(pos, player_id, direction, time_shot, bullet_name = null):
 	
 #	# If this was fired by another player, compensate for player lerp speed
-#	if player_id != get_tree().get_network_unique_id() && !get_tree().is_network_server():
-#		var t = Timer.new()
-#		t.set_wait_time(float(Globals.player_lerp_time)/float(1000.0))
-#		t.set_one_shot(true)
-#		self.add_child(t)
-#		t.start()
-#		yield(t, "timeout")
-#		t.queue_free();
-#		print("waited");
+	if player_id != get_tree().get_network_unique_id() && !get_tree().is_network_server():
+		var t = Timer.new()
+		t.set_wait_time(float(Globals.player_lerp_time)/float(1000.0))
+		t.set_one_shot(true)
+		self.add_child(t)
+		t.start()
+		yield(t, "timeout")
+		t.queue_free();
+		print("waited");
 	
 	var bullet = load("res://GameContent/Bullet.tscn").instance();
 	bullet.position = pos;
 	bullet.direction = direction;
 	bullet.player_id = player_id;
 	bullet.team_id = team_id;
+	bullet.initial_time_shot = time_shot
 	if team_id == 0:
 		bullet.get_node("Sprite").set_texture(bullet_atlas_blue);
 	elif team_id == 1:
@@ -581,17 +582,17 @@ remote func receive_position(new_pos):
 	update_position(new_pos);
 
 # Client tells the server that it just shot a bullet
-remote func send_bullet(pos, player_id, direction, bullet_name):
+remote func send_bullet(pos, player_id, direction, time_shot, bullet_name):
 	if get_tree().is_network_server(): # Only run if it's the server
 		var players = get_tree().get_root().get_node("MainScene/NetworkController").players;
 		for i in players: # For each player
 			if i != player_id && i != 1: # Don't do it for the player who sent it or for the server
 				get_tree().get_root().get_node("MainScene/Players/" + str(player_id)).rpc_id(i, "receive_bullet", pos, player_id, direction, bullet_name);
-		spawn_bullet(pos, player_id, direction, bullet_name); # Also call it locally for the server
+		spawn_bullet(pos, player_id, direction,time_shot, bullet_name); # Also call it locally for the server
 
 # "Receives" a bullet from the server that was shot by another client
-remote func receive_bullet(pos, player_id, direction, bullet_name):
-	spawn_bullet(pos, player_id, direction, bullet_name);
+remote func receive_bullet(pos, player_id, direction,time_shot, bullet_name):
+	spawn_bullet(pos, player_id, direction,time_shot, bullet_name);
 
 # Client tells the server what direction frame it's looking at 
 remote func send_look_direction(frame, player_id):
