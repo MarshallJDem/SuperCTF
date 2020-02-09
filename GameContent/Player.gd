@@ -278,7 +278,8 @@ func _draw():
 func shoot_bullet(direction):
 	$Shoot_Cooldown_Timer.start();
 	bullets_shot = bullets_shot + 1;
-	var bullet_start = position + get_node("Bullet_Starts/" + String($Sprite_Top.frame % $Sprite_Top.hframes)).position;
+	# Re-enable the code below to have the bullet start out of the end of the gun
+	var bullet_start = position# + get_node("Bullet_Starts/" + String($Sprite_Top.frame % $Sprite_Top.hframes)).position;
 	var bullet = spawn_bullet(bullet_start, get_tree().get_network_unique_id(), direction,OS.get_system_time_msecs(), null);
 	#camera_ref.shake();
 	$Shoot_Animation_Timer.start();
@@ -305,12 +306,12 @@ func spawn_bullet(pos, player_id, direction, time_shot, bullet_name = null):
 	bullet.player_id = player_id;
 	bullet.team_id = team_id;
 	bullet.initial_time_shot = time_shot
+	bullet.set_network_master(player_id);
 	if team_id == 0:
 		bullet.get_node("Sprite").set_texture(bullet_atlas_blue);
 	elif team_id == 1:
 		bullet.get_node("Sprite").set_texture(bullet_atlas_red);
 	get_tree().get_root().get_node("MainScene").add_child(bullet);
-	bullet.set_network_master(player_id);
 	if bullet_name != null:
 		bullet.name = bullet_name;
 		print("Received: " + bullet_name);
@@ -587,7 +588,7 @@ remote func send_bullet(pos, player_id, direction, time_shot, bullet_name):
 		var players = get_tree().get_root().get_node("MainScene/NetworkController").players;
 		for i in players: # For each player
 			if i != player_id && i != 1: # Don't do it for the player who sent it or for the server
-				get_tree().get_root().get_node("MainScene/Players/" + str(player_id)).rpc_id(i, "receive_bullet", pos, player_id, direction, bullet_name);
+				get_tree().get_root().get_node("MainScene/Players/" + str(player_id)).rpc_id(i, "receive_bullet", pos, player_id, direction,time_shot, bullet_name);
 		spawn_bullet(pos, player_id, direction,time_shot, bullet_name); # Also call it locally for the server
 
 # "Receives" a bullet from the server that was shot by another client

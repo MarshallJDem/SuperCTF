@@ -12,6 +12,8 @@ var initial_time_shot; # Unfortunately this is in seconds. We will use player le
 var initial_real_pos;
 # The first position the bullet started at as a puppet (slightly down trajectory)
 var initial_puppet_pos;
+# The time the puppet began its trajectory
+var puppet_time_shot;
 
 func _ready():
 	$Death_Timer2.connect("timeout", self, "_death_timer_ended");
@@ -27,8 +29,10 @@ func _ready():
 		# Start the bullet slightly down directory to help with lag sync a bit
 		position = position + (direction * Globals.lag_comp_headstart_dist);
 		initial_puppet_pos = position;
+		puppet_time_shot = OS.get_system_time_msecs();
 		if Globals.testing:
-			initial_time_shot = initial_time_shot - 1
+			initial_time_shot = initial_time_shot - 100
+	print(is_from_puppet);
 
 func _process(delta):
 	move(delta);
@@ -42,16 +46,15 @@ func _physics_process(delta):
 	
 # Given an amount of delta time, moves the bullet in its trajectory direction using its speed
 func move(delta):
+	var time_elapsed = (OS.get_system_time_msecs() - initial_time_shot)/1000.0;
+	var real_position = initial_real_pos + (direction * speed * time_elapsed);
 	if $Lag_Comp_Timer.time_left > 0:
-		
-		# Use
-		var time_elapsed = OS.get_system_time_msecs() - (initial_time_shot - Globals.player_lerp_time);
-		print(time_elapsed);
-		var real_position = initial_real_pos + (direction * speed * time_elapsed);
-		position = lerp(initial_puppet_pos, initial_real_pos, 1 - ($Lag_Comp_Timer.time_left/$Lag_Comp_Timer.wait_time))
+		var puppet_time_elapsed = (OS.get_system_time_msecs() - puppet_time_shot)/1000.0;
+		var puppet_position = initial_puppet_pos + (direction * speed * puppet_time_elapsed);
+		position = lerp(puppet_position, real_position, 1.0 - ($Lag_Comp_Timer.time_left/$Lag_Comp_Timer.wait_time))
 	else:
-		position = position + (direction * speed * delta);
-	
+		position = real_position;
+
 # Called when the animation timer fires
 func _animation_timer_ended():
 	$Sprite.frame = ($Sprite.frame + 1) % $Sprite.hframes;

@@ -45,5 +45,5 @@ wait_time = 0.08
 autostart = true
 
 [node name="Lag_Comp_Timer" type="Timer" parent="."]
-wait_time = 0.5
+wait_time = 0.1
 one_shot = true
