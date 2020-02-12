@@ -59,7 +59,7 @@ func _ready():
 		activate_camera();
 		control = true
 	
-	if is_network_master() || Globals.testing:
+	if Globals.testing or is_network_master():
 		activate_camera();
 		$Laser_Timer.wait_time += 0.1;
 		$Laser_Charge_Audio.set_pitch_scale(float(0.5)/$Laser_Timer.wait_time);
@@ -280,17 +280,23 @@ func shoot_bullet(direction):
 	bullets_shot = bullets_shot + 1;
 	# Re-enable the code below to have the bullet start out of the end of the gun
 	var bullet_start = position# + get_node("Bullet_Starts/" + String($Sprite_Top.frame % $Sprite_Top.hframes)).position;
-	var bullet = spawn_bullet(bullet_start, get_tree().get_network_unique_id(), direction,OS.get_system_time_msecs(), null);
+	# Offset bullet start by a bit because player frames are perfectly centered
+	if direction.y == 0:
+		bullet_start += Vector2(0, 10);
+	if direction.x != 0 and direction.y != 0:
+		bullet_start += Vector2(10 * direction.x/abs(direction.x),0);
+	var bullet = spawn_bullet(bullet_start, 0 if Globals.testing else get_tree().get_network_unique_id(), direction,OS.get_system_time_msecs(), null);
 	#camera_ref.shake();
 	$Shoot_Animation_Timer.start();
 	animation_set_frame = 0;
-	rpc_id(1, "send_bullet", bullet_start, get_tree().get_network_unique_id(), direction, OS.get_system_time_msecs(), bullet.name);
+	if !Globals.testing:
+		rpc_id(1, "send_bullet", bullet_start,get_tree().get_network_unique_id(), direction, OS.get_system_time_msecs(), bullet.name);
 
 # Spawns a bullet given various initializaiton parameters
 func spawn_bullet(pos, player_id, direction, time_shot, bullet_name = null):
 	
 #	# If this was fired by another player, compensate for player lerp speed
-	if player_id != get_tree().get_network_unique_id() && !get_tree().is_network_server():
+	if !Globals.testing and player_id != get_tree().get_network_unique_id() && !get_tree().is_network_server():
 		var t = Timer.new()
 		t.set_wait_time(float(Globals.player_lerp_time)/float(1000.0))
 		t.set_one_shot(true)
@@ -355,16 +361,22 @@ func move_on_inputs(teleport = false):
 	var new_pos = position;
 	
 	if teleport:
-		rpc("create_ghost_trail", previous_pos, new_pos);
 		if Globals.testing:
 			$Teleport_Audio.play();
+		else:
+			rpc("create_ghost_trail", previous_pos, new_pos);
 
 func shoot_on_inputs():
 	var input = Vector2(0,0);
 	input.x = (1 if Input.is_key_pressed(KEY_RIGHT) else 0) - (1 if Input.is_key_pressed(KEY_LEFT) else 0)
 	input.y = (1 if Input.is_key_pressed(KEY_DOWN) else 0) - (1 if Input.is_key_pressed(KEY_UP) else 0)
-	if $Shoot_Cooldown_Timer.time_left == 0 and input != Vector2.ZERO:
-		shoot_bullet(input);
+	if input != Vector2.ZERO:
+		if $Flag_Holder.get_child_count() != 0:
+			drop_current_flag($Flag_Holder.get_global_position());
+			if !Globals.testing:
+				rpc_id(1, "send_drop_flag", $Flag_Holder.get_global_position());
+		elif $Shoot_Cooldown_Timer.time_left == 0:
+			shoot_bullet(input);
 
 func _teleport_timer_ended():
 	can_teleport = true;
@@ -532,7 +544,7 @@ func respawn():
 
 # Takes the given flag
 func take_flag(flag_id):
-	if is_network_master():
+	if Globals.testing or is_network_master():
 		get_tree().get_root().get_node("MainScene").speedup_music();
 	$Flag_Pickup_Audio.play();
 	for flag in get_tree().get_nodes_in_group("Flags"):
@@ -545,7 +557,7 @@ func take_flag(flag_id):
 # Drops the currently held flag (If there is one)
 func drop_current_flag(flag_position):
 	
-	if is_network_master():
+	if Globals.testing or is_network_master():
 		get_tree().get_root().get_node("MainScene").slowdown_music();
 	$Flag_Drop_Audio.play();
 	# Only run if there is a flag in the Flag_Holder
@@ -556,6 +568,7 @@ func drop_current_flag(flag_position):
 		flag.get_node("Area2D").ignore_next_buffer_reset = true;
 		flag.re_parent(get_tree().get_root().get_node("MainScene"));
 		flag.position = flag_position;
+		$Shoot_Cooldown_Timer.start();
 
 # Starts the temporary Invincibility cooldown
 func start_temporary_invincibility():

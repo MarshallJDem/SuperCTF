@@ -8,20 +8,20 @@ var ignore_next_buffer_reset = false;
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	self.connect("area_entered",self, "_area_entered");
-	self.connect("area_exited",self, "_area_exited");
+	var _err = self.connect("area_entered",self, "_area_entered");
+	_err = self.connect("area_exited",self, "_area_exited");
 
 # Called when this area enters another area
 func _area_entered(body):
 	# Only detect collisions if we are the server
-	if get_tree().is_network_server():
+	if Globals.testing or get_tree().is_network_server():
 		if body.is_in_group("Player_Bodies"):
 			collided_with_player(body.get_parent());
 
 # Called when this area exits another area
 func _area_exited(body):
 	# Only detect collisions if we are the server
-	if get_tree().is_network_server():
+	if Globals.testing or get_tree().is_network_server():
 		if body.is_in_group("Player_Bodies"):
 			if body.get_parent().player_id == player_id_drop_buffer:
 				if ignore_next_buffer_reset:
@@ -53,6 +53,9 @@ func collided_with_player(player):
 		return;
 	# Else if this is this player's enemy's flag
 	elif flag.team_id != player.team_id:
+		if Globals.testing:
+			player.receive_take_flag(flag.flag_id);
+			return;
 		player.rpc("receive_take_flag", flag.flag_id);
 		return;
 

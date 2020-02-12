@@ -9,7 +9,7 @@ func _ready():
 func _area_entered(body):
 	if get_tree().get_root().get_node("MainScene/NetworkController").round_is_ended: return;
 	# Only detect collisions if we are the server
-	if get_tree().is_network_server():
+	if !Globals.testing and get_tree().is_network_server():
 		# If this player is dead, ignore any collisions
 		if get_parent().alive == false:
 			return;

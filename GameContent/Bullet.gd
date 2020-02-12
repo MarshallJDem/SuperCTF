@@ -20,7 +20,7 @@ func _ready():
 	$Animation_Timer.connect("timeout", self, "_animation_timer_ended");
 	rotation = Vector2(0,0).angle_to_point(direction) + PI;
 	# If the master of this bullet is not the local master player, then this is a puppet
-	if get_tree().get_network_unique_id() != get_network_master():
+	if !Globals.testing and get_tree().get_network_unique_id() != get_network_master():
 		is_from_puppet = true;
 	
 	initial_real_pos = position;
@@ -31,21 +31,20 @@ func _ready():
 		initial_puppet_pos = position;
 		puppet_time_shot = OS.get_system_time_msecs();
 		if Globals.testing:
-			initial_time_shot = initial_time_shot - 100
-	print(is_from_puppet);
+			initial_time_shot = initial_time_shot - 100;
 
 func _process(delta):
-	move(delta);
-	self.z_index = self.position.y;
-	
+	pass;
 
 # stupid workaround neccessary to make particles not flash random colors upon spawning
 func _physics_process(delta):
+	self.z_index = self.position.y;
+	move();
 	if should_die:
 		die();
 	
 # Given an amount of delta time, moves the bullet in its trajectory direction using its speed
-func move(delta):
+func move():
 	var time_elapsed = (OS.get_system_time_msecs() - initial_time_shot)/1000.0;
 	var real_position = initial_real_pos + (direction * speed * time_elapsed);
 	if $Lag_Comp_Timer.time_left > 0:
@@ -83,6 +82,8 @@ func preliminary_death():
 		spawn_death_particles();
 	# Don't show particles again when the server tells us to die
 	show_death_particles = false;
+	if Globals.testing:
+		die();
 
 
 func spawn_death_particles():

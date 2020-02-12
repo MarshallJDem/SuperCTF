@@ -1,7 +1,7 @@
 extends CanvasLayer
 
 func _ready():
-	$Leave_Match_Button.connect("pressed", self, "_leave_match_button_pressed");
+	var _err = $Leave_Match_Button.connect("pressed", self, "_leave_match_button_pressed");
 
 func _process(delta):
 	if Globals.isServer:

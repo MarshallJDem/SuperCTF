@@ -22,19 +22,20 @@ var match_is_running = false;
 
 func _ready():
 	if Globals.testing:
+		call_deferred("spawn_flag", 1, Vector2(-200, 0), 0);
 		return;
 	get_tree().connect("network_peer_connected",self, "_client_connected");
 	get_tree().connect("network_peer_disconnected",self, "_client_disconnected");
 	get_tree().connect("connected_to_server",self, "_connection_ok");
 	get_tree().connect("connection_failed",self, "_connection_fail");
 	get_tree().connect("server_disconnected",self, "_server_disconnect");
-	$Round_End_Timer.connect("timeout", self, "_round_end_timer_ended");
-	$Round_Start_Timer.connect("timeout", self, "_round_start_timer_ended");
-	$HTTPRequest_GameServerCheckUser.connect("request_completed", self, "_HTTP_GameServerCheckUser_Completed");
-	$HTTPRequest_GameServerPollStatus.connect("request_completed", self, "_HTTP_GameServerPollStatus_Completed");
-	$HTTPRequest_GameServerMakeAvailable.connect("request_completed", self, "_HTTP_GameServerMakeAvailable_Completed");
-	$HTTPRequest_GameServerEndMatch.connect("request_completed", self, "_HTTP_GameServerEndMatch_Completed");
-	$HTTPRequest_GetMatchData.connect("request_completed", self, "_HTTP_GetMatchData_Completed");
+	var _err = $Round_End_Timer.connect("timeout", self, "_round_end_timer_ended");
+	_err = $Round_Start_Timer.connect("timeout", self, "_round_start_timer_ended");
+	_err = $HTTPRequest_GameServerCheckUser.connect("request_completed", self, "_HTTP_GameServerCheckUser_Completed");
+	_err = $HTTPRequest_GameServerPollStatus.connect("request_completed", self, "_HTTP_GameServerPollStatus_Completed");
+	_err = $HTTPRequest_GameServerMakeAvailable.connect("request_completed", self, "_HTTP_GameServerMakeAvailable_Completed");
+	_err = $HTTPRequest_GameServerEndMatch.connect("request_completed", self, "_HTTP_GameServerEndMatch_Completed");
+	_err = $HTTPRequest_GetMatchData.connect("request_completed", self, "_HTTP_GetMatchData_Completed");
 	if(Globals.isServer):
 		start_server();
 	else:
