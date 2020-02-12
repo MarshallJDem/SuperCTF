@@ -39,6 +39,7 @@ scale = Vector2( 3.148, 3.148 )
 texture = ExtResource( 2 )
 vframes = 4
 hframes = 8
+frame = 2
 
 [node name="Center_Pivot" type="Position2D" parent="."]
 script = ExtResource( 4 )
@@ -88,7 +89,7 @@ position = Vector2( 0.125, -28.098 )
 position = Vector2( 21.754, -7.58 )
 
 [node name="2" type="Node2D" parent="Bullet_Starts"]
-position = Vector2( 26.857, 12.326 )
+position = Vector2( 36.977, 12.326 )
 
 [node name="3" type="Node2D" parent="Bullet_Starts"]
 position = Vector2( 20.74, 18.077 )

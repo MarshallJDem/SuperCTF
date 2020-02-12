@@ -97,6 +97,9 @@ custom_fonts/normal_font = ExtResource( 5 )
 bbcode_enabled = true
 scroll_active = false
 scroll_following = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Score_Label" type="RichTextLabel" parent="UI_Layer"]
 anchor_right = 1.0
@@ -254,8 +257,9 @@ z_index = -4096
 
 [node name="ColorRect" type="ColorRect" parent="Environment/Node2D"]
 show_behind_parent = true
+margin_top = 2.61353
 margin_right = 7999.0
-margin_bottom = 2700.0
+margin_bottom = 2702.61
 __meta__ = {
 "_edit_use_anchors_": false
 }

@@ -300,6 +300,7 @@ func spawn_bullet(pos, player_id, direction, time_shot, bullet_name = null):
 		t.queue_free();
 		print("waited");
 	
+	# Initialize Bullet
 	var bullet = load("res://GameContent/Bullet.tscn").instance();
 	bullet.position = pos;
 	bullet.direction = direction;
@@ -319,6 +320,11 @@ func spawn_bullet(pos, player_id, direction, time_shot, bullet_name = null):
 		bullet.name = bullet.name + "-" + str(player_id) + "-" + str(bullets_shot);
 		print("Made: " + bullet.name);
 	
+	# Muzzle Flair
+	var particles = load("res://GameContent/Muzzle_Bullet.tscn").instance();
+	add_child(particles);
+	particles.position = get_node("Bullet_Starts/" + String($Sprite_Top.frame % $Sprite_Top.hframes)).position;
+	particles.rotation = rotation;
 	
 	return bullet;
 
