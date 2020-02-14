@@ -279,11 +279,11 @@ func shoot_bullet(direction):
 	$Shoot_Cooldown_Timer.start();
 	bullets_shot = bullets_shot + 1;
 	# Re-enable the code below to have the bullet start out of the end of the gun
-	var bullet_start = position# + get_node("Bullet_Starts/" + String($Sprite_Top.frame % $Sprite_Top.hframes)).position;
+	var bullet_start = position + get_node("Bullet_Starts/" + String($Sprite_Top.frame % $Sprite_Top.hframes)).position;
 	# Offset bullet start by a bit because player frames are perfectly centered
-	if direction.y == 0:
+	if false and direction.y == 0:
 		bullet_start += Vector2(0, 10);
-	if direction.x != 0 and direction.y != 0:
+	if false and direction.x != 0 and direction.y != 0:
 		bullet_start += Vector2(10 * direction.x/abs(direction.x),0);
 	var bullet = spawn_bullet(bullet_start, 0 if Globals.testing else get_tree().get_network_unique_id(), direction,OS.get_system_time_msecs(), null);
 	#camera_ref.shake();
@@ -294,6 +294,14 @@ func shoot_bullet(direction):
 
 # Spawns a bullet given various initializaiton parameters
 func spawn_bullet(pos, player_id, direction, time_shot, bullet_name = null):
+	
+	# Muzzle Flair
+	var particles = load("res://GameContent/Muzzle_Bullet.tscn").instance();
+	#get_tree().get_root().get_node("MainScene").add_child(particles);
+	add_child(particles);
+	particles.position = get_node("Bullet_Starts/" + String($Sprite_Top.frame % $Sprite_Top.hframes)).position;
+	particles.rotation = Vector2(0,0).angle_to_point(direction) + PI;
+	particles.direction = direction;
 	
 #	# If this was fired by another player, compensate for player lerp speed
 	if !Globals.testing and player_id != get_tree().get_network_unique_id() && !get_tree().is_network_server():
@@ -326,11 +334,6 @@ func spawn_bullet(pos, player_id, direction, time_shot, bullet_name = null):
 		bullet.name = bullet.name + "-" + str(player_id) + "-" + str(bullets_shot);
 		print("Made: " + bullet.name);
 	
-	# Muzzle Flair
-	var particles = load("res://GameContent/Muzzle_Bullet.tscn").instance();
-	add_child(particles);
-	particles.position = get_node("Bullet_Starts/" + String($Sprite_Top.frame % $Sprite_Top.hframes)).position;
-	particles.rotation = rotation;
 	
 	return bullet;
 
@@ -342,6 +345,7 @@ func move_on_inputs(teleport = false):
 	var input = Vector2(0,0);
 	input.x = (1 if Input.is_key_pressed(KEY_D) else 0) - (1 if Input.is_key_pressed(KEY_A) else 0)
 	input.y = (1 if Input.is_key_pressed(KEY_S) else 0) - (1 if Input.is_key_pressed(KEY_W) else 0)
+	input = input.normalized();
 	last_movement_input = input;
 	
 	# Distribute values evenly so that distance is equal even when moving at angle
@@ -370,6 +374,7 @@ func shoot_on_inputs():
 	var input = Vector2(0,0);
 	input.x = (1 if Input.is_key_pressed(KEY_RIGHT) else 0) - (1 if Input.is_key_pressed(KEY_LEFT) else 0)
 	input.y = (1 if Input.is_key_pressed(KEY_DOWN) else 0) - (1 if Input.is_key_pressed(KEY_UP) else 0)
+	input = input.normalized();
 	if input != Vector2.ZERO:
 		if $Flag_Holder.get_child_count() != 0:
 			drop_current_flag($Flag_Holder.get_global_position());
@@ -416,9 +421,11 @@ func update_look_direction():
 		var input = Vector2(0,0);
 		input.x = (1 if Input.is_key_pressed(KEY_RIGHT) else 0) - (1 if Input.is_key_pressed(KEY_LEFT) else 0)
 		input.y = (1 if Input.is_key_pressed(KEY_DOWN) else 0) - (1 if Input.is_key_pressed(KEY_UP) else 0)
+		input = input.normalized();
 		if input == Vector2(0,0):
 			input.x = (1 if Input.is_key_pressed(KEY_D) else 0) - (1 if Input.is_key_pressed(KEY_A) else 0)
 			input.y = (1 if Input.is_key_pressed(KEY_S) else 0) - (1 if Input.is_key_pressed(KEY_W) else 0)
+			input = input.normalized();
 			if input == Vector2(0,0):
 				input = previous_look_input;
 		previous_look_input = input;

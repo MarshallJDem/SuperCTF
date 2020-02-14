@@ -4,17 +4,16 @@
 [ext_resource path="res://GameContent/Muzzle_Bullet.gd" type="Script" id=2]
 
 [node name="Node2D" type="Node2D"]
-position = Vector2( 25.451, -3.03544 )
 z_index = -5
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
-position = Vector2( 25.2558, -8.4921 )
-scale = Vector2( 1.5, 1.5 )
+position = Vector2( 29.538, 0 )
+scale = Vector2( 4, 4 )
 texture = ExtResource( 1 )
-hframes = 7
+hframes = 5
 
 [node name="Death_Timer" type="Timer" parent="."]
-wait_time = 0.4
+wait_time = 0.1
 one_shot = true
 autostart = true
