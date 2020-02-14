@@ -301,7 +301,6 @@ func spawn_bullet(pos, player_id, direction, time_shot, bullet_name = null):
 	add_child(particles);
 	particles.position = get_node("Bullet_Starts/" + String($Sprite_Top.frame % $Sprite_Top.hframes)).position;
 	particles.rotation = Vector2(0,0).angle_to_point(direction) + PI;
-	particles.direction = direction;
 	
 #	# If this was fired by another player, compensate for player lerp speed
 	if !Globals.testing and player_id != get_tree().get_network_unique_id() && !get_tree().is_network_server():

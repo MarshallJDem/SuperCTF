@@ -15,6 +15,7 @@ func _area_entered(body):
 
 # Called when this bullet collides with a wall
 func collided_with_wall(_wall):
+	print("wall")
 	if !Globals.testing and get_tree().is_network_server():
 		get_parent().call_deferred("rpc", "receive_death");
 	else:
@@ -42,5 +43,6 @@ func collided_with_laser(laser):
 
 # Tells all clients to kill the bullet
 func call_death():
+	print("CALL_DEATH")
 	if get_tree().is_network_server():
 		get_parent().rpc("receive_death");
