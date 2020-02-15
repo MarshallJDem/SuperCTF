@@ -275,7 +275,8 @@ func _draw():
 
 
 # Shoots a bullet shot
-func shoot_bullet(direction):
+func shoot_bullet(d):
+	var direction = d.normalized();
 	$Shoot_Cooldown_Timer.start();
 	bullets_shot = bullets_shot + 1;
 	# Re-enable the code below to have the bullet start out of the end of the gun
@@ -586,7 +587,6 @@ func _invincibility_timer_ended():
 	if get_tree().is_network_server():
 		rpc("receive_end_invinciblity");
 
-	
 
 
 # -------- NETWORKING ------------------------------------------------------------>
