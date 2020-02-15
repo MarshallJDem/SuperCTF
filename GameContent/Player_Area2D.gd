@@ -34,7 +34,6 @@ func collided_with_bullet(bullet):
 	if get_tree().get_root().get_node("MainScene/Players/" + str(bullet.player_id)).team_id == player.team_id:
 		return;
 	player.rpc("receive_hit", bullet.player_id, 0);
-	print("YUUUUUUUUUUP");
 	bullet.rpc("receive_death");
 
 # Called when this player collides with a flag_home
