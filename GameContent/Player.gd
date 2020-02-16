@@ -286,12 +286,13 @@ func shoot_bullet(d):
 		bullet_start += Vector2(0, 10);
 	if false and direction.x != 0 and direction.y != 0:
 		bullet_start += Vector2(10 * direction.x/abs(direction.x),0);
-	var bullet = spawn_bullet(bullet_start, 0 if Globals.testing else get_tree().get_network_unique_id(), direction,OS.get_system_time_msecs(), null);
+	var time = OS.get_system_time_msecs() - Globals.match_start_time
+	var bullet = spawn_bullet(bullet_start, 0 if Globals.testing else get_tree().get_network_unique_id(), direction,time, null);
 	#camera_ref.shake();
 	$Shoot_Animation_Timer.start();
 	animation_set_frame = 0;
 	if !Globals.testing:
-		rpc_id(1, "send_bullet", bullet_start,get_tree().get_network_unique_id(), direction, OS.get_system_time_msecs(), bullet.name);
+		rpc_id(1, "send_bullet", bullet_start,get_tree().get_network_unique_id(), direction, time, bullet.name);
 
 # Spawns a bullet given various initializaiton parameters
 func spawn_bullet(pos, player_id, direction, time_shot, bullet_name = null):

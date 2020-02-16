@@ -6,13 +6,13 @@ const	SCORE_LIMIT	= 2;
 var		players		= {}
 var		player_name;
 var		scores		= [];
+var		round_num	= 0;
 
 var server = null;
 var client = null;
 
 
 var round_is_ended = false;
-
 var match_is_running = false;
 
 # Player "Struct"
@@ -298,7 +298,13 @@ func reset_game_objects():
 
 # Loads up a new round but does not start it yet
 remotesync func load_new_round():
-	print("Loading New Round");
+	print("Loading New Round" + str(round_num + 1));
+	if round_num == 0:
+		Globals.match_start_time = OS.get_system_time_msecs();
+		# If we aren't the server, account for a 1 way latency
+		if !get_tree().is_network_server():
+			Globals.match_start_time -= Globals.player_lerp_time/2;
+	round_num += 1;
 	round_is_ended = false;
 	reset_game_objects();
 	get_tree().get_root().get_node("MainScene/Countdown_Audio").play();

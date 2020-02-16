@@ -4,7 +4,7 @@ extends Node
 var serverIP;
 var serverPublicToken;
 var serverPrivateToken = "privatetoken42402";
-var isServer = true;
+var isServer = false;
 var allowedPlayers = [];
 var matchID;
 
@@ -27,6 +27,9 @@ var lasers_destroy_bullets = true;
 var testing = false;
 var forcefield_cooldown = 3;
 var lag_comp_headstart_dist = 75;
+
+# ----- Quick Access global variables -----
+var match_start_time = 0;
 
 func write_save_data():
 	var file = File.new()

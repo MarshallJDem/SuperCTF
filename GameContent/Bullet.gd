@@ -29,7 +29,7 @@ func _ready():
 		# Start the bullet slightly down directory to help with lag sync a bit
 		position = position + (direction * Globals.lag_comp_headstart_dist);
 		initial_puppet_pos = position;
-		puppet_time_shot = OS.get_system_time_msecs();
+		puppet_time_shot = OS.get_system_time_msecs() - Globals.match_start_time;
 		if Globals.testing:
 			initial_time_shot = initial_time_shot - 100;
 
@@ -45,10 +45,10 @@ func _physics_process(delta):
 	
 # Given an amount of delta time, moves the bullet in its trajectory direction using its speed
 func move():
-	var time_elapsed = (OS.get_system_time_msecs() - initial_time_shot)/1000.0;
+	var time_elapsed = ((OS.get_system_time_msecs() - Globals.match_start_time) - initial_time_shot)/1000.0;
 	var real_position = initial_real_pos + (direction * speed * time_elapsed);
 	if $Lag_Comp_Timer.time_left > 0:
-		var puppet_time_elapsed = (OS.get_system_time_msecs() - puppet_time_shot)/1000.0;
+		var puppet_time_elapsed = ((OS.get_system_time_msecs() - Globals.match_start_time) - puppet_time_shot)/1000.0;
 		var puppet_position = initial_puppet_pos + (direction * speed * puppet_time_elapsed);
 		position = lerp(puppet_position, real_position, 1.0 - ($Lag_Comp_Timer.time_left/$Lag_Comp_Timer.wait_time))
 	else:
