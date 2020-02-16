@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/muzzle_bullet.png-df32317f750335c181558f892b0e18f3.stex"
+path="res://.import/muzzle_bullet_R.png-a2f0aa3d33724d6e10a3f128fd09654b.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Weapons/muzzle_bullet.png"
-dest_files=[ "res://.import/muzzle_bullet.png-df32317f750335c181558f892b0e18f3.stex" ]
+source_file="res://Assets/Weapons/muzzle_bullet_R.png"
+dest_files=[ "res://.import/muzzle_bullet_R.png-a2f0aa3d33724d6e10a3f128fd09654b.stex" ]
 
 [params]
 

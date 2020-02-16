@@ -299,6 +299,7 @@ func spawn_bullet(pos, player_id, direction, time_shot, bullet_name = null):
 	
 	# Muzzle Flair
 	var particles = load("res://GameContent/Muzzle_Bullet.tscn").instance();
+	particles.team_id = team_id;
 	#get_tree().get_root().get_node("MainScene").add_child(particles);
 	add_child(particles);
 	particles.position = get_node("Bullet_Starts/" + String($Sprite_Top.frame % $Sprite_Top.hframes)).position;
