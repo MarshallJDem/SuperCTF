@@ -1,24 +1,10 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://GameContent/Blue_Bullet_Death_Particle_Gradient.tres" type="Gradient" id=1]
+[ext_resource path="res://Assets/Weapons/bullet_death_B.png" type="Texture" id=1]
 [ext_resource path="res://GameContent/Bullet_Death_Particles.gd" type="Script" id=2]
 [ext_resource path="res://Assets/Sound/Bullet_Shot_2.wav" type="AudioStream" id=3]
 
-[node name="Bullet_Death_Particles" type="CPUParticles2D"]
-amount = 25
-lifetime = 0.34
-explosiveness = 1.0
-emission_shape = 2
-emission_rect_extents = Vector2( 30, 10 )
-spread = 41.42
-gravity = Vector2( 0, 0 )
-initial_velocity = 734.5
-initial_velocity_random = 0.89
-angular_velocity = 318.58
-angular_velocity_random = 0.67
-damping = 100.0
-scale_amount = 4.0
-color_ramp = ExtResource( 1 )
+[node name="Bullet_Death_Particles" type="Node2D"]
 script = ExtResource( 2 )
 
 [node name="Death_Timer" type="Timer" parent="."]
@@ -32,3 +18,9 @@ volume_db = -5.0
 pitch_scale = 0.5
 autoplay = true
 attenuation = 0.392292
+
+[node name="Sprite" type="Sprite" parent="."]
+rotation = 1.5708
+scale = Vector2( 5, 5 )
+texture = ExtResource( 1 )
+hframes = 5

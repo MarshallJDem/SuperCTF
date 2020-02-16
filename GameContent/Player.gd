@@ -328,7 +328,7 @@ func spawn_bullet(pos, player_id, direction, time_shot, bullet_name = null):
 		bullet.get_node("Sprite").set_texture(bullet_atlas_blue);
 	elif team_id == 1:
 		bullet.get_node("Sprite").set_texture(bullet_atlas_red);
-	get_tree().get_root().get_node("MainScene").add_child(bullet);
+	get_tree().get_root().get_node("MainScene").call_deferred("add_child", bullet);
 	if bullet_name != null:
 		bullet.name = bullet_name;
 		print("Received: " + bullet_name);
@@ -350,17 +350,13 @@ func move_on_inputs(teleport = false):
 	input = input.normalized();
 	last_movement_input = input;
 	
-	# Distribute values evenly so that distance is equal even when moving at angle
-	var c = 1;
-	if input.x != 0 and input.y != 0:
-		c = 1 / sqrt (pow(input.x, 2) + pow(input.y, 2));
-	var distribution = input * c;
+	
 	var move_speed = speed;
 	if sprintEnabled:
 		move_speed += SPRINT_SPEED;
 	if teleport:
 		move_speed = TELEPORT_SPEED;
-	var vec = (distribution * move_speed);
+	var vec = (input * move_speed);
 	
 	var previous_pos = position;
 	var change = move_and_slide(vec);

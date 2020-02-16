@@ -9,7 +9,7 @@
 radius = 15.3828
 height = 0.671213
 
-[node name="Bullet" type="Node2D" groups=[
+[node name="Bullet" type="KinematicBody2D" groups=[
 "Bullets",
 "Projectiles",
 ]]

@@ -20,12 +20,11 @@ func _area_entered(body):
 
 # Called when this bullet collides with a wall
 func collided_with_wall(_wall):
-	print("wall")
-	if get_tree().is_network_server():
+	if !Globals.testing && get_tree().is_network_server():
 		get_parent().call_deferred("rpc", "receive_death");
 		flagged_for_death = true;
 	else:
-		get_parent().preliminary_death();
+		get_parent().call_deferred("preliminary_death");
 
 # Called when this bullet collides with another bullet
 func collided_with_bullet(bullet):
@@ -36,7 +35,7 @@ func collided_with_bullet(bullet):
 		get_parent().call_deferred("rpc", "receive_death");
 		flagged_for_death = true;
 	else:
-		get_parent().preliminary_death();
+		get_parent().call_deferred("preliminary_death");
 
 # Called when the bullet collides with a laser
 func collided_with_laser(laser):
@@ -46,7 +45,7 @@ func collided_with_laser(laser):
 	if get_tree().is_network_server():
 		flagged_for_death = true;
 	else:
-		get_parent().preliminary_death();
+		get_parent().call_deferred("preliminary_death");
 
 ## Tells all clients to kill the bullet
 #func call_death():

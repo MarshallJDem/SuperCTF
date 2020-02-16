@@ -1,9 +1,9 @@
-extends Node2D
+extends KinematicBody2D
 
 var direction = Vector2(0,0);
 var speed = 875;
 var player_id;
-var team_id;
+var team_id = -1;
 var show_death_particles = true;
 var is_from_puppet = false;
 # The exact time the player who shot this actually shot this (used to sync up lag)
@@ -33,13 +33,13 @@ func _ready():
 		if Globals.testing:
 			initial_time_shot = initial_time_shot - 100;
 
-func _process(delta):
+func _process(_delta):
 	pass;
 
 # stupid workaround neccessary to make particles not flash random colors upon spawning
-func _physics_process(delta):
-	self.z_index = self.position.y;
+func _physics_process(_delta):
 	move();
+	self.z_index = self.position.y;
 	if should_die:
 		die();
 	
@@ -47,12 +47,14 @@ func _physics_process(delta):
 func move():
 	var time_elapsed = ((OS.get_system_time_msecs() - Globals.match_start_time) - initial_time_shot)/1000.0;
 	var real_position = initial_real_pos + (direction * speed * time_elapsed);
+	var new_pos;
 	if $Lag_Comp_Timer.time_left > 0:
 		var puppet_time_elapsed = ((OS.get_system_time_msecs() - Globals.match_start_time) - puppet_time_shot)/1000.0;
 		var puppet_position = initial_puppet_pos + (direction * speed * puppet_time_elapsed);
-		position = lerp(puppet_position, real_position, 1.0 - ($Lag_Comp_Timer.time_left/$Lag_Comp_Timer.wait_time))
+		new_pos = lerp(puppet_position, real_position, 1.0 - ($Lag_Comp_Timer.time_left/$Lag_Comp_Timer.wait_time))
 	else:
-		position = real_position;
+		new_pos = real_position;
+	var change = move_and_collide(new_pos - position);
 
 # Called when the animation timer fires
 func _animation_timer_ended():
@@ -63,10 +65,9 @@ remotesync func receive_death():
 	should_die = true;
 
 func die():
-	print("die")
 	#Only show particles if we havn't already done so from a preliminary death
 	if show_death_particles:
-		spawn_death_particles();
+		call_deferred("spawn_death_particles");
 	queue_free();
 
 var should_die = false;
@@ -91,10 +92,8 @@ func preliminary_death():
 
 func spawn_death_particles():
 	var particles = load("res://GameContent/Bullet_Death_Particles.tscn").instance();
-	get_tree().get_root().get_node("MainScene").add_child(particles);
 	particles.position = position;
 	particles.rotation = rotation;
-	if team_id == 0:
-		particles.color_ramp = load("res://GameContent/Blue_Bullet_Death_Particle_Gradient.tres")
-	elif team_id == 1:
-		particles.color_ramp = load("res://GameContent/Red_Bullet_Death_Particle_Gradient.tres")
+	particles.z_index = z_index;
+	particles.team_id = team_id;
+	get_tree().get_root().get_node("MainScene").add_child(particles);
