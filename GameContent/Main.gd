@@ -7,7 +7,6 @@ func _ready():
 	if !Globals.testing:
 		$Test_Player.queue_free();
 func _process(delta):
-	print(OS.get_system_time_msecs());
 	if abs($Music_Audio.pitch_scale - target_music_pitch) < 0.03:
 		$Music_Audio.set_pitch_scale(target_music_pitch);
 	else:

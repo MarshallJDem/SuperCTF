@@ -34,7 +34,6 @@ func _ready():
 			initial_time_shot = initial_time_shot - 100;
 
 func _process(delta):
-	print(position);
 	pass;
 
 # stupid workaround neccessary to make particles not flash random colors upon spawning
