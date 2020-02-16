@@ -8,7 +8,6 @@ func _ready():
 
 # Called when this area enters another area
 func _area_entered(body):
-	print("Bullet_ENTERED");
 	if flagged_for_death:
 		return;
 	if body.is_in_group("Wall_Bodies"):

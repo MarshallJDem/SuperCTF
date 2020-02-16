@@ -25,16 +25,19 @@ Globals="*res://Globals.gd"
 
 [display]
 
-window/size/width=960
-window/size/height=640
+window/size/width=1920
+window/size/height=1080
 mouse_cursor/custom_image="res://crosshair.png"
 mouse_cursor/custom_image_hotspot=Vector2( 18, 18 )
+window/stretch/mode="viewport"
+window/stretch/aspect="keep"
 
 [rendering]
 
 quality/driver/driver_name="GLES2"
 quality/intended_usage/framebuffer_allocation=0
 quality/intended_usage/framebuffer_allocation.mobile=0
+quality/2d/use_pixel_snap=true
 vram_compression/import_etc=true
 vram_compression/import_etc2=false
-environment/default_clear_color=Color( 0.960784, 0.960784, 0.960784, 1 )
+environment/default_clear_color=Color( 0.694118, 0.694118, 0.694118, 1 )

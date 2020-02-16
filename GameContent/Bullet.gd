@@ -61,7 +61,6 @@ func _animation_timer_ended():
 	$Sprite.frame = ($Sprite.frame + 1) % $Sprite.hframes;
 # Called by server to terminate this bullet early
 remotesync func receive_death():
-	print("receive_death")
 	should_die = true;
 
 func die():
@@ -79,7 +78,6 @@ func _death_timer_ended():
 
 # Called if the bullet dies locally on the machine. For now we handle it as just making it look like bullet death
 func preliminary_death():
-	print("preliminary_death")
 	visible = false
 	#Only show particles if we havn't already done so from a preliminary death
 	if show_death_particles:
