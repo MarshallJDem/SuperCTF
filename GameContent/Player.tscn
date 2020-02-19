@@ -118,6 +118,14 @@ one_shot = true
 wait_time = 0.4
 one_shot = true
 
+[node name="Laser_Input_Timer" type="Timer" parent="."]
+wait_time = 0.08
+one_shot = true
+
+[node name="Laser_Cooldown_Timer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
 [node name="Teleport_Timer" type="Timer" parent="."]
 one_shot = true
 

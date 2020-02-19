@@ -72,6 +72,8 @@ func _ready():
 	$Respawn_Timer.connect("timeout", self, "_respawn_timer_ended");
 	$Invincibility_Timer.connect("timeout", self, "_invincibility_timer_ended");
 	$Laser_Timer.connect("timeout", self, "_laser_timer_ended");
+	$Laser_Input_Timer.connect("timeout", self, "_laser_input_timer_ended");
+	#$Laser_Cooldown_Timer.connect("timeout", self, "_laser_cooldown_timer_ended");
 	$Teleport_Timer.connect("timeout", self, "_teleport_timer_ended");
 	$Forcefield_Timer.connect("timeout", self, "_forcefield_timer_ended");
 	$Animation_Timer.connect("timeout", self, "_animation_timer_ended");
@@ -139,7 +141,7 @@ func _process(delta):
 		# Don't look around if we're shooting a laser
 		if $Laser_Timer.time_left == 0:
 			update_look_direction();
-		else:
+		if $Laser_Timer.time_left + $Laser_Input_Timer.time_left > 0:
 			speed = AIMING_SPEED * ($Laser_Timer.time_left / $Laser_Timer.wait_time);
 		# Move & Shoot around as long as we aren't typing in chat
 		if !Globals.is_typing_in_chat:
@@ -210,6 +212,15 @@ func start_laser(direction, start_pos, frame):
 func _laser_timer_ended():
 	shoot_laser();
 	speed = BASE_SPEED;
+
+func start_laser_input():
+	$Laser_Input_Timer.start();
+func _laser_input_timer_ended():
+	var start_pos = get_node("Bullet_Starts/" + String($Sprite_Top.frame % $Sprite_Top.hframes)).position;
+	rpc_id(1, "send_start_laser", laser_direction, start_pos, $Sprite_Top.frame);
+	start_laser(laser_direction, start_pos, $Sprite_Top.frame);
+	sprintEnabled = false;
+	
 var current_weapon = 0;
 func switch_weapons():
 	current_weapon = 1 if current_weapon == 0 else 0;
@@ -256,11 +267,16 @@ func shoot_laser():
 	laser.player_id = player_id;
 	laser.team_id = team_id;
 	$Laser_Fire_Audio.play();
+	$Laser_Cooldown_Timer.start();
 
 
 func _draw():
 	if $Laser_Timer.time_left > 0:
-		var size = clamp(1 / ($Laser_Timer.time_left / $Laser_Timer.wait_time), 0 , 5);
+		var size;
+		if $Laser_Input_Timer.time_left > 0:
+			size = 0;
+		else:
+			size = clamp(1 / ($Laser_Timer.time_left / $Laser_Timer.wait_time), 0 , 5);
 		var red = 1 if team_id == 1 else 0;
 		var green = 10.0/255.0 if team_id == 1 else 130.0/255.0;
 		var blue = 1 if team_id == 0 else 0;
@@ -377,11 +393,13 @@ func shoot_on_inputs():
 				rpc_id(1, "send_drop_flag", $Flag_Holder.get_global_position());
 		elif current_weapon == 0 and $Shoot_Cooldown_Timer.time_left == 0:
 			shoot_bullet(input);
-		elif current_weapon == 1 and $Laser_Timer.time_left == 0:
-			var start_pos = get_node("Bullet_Starts/" + String($Sprite_Top.frame % $Sprite_Top.hframes)).position;
-			rpc_id(1, "send_start_laser", input, start_pos, $Sprite_Top.frame);
-			start_laser(input, start_pos, $Sprite_Top.frame);
-			sprintEnabled = false;
+		elif current_weapon == 1 and $Laser_Cooldown_Timer.time_left == 0:
+			# If we are still in input phase, update direction
+			if $Laser_Input_Timer.time_left != 0:
+				laser_direction = input;
+				laser_position = get_node("Bullet_Starts/" + String($Sprite_Top.frame % $Sprite_Top.hframes)).position;
+			elif $Laser_Timer.time_left == 0:
+				start_laser_input();
 
 func _teleport_timer_ended():
 	can_teleport = true;
