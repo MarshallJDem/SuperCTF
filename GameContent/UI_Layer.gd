@@ -52,8 +52,8 @@ func _process(delta):
 			$Ability_GUIs/Forcefield_GUI.modulate = Color(1,1,1,0.2 + 0.4 * ((ff_wait_time - ff_time_left) / ff_wait_time) );
 		
 		# Laser button
-		var laser_time_left = local_player.get_node("Laser_Timer").time_left;
-		var laser_wait_time = local_player.get_node("Laser_Timer").wait_time;
+		var laser_time_left = local_player.get_node("Laser_Cooldown_Timer").time_left;
+		var laser_wait_time = local_player.get_node("Laser_Cooldown_Timer").wait_time;
 		if laser_time_left == 0:
 			$Ability_GUIs/Laser_GUI_Text.text = "FIRE LASER";
 			$Ability_GUIs/Laser_GUI.modulate = Color(1,1,1,1);

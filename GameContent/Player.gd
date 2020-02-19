@@ -594,6 +594,7 @@ func drop_current_flag(flag_position):
 		flag.re_parent(get_tree().get_root().get_node("MainScene"));
 		flag.position = flag_position;
 		$Shoot_Cooldown_Timer.start();
+		$Laser_Cooldown_Timer.start();
 
 # Starts the temporary Invincibility cooldown
 func start_temporary_invincibility():
