@@ -536,15 +536,7 @@ func die():
 		$Killed_Audio.play();
 
 func spawn_death_particles():
-	var particles = load("res://GameContent/Player_Death_Particles.tscn").instance();
-	get_tree().get_root().get_node("MainScene").add_child(particles);
-	particles.position = position;
-	particles.rotation = rotation;
-	# Were using the bullet gradients out of laziness
-	if team_id == 0:
-		particles.color_ramp = load("res://GameContent/Blue_Bullet_Death_Particle_Gradient.tres")
-	elif team_id == 1:
-		particles.color_ramp = load("res://GameContent/Red_Bullet_Death_Particle_Gradient.tres")
+	pass; # For now...
 
 # Called by the respawn timer when it ends
 func _respawn_timer_ended():

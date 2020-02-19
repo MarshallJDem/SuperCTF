@@ -7,7 +7,9 @@ func _ready():
 
 # Called when this area enters another area
 func _area_entered(body):
-	if get_tree().get_root().get_node("MainScene/NetworkController").round_is_ended: return;
+	# Ignore collisons after the round ends
+	if get_tree().get_root().get_node("MainScene/NetworkController").round_is_ended: 
+		return;
 	# Only detect collisions if we are the server
 	if !Globals.testing and get_tree().is_network_server():
 		# If this player is dead, ignore any collisions
@@ -22,7 +24,9 @@ func _area_entered(body):
 
 # Called when this player collides with a bullet
 func collided_with_bullet(bullet):
-	if get_tree().get_root().get_node("MainScene/NetworkController").round_is_ended: return;
+	# Ignore collisons after the round ends
+	if get_tree().get_root().get_node("MainScene/NetworkController").round_is_ended: 
+		return;
 	var player = get_parent();
 	# If we're invincible, ignore it
 	if player.invincible:
@@ -33,6 +37,7 @@ func collided_with_bullet(bullet):
 	# If our teammate shot this, ignore it
 	if get_tree().get_root().get_node("MainScene/Players/" + str(bullet.player_id)).team_id == player.team_id:
 		return;
+	# Else we've been hit by an enemy
 	player.rpc("receive_hit", bullet.player_id, 0);
 	bullet.rpc("receive_death");
 
