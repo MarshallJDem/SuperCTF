@@ -20,7 +20,6 @@ autoplay = true
 attenuation = 0.392292
 
 [node name="Sprite" type="Sprite" parent="."]
-rotation = 1.5708
-scale = Vector2( 5, 5 )
+scale = Vector2( 1.5, 1.5 )
 texture = ExtResource( 1 )
 hframes = 5

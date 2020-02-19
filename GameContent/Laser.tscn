@@ -3,12 +3,12 @@
 [ext_resource path="res://GameContent/Laser.gd" type="Script" id=1]
 
 [sub_resource type="CapsuleShape2D" id=1]
-radius = 20.0
-height = 5000.0
+radius = 7.5
+height = 1000.0
 
 [node name="Laser" type="Node2D" groups=[
-"Projectiles",
 "Lasers",
+"Projectiles",
 ]]
 z_index = 4011
 z_as_relative = false
@@ -24,5 +24,5 @@ autostart = true
 ]]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2( 0, 2500 )
+position = Vector2( 0, 500 )
 shape = SubResource( 1 )

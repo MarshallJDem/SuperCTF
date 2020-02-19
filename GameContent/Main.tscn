@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=2]
+[gd_scene load_steps=30 format=2]
 
 [ext_resource path="res://GameContent/Main.gd" type="Script" id=1]
 [ext_resource path="res://GameContent/Player.tscn" type="PackedScene" id=2]
@@ -25,7 +25,6 @@
 [ext_resource path="res://Assets/Environment/wall_3_R.png" type="Texture" id=23]
 [ext_resource path="res://Assets/Environment/border_wall_H.png" type="Texture" id=24]
 [ext_resource path="res://Assets/Environment/border_wall_V.png" type="Texture" id=25]
-[ext_resource path="res://Assets/Environment/background.png" type="Texture" id=26]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0, 0, 0, 0.145098 )
@@ -42,17 +41,14 @@ bg_color = Color( 1, 1, 1, 0 )
 [sub_resource type="Gradient" id=4]
 colors = PoolColorArray( 0, 0, 0, 1, 1, 1, 1, 0 )
 
-[sub_resource type="RectangleShape2D" id=5]
-extents = Vector2( 1, 1 )
-
 [node name="MainScene" type="Node2D"]
 script = ExtResource( 1 )
 __meta__ = {
-"_edit_horizontal_guides_": [  ],
-"_edit_vertical_guides_": [  ]
+"_edit_horizontal_guides_": [  ]
 }
 
 [node name="Test_Player" parent="." instance=ExtResource( 2 )]
+position = Vector2( 15.6066, 14.9669 )
 
 [node name="Players" type="Node" parent="."]
 
@@ -253,22 +249,14 @@ valign = 1
 [node name="Environment" type="Node" parent="."]
 
 [node name="Node2D" type="Node2D" parent="Environment"]
-position = Vector2( -4000, -1350 )
 z_index = -4096
 
 [node name="ColorRect" type="ColorRect" parent="Environment/Node2D"]
 show_behind_parent = true
-margin_top = 2.61353
-margin_right = 7999.0
-margin_bottom = 2702.61
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="TextureRect" type="TextureRect" parent="Environment/Node2D"]
-margin_right = 40.0
-margin_bottom = 40.0
-texture = ExtResource( 26 )
+margin_left = -1354.0
+margin_top = -468.0
+margin_right = 1354.0
+margin_bottom = 468.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -296,28 +284,6 @@ scale_amount_random = 1.0
 color_ramp = SubResource( 4 )
 hue_variation_random = 1.0
 
-[node name="Wall2" type="KinematicBody2D" parent="Environment"]
-position = Vector2( 4000, 0 )
-scale = Vector2( 2, 1350 )
-z_index = -4015
-
-[node name="ColorRect" type="ColorRect" parent="Environment/Wall2"]
-margin_left = -1.0
-margin_top = -1.0
-margin_right = 1.0
-margin_bottom = 1.0
-color = Color( 0, 0, 0, 1 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/Wall2"]
-shape = SubResource( 5 )
-
-[node name="Area2D" type="Area2D" parent="Environment/Wall2" groups=[
-"Wall_Bodies",
-]]
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="Environment/Wall2/Area2D"]
-shape = SubResource( 5 )
-
 [node name="Bound3" parent="Environment" instance=ExtResource( 16 )]
 visible = false
 position = Vector2( 4500, 0 )
@@ -339,69 +305,87 @@ position = Vector2( 0, 1840.43 )
 scale = Vector2( 5000, 501.078 )
 
 [node name="Wall_H_M_B" parent="Environment" instance=ExtResource( 17 )]
-position = Vector2( -2200, 850 )
+position = Vector2( -650, 300 )
+scale = Vector2( 1, 1 )
 z_index = 850
+z_as_relative = false
 
 [node name="Wall_H_M_B2" parent="Environment" instance=ExtResource( 17 )]
-position = Vector2( -2200, -850 )
+position = Vector2( -650, -300 )
+scale = Vector2( 1, 1 )
 z_index = -850
+z_as_relative = false
 
 [node name="Wall_H_M_B3" parent="Environment" instance=ExtResource( 17 )]
-position = Vector2( 2200, -850 )
+position = Vector2( 650, -300 )
+scale = Vector2( 1, 1 )
 z_index = -850
+z_as_relative = false
 texture = ExtResource( 22 )
 
 [node name="Wall_H_M_B4" parent="Environment" instance=ExtResource( 17 )]
-position = Vector2( 2201.47, 851.684 )
+position = Vector2( 650, 300 )
+scale = Vector2( 1, 1 )
 z_index = 850
+z_as_relative = false
 texture = ExtResource( 22 )
 
 [node name="Wall_H_M_B5" parent="Environment" instance=ExtResource( 17 )]
-position = Vector2( 400, 350 )
-scale = Vector2( 2, 3 )
+position = Vector2( 175, 120 )
+scale = Vector2( 1, 1 )
 z_index = 350
+z_as_relative = false
 texture = ExtResource( 22 )
 
 [node name="Wall_H_M_B6" parent="Environment" instance=ExtResource( 17 )]
-position = Vector2( -400, 350 )
-scale = Vector2( 2, 3 )
+position = Vector2( -175, 120 )
+scale = Vector2( 1, 1 )
 z_index = 350
+z_as_relative = false
 
 [node name="Wall_H_M_B7" parent="Environment" instance=ExtResource( 17 )]
-position = Vector2( -400, -350 )
-scale = Vector2( 2, 3 )
+position = Vector2( -175, -120 )
+scale = Vector2( 1, 1 )
 z_index = -350
+z_as_relative = false
 
 [node name="Wall_H_M_B8" parent="Environment" instance=ExtResource( 17 )]
-position = Vector2( 400, -350 )
-scale = Vector2( 2, 3 )
+position = Vector2( 175, -120 )
+scale = Vector2( 1, 1 )
 z_index = -350
+z_as_relative = false
 texture = ExtResource( 22 )
 
 [node name="Wall_V_M_B" parent="Environment" instance=ExtResource( 18 )]
-position = Vector2( -2900, 0 )
+position = Vector2( -1000, 0 )
+scale = Vector2( 1, 1 )
 z_index = 233
+z_as_relative = false
 
 [node name="Wall_V_M_B2" parent="Environment" instance=ExtResource( 18 )]
-position = Vector2( 2900, 0 )
+position = Vector2( 1000, 0 )
+scale = Vector2( 1, 1 )
 z_index = 233
+z_as_relative = false
 texture = ExtResource( 23 )
 
 [node name="Wall_V_M_B3" parent="Environment" instance=ExtResource( 18 )]
-position = Vector2( 3400, 0 )
-scale = Vector2( 2, 2.07 )
+position = Vector2( 1200, 0 )
+scale = Vector2( 1, 1 )
 z_index = 175
+z_as_relative = false
 texture = ExtResource( 23 )
 
 [node name="Wall_V_M_B4" parent="Environment" instance=ExtResource( 18 )]
-position = Vector2( -3400, 0 )
-scale = Vector2( 2, 2.07 )
+position = Vector2( -1200, 0 )
+scale = Vector2( 1, 1 )
 z_index = 175
+z_as_relative = false
 
 [node name="Border_Wall_H" type="Sprite" parent="Environment"]
-position = Vector2( 0, 1355.53 )
-scale = Vector2( 2.965, 2.965 )
+position = Vector2( 0, 462 )
 z_index = 1500
+z_as_relative = false
 texture = ExtResource( 24 )
 offset = Vector2( 0, -5 )
 region_rect = Rect2( 10, 10, 10, 10 )
@@ -410,11 +394,12 @@ region_rect = Rect2( 10, 10, 10, 10 )
 visible = false
 position = Vector2( -0.034, 1.469 )
 scale = Vector2( 1359.11, 5.042 )
+z_as_relative = false
 
 [node name="Border_Wall_H2" type="Sprite" parent="Environment"]
-position = Vector2( 0.092, -1355.8 )
-scale = Vector2( 2.965, 2.965 )
+position = Vector2( 0, -452 )
 z_index = -1500
+z_as_relative = false
 texture = ExtResource( 24 )
 offset = Vector2( 0, -5 )
 region_rect = Rect2( 10, 10, 10, 10 )
@@ -423,11 +408,12 @@ region_rect = Rect2( 10, 10, 10, 10 )
 visible = false
 position = Vector2( -0.034, 1.303 )
 scale = Vector2( 1352.3, 4.572 )
+z_as_relative = false
 
 [node name="Wall_V_M_B5" type="Sprite" parent="Environment"]
-position = Vector2( -3989.53, -15.61 )
-scale = Vector2( 2.965, 2.965 )
+position = Vector2( -1346, 0 )
 z_index = 1500
+z_as_relative = false
 texture = ExtResource( 25 )
 region_rect = Rect2( 10, 10, 10, 10 )
 
@@ -435,11 +421,13 @@ region_rect = Rect2( 10, 10, 10, 10 )
 visible = false
 position = Vector2( -4.05, -0.562 )
 scale = Vector2( 2.836, 467.012 )
+z_as_relative = false
 
 [node name="Wall_V_M_B6" type="Sprite" parent="Environment"]
-position = Vector2( 3989.53, -15.61 )
-scale = Vector2( -2.965, 2.965 )
+position = Vector2( 1346, 0 )
+scale = Vector2( -1, 1 )
 z_index = 1500
+z_as_relative = false
 texture = ExtResource( 25 )
 region_rect = Rect2( 10, 10, 10, 10 )
 

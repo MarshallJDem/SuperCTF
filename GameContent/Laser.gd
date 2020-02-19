@@ -13,7 +13,8 @@ func _process(delta):
 	update();
 
 func _draw():
-	var size = 40
+	var size = 15
+	var length = 1000
 	var red = 1 if team_id == 1 else 0;
 	var green = 10.0/255.0 if team_id == 1 else 130.0/255.0;
 	var blue = 1 if team_id == 0 else 0;
@@ -22,10 +23,10 @@ func _draw():
 	green = green + lightener;
 	blue = blue + lightener;
 	var progress = (1 - ($Death_Timer.time_left / $Death_Timer.wait_time))
-	var shrinkage = 100 * progress;
-	draw_line(Vector2(0,shrinkage + 20), Vector2(0, 5000 - shrinkage), Color(red, green, blue, 1 - progress), size-2);
-	draw_line(Vector2(0,shrinkage + 10), Vector2(0, 5000 - shrinkage), Color(red + 0.3, green + 0.3, blue + 0.3, 1 - progress), size/1.5);
-	draw_line(Vector2(0,shrinkage), Vector2(0, 5000 - shrinkage), Color(red + 0.7, green + 0.7, blue + 0.7, 1 - progress), size/2.5);
+	var shrinkage = 0 * progress;
+	draw_line(Vector2(0,shrinkage), Vector2(0, length - shrinkage), Color(red, green, blue, 1 - progress), size-2);
+	draw_line(Vector2(0,shrinkage), Vector2(0, length - shrinkage), Color(red + 0.3, green + 0.3, blue + 0.3, 1 - progress), size/1.5);
+	draw_line(Vector2(0,shrinkage), Vector2(0, length - shrinkage), Color(red + 0.7, green + 0.7, blue + 0.7, 1 - progress), size/2.5);
 
 # Called when the death timer ends;
 func _death_timer_ended():

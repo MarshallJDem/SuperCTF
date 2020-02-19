@@ -4,10 +4,10 @@ var control = false;
 var IS_CONTROLLED_BY_MOUSE = false;
 var player_id = 0;
 var team_id = -1;
-const BASE_SPEED = 625;
-const AIMING_SPEED = 150;
-const SPRINT_SPEED = 250;
-const TELEPORT_SPEED = 7500;
+const BASE_SPEED = 200;
+const AIMING_SPEED = 15;
+const SPRINT_SPEED = 50;
+const TELEPORT_SPEED = 2000;
 var speed = BASE_SPEED;
 # Where this player starts on the map and should respawn at
 var start_pos = Vector2(0,0);
@@ -19,6 +19,8 @@ var invincible = false;
 var camera_ref = null;
 # The direction the laser is firing at
 var laser_direction = Vector2(0,0);
+# The position the laser is firing from
+var laser_position = Vector2(0,0);
 # The number of bullets this player has shot. Used for naming bullets
 var bullets_shot = 0;
 # The time in millis the last position was received
@@ -85,9 +87,11 @@ func _input(event):
 		if event is InputEventKey and event.pressed:
 			if event.scancode == KEY_T:
 				get_tree().get_root().get_node("MainScene/NetworkController").rpc("test_ping");
-			if event.scancode == KEY_SHIFT:
+			if event.scancode == KEY_CONTROL:
 				if $Flag_Holder.get_child_count() == 0:
 					sprintEnabled = !sprintEnabled;
+			if event.scancode == KEY_SHIFT:
+				switch_weapons();
 			if event.scancode == KEY_SPACE:
 				# If were not holding a flag, attempt a teleport
 				if $Flag_Holder.get_child_count() == 0:
@@ -101,16 +105,6 @@ func _input(event):
 				if $Flag_Holder.get_child_count() == 0:
 					if can_place_forcefield:
 						forcefield_placed();
-			if event.scancode == KEY_1:
-				Globals.player_lerp_time = 10;
-			if event.scancode == KEY_2:
-				Globals.player_lerp_time = 50;
-			if event.scancode == KEY_3:
-				Globals.player_lerp_time = 100;
-			if event.scancode == KEY_4:
-				Globals.player_lerp_time = 150;
-			if event.scancode == KEY_5:
-				Globals.player_lerp_time = 200;
 		elif IS_CONTROLLED_BY_MOUSE and event is InputEventMouseButton:
 			if event.button_index == BUTTON_LEFT:
 				if event.pressed: # Click down
@@ -203,11 +197,11 @@ remote func send_start_laser(direction, player_pos, frame):
 remote func receive_start_laser(direction, player_pos, frame):
 	start_laser(direction, player_pos, frame);
 
-func start_laser(direction, player_pos, frame):
-	position = player_pos;
+func start_laser(direction, start_pos, frame):
 	$Sprite_Top.frame = frame;
 	$Sprite_Bottom.frame = frame;
 	laser_direction = direction;
+	laser_position = start_pos;
 	$Laser_Timer.start();
 	speed= AIMING_SPEED;
 	camera_ref.shake($Laser_Timer.wait_time, 1, true);
@@ -216,6 +210,9 @@ func start_laser(direction, player_pos, frame):
 func _laser_timer_ended():
 	shoot_laser();
 	speed = BASE_SPEED;
+var current_weapon = 0;
+func switch_weapons():
+	current_weapon = 1 if current_weapon == 0 else 0;
 
 # Called when the player attempts to place a forcefield
 # This function will either place it in the appropriate spot or deny it (bad location or something)
@@ -254,8 +251,8 @@ func shoot_laser():
 	# Only run if we're the server
 	var laser = load("res://GameContent/Laser.tscn").instance();
 	get_tree().get_root().get_node("MainScene").add_child(laser);
-	laser.position = position;
-	laser.rotation = -get_vector_angle(laser_direction);
+	laser.position = position + laser_position;
+	laser.rotation = Vector2(0,0).angle_to_point(laser_direction) + PI/2;
 	laser.player_id = player_id;
 	laser.team_id = team_id;
 	$Laser_Fire_Audio.play();
@@ -263,7 +260,7 @@ func shoot_laser():
 
 func _draw():
 	if $Laser_Timer.time_left > 0:
-		var size = clamp(1 / ($Laser_Timer.time_left / $Laser_Timer.wait_time), 0 , 20);
+		var size = clamp(1 / ($Laser_Timer.time_left / $Laser_Timer.wait_time), 0 , 5);
 		var red = 1 if team_id == 1 else 0;
 		var green = 10.0/255.0 if team_id == 1 else 130.0/255.0;
 		var blue = 1 if team_id == 0 else 0;
@@ -271,7 +268,7 @@ func _draw():
 		red = red + lightener;
 		green = green + lightener;
 		blue = blue + lightener;
-		draw_line(Vector2(0,0), laser_direction * 5000, Color(red, green, blue, 1 - ($Laser_Timer.time_left / $Laser_Timer.wait_time)), size);
+		draw_line(laser_position, laser_direction * 1000, Color(red, green, blue, 1 - ($Laser_Timer.time_left / $Laser_Timer.wait_time)), size);
 
 
 # Shoots a bullet shot
@@ -378,8 +375,13 @@ func shoot_on_inputs():
 			drop_current_flag($Flag_Holder.get_global_position());
 			if !Globals.testing:
 				rpc_id(1, "send_drop_flag", $Flag_Holder.get_global_position());
-		elif $Shoot_Cooldown_Timer.time_left == 0:
+		elif current_weapon == 0 and $Shoot_Cooldown_Timer.time_left == 0:
 			shoot_bullet(input);
+		elif current_weapon == 1 and $Laser_Timer.time_left == 0:
+			var start_pos = get_node("Bullet_Starts/" + String($Sprite_Top.frame % $Sprite_Top.hframes)).position;
+			rpc_id(1, "send_start_laser", input, start_pos, $Sprite_Top.frame);
+			start_laser(input, start_pos, $Sprite_Top.frame);
+			sprintEnabled = false;
 
 func _teleport_timer_ended():
 	can_teleport = true;

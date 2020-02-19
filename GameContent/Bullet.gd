@@ -1,7 +1,7 @@
 extends KinematicBody2D
 
 var direction = Vector2(0,0);
-var speed = 875;
+var speed = 250;
 var player_id;
 var team_id = -1;
 var show_death_particles = true;
@@ -18,7 +18,7 @@ var puppet_time_shot;
 func _ready():
 	$Death_Timer2.connect("timeout", self, "_death_timer_ended");
 	$Animation_Timer.connect("timeout", self, "_animation_timer_ended");
-	rotation = Vector2(0,0).angle_to_point(direction) + PI;
+	#rotation = Vector2(0,0).angle_to_point(direction) + PI;
 	# If the master of this bullet is not the local master player, then this is a puppet
 	if !Globals.testing and get_tree().get_network_unique_id() != get_network_master():
 		is_from_puppet = true;
