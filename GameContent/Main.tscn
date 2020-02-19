@@ -44,7 +44,8 @@ colors = PoolColorArray( 0, 0, 0, 1, 1, 1, 1, 0 )
 [node name="MainScene" type="Node2D"]
 script = ExtResource( 1 )
 __meta__ = {
-"_edit_horizontal_guides_": [  ]
+"_edit_horizontal_guides_": [  ],
+"_edit_vertical_guides_": [  ]
 }
 
 [node name="Test_Player" parent="." instance=ExtResource( 2 )]
@@ -286,23 +287,23 @@ hue_variation_random = 1.0
 
 [node name="Bound3" parent="Environment" instance=ExtResource( 16 )]
 visible = false
-position = Vector2( 4500, 0 )
-scale = Vector2( 502, 2350 )
+position = Vector2( 1850.88, 0 )
+scale = Vector2( 502, 1500 )
 
 [node name="Bound4" parent="Environment" instance=ExtResource( 16 )]
 visible = false
-position = Vector2( -4500, 0 )
-scale = Vector2( 502, 2350 )
+position = Vector2( -1851.73, 0 )
+scale = Vector2( 502, 1500 )
 
 [node name="Bound" parent="Environment" instance=ExtResource( 16 )]
 visible = false
-position = Vector2( 0, -1854.72 )
-scale = Vector2( 5000, 502 )
+position = Vector2( 0, -967.884 )
+scale = Vector2( 3000, 502 )
 
 [node name="Bound2" parent="Environment" instance=ExtResource( 16 )]
 visible = false
-position = Vector2( 0, 1840.43 )
-scale = Vector2( 5000, 501.078 )
+position = Vector2( 0, 963.96 )
+scale = Vector2( 3000, 501.078 )
 
 [node name="Wall_H_M_B" parent="Environment" instance=ExtResource( 17 )]
 position = Vector2( -650, 300 )

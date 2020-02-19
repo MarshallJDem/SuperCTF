@@ -314,13 +314,13 @@ remotesync func load_new_round():
 		for player in players:
 			var spawn_pos = Vector2(0,0);
 			if players[player]["team_id"] == 0:
-				spawn_pos = Vector2(-3600, 0);
+				spawn_pos = Vector2(-1300, 0);
 			elif players[player]["team_id"] == 1:
-				spawn_pos = Vector2(3600, 0);
+				spawn_pos = Vector2(1300, 0);
 			rpc("spawn_player", player, spawn_pos);
 		# Spawn flags
-		rpc("spawn_flag", 0, Vector2(-3150, 0), 0);
-		rpc("spawn_flag", 1, Vector2(3150, 0), 1);
+		rpc("spawn_flag", 0, Vector2(-1100, 0), 0);
+		rpc("spawn_flag", 1, Vector2(1100, 0), 1);
 	
 	get_tree().get_root().get_node("MainScene/UI_Layer").clear_big_label_text();
 	

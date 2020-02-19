@@ -4,7 +4,7 @@
 [ext_resource path="res://GameContent/flagHome.png" type="Texture" id=2]
 
 [sub_resource type="CircleShape2D" id=1]
-radius = 43.5524
+radius = 14.7535
 
 [node name="Flag_Home" type="Node2D" groups=[
 "Flag_Homes",
@@ -13,7 +13,7 @@ z_index = -4010
 script = ExtResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
-scale = Vector2( 6.06899, 6.06899 )
+scale = Vector2( 2, 2 )
 texture = ExtResource( 2 )
 
 [node name="Area2D" type="Area2D" parent="." groups=[
