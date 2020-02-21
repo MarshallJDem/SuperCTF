@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://TitleScreen.gd" type="Script" id=1]
 [ext_resource path="res://UI_Layer.gd" type="Script" id=2]
@@ -9,10 +9,6 @@
 [ext_resource path="res://flag_frames/flagBlue2.png" type="Texture" id=7]
 [ext_resource path="res://flag_frames/flagBlue3.png" type="Texture" id=8]
 [ext_resource path="res://flag_frames/flagBlue4.png" type="Texture" id=9]
-[ext_resource path="res://flag_frames/flagRed1.png" type="Texture" id=10]
-[ext_resource path="res://flag_frames/flagRed2.png" type="Texture" id=11]
-[ext_resource path="res://flag_frames/flagRed3.png" type="Texture" id=12]
-[ext_resource path="res://flag_frames/flagRed4.png" type="Texture" id=13]
 [ext_resource path="res://GameContent/Flag_Area2D.gd" type="Script" id=14]
 [ext_resource path="res://Hover_Button_Style.tres" type="StyleBox" id=15]
 [ext_resource path="res://Pressed_Button_Style.tres" type="StyleBox" id=16]
@@ -29,17 +25,8 @@ animations = [ {
 "speed": 7.0
 } ]
 
-[sub_resource type="SpriteFrames" id=2]
-animations = [ {
-"frames": [ ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ) ],
-"loop": true,
-"name": "default",
-"speed": 7.0
-} ]
-
-[sub_resource type="CapsuleShape2D" id=3]
-radius = 4.43372
-height = 57.2865
+[sub_resource type="ConvexPolygonShape2D" id=2]
+points = PoolVector2Array( 0, 0, 18.693, 3.609, 18.937, 14.698, 0, 28.805 )
 
 [node name="TitleScreen" type="Node2D"]
 script = ExtResource( 1 )
@@ -72,28 +59,22 @@ text = "SUPER"
 align = 1
 
 [node name="Flag" parent="UI_Layer/Label" instance=ExtResource( 4 )]
-position = Vector2( -29.9691, 467.181 )
+position = Vector2( 650, 515 )
+scale = Vector2( 4, 4 )
 
 [node name="Flag2" type="Node2D" parent="UI_Layer/Label" groups=[
 "Flags",
 ]]
-position = Vector2( 657.012, 458.316 )
+position = Vector2( -65, 515 )
+scale = Vector2( 4, 4 )
 z_as_relative = false
 script = ExtResource( 5 )
 
 [node name="Blue_Sprite" type="AnimatedSprite" parent="UI_Layer/Label/Flag2"]
-position = Vector2( 20.7922, -30.4714 )
-scale = Vector2( 4.57399, 4.57399 )
+position = Vector2( 10, -14 )
+scale = Vector2( 2, 2 )
 frames = SubResource( 1 )
-frame = 3
-playing = true
-
-[node name="Red_Sprite" type="AnimatedSprite" parent="UI_Layer/Label/Flag2"]
-visible = false
-position = Vector2( 20.7922, -30.4714 )
-scale = Vector2( 4.57399, 4.57399 )
-frames = SubResource( 2 )
-frame = 3
+frame = 2
 playing = true
 
 [node name="Area2D" type="Area2D" parent="UI_Layer/Label/Flag2" groups=[
@@ -103,8 +84,8 @@ position = Vector2( 20.7922, -30.4714 )
 script = ExtResource( 14 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="UI_Layer/Label/Flag2/Area2D"]
-position = Vector2( -20.3827, -0.261612 )
-shape = SubResource( 3 )
+position = Vector2( -20.7247, 2.43704 )
+shape = SubResource( 2 )
 
 [node name="Label2" type="RichTextLabel" parent="UI_Layer"]
 anchor_left = 0.5
@@ -199,6 +180,8 @@ text = "Create Account"
 [node name="SplashBackground" type="ColorRect" parent="UI_Layer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = -0.568817
+margin_right = -0.568848
 color = Color( 1, 1, 1, 0 )
 __meta__ = {
 "_edit_use_anchors_": false
