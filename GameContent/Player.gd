@@ -4,7 +4,7 @@ var control = false;
 var IS_CONTROLLED_BY_MOUSE = false;
 var player_id = 0;
 var team_id = -1;
-const BASE_SPEED = 200;
+const BASE_SPEED = 200 + 500;
 const AIMING_SPEED = 15;
 const SPRINT_SPEED = 50;
 const TELEPORT_SPEED = 2000;
@@ -153,6 +153,7 @@ func _process(delta):
 		var t = $Invincibility_Timer.time_left / $Invincibility_Timer.wait_time 
 		var x =  (t * 10);
 		$Sprite_Top.modulate = Color(1,1,1,(sin( (PI / 2) + (x * (1 + (t * ((2 * PI) - 1))))) + 1)/2)
+		$Sprite_Bottom.modulate = Color(1,1,1,(sin( (PI / 2) + (x * (1 + (t * ((2 * PI) - 1))))) + 1)/2)
 	z_index = global_position.y + 15;
 	
 	

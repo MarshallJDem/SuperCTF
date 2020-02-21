@@ -7,6 +7,7 @@ var serverPrivateToken = "privatetoken42402";
 var isServer = false;
 var allowedPlayers = [];
 var matchID;
+var allowCommands = true;
 
 #User data
 var userToken;
@@ -31,6 +32,7 @@ var lag_comp_headstart_dist = 15;
 # ----- Quick Access global variables -----
 var match_start_time = 0;
 
+# ----- Functions -----
 func write_save_data():
 	var file = File.new()
 	var content = "";

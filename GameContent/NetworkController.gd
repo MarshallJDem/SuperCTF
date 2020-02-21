@@ -380,13 +380,15 @@ func _round_end_timer_ended():
 				game_over = true;
 				winning_team_id = i;
 		if game_over:
-			print(str(winning_team_id) + " won the match.");
-			for i in players:
-				rpc_id(i, "end_match", winning_team_id);
-			end_match_server(winning_team_id);
+			call_end_match(winning_team_id);
 		else:
 			rpc("load_new_round");
-
+# Call this function to end the match
+func call_end_match(winning_team_id):
+	print(str(winning_team_id) + " won the match.");
+	for i in players:
+		rpc_id(i, "end_match", winning_team_id);
+	end_match_server(winning_team_id);
 # Called when the Round_Start_Timer ends
 func _round_start_timer_ended():
 	get_tree().get_root().get_node("MainScene/UI_Layer/Countdown_Label").text = "";
