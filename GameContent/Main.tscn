@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=2]
+[gd_scene load_steps=31 format=2]
 
 [ext_resource path="res://GameContent/Main.gd" type="Script" id=1]
 [ext_resource path="res://GameContent/Player.tscn" type="PackedScene" id=2]
@@ -25,6 +25,7 @@
 [ext_resource path="res://Assets/Environment/wall_3_R.png" type="Texture" id=23]
 [ext_resource path="res://Assets/Environment/border_wall_H.png" type="Texture" id=24]
 [ext_resource path="res://Assets/Environment/border_wall_V.png" type="Texture" id=25]
+[ext_resource path="res://Assets/Environment/background.png" type="Texture" id=26]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0, 0, 0, 0.145098 )
@@ -261,6 +262,9 @@ margin_bottom = 468.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Sprite" type="Sprite" parent="Environment/Node2D"]
+texture = ExtResource( 26 )
 
 [node name="CPUParticles2D2" type="CPUParticles2D" parent="Environment"]
 position = Vector2( -461.929, -21.5548 )
