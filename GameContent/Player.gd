@@ -237,13 +237,14 @@ func forcefield_placed():
 			forcefield_position = global_position + (direction * max_forcefield_distance);
 	else:
 		forcefield_position = position;
-	rpc("spawn_forcefield", forcefield_position);
+	rpc("spawn_forcefield", forcefield_position, team_id);
 	$Forcefield_Timer.wait_time = Globals.forcefield_cooldown;
 	$Forcefield_Timer.start();
 	if Globals.testing:
 		var forcefield = load("res://GameContent/Forcefield.tscn").instance();
-		get_tree().get_root().get_node("MainScene").add_child(forcefield);
 		forcefield.position = forcefield_position;
+		forcefield.team_id = team_id;
+		get_tree().get_root().get_node("MainScene").add_child(forcefield);
 		
 # Called when the forcefield cooldown timer ends
 func _forcefield_timer_ended():
@@ -251,12 +252,12 @@ func _forcefield_timer_ended():
 
 # Called by client telling everyone to spawn a forcefield in a spot
 # TODO - in future this should be handled by servers - not the client.
-remotesync func spawn_forcefield(pos):
+remotesync func spawn_forcefield(pos, team_id):
 	var forcefield = load("res://GameContent/Forcefield.tscn").instance();
-	get_tree().get_root().get_node("MainScene").add_child(forcefield);
 	forcefield.position = pos;
 	forcefield.player_id = player_id;
 	forcefield.team_id = team_id;
+	get_tree().get_root().get_node("MainScene").add_child(forcefield);
 
 
 # Shoots a laser shot
