@@ -2,7 +2,7 @@ extends Node
 
 var		PORT		= 42402
 const	MAX_PLAYERS	= 10
-const	SCORE_LIMIT	= 2;
+const	SCORE_LIMIT	= 1;
 var		players		= {}
 var		player_name;
 var		scores		= [];
