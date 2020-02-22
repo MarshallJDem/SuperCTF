@@ -1,28 +1,36 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://GameContent/Forcefield.gd" type="Script" id=1]
-[ext_resource path="res://GameContent/flagHome.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Abilities/forcefield_top_R.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Abilities/forcefield_bottom_R.png" type="Texture" id=3]
 
-[sub_resource type="CircleShape2D" id=1]
-radius = 139.089
+[sub_resource type="CapsuleShape2D" id=1]
+radius = 37.9608
+height = 24.3483
 
-[node name="Forcefield" type="KinematicBody2D" groups=[
+[node name="Forcefield" type="Node2D" groups=[
 "Walls",
 ]]
 script = ExtResource( 1 )
 
-[node name="Sprite" type="Sprite" parent="."]
-scale = Vector2( 15.8295, 20.1676 )
-texture = ExtResource( 2 )
+[node name="Sprite_Bottom" type="Sprite" parent="."]
+scale = Vector2( 2, 2 )
+texture = ExtResource( 3 )
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
-shape = SubResource( 1 )
+[node name="Sprite_Top" type="Sprite" parent="."]
+scale = Vector2( 2, 2 )
+z_index = 3000
+z_as_relative = false
+texture = ExtResource( 2 )
+hframes = 4
 
 [node name="Area2D" type="Area2D" parent="." groups=[
 "Wall_Bodies",
 ]]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2( -0.0852737, 10.4591 )
+rotation = 1.5708
 shape = SubResource( 1 )
 
 [node name="Death_Timer" type="Timer" parent="."]
@@ -32,3 +40,7 @@ autostart = true
 
 [node name="Death_Animation_Timer" type="Timer" parent="."]
 wait_time = 0.2
+
+[node name="Animation_Timer" type="Timer" parent="."]
+wait_time = 0.15
+autostart = true

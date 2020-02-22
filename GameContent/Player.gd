@@ -4,7 +4,7 @@ var control = false;
 var IS_CONTROLLED_BY_MOUSE = false;
 var player_id = 0;
 var team_id = -1;
-const BASE_SPEED = 200 + 500;
+const BASE_SPEED = 200;
 const AIMING_SPEED = 15;
 const SPRINT_SPEED = 50;
 const TELEPORT_SPEED = 2000;
@@ -33,7 +33,6 @@ var lerp_end_pos = Vector2(0,0);
 var sprintEnabled = false;
 # Whether the player can currently teleport
 var can_teleport = true;
-var can_place_forcefield = true;
 var max_forcefield_distance = 5000;
 var remote_db_level = -10;
 # The position the player was in last frame
@@ -105,7 +104,7 @@ func _input(event):
 			if event.scancode == KEY_E:
 				# If were not holding a flag, create forcefield
 				if $Flag_Holder.get_child_count() == 0:
-					if can_place_forcefield:
+					if $Forcefield_Timer.time_left == 0:
 						forcefield_placed();
 		elif IS_CONTROLLED_BY_MOUSE and event is InputEventMouseButton:
 			if event.button_index == BUTTON_LEFT:
@@ -229,24 +228,29 @@ func switch_weapons():
 # Called when the player attempts to place a forcefield
 # This function will either place it in the appropriate spot or deny it (bad location or something)
 func forcefield_placed():
-	var distance = get_global_mouse_position().distance_to(position);
-	var forcefield_position = get_global_mouse_position();
-	if distance > max_forcefield_distance:
-		var direction = (get_global_mouse_position() - global_position).normalized();
-		forcefield_position = global_position + (direction * max_forcefield_distance);
+	var forcefield_position;
+	if IS_CONTROLLED_BY_MOUSE:
+		var distance = get_global_mouse_position().distance_to(position);
+		forcefield_position = get_global_mouse_position();
+		if distance > max_forcefield_distance:
+			var direction = (get_global_mouse_position() - global_position).normalized();
+			forcefield_position = global_position + (direction * max_forcefield_distance);
+	else:
+		forcefield_position = position;
 	rpc("spawn_forcefield", forcefield_position);
-	can_place_forcefield = false;
 	$Forcefield_Timer.wait_time = Globals.forcefield_cooldown;
 	$Forcefield_Timer.start();
 	if Globals.testing:
 		var forcefield = load("res://GameContent/Forcefield.tscn").instance();
 		get_tree().get_root().get_node("MainScene").add_child(forcefield);
+		forcefield.position = forcefield_position;
+		
 # Called when the forcefield cooldown timer ends
 func _forcefield_timer_ended():
-	can_place_forcefield = true;
+	pass;
 
 # Called by client telling everyone to spawn a forcefield in a spot
-# NOTE - in future this should be handled by servers - not the client.
+# TODO - in future this should be handled by servers - not the client.
 remotesync func spawn_forcefield(pos):
 	var forcefield = load("res://GameContent/Forcefield.tscn").instance();
 	get_tree().get_root().get_node("MainScene").add_child(forcefield);
