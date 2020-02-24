@@ -542,7 +542,11 @@ func die():
 		$Killed_Audio.play();
 
 func spawn_death_particles():
-	pass; # For now...
+	var node = load("res://GameContent/Player_Death.tscn").instance();
+	node.position = position;
+	node.xFrame = $Sprite_Top.frame_coords.x;
+	node.z_index = z_index;
+	get_tree().get_root().get_node("MainScene").add_child(node);
 
 # Called by the respawn timer when it ends
 func _respawn_timer_ended():
