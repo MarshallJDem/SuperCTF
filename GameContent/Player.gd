@@ -64,6 +64,7 @@ func _ready():
 		activate_camera();
 		$Laser_Timer.wait_time += 0.1;
 		$Laser_Charge_Audio.set_pitch_scale(float(0.5)/$Laser_Timer.wait_time);
+		Globals.result_player_team_id = team_id;
 	else:
 		$Laser_Charge_Audio.set_volume_db(remote_db_level);
 		$Laser_Fire_Audio.set_volume_db(remote_db_level);

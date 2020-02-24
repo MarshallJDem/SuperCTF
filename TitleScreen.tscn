@@ -57,6 +57,9 @@ custom_fonts/font = ExtResource( 3 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "SUPER"
 align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Flag" parent="UI_Layer/Label" instance=ExtResource( 4 )]
 position = Vector2( 650, 515 )
@@ -74,6 +77,7 @@ script = ExtResource( 5 )
 position = Vector2( 10, -14 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 1 )
+frame = 2
 playing = true
 
 [node name="Area2D" type="Area2D" parent="UI_Layer/Label/Flag2" groups=[
@@ -104,6 +108,9 @@ bbcode_enabled = true
 bbcode_text = "CTF"
 text = "CTF"
 scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="CancelQueueButton" type="Button" parent="UI_Layer"]
 anchor_left = 0.5

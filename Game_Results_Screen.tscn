@@ -1,0 +1,111 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://fonts/Pixel_Title.tres" type="DynamicFont" id=1]
+[ext_resource path="res://fonts/Pixel_SubTitle.tres" type="DynamicFont" id=2]
+[ext_resource path="res://fonts/Pixel_Button.tres" type="DynamicFont" id=3]
+[ext_resource path="res://fonts/Pixel_Button_Title.tres" type="DynamicFont" id=4]
+[ext_resource path="res://Normal_Button_Style.tres" type="StyleBox" id=5]
+[ext_resource path="res://Hover_Button_Style.tres" type="StyleBox" id=6]
+[ext_resource path="res://Pressed_Button_Style.tres" type="StyleBox" id=7]
+[ext_resource path="res://Game_Results_Screen.gd" type="Script" id=8]
+
+[node name="Game_Results_Screen" type="Node2D"]
+script = ExtResource( 8 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Text_Result" type="RichTextLabel" parent="CanvasLayer"]
+anchor_right = 1.0
+margin_left = -3.01471
+margin_top = 13.2577
+margin_right = -776.015
+margin_bottom = 242.258
+rect_scale = Vector2( 1, 0.964805 )
+custom_fonts/mono_font = ExtResource( 2 )
+custom_fonts/normal_font = ExtResource( 2 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]LOSS[/center]"
+text = "LOSS"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Text_Score" type="RichTextLabel" parent="CanvasLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 80.3818
+margin_top = 114.985
+margin_right = -760.618
+margin_bottom = -284.015
+rect_scale = Vector2( 0.563012, 0.563012 )
+custom_fonts/mono_font = ExtResource( 2 )
+custom_fonts/normal_font = ExtResource( 2 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]3-2[/center]"
+text = "3-2"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Text_MMR" type="RichTextLabel" parent="CanvasLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 237.0
+margin_right = -1.0
+custom_fonts/mono_font = ExtResource( 1 )
+custom_fonts/bold_italics_font = ExtResource( 2 )
+custom_fonts/italics_font = ExtResource( 2 )
+custom_fonts/bold_font = ExtResource( 2 )
+custom_fonts/normal_font = ExtResource( 1 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]2000[/center]"
+text = "2000"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Text_MMR_Sub" type="RichTextLabel" parent="CanvasLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 422.0
+margin_right = -1.0
+margin_bottom = 1.0
+rect_scale = Vector2( 1, 0.983539 )
+custom_fonts/mono_font = ExtResource( 3 )
+custom_fonts/bold_italics_font = ExtResource( 2 )
+custom_fonts/italics_font = ExtResource( 2 )
+custom_fonts/bold_font = ExtResource( 2 )
+custom_fonts/normal_font = ExtResource( 3 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]Your MMR (+50)[/center]"
+text = "Your MMR (+50)"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button_Titlescreen" type="Button" parent="CanvasLayer"]
+margin_left = 324.088
+margin_top = 526.507
+margin_right = 767.088
+margin_bottom = 598.507
+custom_styles/hover = ExtResource( 6 )
+custom_styles/pressed = ExtResource( 7 )
+custom_styles/normal = ExtResource( 5 )
+custom_fonts/font = ExtResource( 4 )
+custom_colors/font_color_disabled = Color( 0, 0, 0, 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
+custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
+text = "TITLESCREEN"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MMR_Animation_Timer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true

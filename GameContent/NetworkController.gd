@@ -3,7 +3,7 @@ extends Node
 var		PORT		= 42402
 const	MAX_PLAYERS	= 10
 const	SCORE_LIMIT	= 1;
-var		players		= {}
+var		players		= {};
 var		player_name;
 var		scores		= [];
 var		round_num	= 0;
@@ -22,6 +22,7 @@ var match_is_running = false;
 
 func _ready():
 	if Globals.testing:
+		leave_match();
 		call_deferred("spawn_flag", 1, Vector2(-200, 0), 0);
 		return;
 	get_tree().connect("network_peer_connected",self, "_client_connected");
@@ -40,6 +41,7 @@ func _ready():
 		start_server();
 	else:
 		join_server();
+	
 		
 func _process(delta):
 	if server != null and server.is_listening():
@@ -249,7 +251,13 @@ func leave_match():
 	print("Leave Match");
 	get_tree().set_network_peer(null);
 	reset_game()
-	get_tree().change_scene("res://TitleScreen.tscn");
+	#Globals.result_winning_team_id; Handled on end_match call
+	
+	if !Globals.testing:
+		Globals.result_team0_score = scores[0];
+		Globals.result_team1_score = scores[1];
+	#Globals.result_match_id; Match ID is handled when the match is found in titlescreen
+	get_tree().change_scene("res://Game_Results_Screen.tscn");
 
 # Called when this client disconnects from the server
 func server_disconnect():
@@ -345,6 +353,7 @@ remote func end_match(winning_team_id):
 		team_name = "BLUE TEAM";
 	elif winning_team_id == 1:
 		team_name = "RED TEAM"
+	Globals.result_winning_team_id = winning_team_id;
 	get_tree().get_root().get_node("MainScene/UI_Layer").set_big_label_text(team_name + " WINS!", winning_team_id);
 	get_tree().get_root().get_node("MainScene/UI_Layer").enable_leave_match_button();
 

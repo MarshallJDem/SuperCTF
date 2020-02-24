@@ -148,6 +148,9 @@ custom_fonts/font = ExtResource( 7 )
 custom_colors/font_color = Color( 1, 0, 0, 1 )
 align = 1
 valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Leave_Match_Button" type="Button" parent="UI_Layer"]
 visible = false
