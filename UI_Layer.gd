@@ -36,7 +36,9 @@ func update_title_color(playback_position):
 	else:
 		color = "#ff0000";
 	$Title.bbcode_text = "[center]SUPER[color=" + color + "]" + "CTF" + "[/color]";
-
+func set_mmr_and_rank_labels(rank, mmr):
+	$PlayerRank.bbcode_text = "[center][color=green]" + String(rank);
+	$PlayerMMR.bbcode_text = "[center][color=green]" + String(mmr);
 # Disables all the situational buttons
 func disable_buttons():
 	$CancelQueueButton.visible = false;
@@ -47,10 +49,16 @@ func disable_buttons():
 	$SplashStartButton.visible = false;
 	$SplashBackground.visible = false;
 	$Searching_Text.visible = false;
+	$PlayerRank.visible = false;
+	$PlayerMMR.visible = false;
+	$PlayerRankSubtitle.visible = false;
+	$PlayerMMRSubtitle.visible = false;
 
 func set_view(state):
+	# All UI has a default state of being disabled
 	disable_buttons();
 	$LogoutButton.visible = true;
+	# Enable UI based on view
 	match state:
 		VIEW_START:
 			$LogoutButton.visible = false;
@@ -59,9 +67,17 @@ func set_view(state):
 			$CreateAccountButton.visible = true;
 		VIEW_MAIN:
 			$FindMatchButton.visible = true;
+			$PlayerRank.visible = true;
+			$PlayerMMR.visible = true;
+			$PlayerRankSubtitle.visible = true;
+			$PlayerMMRSubtitle.visible = true;
 		VIEW_IN_QUEUE:
 			$CancelQueueButton.visible = true;
 			$Searching_Text.visible = true;
+			$PlayerRank.visible = true;
+			$PlayerMMR.visible = true;
+			$PlayerRankSubtitle.visible = true;
+			$PlayerMMRSubtitle.visible = true;
 		VIEW_SPLASH:
 			$LogoutButton.visible = false;
 			$SplashStartButton.visible = true;

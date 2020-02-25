@@ -11,7 +11,7 @@ var allowCommands = true;
 
 #User data
 var userToken;
-var player_MMR = 2000;
+var player_MMR = -1;
 var player_rank = -1;
 
 #Main Server

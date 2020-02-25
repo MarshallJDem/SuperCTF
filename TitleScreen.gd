@@ -23,16 +23,23 @@ func _ready():
 		start();
 	if Globals.isServer:
 		get_tree().change_scene("res://GameContent/Main.tscn");
-		
+
 var stat = 0;
 func _Player_Status_Poll_Timer_Ended():
-	# If we're not already polling the player status, poll it. Called every 5 seconds.
+	# Attempt to poll the player status. Called every 5 seconds.
+	attempt_poll_player_status();
+
+func attempt_poll_player_status():
+	# IF were not already in the middle of a poll, poll it
 	if $HTTPRequest_PollPlayerStatus.get_http_client_status() == 0:
 		$HTTPRequest_PollPlayerStatus.request(Globals.mainServerIP + "pollPlayerStatus", ["authorization: Bearer " + Globals.userToken]);
 func _process(delta):
+	# If there is an active player and we havn't received their rank / mmr yet
+	if Globals.userToken and (Globals.player_MMR == -1 or Globals.player_rank == -1):
+		attempt_poll_player_status();
 	# If were in queue, poll player status if we're not already polling it
-	if(isInMMQueue && $HTTPRequest_PollPlayerStatus.get_http_client_status() == 0):
-		$HTTPRequest_PollPlayerStatus.request(Globals.mainServerIP + "pollPlayerStatus", ["authorization: Bearer " + Globals.userToken]);
+	if(isInMMQueue):
+		attempt_poll_player_status();
 	$UI_Layer.update_title_color($Titlemusic_Audio.get_playback_position() + 3.7);
 	if stat != $HTTPRequest_CreateGuest.get_http_client_status():
 		stat = $HTTPRequest_CreateGuest.get_http_client_status();
@@ -98,10 +105,11 @@ func _HTTP_PollPlayerStatus_Completed(result, response_code, headers, body):
 		return;
 	var json = JSON.parse(body.get_string_from_utf8())
 	print(json.result);
-	if json.result.rank:
+	if json.result.rank || json.result.rank == 0:
 		Globals.player_rank = int(json.result.rank);
-	if json.result.mmr:
+	if json.result.mmr || json.result.mmr == 0:
 		Globals.player_MMR = int(json.result.mmr);
+	$UI_Layer.set_mmr_and_rank_labels(Globals.player_rank, Globals.player_MMR);
 	if(int(json.result.status) > 1):
 		print("Found Match : " + json.result.status);
 		var matchID = json.result.status;

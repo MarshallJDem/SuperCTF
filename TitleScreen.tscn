@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://TitleScreen.gd" type="Script" id=1]
 [ext_resource path="res://UI_Layer.gd" type="Script" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://flag_frames/flagBlue3.png" type="Texture" id=8]
 [ext_resource path="res://flag_frames/flagBlue4.png" type="Texture" id=9]
 [ext_resource path="res://fonts/Pixel_Chat.tres" type="DynamicFont" id=10]
+[ext_resource path="res://fonts/Pixel_SubTitle.tres" type="DynamicFont" id=11]
 [ext_resource path="res://GameContent/Flag_Area2D.gd" type="Script" id=14]
 [ext_resource path="res://Hover_Button_Style.tres" type="StyleBox" id=15]
 [ext_resource path="res://Pressed_Button_Style.tres" type="StyleBox" id=16]
@@ -31,6 +32,10 @@ points = PoolVector2Array( 0, 0, 18.693, 3.609, 18.937, 14.698, 0, 28.805 )
 
 [node name="TitleScreen" type="Node2D"]
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_horizontal_guides_": [  ],
+"_edit_vertical_guides_": [ 544.182 ]
+}
 
 [node name="HTTPRequest_FindMatch" type="HTTPRequest" parent="."]
 
@@ -58,6 +63,7 @@ script = ExtResource( 5 )
 position = Vector2( 10, -14 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 1 )
+frame = 1
 playing = true
 
 [node name="Area2D" type="Area2D" parent="Flag2" groups=[
@@ -111,13 +117,83 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="PlayerRank" type="RichTextLabel" parent="UI_Layer"]
+margin_left = 750.526
+margin_top = 527.474
+margin_right = 998.526
+margin_bottom = 620.474
+rect_scale = Vector2( 0.576526, 0.576526 )
+custom_fonts/normal_font = ExtResource( 11 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center][color=green]-"
+text = "-"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PlayerMMR" type="RichTextLabel" parent="UI_Layer"]
+margin_left = 904.579
+margin_top = 527.0
+margin_right = 1214.58
+margin_bottom = 620.0
+rect_scale = Vector2( 0.576526, 0.576526 )
+custom_fonts/normal_font = ExtResource( 11 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center][color=green]-"
+text = "-"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PlayerRankSubtitle" type="RichTextLabel" parent="UI_Layer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 774.798
+margin_top = 579.647
+margin_right = -168.202
+margin_bottom = 14.6466
+rect_scale = Vector2( 0.639761, 0.639761 )
+custom_fonts/mono_font = ExtResource( 10 )
+custom_fonts/normal_font = ExtResource( 18 )
+custom_colors/default_color = Color( 0.368627, 0.368627, 0.368627, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]RANK"
+text = "RANK"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PlayerMMRSubtitle" type="RichTextLabel" parent="UI_Layer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 927.145
+margin_top = 580.954
+margin_right = 48.1448
+margin_bottom = 22.9542
+rect_scale = Vector2( 0.639761, 0.639761 )
+custom_fonts/mono_font = ExtResource( 10 )
+custom_fonts/normal_font = ExtResource( 18 )
+custom_colors/default_color = Color( 0.368627, 0.368627, 0.368627, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]MMR"
+text = "MMR"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="CancelQueueButton" type="Button" parent="UI_Layer"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -80.0195
-margin_top = 433.786
-margin_right = 87.9805
-margin_bottom = 503.786
+margin_left = -83.0275
+margin_top = 532.389
+margin_right = 84.9725
+margin_bottom = 602.389
 custom_styles/hover = ExtResource( 15 )
 custom_styles/pressed = ExtResource( 16 )
 custom_styles/normal = ExtResource( 17 )
@@ -131,10 +207,10 @@ __meta__ = {
 [node name="FindMatchButton" type="Button" parent="UI_Layer"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -122.01
-margin_top = 423.171
-margin_right = 125.99
-margin_bottom = 503.171
+margin_left = -158.724
+margin_top = 525.695
+margin_right = 159.276
+margin_bottom = 607.695
 custom_styles/hover = ExtResource( 15 )
 custom_styles/pressed = ExtResource( 16 )
 custom_styles/normal = ExtResource( 17 )
@@ -145,10 +221,10 @@ text = "Find Match"
 [node name="PlayAsGuestButton" type="Button" parent="UI_Layer"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -126.771
-margin_top = 420.234
-margin_right = 134.229
-margin_bottom = 503.234
+margin_left = -129.548
+margin_top = 525.255
+margin_right = 131.452
+margin_bottom = 608.255
 custom_styles/hover = ExtResource( 15 )
 custom_styles/pressed = ExtResource( 16 )
 custom_styles/normal = ExtResource( 17 )
@@ -168,10 +244,11 @@ margin_bottom = 286.078
 text = "Sign In"
 
 [node name="LogoutButton" type="Button" parent="UI_Layer"]
-margin_left = 101.948
-margin_top = 451.637
-margin_right = 275.948
-margin_bottom = 533.637
+margin_left = 11.0073
+margin_top = 538.577
+margin_right = 185.007
+margin_bottom = 620.577
+rect_scale = Vector2( 0.742863, 0.742863 )
 custom_styles/hover = ExtResource( 15 )
 custom_styles/pressed = ExtResource( 16 )
 custom_styles/normal = ExtResource( 17 )
@@ -205,10 +282,10 @@ __meta__ = {
 [node name="SplashStartButton" type="Button" parent="UI_Layer"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = 117.606
-margin_top = 520.182
-margin_right = 526.606
-margin_bottom = 590.182
+margin_left = -205.142
+margin_top = 532.572
+margin_right = 203.858
+margin_bottom = 602.572
 custom_styles/hover = ExtResource( 15 )
 custom_styles/pressed = ExtResource( 16 )
 custom_styles/normal = ExtResource( 17 )
@@ -222,10 +299,10 @@ __meta__ = {
 [node name="Searching_Text" type="Label" parent="UI_Layer"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -86.22
-margin_top = 515.669
-margin_right = 114.78
-margin_bottom = 562.669
+margin_left = -328.034
+margin_top = 542.977
+margin_right = -127.034
+margin_bottom = 589.977
 custom_fonts/font = ExtResource( 18 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Searching"
