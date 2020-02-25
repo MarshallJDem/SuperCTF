@@ -63,7 +63,7 @@ script = ExtResource( 5 )
 position = Vector2( 10, -14 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 1 )
-frame = 1
+frame = 2
 playing = true
 
 [node name="Area2D" type="Area2D" parent="Flag2" groups=[
@@ -101,10 +101,10 @@ __meta__ = {
 [node name="Subtitle" type="RichTextLabel" parent="UI_Layer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 338.0
-margin_top = 140.0
-margin_right = -150.0
-margin_bottom = -418.0
+margin_left = 353.512
+margin_top = 136.676
+margin_right = -134.488
+margin_bottom = -421.324
 rect_scale = Vector2( 0.639761, 0.639761 )
 custom_fonts/mono_font = ExtResource( 10 )
 custom_fonts/normal_font = ExtResource( 18 )
@@ -313,6 +313,29 @@ __meta__ = {
 [node name="Searching_Text_Timer" type="Timer" parent="UI_Layer"]
 wait_time = 0.3
 autostart = true
+
+[node name="GridContainer" type="GridContainer" parent="UI_Layer"]
+anchor_right = 1.0
+margin_left = 32.2161
+margin_top = 179.352
+margin_right = -27.7839
+margin_bottom = 509.352
+columns = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="UI_Layer/GridContainer"]
+
+[node name="ColorRect" type="ColorRect" parent="UI_Layer"]
+margin_left = 68.6982
+margin_top = 268.145
+margin_right = 274.698
+margin_bottom = 334.145
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Titlemusic_Audio" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 20 )
