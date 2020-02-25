@@ -35,7 +35,7 @@ func update_title_color(playback_position):
 		color = "#4C70BA";
 	else:
 		color = "#ff0000";
-	$Label2.bbcode_text = "[color=" + color + "]" + "CTF" + "[/color]";
+	$Title.bbcode_text = "[center]SUPER[color=" + color + "]" + "CTF" + "[/color]";
 
 # Disables all the situational buttons
 func disable_buttons():

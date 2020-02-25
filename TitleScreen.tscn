@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://TitleScreen.gd" type="Script" id=1]
 [ext_resource path="res://UI_Layer.gd" type="Script" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://flag_frames/flagBlue2.png" type="Texture" id=7]
 [ext_resource path="res://flag_frames/flagBlue3.png" type="Texture" id=8]
 [ext_resource path="res://flag_frames/flagBlue4.png" type="Texture" id=9]
+[ext_resource path="res://fonts/Pixel_Chat.tres" type="DynamicFont" id=10]
 [ext_resource path="res://GameContent/Flag_Area2D.gd" type="Script" id=14]
 [ext_resource path="res://Hover_Button_Style.tres" type="StyleBox" id=15]
 [ext_resource path="res://Pressed_Button_Style.tres" type="StyleBox" id=16]
@@ -41,62 +42,42 @@ script = ExtResource( 1 )
 
 [node name="HTTPRequest_CreateGuest" type="HTTPRequest" parent="."]
 
-[node name="UI_Layer" type="CanvasLayer" parent="."]
-script = ExtResource( 2 )
+[node name="Flag" parent="." instance=ExtResource( 4 )]
+position = Vector2( 929.353, 119 )
+scale = Vector2( 4, 3.04 )
 
-[node name="Label" type="Label" parent="UI_Layer"]
-anchor_left = 0.5
-anchor_right = 0.5
-margin_left = -332.477
-margin_top = -2.59436
-margin_right = 352.523
-margin_bottom = 238.406
-rect_scale = Vector2( 1, 0.76 )
-rect_pivot_offset = Vector2( -436, 173 )
-custom_fonts/font = ExtResource( 3 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "SUPER"
-align = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Flag" parent="UI_Layer/Label" instance=ExtResource( 4 )]
-position = Vector2( 650, 515 )
-scale = Vector2( 4, 4 )
-
-[node name="Flag2" type="Node2D" parent="UI_Layer/Label" groups=[
+[node name="Flag2" type="Node2D" parent="." groups=[
 "Flags",
 ]]
-position = Vector2( -65, 515 )
-scale = Vector2( 4, 4 )
+position = Vector2( 75.6779, 119.813 )
+scale = Vector2( 4, 3.04 )
 z_as_relative = false
 script = ExtResource( 5 )
 
-[node name="Blue_Sprite" type="AnimatedSprite" parent="UI_Layer/Label/Flag2"]
+[node name="Blue_Sprite" type="AnimatedSprite" parent="Flag2"]
 position = Vector2( 10, -14 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 1 )
 playing = true
 
-[node name="Area2D" type="Area2D" parent="UI_Layer/Label/Flag2" groups=[
+[node name="Area2D" type="Area2D" parent="Flag2" groups=[
 "Flag_Bodies",
 ]]
 position = Vector2( 20.7922, -30.4714 )
 script = ExtResource( 14 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="UI_Layer/Label/Flag2/Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Flag2/Area2D"]
 position = Vector2( -20.7247, 2.43704 )
 shape = SubResource( 2 )
 
-[node name="Label2" type="RichTextLabel" parent="UI_Layer"]
-anchor_left = 0.5
-anchor_right = 0.5
-margin_left = -176.034
-margin_top = 184.974
-margin_right = 221.966
-margin_bottom = 425.974
-rect_pivot_offset = Vector2( -436, 173 )
+[node name="UI_Layer" type="CanvasLayer" parent="."]
+script = ExtResource( 2 )
+
+[node name="Title" type="RichTextLabel" parent="UI_Layer"]
+anchor_top = 0.033
+anchor_right = 1.667
+anchor_bottom = 1.0
+rect_scale = Vector2( 0.6, 0.6 )
 custom_fonts/mono_font = ExtResource( 3 )
 custom_fonts/bold_italics_font = ExtResource( 3 )
 custom_fonts/italics_font = ExtResource( 3 )
@@ -104,8 +85,27 @@ custom_fonts/bold_font = ExtResource( 3 )
 custom_fonts/normal_font = ExtResource( 3 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
-bbcode_text = "CTF"
-text = "CTF"
+bbcode_text = "[center]SUPERCTF"
+text = "SUPERCTF"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Subtitle" type="RichTextLabel" parent="UI_Layer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 338.0
+margin_top = 140.0
+margin_right = -150.0
+margin_bottom = -418.0
+rect_scale = Vector2( 0.639761, 0.639761 )
+custom_fonts/mono_font = ExtResource( 10 )
+custom_fonts/normal_font = ExtResource( 18 )
+custom_colors/default_color = Color( 0.368627, 0.368627, 0.368627, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]-RANKED CAPTURE THE FLAG-"
+text = "-RANKED CAPTURE THE FLAG-"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -124,6 +124,9 @@ custom_styles/normal = ExtResource( 17 )
 custom_fonts/font = ExtResource( 18 )
 custom_colors/font_color = Color( 0.113725, 0.113725, 0.113725, 1 )
 text = "Cancel"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="FindMatchButton" type="Button" parent="UI_Layer"]
 anchor_left = 0.5
@@ -152,6 +155,9 @@ custom_styles/normal = ExtResource( 17 )
 custom_fonts/font = ExtResource( 18 )
 custom_colors/font_color = Color( 0.109804, 0.109804, 0.109804, 1 )
 text = "Play as Guest"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="SignInButton" type="Button" parent="UI_Layer"]
 visible = false
@@ -162,16 +168,19 @@ margin_bottom = 286.078
 text = "Sign In"
 
 [node name="LogoutButton" type="Button" parent="UI_Layer"]
-margin_left = 10.0
-margin_top = 13.0
-margin_right = 184.0
-margin_bottom = 95.0
+margin_left = 101.948
+margin_top = 451.637
+margin_right = 275.948
+margin_bottom = 533.637
 custom_styles/hover = ExtResource( 15 )
 custom_styles/pressed = ExtResource( 16 )
 custom_styles/normal = ExtResource( 17 )
 custom_fonts/font = ExtResource( 18 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "LOGOUT"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="CreateAccountButton" type="Button" parent="UI_Layer"]
 visible = false
@@ -183,6 +192,7 @@ custom_colors/font_color = Color( 0.431373, 0.74902, 1, 1 )
 text = "Create Account"
 
 [node name="SplashBackground" type="ColorRect" parent="UI_Layer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -0.568817
@@ -195,16 +205,19 @@ __meta__ = {
 [node name="SplashStartButton" type="Button" parent="UI_Layer"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -205.483
-margin_top = 428.425
-margin_right = 203.517
-margin_bottom = 498.425
+margin_left = 117.606
+margin_top = 520.182
+margin_right = 526.606
+margin_bottom = 590.182
 custom_styles/hover = ExtResource( 15 )
 custom_styles/pressed = ExtResource( 16 )
 custom_styles/normal = ExtResource( 17 )
 custom_fonts/font = ExtResource( 19 )
 custom_colors/font_color = Color( 0.137255, 0.137255, 0.137255, 1 )
 text = "START"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Searching_Text" type="Label" parent="UI_Layer"]
 anchor_left = 0.5
@@ -216,6 +229,9 @@ margin_bottom = 562.669
 custom_fonts/font = ExtResource( 18 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Searching"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Searching_Text_Timer" type="Timer" parent="UI_Layer"]
 wait_time = 0.3
