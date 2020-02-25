@@ -12,6 +12,8 @@ func _ready():
 	$HTTPRequest_GetMatchData.connect("request_completed", self, "_HTTP_GetMatchData_Completed");
 	$HTTPRequest_CreateGuest.connect("request_completed", self, "_HTTP_CreateGuest_Completed");
 	
+	$Player_Status_Poll_Timer.connect("timeout", self, "_Player_Status_Poll_Timer_Ended");
+	
 	Globals.load_save_data();
 	print(Globals.userToken);
 	if Globals.game_just_started:
@@ -23,6 +25,10 @@ func _ready():
 		get_tree().change_scene("res://GameContent/Main.tscn");
 		
 var stat = 0;
+func _Player_Status_Poll_Timer_Ended():
+	# If we're not already polling the player status, poll it. Called every 5 seconds.
+	if $HTTPRequest_PollPlayerStatus.get_http_client_status() == 0:
+		$HTTPRequest_PollPlayerStatus.request(Globals.mainServerIP + "pollPlayerStatus", ["authorization: Bearer " + Globals.userToken]);
 func _process(delta):
 	# If were in queue, poll player status if we're not already polling it
 	if(isInMMQueue && $HTTPRequest_PollPlayerStatus.get_http_client_status() == 0):
@@ -91,6 +97,11 @@ func _HTTP_PollPlayerStatus_Completed(result, response_code, headers, body):
 	if response_code != 200:
 		return;
 	var json = JSON.parse(body.get_string_from_utf8())
+	print(json.result);
+	if json.result.rank:
+		Globals.player_rank = int(json.result.rank);
+	if json.result.mmr:
+		Globals.player_MMR = int(json.result.mmr);
 	if(int(json.result.status) > 1):
 		print("Found Match : " + json.result.status);
 		var matchID = json.result.status;

@@ -27,14 +27,10 @@ func _ready():
 func _HTTPRequest_Get_Match_Data_Completed(result, response_code, headers, body):
 	var json = JSON.parse(body.get_string_from_utf8())
 	if(response_code == 200 && json.result):
-		print(json.result);
 		var clientPlayerID = json.result.clientData.clientID;
 		var rankChanges = JSON.parse(json.result.matchData.rankChanges).result;
 		var players = JSON.parse(json.result.matchData.players).result;
-		print(clientPlayerID);
 		var index = players.find(clientPlayerID);
-		print(index);
-		print(players);
 		old_mmr = rankChanges[index].oldRank;
 		new_mmr = rankChanges[index].newRank;
 	else:
