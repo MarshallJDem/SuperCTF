@@ -14,13 +14,32 @@ var has_animated_mmr = false;
 
 func _ready():
 	$CanvasLayer/Button_Titlescreen.connect("pressed", self, "_exit_pressed");
+	$HTTPRequest_Get_Match_Data.connect("request_completed", self, "_HTTPRequest_Get_Match_Data_Completed");
 	winning_team_ID = Globals.result_winning_team_id;
 	team_0_score = Globals.result_team0_score;
 	team_1_score = Globals.result_team1_score;
 	player_team_ID = Globals.result_player_team_id;
 	match_ID = Globals.result_match_id;
 	old_mmr = Globals.player_MMR;
-
+	
+	var query = "matchID=" + String(match_ID);
+	$HTTPRequest_Get_Match_Data.request(Globals.mainServerIP + "getMatchData?" + query, ["authorization: Bearer " + Globals.userToken], false, HTTPClient.METHOD_GET);
+func _HTTPRequest_Get_Match_Data_Completed(result, response_code, headers, body):
+	var json = JSON.parse(body.get_string_from_utf8())
+	if(response_code == 200 && json.result):
+		print(json.result);
+		var clientPlayerID = json.result.clientData.clientID;
+		var rankChanges = JSON.parse(json.result.matchData.rankChanges).result;
+		var players = JSON.parse(json.result.matchData.players).result;
+		print(clientPlayerID);
+		var index = players.find(clientPlayerID);
+		print(index);
+		print(players);
+		old_mmr = rankChanges[index].oldRank;
+		new_mmr = rankChanges[index].newRank;
+	else:
+		pass;
+	
 func _exit_pressed():
 	get_tree().change_scene("res://TitleScreen.tscn");
 
@@ -62,4 +81,4 @@ func _process(_delta):
 		var change_color = "red" if MMR_change < 0 else "green";
 		$CanvasLayer/Text_MMR_Sub.bbcode_text = "[center][color=black]Your MMR ([/color][color=" + change_color + "]" + change_text + "[/color][color=black])[/color][/center]"; 
 	else:
-		$CanvasLayer/Text_MMR_Sub.bbcode_text = "[center]-[/center]";
+		$CanvasLayer/Text_MMR_Sub.bbcode_text = "[center]Your MMR[/center]";

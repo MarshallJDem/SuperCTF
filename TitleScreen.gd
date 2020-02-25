@@ -67,9 +67,9 @@ func _HTTP_FindMatch_Completed(result, response_code, headers, body):
 # Called when the GetMatchData HTTP request completes
 func _HTTP_GetMatchData_Completed(result, response_code, headers, body):
 	var json = JSON.parse(body.get_string_from_utf8())
-	Globals.serverIP = json.result.serverIP;
-	Globals.serverPublicToken = json.result.serverPublicToken;
-	Globals.result_match_id = json.result.matchID;
+	Globals.serverIP = json.result.matchData.serverIP;
+	Globals.serverPublicToken = json.result.matchData.serverPublicToken;
+	Globals.result_match_id = json.result.matchData.matchID;
 	get_tree().change_scene("res://GameContent/Main.tscn");
 
 func _HTTP_CreateGuest_Completed(result, response_code, headers, body):

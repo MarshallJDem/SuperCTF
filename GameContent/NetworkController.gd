@@ -120,7 +120,7 @@ func _HTTP_GetMatchData_Completed(result, response_code, headers, body):
 		if(response_code == 200):
 			var json = JSON.parse(body.get_string_from_utf8());
 			# Have to parse again because players is stored as a JSON string
-			Globals.allowedPlayers = JSON.parse(json.result.players).result;
+			Globals.allowedPlayers = JSON.parse(json.result.matchData.players).result;
 			print(Globals.allowedPlayers);
 
 # Joins a server
@@ -145,6 +145,8 @@ func start_match():
 # Sets the score of the game to the given score. This should only ever be called by the server
 remotesync func set_scores(new_scores):
 	scores = new_scores;
+	Globals.result_team0_score = scores[0];
+	Globals.result_team1_score = scores[1];
 	get_tree().get_root().get_node("MainScene/UI_Layer").set_score_text(scores[0], scores[1]);
 	print("current scores: " + str(scores));
 	
@@ -251,12 +253,8 @@ func leave_match():
 	print("Leave Match");
 	get_tree().set_network_peer(null);
 	reset_game()
-	#Globals.result_winning_team_id; Handled on end_match call
-	
-	if !Globals.testing:
-		Globals.result_team0_score = scores[0];
-		Globals.result_team1_score = scores[1];
-	#Globals.result_match_id; Match ID is handled when the match is found in titlescreen
+	# Ideally I'd like to handle passing the variables to the scene here
+	# But alas they are all over the place due to weird reasons
 	get_tree().change_scene("res://Game_Results_Screen.tscn");
 
 # Called when this client disconnects from the server

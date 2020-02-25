@@ -14,7 +14,7 @@ var userToken;
 var player_MMR = 2000;
 
 #Main Server
-var mainServerIP = "https://www.superctf.com:42401/";
+var mainServerIP = "https://www.superctf.com" + ":42401/";
 
 var game_just_started = true;
 var is_typing_in_chat = false;
@@ -28,7 +28,7 @@ var result_match_id = -1;
 
 # ----- Constants -----
 
-# The amount of delay to lerp over for lag interpolation for players
+# The amount of delay to lerp over for lag interpolation for players and various other things
 var player_lerp_time = 100; # In millis
 # Whether or not lasers should destroy bullets
 var lasers_destroy_bullets = true;
