@@ -15,6 +15,7 @@ func _ready():
 	$Leaderboard_Refresh_Timer.connect("timeout", self, "_Leaderboard_Refresh_Ended");
 	
 	$Player_Status_Poll_Timer.connect("timeout", self, "_Player_Status_Poll_Timer_Ended");
+	$Headline_Update_Timer.connect("timeout", self, "_Headline_Update_Timer_Ended");
 	
 	Globals.load_save_data();
 	print(Globals.userToken);
@@ -31,7 +32,11 @@ var stat = 0;
 func _Player_Status_Poll_Timer_Ended():
 	# Attempt to poll the player status. Called every 5 seconds.
 	attempt_poll_player_status();
-
+func _Headline_Update_Timer_Ended():
+	var text = $UI_Layer/Headline_Rect/Headline_Text.bbcode_text;
+	var first = text.substr(0,1);
+	text = text.substr(1, len(text) - 1);
+	$UI_Layer/Headline_Rect/Headline_Text.bbcode_text = text + first;
 func attempt_poll_player_status():
 	# IF were not already in the middle of a poll, poll it
 	if $HTTPRequest_PollPlayerStatus.get_http_client_status() == 0:

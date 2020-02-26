@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=2]
+[gd_scene load_steps=35 format=2]
 
 [ext_resource path="res://GameContent/Main.gd" type="Script" id=1]
 [ext_resource path="res://GameContent/Player.tscn" type="PackedScene" id=2]
@@ -11,10 +11,7 @@
 [ext_resource path="res://Hover_Button_Style.tres" type="StyleBox" id=9]
 [ext_resource path="res://Pressed_Button_Style.tres" type="StyleBox" id=10]
 [ext_resource path="res://Normal_Button_Style.tres" type="StyleBox" id=11]
-[ext_resource path="res://Assets/GUI/Bullet-GUI.png" type="Texture" id=12]
-[ext_resource path="res://Assets/GUI/Laser-GUI.png" type="Texture" id=13]
-[ext_resource path="res://Assets/GUI/Teleport-GUI.png" type="Texture" id=14]
-[ext_resource path="res://Assets/GUI/Forcefield-GUI.png" type="Texture" id=15]
+[ext_resource path="res://Assets/GUI/W-Key-GUI.png" type="Texture" id=13]
 [ext_resource path="res://GameContent/Wall.tscn" type="PackedScene" id=16]
 [ext_resource path="res://GameContent/Wall_H_M_B.tscn" type="PackedScene" id=17]
 [ext_resource path="res://GameContent/Wall_V_M_B.tscn" type="PackedScene" id=18]
@@ -26,6 +23,13 @@
 [ext_resource path="res://Assets/Environment/border_wall_H.png" type="Texture" id=24]
 [ext_resource path="res://Assets/Environment/border_wall_V.png" type="Texture" id=25]
 [ext_resource path="res://Assets/Environment/background.png" type="Texture" id=26]
+[ext_resource path="res://Assets/GUI/D-Key-GUI.png" type="Texture" id=27]
+[ext_resource path="res://Assets/GUI/S-Key-GUI.png" type="Texture" id=28]
+[ext_resource path="res://Assets/GUI/A-Key-GUI.png" type="Texture" id=29]
+[ext_resource path="res://Assets/GUI/Arrow-Key-GUI.png" type="Texture" id=30]
+[ext_resource path="res://Assets/GUI/Shift-Key-GUI.png" type="Texture" id=31]
+[ext_resource path="res://Assets/GUI/Space-Key-GUI.png" type="Texture" id=32]
+[ext_resource path="res://Assets/GUI/E-Key-GUI.png" type="Texture" id=33]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0, 0, 0, 0.145098 )
@@ -46,7 +50,7 @@ colors = PoolColorArray( 0, 0, 0, 1, 1, 1, 1, 0 )
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_horizontal_guides_": [  ],
-"_edit_vertical_guides_": [  ]
+"_edit_vertical_guides_": [ 544.046 ]
 }
 
 [node name="Test_Player" parent="." instance=ExtResource( 2 )]
@@ -138,10 +142,12 @@ __meta__ = {
 }
 
 [node name="Big_Label_Red" type="Label" parent="UI_Layer"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -32.6702
-margin_right = 29.3298
+anchor_left = -0.000801928
+anchor_top = 0.000501296
+anchor_right = 0.999198
+anchor_bottom = 1.0005
+margin_left = -33.055
+margin_right = 28.9451
 grow_horizontal = 2
 grow_vertical = 2
 custom_fonts/font = ExtResource( 7 )
@@ -175,79 +181,152 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 margin_left = -20.0
-margin_top = -40.0
+margin_top = -49.0
 margin_right = 20.0
-margin_bottom = -20.0
+margin_bottom = -29.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="Bullet_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
-position = Vector2( -297.036, -50 )
-scale = Vector2( 5, 5 )
-texture = ExtResource( 12 )
-hframes = 2
-
-[node name="Laser_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
-position = Vector2( -100, -50 )
-scale = Vector2( 5, 5 )
+[node name="W_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
+position = Vector2( -175, -44 )
+scale = Vector2( 2, 2 )
 texture = ExtResource( 13 )
 hframes = 2
 
-[node name="Teleport_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
-position = Vector2( -498, -104 )
-scale = Vector2( 5, 5 )
-texture = ExtResource( 14 )
-offset = Vector2( 119.6, 10.8 )
+[node name="A_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
+position = Vector2( -208, -11 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 29 )
 hframes = 2
 
-[node name="Forcefield_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
-position = Vector2( -300, -104 )
-scale = Vector2( 5, 5 )
-texture = ExtResource( 15 )
-offset = Vector2( 119.6, 10.8 )
+[node name="S_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
+position = Vector2( -175, -11 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 28 )
 hframes = 2
 
-[node name="Bullet_GUI_Text" type="Label" parent="UI_Layer/Ability_GUIs"]
-margin_left = -360.895
-margin_top = -144.108
-margin_right = -226.895
-margin_bottom = -129.108
-custom_fonts/font = ExtResource( 5 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "FIRE BULLET"
-align = 1
-valign = 1
+[node name="D_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
+position = Vector2( -142, -11 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 27 )
+hframes = 2
 
-[node name="Laser_GUI_Text" type="Label" parent="UI_Layer/Ability_GUIs"]
-margin_left = -163.859
-margin_top = -144.108
-margin_right = -29.8591
-margin_bottom = -129.108
+[node name="E_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
+position = Vector2( 20, -11 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 33 )
+hframes = 2
+
+[node name="UP_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
+position = Vector2( 215, -44 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 30 )
+hframes = 2
+
+[node name="LEFT_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
+position = Vector2( 182, -11 )
+rotation = -1.5708
+scale = Vector2( 2, 2 )
+texture = ExtResource( 30 )
+hframes = 2
+
+[node name="DOWN_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
+position = Vector2( 215, -11 )
+rotation = 3.14159
+scale = Vector2( 2, 2 )
+texture = ExtResource( 30 )
+hframes = 2
+
+[node name="RIGHT_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
+position = Vector2( 248, -11 )
+rotation = 1.5708
+scale = Vector2( 2, 2 )
+texture = ExtResource( 30 )
+hframes = 2
+
+[node name="SHIFT_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
+position = Vector2( 100, -11 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 31 )
+hframes = 2
+
+[node name="SPACE_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
+position = Vector2( -60, -11 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 32 )
+hframes = 2
+
+[node name="Shoot_GUI_Text" type="Label" parent="UI_Layer/Ability_GUIs"]
+margin_left = 150.0
+margin_top = 11.0
+margin_right = 284.0
+margin_bottom = 44.0
 custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "asdfasdf"
+text = "FIRE
+BULLET"
 align = 1
 valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Teleport_GUI_Text" type="Label" parent="UI_Layer/Ability_GUIs"]
-margin_left = 35.1126
-margin_top = -144.108
-margin_right = 169.113
-margin_bottom = -129.108
+margin_left = -126.0
+margin_top = 20.0
+margin_right = 8.0004
+margin_bottom = 35.0
 rect_pivot_offset = Vector2( -533.113, 40.108 )
 custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "asdfasdf"
+text = "DASH"
 align = 1
 valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Forcefield_GUI_Text" type="Label" parent="UI_Layer/Ability_GUIs"]
-margin_left = 230.159
-margin_top = -144.108
-margin_right = 364.159
-margin_bottom = -129.108
+margin_left = -47.0
+margin_top = 20.0
+margin_right = 87.0
+margin_bottom = 35.0
 rect_pivot_offset = Vector2( -533.113, 40.108 )
 custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "asdfasdf"
+text = "FORCEFIELD"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ToggleWeapon_GUI_Text2" type="Label" parent="UI_Layer/Ability_GUIs"]
+margin_left = 34.891
+margin_top = 11.0
+margin_right = 168.891
+margin_bottom = 44.0
+rect_pivot_offset = Vector2( -533.113, 40.108 )
+custom_fonts/font = ExtResource( 5 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "SWITCH
+WEAPON"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Move_GUI_Text" type="Label" parent="UI_Layer/Ability_GUIs"]
+margin_left = -240.0
+margin_top = 20.0
+margin_right = -106.0
+margin_bottom = 35.0
+rect_pivot_offset = Vector2( -533.113, 40.108 )
+custom_fonts/font = ExtResource( 5 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "MOVE"
 align = 1
 valign = 1
 

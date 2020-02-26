@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/A-Key.png-dbda7e218484b67647b8d2df1099ba91.stex"
+path="res://.import/Arrow-Key-GUI.png-e4fc7f86d0bc73cecb524794cbe271fb.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/GUI/A-Key.png"
-dest_files=[ "res://.import/A-Key.png-dbda7e218484b67647b8d2df1099ba91.stex" ]
+source_file="res://Assets/GUI/Arrow-Key-GUI.png"
+dest_files=[ "res://.import/Arrow-Key-GUI.png-e4fc7f86d0bc73cecb524794cbe271fb.stex" ]
 
 [params]
 

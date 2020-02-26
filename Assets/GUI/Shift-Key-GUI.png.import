@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Space-Key.png-049ee7c74e315af91a9af07fd15acb7c.stex"
+path="res://.import/Shift-Key-GUI.png-c6832da32ef88df50373f8acd6a08014.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/GUI/Space-Key.png"
-dest_files=[ "res://.import/Space-Key.png-049ee7c74e315af91a9af07fd15acb7c.stex" ]
+source_file="res://Assets/GUI/Shift-Key-GUI.png"
+dest_files=[ "res://.import/Shift-Key-GUI.png-c6832da32ef88df50373f8acd6a08014.stex" ]
 
 [params]
 

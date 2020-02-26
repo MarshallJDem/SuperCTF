@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/W-Key.png-9ed22e2d803e3ef411ad7390bb7c57f3.stex"
+path="res://.import/D-Key-GUI.png-57f3c8e95a0a9df833ecd67b4ac79d87.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/GUI/W-Key.png"
-dest_files=[ "res://.import/W-Key.png-9ed22e2d803e3ef411ad7390bb7c57f3.stex" ]
+source_file="res://Assets/GUI/D-Key-GUI.png"
+dest_files=[ "res://.import/D-Key-GUI.png-57f3c8e95a0a9df833ecd67b4ac79d87.stex" ]
 
 [params]
 

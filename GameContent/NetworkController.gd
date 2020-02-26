@@ -22,7 +22,6 @@ var match_is_running = false;
 
 func _ready():
 	if Globals.testing:
-		leave_match();
 		call_deferred("spawn_flag", 1, Vector2(-200, 0), 0);
 		return;
 	get_tree().connect("network_peer_connected",self, "_client_connected");
