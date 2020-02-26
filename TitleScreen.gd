@@ -11,6 +11,8 @@ func _ready():
 	$HTTPRequest_PollPlayerStatus.connect("request_completed", self, "_HTTP_PollPlayerStatus_Completed");
 	$HTTPRequest_GetMatchData.connect("request_completed", self, "_HTTP_GetMatchData_Completed");
 	$HTTPRequest_CreateGuest.connect("request_completed", self, "_HTTP_CreateGuest_Completed");
+	$HTTPRequest_GetLeaderboard.connect("request_completed", self, "_HTTP_GetLeaderboard_Completed");
+	$Leaderboard_Refresh_Timer.connect("timeout", self, "_Leaderboard_Refresh_Ended");
 	
 	$Player_Status_Poll_Timer.connect("timeout", self, "_Player_Status_Poll_Timer_Ended");
 	
@@ -23,6 +25,7 @@ func _ready():
 		start();
 	if Globals.isServer:
 		get_tree().change_scene("res://GameContent/Main.tscn");
+	$HTTPRequest_GetLeaderboard.request(Globals.mainServerIP + "getLeaderboardData", ["authorization: Bearer " + Globals.userToken]);
 
 var stat = 0;
 func _Player_Status_Poll_Timer_Ended():
@@ -66,8 +69,40 @@ func start():
 	
 	$Titlemusic_Audio.play(0.0);
 	#OS.window_fullscreen = true;
-	
+var leaderboard_parent;
+func load_leaderboard(leaderboard_data):
+	var origin = Vector2(30,190);
+	if leaderboard_parent:
+		leaderboard_parent.call_deferred("queue_free");
+	leaderboard_parent = Node2D.new();
+	leaderboard_parent.position = origin;
+	call_deferred("add_child", leaderboard_parent);
+	var cell_size = Vector2(206, 33);
+	var rows = 10;
+	var columns = 5;
+	for i in range(50):
+		var data = leaderboard_data[i];
+		var cell = load("res://LeaderboardCell.tscn").instance();
+		cell.mmr = data.mmr;
+		cell.player_name = data.name;
+		cell.player_id = data.uid;
+		cell.rank = i + 1;
+		var row = i % rows;
+		var col = int( i / rows);
+		cell.position = Vector2(cell_size.x * col, cell_size.y * row);
+		leaderboard_parent.add_child(cell);
 
+func _HTTP_GetLeaderboard_Completed(result, response_code, headers, body):
+	var json = JSON.parse(body.get_string_from_utf8())
+	print(json.result);
+	if(response_code == 200 and json.result):
+		load_leaderboard(json.result);
+
+func _Leaderboard_Refresh_Ended():
+	if $HTTPRequest_GetLeaderboard.get_http_client_status() == 0:
+		$HTTPRequest_GetLeaderboard.request(Globals.mainServerIP + "getLeaderboardData", ["authorization: Bearer " + Globals.userToken]);
+	
+	
 # Called when the find match HTTP request completes
 func _HTTP_FindMatch_Completed(result, response_code, headers, body):
 	var json = JSON.parse(body.get_string_from_utf8())

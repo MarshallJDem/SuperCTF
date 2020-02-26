@@ -1,8 +1,10 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://fonts/Pixel_Chat.tres" type="DynamicFont" id=1]
+[ext_resource path="res://LeaderboardCell.gd" type="Script" id=2]
 
 [node name="LeaderboardCell" type="Node2D"]
+script = ExtResource( 2 )
 
 [node name="ColorRect" type="ColorRect" parent="."]
 margin_right = 206.0
@@ -19,11 +21,11 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="RichTextLabel" type="RichTextLabel" parent="."]
-margin_left = 9.31247
-margin_top = 9.993
-margin_right = 22.3125
-margin_bottom = 21.993
+[node name="Text_Rank" type="RichTextLabel" parent="."]
+margin_left = 2.0
+margin_top = 10.0
+margin_right = 31.0
+margin_bottom = 22.0
 custom_fonts/normal_font = ExtResource( 1 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
@@ -34,7 +36,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="RichTextLabel2" type="RichTextLabel" parent="."]
+[node name="Text_Name" type="RichTextLabel" parent="."]
 margin_left = 35.6035
 margin_top = 6.73748
 margin_right = 242.604
