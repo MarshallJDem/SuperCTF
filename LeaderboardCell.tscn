@@ -22,10 +22,12 @@ __meta__ = {
 }
 
 [node name="Text_Rank" type="RichTextLabel" parent="."]
-margin_left = 2.0
-margin_top = 10.0
-margin_right = 31.0
-margin_bottom = 22.0
+margin_left = 5.80359
+margin_top = 11.1714
+margin_right = 34.8036
+margin_bottom = 38.1714
+rect_scale = Vector2( 0.75, 0.75 )
+rect_clip_content = false
 custom_fonts/normal_font = ExtResource( 1 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
@@ -37,15 +39,16 @@ __meta__ = {
 }
 
 [node name="Text_Name" type="RichTextLabel" parent="."]
-margin_left = 35.6035
-margin_top = 6.73748
-margin_right = 242.604
-margin_bottom = 21.7375
-rect_scale = Vector2( 1.58202, 1.58202 )
+margin_left = 38.616
+margin_top = 7.78254
+margin_right = 284.616
+margin_bottom = 47.7825
+rect_clip_content = false
 custom_fonts/normal_font = ExtResource( 1 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
 bbcode_text = "Guest 587231"
+meta_underlined = false
 text = "Guest 587231"
 scroll_active = false
 __meta__ = {

@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://TitleScreen.gd" type="Script" id=1]
 [ext_resource path="res://UI_Layer.gd" type="Script" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://flag_frames/flagBlue4.png" type="Texture" id=9]
 [ext_resource path="res://fonts/Pixel_Chat.tres" type="DynamicFont" id=10]
 [ext_resource path="res://fonts/Pixel_SubTitle.tres" type="DynamicFont" id=11]
+[ext_resource path="res://fonts/pixel.TTF" type="DynamicFontData" id=12]
 [ext_resource path="res://GameContent/Flag_Area2D.gd" type="Script" id=14]
 [ext_resource path="res://Hover_Button_Style.tres" type="StyleBox" id=15]
 [ext_resource path="res://Pressed_Button_Style.tres" type="StyleBox" id=16]
@@ -29,6 +30,11 @@ animations = [ {
 
 [sub_resource type="ConvexPolygonShape2D" id=2]
 points = PoolVector2Array( 0, 0, 18.693, 3.609, 18.937, 14.698, 0, 28.805 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 10
+outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
+font_data = ExtResource( 12 )
 
 [node name="TitleScreen" type="Node2D"]
 script = ExtResource( 1 )
@@ -65,7 +71,6 @@ script = ExtResource( 5 )
 position = Vector2( 10, -14 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 1 )
-frame = 1
 playing = true
 
 [node name="Area2D" type="Area2D" parent="Flag2" groups=[
@@ -85,10 +90,10 @@ script = ExtResource( 2 )
 anchor_top = 0.0331589
 anchor_right = 1.667
 anchor_bottom = 1.00016
-margin_left = 0.517883
-margin_top = -8.70636
-margin_right = 0.517822
-margin_bottom = -8.70636
+margin_left = 0.330383
+margin_top = -8.32231
+margin_right = 0.330322
+margin_bottom = -8.32233
 rect_scale = Vector2( 0.6, 0.6 )
 custom_fonts/mono_font = ExtResource( 3 )
 custom_fonts/bold_italics_font = ExtResource( 3 )
@@ -334,11 +339,12 @@ __meta__ = {
 }
 
 [node name="Headline_Text" type="RichTextLabel" parent="UI_Layer/Headline_Rect"]
-margin_left = 4.59705
-margin_top = 8.26021
-margin_right = 1035.6
-margin_bottom = 38.2602
-custom_fonts/normal_font = ExtResource( 10 )
+margin_left = 5.38458
+margin_top = 10.1205
+margin_right = 1036.38
+margin_bottom = 45.1205
+rect_clip_content = false
+custom_fonts/normal_font = SubResource( 3 )
 bbcode_enabled = true
 bbcode_text = "---GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD---"
 text = "---GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD---"

@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=2]
+[gd_scene load_steps=36 format=2]
 
 [ext_resource path="res://GameContent/Main.gd" type="Script" id=1]
 [ext_resource path="res://GameContent/Player.tscn" type="PackedScene" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://Hover_Button_Style.tres" type="StyleBox" id=9]
 [ext_resource path="res://Pressed_Button_Style.tres" type="StyleBox" id=10]
 [ext_resource path="res://Normal_Button_Style.tres" type="StyleBox" id=11]
+[ext_resource path="res://fonts/Pixel_Game_UI.tres" type="DynamicFont" id=12]
 [ext_resource path="res://Assets/GUI/W-Key-GUI.png" type="Texture" id=13]
 [ext_resource path="res://GameContent/Wall.tscn" type="PackedScene" id=16]
 [ext_resource path="res://GameContent/Wall_H_M_B.tscn" type="PackedScene" id=17]
@@ -80,7 +81,7 @@ margin_bottom = 381.0
 mouse_filter = 2
 custom_styles/focus = SubResource( 1 )
 custom_styles/normal = SubResource( 2 )
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color = Color( 0.243137, 0.243137, 0.243137, 1 )
 placeholder_text = "Press ENTER to chat"
 script = ExtResource( 6 )
@@ -92,11 +93,7 @@ __meta__ = {
 margin_right = 292.0
 margin_bottom = 334.0
 custom_styles/normal = SubResource( 3 )
-custom_fonts/mono_font = ExtResource( 5 )
-custom_fonts/bold_italics_font = ExtResource( 5 )
-custom_fonts/italics_font = ExtResource( 5 )
-custom_fonts/bold_font = ExtResource( 5 )
-custom_fonts/normal_font = ExtResource( 5 )
+custom_fonts/normal_font = ExtResource( 12 )
 bbcode_enabled = true
 scroll_active = false
 scroll_following = true
@@ -109,10 +106,6 @@ anchor_right = 1.0
 margin_top = 10.0
 margin_bottom = 100.0
 size_flags_stretch_ratio = 0.0
-custom_fonts/mono_font = ExtResource( 7 )
-custom_fonts/bold_italics_font = ExtResource( 7 )
-custom_fonts/italics_font = ExtResource( 7 )
-custom_fonts/bold_font = ExtResource( 7 )
 custom_fonts/normal_font = ExtResource( 7 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
@@ -262,7 +255,7 @@ margin_left = 150.0
 margin_top = 11.0
 margin_right = 284.0
 margin_bottom = 44.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "FIRE
 BULLET"
@@ -278,7 +271,7 @@ margin_top = 20.0
 margin_right = 8.0004
 margin_bottom = 35.0
 rect_pivot_offset = Vector2( -533.113, 40.108 )
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "DASH"
 align = 1
@@ -293,7 +286,7 @@ margin_top = 20.0
 margin_right = 87.0
 margin_bottom = 35.0
 rect_pivot_offset = Vector2( -533.113, 40.108 )
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "FORCEFIELD"
 align = 1
@@ -308,7 +301,7 @@ margin_top = 11.0
 margin_right = 168.891
 margin_bottom = 44.0
 rect_pivot_offset = Vector2( -533.113, 40.108 )
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "SWITCH
 WEAPON"
@@ -324,7 +317,7 @@ margin_top = 20.0
 margin_right = -106.0
 margin_bottom = 35.0
 rect_pivot_offset = Vector2( -533.113, 40.108 )
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "MOVE"
 align = 1
