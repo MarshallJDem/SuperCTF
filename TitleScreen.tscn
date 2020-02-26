@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://TitleScreen.gd" type="Script" id=1]
 [ext_resource path="res://UI_Layer.gd" type="Script" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://flag_frames/flagBlue4.png" type="Texture" id=9]
 [ext_resource path="res://fonts/Pixel_Chat.tres" type="DynamicFont" id=10]
 [ext_resource path="res://fonts/Pixel_SubTitle.tres" type="DynamicFont" id=11]
+[ext_resource path="res://LeaderboardCell.tscn" type="PackedScene" id=12]
 [ext_resource path="res://GameContent/Flag_Area2D.gd" type="Script" id=14]
 [ext_resource path="res://Hover_Button_Style.tres" type="StyleBox" id=15]
 [ext_resource path="res://Pressed_Button_Style.tres" type="StyleBox" id=16]
@@ -63,7 +64,7 @@ script = ExtResource( 5 )
 position = Vector2( 10, -14 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 1 )
-frame = 2
+frame = 1
 playing = true
 
 [node name="Area2D" type="Area2D" parent="Flag2" groups=[
@@ -327,19 +328,15 @@ __meta__ = {
 
 [node name="ColorRect" type="ColorRect" parent="UI_Layer/GridContainer"]
 
-[node name="ColorRect" type="ColorRect" parent="UI_Layer"]
-margin_left = 68.6982
-margin_top = 268.145
-margin_right = 274.698
-margin_bottom = 334.145
-color = Color( 0, 0, 0, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="Titlemusic_Audio" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 20 )
 
 [node name="Player_Status_Poll_Timer" type="Timer" parent="."]
 wait_time = 5.0
 autostart = true
+
+[node name="LeaderboardCell" parent="." instance=ExtResource( 12 )]
+position = Vector2( 117, 250.278 )
+
+[node name="LeaderboardCell2" parent="." instance=ExtResource( 12 )]
+position = Vector2( 117.233, 283.136 )

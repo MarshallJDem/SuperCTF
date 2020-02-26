@@ -1,3 +1,95 @@
-[gd_scene format=2]
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://fonts/Pixel_Chat.tres" type="DynamicFont" id=1]
 
 [node name="LeaderboardCell" type="Node2D"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_right = 206.0
+margin_bottom = 33.0
+color = Color( 0.65098, 0.65098, 0.65098, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect2" type="ColorRect" parent="."]
+margin_right = 33.0
+margin_bottom = 33.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+margin_left = 9.31247
+margin_top = 9.993
+margin_right = 22.3125
+margin_bottom = 21.993
+custom_fonts/normal_font = ExtResource( 1 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]1"
+text = "1"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="."]
+margin_left = 35.6035
+margin_top = 6.73748
+margin_right = 242.604
+margin_bottom = 21.7375
+rect_scale = Vector2( 1.58202, 1.58202 )
+custom_fonts/normal_font = ExtResource( 1 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "Guest 587231"
+text = "Guest 587231"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect7" type="ColorRect" parent="."]
+margin_left = 31.0
+margin_top = 2.0
+margin_right = 33.0
+margin_bottom = 31.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect3" type="ColorRect" parent="."]
+margin_right = 206.0
+margin_bottom = 2.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect4" type="ColorRect" parent="."]
+margin_top = 31.0
+margin_right = 206.0
+margin_bottom = 33.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect5" type="ColorRect" parent="."]
+margin_right = 2.0
+margin_bottom = 32.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect6" type="ColorRect" parent="."]
+margin_left = 204.0
+margin_right = 206.0
+margin_bottom = 32.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
