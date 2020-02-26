@@ -65,6 +65,7 @@ script = ExtResource( 5 )
 position = Vector2( 10, -14 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 1 )
+frame = 3
 playing = true
 
 [node name="Area2D" type="Area2D" parent="Flag2" groups=[
@@ -322,26 +323,13 @@ autostart = true
 [node name="ColorRect" type="ColorRect" parent="UI_Layer"]
 anchor_right = 1.0
 margin_left = 30.0
-margin_top = 170.0
+margin_top = 160.0
 margin_right = -28.0
 margin_bottom = 190.0
 color = Color( 0, 0, 0, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="GridContainer" type="GridContainer" parent="UI_Layer"]
-anchor_right = 1.0
-margin_left = 30.202
-margin_top = 179.352
-margin_right = -29.798
-margin_bottom = 509.352
-columns = 3
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="ColorRect" type="ColorRect" parent="UI_Layer/GridContainer"]
 
 [node name="Titlemusic_Audio" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 20 )
