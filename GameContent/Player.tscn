@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://GameContent/Player.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Player/running_top_B.png" type="Texture" id=2]
@@ -13,6 +13,7 @@
 [ext_resource path="res://Assets/Sound/Flag_Pickup.wav" type="AudioStream" id=11]
 [ext_resource path="res://Assets/Sound/Flag_Drop.wav" type="AudioStream" id=12]
 [ext_resource path="res://Assets/Sound/Teleport.wav" type="AudioStream" id=13]
+[ext_resource path="res://fonts/Pixel_Chat.tres" type="DynamicFont" id=14]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 5.49852
@@ -173,3 +174,20 @@ stream = ExtResource( 12 )
 stream = ExtResource( 13 )
 pitch_scale = 0.5
 attenuation = 0.233258
+
+[node name="Label_Name" type="RichTextLabel" parent="."]
+margin_left = -41.0
+margin_top = -21.442
+margin_right = 124.0
+margin_bottom = 0.557999
+rect_scale = Vector2( 0.5, 0.5 )
+rect_clip_content = false
+custom_fonts/normal_font = ExtResource( 14 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center][color=blue]Guest7768"
+text = "Guest7768"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}

@@ -240,6 +240,7 @@ remotesync func spawn_player(id, position):
 	player.team_id = players[id]["team_id"];
 	player.position = position;
 	player.start_pos = position;
+	player.player_name = players[id]["name"];
 	
 	get_tree().get_root().get_node("MainScene/Players").add_child(player);
 

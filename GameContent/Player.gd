@@ -8,6 +8,7 @@ const BASE_SPEED = 200;
 const AIMING_SPEED = 15;
 const SPRINT_SPEED = 50;
 const TELEPORT_SPEED = 2000;
+var player_name = "Guest999";
 var speed = BASE_SPEED;
 # Where this player starts on the map and should respawn at
 var start_pos = Vector2(0,0);
@@ -81,6 +82,10 @@ func _ready():
 	$Shoot_Animation_Timer.wait_time = $Animation_Timer.wait_time * $Sprite_Top.vframes;
 	lerp_start_pos = position;
 	lerp_end_pos = position;
+	var color = "blue";
+	if team_id == 1:
+		color = "red";
+	$Label_Name.bbcode_text = "[center][color=" + color + "]" + player_name;
 
 func _input(event):
 	if Globals.is_typing_in_chat:
@@ -321,7 +326,7 @@ func spawn_bullet(pos, player_id, direction, time_shot, bullet_name = null):
 	var particles = load("res://GameContent/Muzzle_Bullet.tscn").instance();
 	particles.team_id = team_id;
 	#get_tree().get_root().get_node("MainScene").add_child(particles);
-	add_child(particles);
+	call_deferred("add_child", particles);
 	particles.position = get_node("Bullet_Starts/" + String($Sprite_Top.frame % $Sprite_Top.hframes)).position;
 	particles.rotation = Vector2(0,0).angle_to_point(direction) + PI;
 	
