@@ -8,6 +8,7 @@ var isServer = false;
 var allowedPlayers = [];
 var matchID;
 var allowCommands = true;
+var useSecure = true;
 
 #User data
 var userToken;
@@ -30,11 +31,11 @@ var result_match_id = -1;
 # ----- Constants -----
 
 # The amount of delay to lerp over for lag interpolation for players and various other things
-var player_lerp_time = 100; # In millis
+var player_lerp_time = 50; # In millis
 # Whether or not lasers should destroy bullets
 var lasers_destroy_bullets = true;
 # Whether to run in testing mode (for development uses)
-var testing = true;
+var testing = false;
 var forcefield_cooldown = 3;
 var lag_comp_headstart_dist = 15;
 

@@ -2,7 +2,7 @@ extends Node
 
 var		PORT		= 42402
 const	MAX_PLAYERS	= 10
-const	SCORE_LIMIT	= 1;
+const	SCORE_LIMIT	= 2;
 var		players		= {};
 var		player_name;
 var		scores		= [];
@@ -84,8 +84,9 @@ func start_server():
 	reset_game();
 	player_name = 'Server';
 	server = WebSocketServer.new();
-	server.private_key = load("res://HTTPS_Keys/linux_privkey.key");
-	server.ssl_certificate = load("res://HTTPS_Keys/linux_cert.crt");
+	if Globals.useSecure:
+		server.private_key = load("res://HTTPS_Keys/linux_privkey.key");
+		server.ssl_certificate = load("res://HTTPS_Keys/linux_cert.crt");
 	server.listen(PORT, PoolStringArray(), true);
 	get_tree().set_network_peer(server);
 	print("Making Game Server Available");
@@ -120,7 +121,9 @@ func _HTTP_GetMatchData_Completed(result, response_code, headers, body):
 			var json = JSON.parse(body.get_string_from_utf8());
 			# Have to parse again because players is stored as a JSON string
 			Globals.allowedPlayers = JSON.parse(json.result.matchData.players).result;
+			print("asdf");
 			print(Globals.allowedPlayers);
+			print("fdsa");
 
 # Joins a server
 func join_server():
@@ -128,7 +131,10 @@ func join_server():
 	player_name = 'Client';
 	client = WebSocketClient.new();
 	#client.trusted_ssl_certificate = load("res://HTTPSKeys/linux_fullchain.crt");
-	var url = "wss://" + Globals.serverIP;
+	
+	var url = "ws://" + Globals.serverIP;
+	if Globals.useSecure:
+		url = "wss://" + Globals.serverIP;
 	var error = client.connect_to_url(url, PoolStringArray(), true);
 	get_tree().set_network_peer(client);
 
