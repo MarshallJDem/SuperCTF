@@ -55,7 +55,7 @@ func _process(delta):
 	else:
 		$"Ability_GUIs/SHIFT_GUI".frame = 0;
 	
-
+	$Kill_Title_Text.modulate = Color(1,1,1, ($Kill_Title_Timer.time_left/$Kill_Title_Timer.wait_time));
 	
 	var local_player;
 	if Globals.testing:
@@ -114,6 +114,9 @@ func set_big_label_text(text, color):
 func clear_big_label_text():
 	$Big_Label_Blue.text = "";
 	$Big_Label_Red.text = "";
+func set_kill_title_text(text):
+	$Kill_Title_Text.bbcode_text = text;
+	$Kill_Title_Timer.start();
 # Sets the score label values
 func set_score_text(team0_score, team1_score):
 	$Score_Label.bbcode_text = "[center]" + "[color=#4C70BA]" + str(team0_score) + "[/color]" + "-" + "[color=#FF0000]" + str(team1_score) + "[/color]" + "[/center]";

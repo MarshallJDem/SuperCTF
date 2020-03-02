@@ -323,6 +323,25 @@ text = "MOVE"
 align = 1
 valign = 1
 
+[node name="Kill_Title_Text" type="RichTextLabel" parent="UI_Layer"]
+margin_left = 391.0
+margin_top = 440.0
+margin_right = 697.0
+margin_bottom = 470.0
+rect_clip_content = false
+custom_fonts/normal_font = ExtResource( 5 )
+bbcode_enabled = true
+bbcode_text = "[center][color=black] KILLED"
+text = " KILLED"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Kill_Title_Timer" type="Timer" parent="UI_Layer"]
+wait_time = 3.0
+one_shot = true
+
 [node name="Environment" type="Node" parent="."]
 
 [node name="Node2D" type="Node2D" parent="Environment"]

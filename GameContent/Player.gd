@@ -522,9 +522,14 @@ func deactivate_camera():
 func hit_by_projectile(attacker_id, projectile_type):
 	if projectile_type == 0 || projectile_type == 1: # Bullet or Laser
 		die();
+		var attacker_team_id = get_tree().get_root().get_node("MainScene/NetworkController").players[attacker_id]["team_id"]
+		var attacker_name = get_tree().get_root().get_node("MainScene/NetworkController").players[attacker_id]["name"]
+		if attacker_id == get_tree().get_network_unique_id():
+			var color = "blue"
+			if team_id == 1:
+				color = "red";
+			get_tree().get_root().get_node("MainScene/UI_Layer").set_kill_title_text("[center][color=black]KILLED [color=" + color +"]" + attacker_name);
 		if is_network_master():
-			var attacker_team_id = get_tree().get_root().get_node("MainScene/NetworkController").players[attacker_id]["team_id"]
-			var attacker_name = get_tree().get_root().get_node("MainScene/NetworkController").players[attacker_id]["name"]
 			get_tree().get_root().get_node("MainScene/UI_Layer").set_big_label_text("KILLED BY\n" + str(attacker_name), attacker_team_id);
 			camera_ref.get_parent().remove_child(camera_ref);
 			get_tree().get_root().get_node("MainScene/Players/" + str(attacker_id) + "/Center_Pivot").add_child(camera_ref);
