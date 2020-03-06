@@ -1,5 +1,8 @@
 extends Node
 
+# Whether to run in testing mode (for development uses)
+var testing = false;
+
 #Game Servers (Both clients and servers use these vars, but in different ways. overlapping would not work)
 var serverIP;
 var serverPublicToken;
@@ -9,6 +12,7 @@ var allowedPlayers = [];
 var matchID;
 var allowCommands = true;
 var useSecure = true;
+var gameserverStatus = 0;
 
 #User data
 var userToken;
@@ -34,8 +38,6 @@ var result_match_id = -1;
 var player_lerp_time = 100; # In millis
 # Whether or not lasers should destroy bullets
 var lasers_destroy_bullets = true;
-# Whether to run in testing mode (for development uses)
-var testing = false;
 var forcefield_cooldown = 3;
 var lag_comp_headstart_dist = 15;
 

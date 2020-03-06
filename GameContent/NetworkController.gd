@@ -31,11 +31,13 @@ func _ready():
 	get_tree().connect("server_disconnected",self, "_server_disconnect");
 	var _err = $Round_End_Timer.connect("timeout", self, "_round_end_timer_ended");
 	_err = $Round_Start_Timer.connect("timeout", self, "_round_start_timer_ended");
+	_err = $Gameserver_Status_Timer.connect("timeout", self, "_gameserver_status_timer_ended");
 	_err = $HTTPRequest_GameServerCheckUser.connect("request_completed", self, "_HTTP_GameServerCheckUser_Completed");
 	_err = $HTTPRequest_GameServerPollStatus.connect("request_completed", self, "_HTTP_GameServerPollStatus_Completed");
 	_err = $HTTPRequest_GameServerMakeAvailable.connect("request_completed", self, "_HTTP_GameServerMakeAvailable_Completed");
 	_err = $HTTPRequest_GameServerEndMatch.connect("request_completed", self, "_HTTP_GameServerEndMatch_Completed");
 	_err = $HTTPRequest_GetMatchData.connect("request_completed", self, "_HTTP_GetMatchData_Completed");
+	_err = $HTTPRequest_GameServerUpdateStatus.connect("request_completed", self, "_HTTP_GameServerUpdateStatus_Completed");
 	if(Globals.isServer):
 		start_server();
 	else:
@@ -92,8 +94,18 @@ func start_server():
 	print("Making Game Server Available");
 	$HTTPRequest_GameServerMakeAvailable.request(Globals.mainServerIP + "makeGameServerAvailable?publicToken=" + str("RANDOMTOKEN"), ["authorization: Bearer " + (Globals.serverPrivateToken)], false);
 	AudioServer.set_bus_volume_db(0, -500);
+	updateGameServerStatus(1);
+	$Gameserver_Status_Timer.start();
 
 var pollServerStatus = false;
+
+func _HTTP_GameServerUpdateStatus_Completed(result, response_code, headers, body):
+	if get_tree().is_network_server():
+		if(response_code == 200):
+			var json = JSON.parse(body.get_string_from_utf8());
+		else:
+			pass;
+
 func _HTTP_GameServerMakeAvailable_Completed(result, response_code, headers, body):
 	if get_tree().is_network_server():
 		if(response_code == 200):
@@ -111,6 +123,7 @@ func _HTTP_GameServerPollStatus_Completed(result, response_code, headers, body):
 			if matchID:
 				pollServerStatus = false;
 				print("Getting Match Data for MatchID = " + str(matchID));
+				updateGameServerStatus(2);
 				$HTTPRequest_GetMatchData.request(Globals.mainServerIP + "getMatchData?matchID=" + str(matchID), ["authorization: Bearer " + (Globals.serverPrivateToken)], false);
 		else:
 			pass;
@@ -121,10 +134,16 @@ func _HTTP_GetMatchData_Completed(result, response_code, headers, body):
 			var json = JSON.parse(body.get_string_from_utf8());
 			# Have to parse again because players is stored as a JSON string
 			Globals.allowedPlayers = JSON.parse(json.result.matchData.players).result;
-			print("asdf");
+			print("Found match and retrieved matchData. Now accepting connections.");
 			print(Globals.allowedPlayers);
-			print("fdsa");
 
+func _gameserver_status_timer_ended():
+	updateGameServerStatus();
+func updateGameServerStatus(status = null):
+	if status != null:
+		Globals.gameserverStatus = status;
+	if $HTTPRequest_GameServerUpdateStatus.get_http_client_status() == 0:
+		$HTTPRequest_GameServerUpdateStatus.request(Globals.mainServerIP + "updateGameServerStatus?status=" + String(Globals.gameserverStatus), ["authorization: Bearer " + (Globals.serverPrivateToken)], false);
 # Joins a server
 func join_server():
 	print("joining server");
@@ -146,6 +165,7 @@ func start_match():
 		rpc("set_scores", scores);
 		rpc("load_new_round");
 		match_is_running = true;
+		updateGameServerStatus(3);
 
 # Sets the score of the game to the given score. This should only ever be called by the server
 remotesync func set_scores(new_scores):
@@ -373,11 +393,13 @@ var winning_team_id_to_use;
 # Called when the HTTP request GameServerEndMatch completes. If successful, it will reset the server for next use after 5 seconds
 func _HTTP_GameServerEndMatch_Completed(result, response_code, headers, body):
 	if(response_code == 200):
-		print("success")
+		print("success");
+		updateGameServerStatus(4);
 		yield(get_tree().create_timer(5.0), "timeout")
 		get_tree().set_network_peer(null);
 		start_server();
 	else:
+		# Endlessly attempt to end the match until the server responds. It is important that this eventually works!
 		print("failiure")
 		yield(get_tree().create_timer(5.0), "timeout")
 		$HTTPRequest_GameServerEndMatch.request(Globals.mainServerIP + "gameServerEndMatch?matchID=" + str(Globals.matchID) + "&winningTeamID=" + str(winning_team_id_to_use), ["authorization: Bearer " + (Globals.serverPrivateToken)]);
