@@ -17,8 +17,8 @@ func _input(event):
 			# Send message / cancel
 			if Globals.is_typing_in_chat:
 				if self.text != "":
-					rpc_id(0, "send_message", self.text, get_tree().get_network_unique_id());
-					add_message(self.text, get_tree().get_network_unique_id());
+					rpc_id(1, "send_message", self.text, Globals.localPlayerID);
+					add_message(self.text, Globals.localPlayerID);
 				self.text = "";
 				self.release_focus();
 				Globals.is_typing_in_chat = false;
@@ -38,16 +38,16 @@ remote func send_message(message, sender_id):
 		rpc("receive_message", message, sender_id);
 
 remotesync func receive_message(message, sender_id):
-	if get_tree().get_network_unique_id() == sender_id:
+	if Globals.localPlayerID == sender_id:
 		return;
 	add_message(message, sender_id);
 	if Globals.allowCommands and get_tree().is_network_server():
 		if message == "/endmatch 0":
-			get_tree().get_root().get_node("MainScene/NetworkController").call_end_match(0);
+			get_tree().get_root().get_node("MainScene/NetworkController").rpc("end_match",0);
 		if message == "/endmatch 1":
-			get_tree().get_root().get_node("MainScene/NetworkController").call_end_match(1);
+			get_tree().get_root().get_node("MainScene/NetworkController").rpc("end_match",1);
+
 func add_message(message, sender_id):
-	
 	var player_name = "BOB";
 	var color = "#ff0000";
 	if !Globals.testing:

@@ -7,7 +7,7 @@ var team_id = -1;
 var show_death_particles = true;
 var is_from_puppet = false;
 # The exact time the player who shot this actually shot this (used to sync up lag)
-var initial_time_shot; # Unfortunately this is in seconds. We will use player lerp speed to guess latency
+var initial_time_shot;
 # The original position this bullet was shot from on the master's screen
 var initial_real_pos;
 # The first position the bullet started at as a puppet (slightly down trajectory)
@@ -32,6 +32,7 @@ func _ready():
 		puppet_time_shot = OS.get_system_time_msecs() - Globals.match_start_time;
 		if Globals.testing:
 			initial_time_shot = initial_time_shot - 100;
+	
 
 func _process(_delta):
 	pass;
@@ -66,8 +67,8 @@ remotesync func receive_death():
 func die():
 	#Only show particles if we havn't already done so from a preliminary death
 	if show_death_particles:
-		call_deferred("spawn_death_particles");
-	queue_free();
+		spawn_death_particles();
+	call_deferred("queue_free");
 
 var should_die = false;
 # Called when the death timer finishes
@@ -94,4 +95,4 @@ func spawn_death_particles():
 	particles.rotation = rotation;
 	particles.z_index = z_index;
 	particles.team_id = team_id;
-	get_tree().get_root().get_node("MainScene").add_child(particles);
+	get_tree().get_root().get_node("MainScene").call_deferred("add_child", particles);

@@ -23,10 +23,6 @@ config/icon="res://icon.png"
 
 Globals="*res://Globals.gd"
 
-[debug]
-
-settings/stdout/verbose_stdout=true
-
 [display]
 
 window/size/width=1088

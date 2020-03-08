@@ -7,6 +7,7 @@ var sprite_bottom_B = preload("res://Assets/Abilities/forcefield_bottom_B.png");
 var sprite_top_R = preload("res://Assets/Abilities/forcefield_top_R.png");
 var sprite_bottom_R = preload("res://Assets/Abilities/forcefield_bottom_R.png");
 
+# The id of the player who place this forcefield
 var player_id;
 var team_id = -1;
 

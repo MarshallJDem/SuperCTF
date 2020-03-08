@@ -31,11 +31,8 @@ func collided_with_bullet(bullet):
 	# If we're invincible, ignore it
 	if player.invincible:
 		return;
-	# If this is a bullet we shot, ignore it
-	if bullet.player_id == get_network_master():
-		return;
-	# If our teammate shot this, ignore it
-	if get_tree().get_root().get_node("MainScene/Players/" + str(bullet.player_id)).team_id == player.team_id:
+	# If our team shot this, ignore it
+	if get_tree().get_root().get_node("MainScene/NetworkController").players[bullet.player_id]['team_id'] == player.team_id:
 		return;
 	# Else we've been hit by an enemy
 	player.rpc("receive_hit", bullet.player_id, 0);
@@ -69,12 +66,11 @@ func collided_with_flag_home(flag_home):
 func collided_with_laser_body(laser_parent):
 	if get_tree().get_root().get_node("MainScene/NetworkController").round_is_ended: return;
 	var player = get_parent();
-	# If this is this player's laser, ignore it
-	if laser_parent.player_id == player.player_id:
-		return;
-	# If this is our teammate's laser, ignore it
+	# If this is our team's laser, ignore it
 	if laser_parent.team_id == player.team_id:
 		return;
+	# If this player is invincible, dont get hit
 	if player.invincible:
 		return;
+	# Otherwise receive a hit from the laser
 	player.rpc("receive_hit", laser_parent.player_id, 1);

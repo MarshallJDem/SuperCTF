@@ -4,15 +4,18 @@ extends Node
 var testing = false;
 
 #Game Servers (Both clients and servers use these vars, but in different ways. overlapping would not work)
-var serverIP;
+var serverIP = "";
 var serverPublicToken;
-var serverPrivateToken = "privatetoken42402";
+var serverPrivateToken = "privatetokenlocalhost";
 var isServer = true;
 var allowedPlayers = [];
 var matchID;
 var allowCommands = true;
-var useSecure = true;
+var useSecure = false;
 var gameserverStatus = 0;
+
+# Client data
+var localPlayerID;
 
 #User data
 var userToken;

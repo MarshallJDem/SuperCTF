@@ -60,8 +60,8 @@ func _process(delta):
 	var local_player;
 	if Globals.testing:
 		local_player = get_tree().get_root().get_node("MainScene/Test_Player");
-	else:
-		local_player  = get_tree().get_root().get_node("MainScene/Players/" + str(get_tree().get_network_unique_id()));
+	elif Globals.localPlayerID != null and get_tree().get_root().get_node("MainScene/Players").has_node("P" + str(Globals.localPlayerID)):
+		local_player = get_tree().get_root().get_node("MainScene/Players/P" + str(Globals.localPlayerID));
 	if local_player != null:
 		# Teleport button
 		var teleport_time_left = local_player.get_node("Teleport_Timer").time_left;

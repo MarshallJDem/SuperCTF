@@ -2,7 +2,8 @@ extends KinematicBody2D
 
 var control = false;
 var IS_CONTROLLED_BY_MOUSE = false;
-var player_id = 0;
+# The ID of this player 0,1,2 etc. NOT the network unique ID
+var player_id = -1;
 var team_id = -1;
 const BASE_SPEED = 200;
 const AIMING_SPEED = 15;
@@ -16,7 +17,7 @@ var start_pos = Vector2(0,0);
 var alive = true;
 # Whether or not this player is currently invincible
 var invincible = false;
-# The camera that is associated with this player. A permanent reference is used because it may switch parents
+# The camera that is associated with this player. A reference is used because it may switch parents
 var camera_ref = null;
 # The direction the laser is firing at
 var laser_direction = Vector2(0,0);
@@ -82,10 +83,6 @@ func _ready():
 	$Shoot_Animation_Timer.wait_time = $Animation_Timer.wait_time * $Sprite_Top.vframes;
 	lerp_start_pos = position;
 	lerp_end_pos = position;
-	var color = "blue";
-	if team_id == 1:
-		color = "red";
-	$Label_Name.bbcode_text = "[center][color=" + color + "]" + player_name;
 
 func _input(event):
 	if Globals.is_typing_in_chat:
@@ -166,8 +163,8 @@ func _process(delta):
 	if !Globals.testing and !is_network_master() and !get_tree().is_network_server():
 		position = lerp(lerp_start_pos, lerp_end_pos, clamp(float(OS.get_ticks_msec() - time_of_last_received_pos)/float(Globals.player_lerp_time), 0.0, 1.0));
 	
-	if !Globals.testing and is_network_master():
-		rpc_unreliable_id(1, "send_position", position, get_tree().get_network_unique_id());
+	if !Globals.testing and is_network_master() and !get_tree().is_network_server():
+		rpc_unreliable_id(1, "send_position", position, player_id);
 	
 	
 	# Idle Animation
@@ -192,14 +189,19 @@ func _process(delta):
 		else:
 			$Sprite_Top.set_texture(shooting_top_atlas_blue);
 		
+	# Name tag
+	var color = "blue";
+	if team_id == 1:
+		color = "red";
+	$Label_Name.bbcode_text = "[center][color=" + color + "]" + player_name;
 	last_position = position;
 	
 remote func send_start_laser(direction, player_pos, frame):
 	if get_tree().is_network_server():# Only run if it's the server
-		var players = get_tree().get_root().get_node("MainScene/NetworkController").players;
-		for i in players: # For each player
-			if i != player_id && i != 1: # Don't do it for the player who sent it or for the server
-				get_tree().get_root().get_node("MainScene/Players/" + str(player_id)).rpc_id(i, "receive_start_laser", direction, player_pos, frame);
+		var clients = get_tree().get_network_connected_peers();
+		for i in clients: # For each connected client
+			if i != get_tree().get_rpc_sender_id(): # Don't do it for the player who sent it
+				rpc_id(i, "receive_start_laser", direction, player_pos, frame);
 		start_laser(direction, player_pos, frame); # Also call it locally for the server
 
 remote func receive_start_laser(direction, player_pos, frame):
@@ -311,13 +313,13 @@ func shoot_bullet(d):
 		bullet_start += Vector2(0, 10);
 	if false and direction.x != 0 and direction.y != 0:
 		bullet_start += Vector2(10 * direction.x/abs(direction.x),0);
-	var time = OS.get_system_time_msecs() - Globals.match_start_time
-	var bullet = spawn_bullet(bullet_start, 0 if Globals.testing else get_tree().get_network_unique_id(), direction,time, null);
+	var time = OS.get_system_time_msecs() - Globals.match_start_time;
+	var bullet = spawn_bullet(bullet_start, 0 if Globals.testing else player_id, direction,time, null);
 	#camera_ref.shake();
 	$Shoot_Animation_Timer.start();
 	animation_set_frame = 0;
 	if !Globals.testing:
-		rpc_id(1, "send_bullet", bullet_start,get_tree().get_network_unique_id(), direction, time, bullet.name);
+		rpc_id(1, "send_bullet", bullet_start,player_id, direction, time, bullet.name);
 
 # Spawns a bullet given various initializaiton parameters
 func spawn_bullet(pos, player_id, direction, time_shot, bullet_name = null):
@@ -331,7 +333,7 @@ func spawn_bullet(pos, player_id, direction, time_shot, bullet_name = null):
 	particles.rotation = Vector2(0,0).angle_to_point(direction) + PI;
 	
 #	# If this was fired by another player, compensate for player lerp speed
-	if !Globals.testing and player_id != get_tree().get_network_unique_id() && !get_tree().is_network_server():
+	if !Globals.testing and player_id != Globals.localPlayerID && !get_tree().is_network_server():
 		var t = Timer.new()
 		t.set_wait_time(float(Globals.player_lerp_time)/float(1000.0))
 		t.set_one_shot(true)
@@ -348,7 +350,7 @@ func spawn_bullet(pos, player_id, direction, time_shot, bullet_name = null):
 	bullet.player_id = player_id;
 	bullet.team_id = team_id;
 	bullet.initial_time_shot = time_shot
-	bullet.set_network_master(player_id);
+	bullet.set_network_master(get_network_master());
 	if team_id == 0:
 		bullet.get_node("Sprite").set_texture(bullet_atlas_blue);
 	elif team_id == 1:
@@ -469,7 +471,7 @@ func update_look_direction():
 	if frame != $Sprite_Top.frame: # If it changed since last time
 		set_look_direction(frame);
 		if !Globals.testing:
-			rpc_unreliable_id(1, "send_look_direction", frame, get_tree().get_network_unique_id());
+			rpc_unreliable_id(1, "send_look_direction", frame, player_id);
 var animation_set_frame = 0;
 # Called when the animation timer fires
 func _animation_timer_ended():
@@ -512,11 +514,13 @@ func update_position(new_pos):
 
 # Activates the camera on this player
 func activate_camera():
-	camera_ref.current = true;
+	if camera_ref:
+		camera_ref.current = true;
 
 # De-activates the camera on this player
 func deactivate_camera():
-	camera_ref.current = false;
+	if camera_ref:
+		camera_ref.current = false;
 
 # Called when this player is hit by a projectile
 func hit_by_projectile(attacker_id, projectile_type):
@@ -524,7 +528,7 @@ func hit_by_projectile(attacker_id, projectile_type):
 		die();
 		var attacker_team_id = get_tree().get_root().get_node("MainScene/NetworkController").players[attacker_id]["team_id"]
 		var attacker_name = get_tree().get_root().get_node("MainScene/NetworkController").players[attacker_id]["name"]
-		if attacker_id == get_tree().get_network_unique_id():
+		if attacker_id == player_id:
 			var color = "blue"
 			if team_id == 1:
 				color = "red";
@@ -532,7 +536,7 @@ func hit_by_projectile(attacker_id, projectile_type):
 		if is_network_master():
 			get_tree().get_root().get_node("MainScene/UI_Layer").set_big_label_text("KILLED BY\n" + str(attacker_name), attacker_team_id);
 			camera_ref.get_parent().remove_child(camera_ref);
-			get_tree().get_root().get_node("MainScene/Players/" + str(attacker_id) + "/Center_Pivot").add_child(camera_ref);
+			get_tree().get_root().get_node("MainScene/Players/P" + str(attacker_id) + "/Center_Pivot").add_child(camera_ref);
 		
 
 # "Kills" the player. Only for visuals on client - the server handles the respawning.
@@ -629,10 +633,11 @@ func _invincibility_timer_ended():
 # The Server then sends that position to all other clients
 remote func send_position(new_pos, player_id):
 	if get_tree().is_network_server(): # Only run if it's the server
-		var players = get_tree().get_root().get_node("MainScene/NetworkController").players;
-		for i in players: # For each player
-			if i != player_id && i != 1: # Don't do it for the player who sent it or for the server
-				get_tree().get_root().get_node("MainScene/Players/" + str(player_id)).rpc_unreliable_id(i, "receive_position", new_pos);
+		get_tree().get_root().get_node("MainScene/NetworkController").players[player_id]["position"] = position;
+		var clients = get_tree().get_network_connected_peers();
+		for i in clients: # For each connected client
+			if i != get_tree().get_rpc_sender_id(): # Don't do it for the player who sent it
+				rpc_unreliable_id(i, "receive_position", new_pos);
 		update_position(new_pos); # Also call it locally for the server
 
 # "Receives" the position of this player from the server
@@ -642,10 +647,10 @@ remote func receive_position(new_pos):
 # Client tells the server that it just shot a bullet
 remote func send_bullet(pos, player_id, direction, time_shot, bullet_name):
 	if get_tree().is_network_server(): # Only run if it's the server
-		var players = get_tree().get_root().get_node("MainScene/NetworkController").players;
-		for i in players: # For each player
-			if i != player_id && i != 1: # Don't do it for the player who sent it or for the server
-				get_tree().get_root().get_node("MainScene/Players/" + str(player_id)).rpc_id(i, "receive_bullet", pos, player_id, direction,time_shot, bullet_name);
+		var clients = get_tree().get_network_connected_peers();
+		for i in clients: # For each connected client
+			if i != get_tree().get_rpc_sender_id(): # Don't do it for the player who sent it
+				rpc_id(i, "receive_bullet", pos, player_id, direction,time_shot, bullet_name);
 		spawn_bullet(pos, player_id, direction,time_shot, bullet_name); # Also call it locally for the server
 
 # "Receives" a bullet from the server that was shot by another client
@@ -655,10 +660,10 @@ remote func receive_bullet(pos, player_id, direction,time_shot, bullet_name):
 # Client tells the server what direction frame it's looking at 
 remote func send_look_direction(frame, player_id):
 	if get_tree().is_network_server(): # Only run if it's the server
-		var players = get_tree().get_root().get_node("MainScene/NetworkController").players;
-		for i in players: # For each player
-			if i != player_id && i != 1: # Don't do it for the player who sent it or for the server
-				get_tree().get_root().get_node("MainScene/Players/" + str(player_id)).rpc_id(i, "receive_look_direction", frame);
+		var clients = get_tree().get_network_connected_peers();
+		for i in clients: # For each connected client
+			if i != get_tree().get_rpc_sender_id(): # Don't do it for the player who sent it
+				rpc_id(i, "receive_look_direction", frame);
 		set_look_direction(frame); # Also call it locally for the server
 
 # "Receives" the direction frame that this player is looking at from the server
@@ -676,10 +681,10 @@ remotesync func receive_take_flag(flag_id):
 # Client tells server that it is dropping the flag
 remote func send_drop_flag(flag_position):
 	if get_tree().is_network_server():# Only run if it's the server
-		var players = get_tree().get_root().get_node("MainScene/NetworkController").players;
-		for i in players: # For each player
-			if i != player_id && i != 1: # Don't do it for the player who sent it or for the server
-				get_tree().get_root().get_node("MainScene/Players/" + str(player_id)).rpc_id(i, "receive_drop_flag", flag_position);
+		var clients = get_tree().get_network_connected_peers();
+		for i in clients: # For each connected client
+			if i != get_tree().get_rpc_sender_id(): # Don't do it for the player who sent it
+				rpc_id(i, "receive_drop_flag", flag_position);
 		drop_current_flag(flag_position); # Also call it locally for the server
 
 # Sent by server to tell clients that this player dropped its flag at the given position
