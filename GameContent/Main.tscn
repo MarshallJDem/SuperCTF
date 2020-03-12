@@ -307,6 +307,7 @@ __meta__ = {
 }
 
 [node name="ToggleWeapon_GUI_Text2" type="Label" parent="UI_Layer/Ability_GUIs"]
+anchor_left = -3.8147e-07
 anchor_right = -3.8147e-07
 margin_left = 34.891
 margin_top = 11.0
@@ -340,7 +341,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Kill_Title_Text" type="RichTextLabel" parent="UI_Layer"]
+[node name="Alert_Text" type="RichTextLabel" parent="UI_Layer"]
 margin_left = 391.0
 margin_top = 440.0
 margin_right = 697.0
@@ -355,7 +356,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Kill_Title_Timer" type="Timer" parent="UI_Layer"]
+[node name="Alert_Fade_Timer" type="Timer" parent="UI_Layer"]
 wait_time = 3.0
 one_shot = true
 

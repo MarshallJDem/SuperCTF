@@ -44,9 +44,6 @@ func collided_with_bullet(bullet):
 
 # Called when this player collides with a flag_home
 func collided_with_flag_home(flag_home):
-	# If we're not the server return
-	if !get_tree().is_network_server():
-		return;
 	# If the round is already over ignore new events
 	if get_tree().get_root().get_node("MainScene/NetworkController").round_is_ended: 
 		return;
@@ -62,8 +59,8 @@ func collided_with_flag_home(flag_home):
 				flag = each_flag;
 		# If this flag_home's flag is not at home, ignore it because you can't score yet
 		if !flag.is_at_home:
-			return;
-		else: # Otherwise score
+			get_tree().get_root().get_node("MainScene/UI_Layer").set_alert_text("[center][color=black]* YOUR FLAG MUST BE HOME TO SCORE *");
+		elif get_tree().is_network_server(): # Otherwise score if we're the server
 			print("Scoring : " + str(get_tree().get_root().get_node("MainScene/NetworkController").round_is_ended));
 			get_tree().get_root().get_node("MainScene/NetworkController").rpc("round_ended", player.team_id, player.player_id);
 # Called when this player collides with a laser
