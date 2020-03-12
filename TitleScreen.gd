@@ -54,7 +54,11 @@ func _process(delta):
 		print(stat);
 
 func create_guest():
-	$HTTPRequest_CreateGuest.request(Globals.mainServerIP + "createGuest");
+	var name = $UI_Layer/UsernameLineEdit.text;
+	if name != null && name != "":
+		$HTTPRequest_CreateGuest.request(Globals.mainServerIP + "createGuest?" + "name=" + String(name));
+	else:
+		$HTTPRequest_CreateGuest.request(Globals.mainServerIP + "createGuest");
 func join_MM_queue():
 	print("Token : " + Globals.userToken);
 	$HTTPRequest_FindMatch.request(Globals.mainServerIP + "joinMMQueue", ["authorization: Bearer " + Globals.userToken]);

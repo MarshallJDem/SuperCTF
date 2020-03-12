@@ -6,12 +6,12 @@ var testing = false;
 #Game Servers (Both clients and servers use these vars, but in different ways. overlapping would not work)
 var serverIP = "";
 var serverPublicToken;
-var serverPrivateToken = "privatetokenlocalhost";
-var isServer = true;
+var serverPrivateToken = "privatetoken42402";
+var isServer = false;
 var allowedPlayers = [];
 var matchID;
 var allowCommands = true;
-var useSecure = false;
+var useSecure = true;
 var gameserverStatus = 0;
 
 # Client data

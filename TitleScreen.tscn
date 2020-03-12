@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://TitleScreen.gd" type="Script" id=1]
 [ext_resource path="res://UI_Layer.gd" type="Script" id=2]
@@ -35,6 +35,14 @@ points = PoolVector2Array( 0, 0, 18.693, 3.609, 18.937, 14.698, 0, 28.805 )
 size = 10
 outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
 font_data = ExtResource( 12 )
+
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 1, 1, 1, 1 )
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color( 0, 0, 0, 1 )
 
 [node name="TitleScreen" type="Node2D"]
 script = ExtResource( 1 )
@@ -232,16 +240,16 @@ text = "Find Match"
 [node name="PlayAsGuestButton" type="Button" parent="UI_Layer"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -129.548
-margin_top = 525.255
-margin_right = 131.452
-margin_bottom = 608.255
+margin_left = 172.227
+margin_top = 524.584
+margin_right = 336.703
+margin_bottom = 607.584
 custom_styles/hover = ExtResource( 15 )
 custom_styles/pressed = ExtResource( 16 )
 custom_styles/normal = ExtResource( 17 )
 custom_fonts/font = ExtResource( 18 )
 custom_colors/font_color = Color( 0.109804, 0.109804, 0.109804, 1 )
-text = "Play as Guest"
+text = "Play"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -291,6 +299,7 @@ __meta__ = {
 }
 
 [node name="SplashStartButton" type="Button" parent="UI_Layer"]
+visible = false
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -204.588
@@ -349,6 +358,27 @@ bbcode_enabled = true
 bbcode_text = "---GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD---"
 text = "---GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD---"
 scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="UsernameLineEdit" type="LineEdit" parent="UI_Layer"]
+margin_left = 384.665
+margin_top = 536.395
+margin_right = 702.665
+margin_bottom = 598.761
+custom_styles/normal = SubResource( 4 )
+custom_fonts/font = ExtResource( 10 )
+custom_colors/selection_color = Color( 0, 0, 0, 1 )
+custom_colors/cursor_color = Color( 0, 0, 0, 1 )
+custom_colors/clear_button_color_pressed = Color( 0, 0, 0, 1 )
+custom_colors/font_color_selected = Color( 0, 0, 0, 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/clear_button_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_uneditable = Color( 0, 0, 0, 1 )
+align = 1
+placeholder_text = "Enter Username Here"
+caret_blink = true
 __meta__ = {
 "_edit_use_anchors_": false
 }

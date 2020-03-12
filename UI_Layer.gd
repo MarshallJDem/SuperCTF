@@ -53,6 +53,7 @@ func disable_buttons():
 	$PlayerMMR.visible = false;
 	$PlayerRankSubtitle.visible = false;
 	$PlayerMMRSubtitle.visible = false;
+	$UsernameLineEdit.visible = false;
 
 func set_view(state):
 	# All UI has a default state of being disabled
@@ -65,6 +66,7 @@ func set_view(state):
 			$PlayAsGuestButton.visible = true;
 			$SignInButton.visible = true;
 			$CreateAccountButton.visible = true;
+			$UsernameLineEdit.visible = true;
 		VIEW_MAIN:
 			$FindMatchButton.visible = true;
 			$PlayerRank.visible = true;
