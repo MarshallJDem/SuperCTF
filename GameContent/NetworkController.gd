@@ -316,8 +316,10 @@ func leave_match():
 
 # Called when this client disconnects from the server
 func server_disconnect():
-	print("Server Disconnect");
+	print("LOST CONNECTION WITH SERVER");
 	get_tree().get_root().get_node("MainScene/UI_Layer").enable_leave_match_button();
+	get_tree().change_scene("res://Game_Results_Screen.tscn");
+	
 
 # Called when a player scores a point
 remotesync func round_ended(scoring_team_id, scoring_player_id):
