@@ -15,6 +15,7 @@ var initial_puppet_pos;
 # The time the puppet began its trajectory
 var puppet_time_shot;
 
+
 func _ready():
 	$Death_Timer2.connect("timeout", self, "_death_timer_ended");
 	$Animation_Timer.connect("timeout", self, "_animation_timer_ended");
@@ -32,7 +33,6 @@ func _ready():
 		puppet_time_shot = OS.get_system_time_msecs() - Globals.match_start_time;
 		if Globals.testing:
 			initial_time_shot = initial_time_shot - 100;
-	
 
 func _process(_delta):
 	pass;

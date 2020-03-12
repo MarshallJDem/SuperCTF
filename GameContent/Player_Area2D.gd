@@ -34,6 +34,10 @@ func collided_with_bullet(bullet):
 	# If our team shot this, ignore it
 	if get_tree().get_root().get_node("MainScene/NetworkController").players[bullet.player_id]['team_id'] == player.team_id:
 		return;
+	# If we're currently in a forcefield, ignore it
+	for area in get_overlapping_areas():
+		if area.is_in_gropu("Forcefield_Areas"):
+			return;
 	# Else we've been hit by an enemy
 	player.rpc("receive_hit", bullet.player_id, 0);
 	bullet.rpc("receive_death");
