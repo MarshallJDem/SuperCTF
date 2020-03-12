@@ -182,72 +182,83 @@ __meta__ = {
 }
 
 [node name="W_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
-position = Vector2( -175, -44 )
+position = Vector2( -188.177, -59 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 13 )
+centered = false
 hframes = 2
 
 [node name="A_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
-position = Vector2( -208, -11 )
+position = Vector2( -221.264, -26 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 29 )
+centered = false
 hframes = 2
 
 [node name="S_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
-position = Vector2( -175, -11 )
+position = Vector2( -188.264, -26 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 28 )
+centered = false
 hframes = 2
 
 [node name="D_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
-position = Vector2( -142, -11 )
+position = Vector2( -155.264, -26 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 27 )
+centered = false
 hframes = 2
 
 [node name="E_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
-position = Vector2( 20, -11 )
+position = Vector2( 5, -26 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 33 )
+centered = false
 hframes = 2
 
 [node name="UP_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
-position = Vector2( 215, -44 )
+position = Vector2( 200, -60 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 30 )
+centered = false
 hframes = 2
 
 [node name="LEFT_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
-position = Vector2( 182, -11 )
+position = Vector2( 166, 4.088 )
 rotation = -1.5708
 scale = Vector2( 2, 2 )
 texture = ExtResource( 30 )
+centered = false
 hframes = 2
 
 [node name="DOWN_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
-position = Vector2( 215, -11 )
+position = Vector2( 230, 4 )
 rotation = 3.14159
 scale = Vector2( 2, 2 )
 texture = ExtResource( 30 )
+centered = false
 hframes = 2
 
 [node name="RIGHT_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
-position = Vector2( 248, -11 )
+position = Vector2( 264, -26 )
 rotation = 1.5708
 scale = Vector2( 2, 2 )
 texture = ExtResource( 30 )
+centered = false
 hframes = 2
 
 [node name="SHIFT_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
-position = Vector2( 100, -11 )
+position = Vector2( 73, -26 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 31 )
+centered = false
 hframes = 2
 
 [node name="SPACE_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
-position = Vector2( -60, -11 )
+position = Vector2( -88, -26 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 32 )
+centered = false
 hframes = 2
 
 [node name="Shoot_GUI_Text" type="Label" parent="UI_Layer/Ability_GUIs"]
@@ -296,6 +307,7 @@ __meta__ = {
 }
 
 [node name="ToggleWeapon_GUI_Text2" type="Label" parent="UI_Layer/Ability_GUIs"]
+anchor_right = -3.8147e-07
 margin_left = 34.891
 margin_top = 11.0
 margin_right = 168.891
@@ -312,6 +324,8 @@ __meta__ = {
 }
 
 [node name="Move_GUI_Text" type="Label" parent="UI_Layer/Ability_GUIs"]
+anchor_top = 0.00432434
+anchor_bottom = 0.00432434
 margin_left = -240.0
 margin_top = 20.0
 margin_right = -106.0
@@ -322,6 +336,9 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "MOVE"
 align = 1
 valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Kill_Title_Text" type="RichTextLabel" parent="UI_Layer"]
 margin_left = 391.0

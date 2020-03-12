@@ -248,7 +248,6 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 						rpc("update_players_data", players);
 						# If this user is joining mid match
 						if match_is_running:
-								
 							rpc_id(network_id, "load_mid_round", players, scores, $Round_Start_Timer.time_left, round_num, OS.get_system_time_msecs() - Globals.match_start_time); 
 			else:
 				print("Disconnecting player " + str(network_id) + " because they are not in the allowed players list (they mightve connected before we got match data)");
