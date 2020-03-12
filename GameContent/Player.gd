@@ -33,8 +33,6 @@ var lerp_start_pos = Vector2(0,0);
 var lerp_end_pos = Vector2(0,0);
 # Whether or not the player is sprinting
 var sprintEnabled = false;
-# Whether the player can currently teleport
-var can_teleport = true;
 var max_forcefield_distance = 5000;
 var remote_db_level = -10;
 # The position the player was in last frame
@@ -76,7 +74,6 @@ func _ready():
 	$Laser_Timer.connect("timeout", self, "_laser_timer_ended");
 	$Laser_Input_Timer.connect("timeout", self, "_laser_input_timer_ended");
 	#$Laser_Cooldown_Timer.connect("timeout", self, "_laser_cooldown_timer_ended");
-	$Teleport_Timer.connect("timeout", self, "_teleport_timer_ended");
 	$Forcefield_Timer.connect("timeout", self, "_forcefield_timer_ended");
 	$Animation_Timer.connect("timeout", self, "_animation_timer_ended");
 	$Shoot_Animation_Timer.connect("timeout", self, "_shoot_animation_timer_ended");
@@ -97,13 +94,13 @@ func _input(event):
 			if event.scancode == KEY_SHIFT:
 				switch_weapons();
 			if event.scancode == KEY_SPACE:
-				# If were not holding a flag, attempt a teleport
-				if $Flag_Holder.get_child_count() == 0:
-					if can_teleport:
-						move_on_inputs(true);
-						camera_ref.lag_smooth();
-						$Teleport_Timer.start();
-						can_teleport = false;
+				#Attempt a teleport
+				# Re-enable line below to prevent telporting while you have flag
+				# if $Flag_Holder.get_child_count() == 0:
+				if $Teleport_Timer.time_left == 0:
+					move_on_inputs(true);
+					camera_ref.lag_smooth();
+					$Teleport_Timer.start();
 			if event.scancode == KEY_E:
 				# If were not holding a flag, create forcefield
 				if $Flag_Holder.get_child_count() == 0:
@@ -414,9 +411,6 @@ func shoot_on_inputs():
 				laser_position = get_node("Bullet_Starts/" + String($Sprite_Top.frame % $Sprite_Top.hframes)).position;
 			elif $Laser_Timer.time_left == 0:
 				start_laser_input();
-
-func _teleport_timer_ended():
-	can_teleport = true;
 
 remotesync func create_ghost_trail(start, end):
 	$Teleport_Audio.play();
