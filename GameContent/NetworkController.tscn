@@ -21,3 +21,6 @@ wait_time = 5.0
 [node name="Match_Start_Timer" type="Timer" parent="."]
 wait_time = 4.0
 one_shot = true
+
+[node name="Timing_Sync_Timer" type="Timer" parent="."]
+wait_time = 3.0

@@ -33,6 +33,7 @@ func _ready():
 	var _err = $Round_End_Timer.connect("timeout", self, "_round_end_timer_ended");
 	_err = $Round_Start_Timer.connect("timeout", self, "_round_start_timer_ended");
 	_err = $Match_Start_Timer.connect("timeout", self, "_match_start_timer_ended");
+	_err = $Timing_Sync_Timer.connect("timeout", self, "_timing_sync_timer_ended");
 	_err = $Gameserver_Status_Timer.connect("timeout", self, "_gameserver_status_timer_ended");
 	_err = $HTTPRequest_GameServerCheckUser.connect("request_completed", self, "_HTTP_GameServerCheckUser_Completed");
 	_err = $HTTPRequest_GameServerPollStatus.connect("request_completed", self, "_HTTP_GameServerPollStatus_Completed");
@@ -88,6 +89,7 @@ func start_server():
 	AudioServer.set_bus_volume_db(0, -500);
 	updateGameServerStatus(1);
 	$Gameserver_Status_Timer.start();
+	$Timing_Sync_Timer.stop();
 
 var pollServerStatus = false;
 
@@ -225,7 +227,17 @@ remotesync func update_players_data(players_data):
 			player_node.team_id = players[player_id]["team_id"];
 			player_node.player_name = players[player_id]["name"];
 			player_node.set_network_master(players[player_id]['network_id']);
-	
+
+# Resync the clocks between server and clients by using current server time elapsed 
+remotesync func update_timing_sync(time_elapsed):
+	if !get_tree().is_network_server():
+		var new_start_time = OS.get_system_time_msecs() - time_elapsed;
+		# If this new start time shows the match having started earlier, then it is more accurate
+		if new_start_time < Globals.match_start_time:
+			Globals.match_start_time = new_start_time;
+func _timing_sync_timer_ended():
+	if get_tree().is_network_server():
+		rpc("update_timing_sync", OS.get_system_time_msecs() - Globals.match_start_time);
 func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 	if get_tree().is_network_server():
 		if(response_code == 200):
@@ -370,6 +382,8 @@ remotesync func load_new_round():
 		# If we aren't the server, account for a 1 way latency
 		if !get_tree().is_network_server():
 			Globals.match_start_time -= Globals.player_lerp_time/2;
+		else:
+			$Timing_Sync_Timer.start();
 	round_num += 1;
 	round_is_ended = false;
 	reset_game_objects();
