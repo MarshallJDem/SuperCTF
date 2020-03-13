@@ -583,12 +583,34 @@ func take_flag(flag_id):
 	if Globals.testing or is_network_master():
 		get_tree().get_root().get_node("MainScene").speedup_music();
 	$Flag_Pickup_Audio.play();
+	var flag_team_id;
 	for flag in get_tree().get_nodes_in_group("Flags"):
 		if flag.flag_id == flag_id:
 			flag.re_parent($Flag_Holder);
 			flag.is_at_home = false;
 			flag.position = Vector2(0,0);
+			flag_team_id = flag.team_id;
 	sprintEnabled = false;
+	var subject = player_name;
+	var subjectColor = "blue"
+	var verb = "taken";
+	var color = "red";
+	var teamNoun = "RED TEAM";
+	if team_id == 1:
+			subjectColor = "red";
+	if flag_team_id == team_id:
+		verb = "returned"
+		teamNoun = "YOUR TEAM";
+		if team_id == 0:
+			color = "blue";
+	else:
+		if team_id == 1:
+			color = "blue";
+			teamNoun = "BLUE TEAM";
+	if player_id == Globals.localPlayerID:
+		subject = "You"
+	get_tree().get_root().get_node("MainScene/UI_Layer").set_alert_text("[center][color=" + subjectColor + "]" + subject + "[color=black] took " + verb + " [color=" + color + "]" + teamNoun + "'s [color=black]!");
+	
 
 # Drops the currently held flag (If there is one)
 func drop_current_flag(flag_position):
