@@ -6,54 +6,55 @@ func _ready():
 func _process(delta):
 	if Globals.isServer:
 		return;
-	if Input.is_key_pressed(KEY_E):
-		$"Ability_GUIs/E_GUI".frame = 1;
-	else:
-		$"Ability_GUIs/E_GUI".frame = 0;
-	if Input.is_key_pressed(KEY_SPACE):
-		$"Ability_GUIs/SPACE_GUI".frame = 1;
-	else:
-		$"Ability_GUIs/SPACE_GUI".frame = 0;
-	if Input.is_key_pressed(KEY_LEFT):
-		$"Ability_GUIs/LEFT_GUI".frame = 1;
-	else:
-		$"Ability_GUIs/LEFT_GUI".frame = 0;
-	if Input.is_key_pressed(KEY_RIGHT):
-		$"Ability_GUIs/RIGHT_GUI".frame = 1;
-	else:
-		$"Ability_GUIs/RIGHT_GUI".frame = 0;
-	if Input.is_key_pressed(KEY_UP):
-		$"Ability_GUIs/UP_GUI".frame = 1;
-	else:
-		$"Ability_GUIs/UP_GUI".frame = 0;
-	if Input.is_key_pressed(KEY_DOWN):
-		$"Ability_GUIs/DOWN_GUI".frame = 1;
-	else:
-		$"Ability_GUIs/DOWN_GUI".frame = 0;
-	if Input.is_key_pressed(KEY_W):
-		$"Ability_GUIs/W_GUI".frame = 1;
-	else:
-		$"Ability_GUIs/W_GUI".frame = 0;
-	if Input.is_key_pressed(KEY_A):
-		$"Ability_GUIs/A_GUI".frame = 1;
-	else:
-		$"Ability_GUIs/A_GUI".frame = 0;
-	if Input.is_key_pressed(KEY_S):
-		$"Ability_GUIs/S_GUI".frame = 1;
-	else:
-		$"Ability_GUIs/S_GUI".frame = 0;
-	if Input.is_key_pressed(KEY_D):
-		$"Ability_GUIs/D_GUI".frame = 1;
-	else:
-		$"Ability_GUIs/D_GUI".frame = 0;
-	if Input.is_key_pressed(KEY_E):
-		$"Ability_GUIs/E_GUI".frame = 1;
-	else:
-		$"Ability_GUIs/E_GUI".frame = 0;
-	if Input.is_key_pressed(KEY_SHIFT):
-		$"Ability_GUIs/SHIFT_GUI".frame = 1;
-	else:
-		$"Ability_GUIs/SHIFT_GUI".frame = 0;
+	if !Globals.is_typing_in_chat:
+		if Input.is_key_pressed(KEY_E):
+			$"Ability_GUIs/E_GUI".frame = 1;
+		else:
+			$"Ability_GUIs/E_GUI".frame = 0;
+		if Input.is_key_pressed(KEY_SPACE):
+			$"Ability_GUIs/SPACE_GUI".frame = 1;
+		else:
+			$"Ability_GUIs/SPACE_GUI".frame = 0;
+		if Input.is_key_pressed(KEY_LEFT):
+			$"Ability_GUIs/LEFT_GUI".frame = 1;
+		else:
+			$"Ability_GUIs/LEFT_GUI".frame = 0;
+		if Input.is_key_pressed(KEY_RIGHT):
+			$"Ability_GUIs/RIGHT_GUI".frame = 1;
+		else:
+			$"Ability_GUIs/RIGHT_GUI".frame = 0;
+		if Input.is_key_pressed(KEY_UP):
+			$"Ability_GUIs/UP_GUI".frame = 1;
+		else:
+			$"Ability_GUIs/UP_GUI".frame = 0;
+		if Input.is_key_pressed(KEY_DOWN):
+			$"Ability_GUIs/DOWN_GUI".frame = 1;
+		else:
+			$"Ability_GUIs/DOWN_GUI".frame = 0;
+		if Input.is_key_pressed(KEY_W):
+			$"Ability_GUIs/W_GUI".frame = 1;
+		else:
+			$"Ability_GUIs/W_GUI".frame = 0;
+		if Input.is_key_pressed(KEY_A):
+			$"Ability_GUIs/A_GUI".frame = 1;
+		else:
+			$"Ability_GUIs/A_GUI".frame = 0;
+		if Input.is_key_pressed(KEY_S):
+			$"Ability_GUIs/S_GUI".frame = 1;
+		else:
+			$"Ability_GUIs/S_GUI".frame = 0;
+		if Input.is_key_pressed(KEY_D):
+			$"Ability_GUIs/D_GUI".frame = 1;
+		else:
+			$"Ability_GUIs/D_GUI".frame = 0;
+		if Input.is_key_pressed(KEY_E):
+			$"Ability_GUIs/E_GUI".frame = 1;
+		else:
+			$"Ability_GUIs/E_GUI".frame = 0;
+		if Input.is_key_pressed(KEY_SHIFT):
+			$"Ability_GUIs/SHIFT_GUI".frame = 1;
+		else:
+			$"Ability_GUIs/SHIFT_GUI".frame = 0;
 	
 	$Alert_Text.modulate = Color(1,1,1, ($Alert_Fade_Timer.time_left/$Alert_Fade_Timer.wait_time));
 	
