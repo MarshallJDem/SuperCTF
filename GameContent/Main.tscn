@@ -342,9 +342,8 @@ __meta__ = {
 }
 
 [node name="Alert_Text" type="RichTextLabel" parent="UI_Layer"]
-margin_left = 391.0
+anchor_right = 1.0
 margin_top = 440.0
-margin_right = 697.0
 margin_bottom = 470.0
 rect_clip_content = false
 custom_fonts/normal_font = ExtResource( 5 )
@@ -564,3 +563,7 @@ volume_db = 2.0
 [node name="Countdown_Audio" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 21 )
 volume_db = 2.0
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+zoom = Vector2( 4, 4 )

@@ -30,6 +30,11 @@ remotesync func return_home():
 	is_at_home = true;
 	position = home_position;
 	re_parent(get_tree().get_root().get_node("MainScene"));
+	var color = "blue" if team_id == 0 else "red";
+	var team_name = "BLUE TEAM" if team_id == 0 else "RED TEAM";
+	if get_tree().get_root().get_node("MainScene/NetworkController").players[Globals.localPlayerID]["team_id"] == team_id:
+		team_name = "YOUR TEAM";
+	get_tree().get_root().get_node("MainScene/UI_Layer").set_alert_text("[center][color=" + color + "]" + team_name + "'s[color=black] flag has been returned!");
 	# Check if this flag's flag_home is colliding with another player since it has now just gotten its flag back
 	var flag_home = null;
 	for home in get_tree().get_nodes_in_group("Flag_Homes"):

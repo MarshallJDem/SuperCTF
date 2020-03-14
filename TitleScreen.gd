@@ -170,10 +170,3 @@ func _HTTP_CancelQueue_Completed(result, response_code, headers, body):
 		$UI_Layer.set_view($UI_Layer.VIEW_IN_QUEUE);
 
 
-func _input(event):
-	if event is InputEventKey and event.pressed:
-		if event.scancode == KEY_S:
-			Globals.isServer = true;
-			get_tree().change_scene("res://GameContent/Main.tscn");
-
-

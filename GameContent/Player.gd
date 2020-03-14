@@ -522,7 +522,7 @@ func hit_by_projectile(attacker_id, projectile_type):
 		die();
 		var attacker_team_id = get_tree().get_root().get_node("MainScene/NetworkController").players[attacker_id]["team_id"]
 		var attacker_name = get_tree().get_root().get_node("MainScene/NetworkController").players[attacker_id]["name"]
-		if attacker_id == player_id:
+		if attacker_id == Globals.localPlayerID:
 			var color = "blue"
 			if team_id == 1:
 				color = "red";
@@ -593,23 +593,17 @@ func take_flag(flag_id):
 	sprintEnabled = false;
 	var subject = player_name;
 	var subjectColor = "blue"
-	var verb = "taken";
 	var color = "red";
 	var teamNoun = "RED TEAM";
 	if team_id == 1:
-			subjectColor = "red";
-	if flag_team_id == team_id:
-		verb = "returned"
-		teamNoun = "YOUR TEAM";
-		if team_id == 0:
-			color = "blue";
-	else:
-		if team_id == 1:
-			color = "blue";
-			teamNoun = "BLUE TEAM";
+		subjectColor = "red";
+		color = "blue";
+		teamNoun = "BLUE TEAM";
 	if player_id == Globals.localPlayerID:
-		subject = "You"
-	get_tree().get_root().get_node("MainScene/UI_Layer").set_alert_text("[center][color=" + subjectColor + "]" + subject + "[color=black] took " + verb + " [color=" + color + "]" + teamNoun + "'s [color=black]!");
+		subject = "You";
+	if get_tree().get_root().get_node("MainScene/NetworkController").players[Globals.localPlayerID]["team_id"] == flag_team_id:
+		teamNoun = "YOUR TEAM";
+	get_tree().get_root().get_node("MainScene/UI_Layer").set_alert_text("[center][color=" + subjectColor + "]" + subject + "[color=black] took " + "[color=" + color + "]" + teamNoun + "'s[color=black] flag!");
 	
 
 # Drops the currently held flag (If there is one)

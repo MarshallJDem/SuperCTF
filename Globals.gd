@@ -78,6 +78,7 @@ func _input(event):
 		if is_typing_in_chat:
 			return;
 		if event.scancode == KEY_F:
-			OS.window_fullscreen = !OS.window_fullscreen;
+			#OS.window_fullscreen = !OS.window_fullscreen;
+			pass;
 		if event.scancode == KEY_1:
 			player_lerp_time = 100;
