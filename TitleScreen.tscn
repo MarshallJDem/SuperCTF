@@ -79,7 +79,7 @@ script = ExtResource( 5 )
 position = Vector2( 10, -14 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 1 )
-frame = 1
+frame = 2
 playing = true
 
 [node name="Area2D" type="Area2D" parent="Flag2" groups=[
@@ -378,7 +378,7 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/clear_button_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_uneditable = Color( 0, 0, 0, 1 )
 align = 1
-max_length = 12
+max_length = 15
 placeholder_text = "Enter Username"
 caret_blink = true
 __meta__ = {

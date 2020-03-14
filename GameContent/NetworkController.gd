@@ -300,7 +300,7 @@ func spawn_player(id, position, current_pos = null, control = false):
 	player.start_pos = position;
 	player.player_name = players[id]["name"];
 	if players[id]["network_id"] == get_tree().get_network_unique_id():
-		player.control = false;
+		player.control = control;
 		player.activate_camera();
 	if current_pos:
 		player.position = current_pos;
