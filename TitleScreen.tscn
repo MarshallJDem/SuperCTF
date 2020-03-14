@@ -378,7 +378,8 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/clear_button_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_uneditable = Color( 0, 0, 0, 1 )
 align = 1
-placeholder_text = "Enter Username Here"
+max_length = 12
+placeholder_text = "Enter Username"
 caret_blink = true
 __meta__ = {
 "_edit_use_anchors_": false

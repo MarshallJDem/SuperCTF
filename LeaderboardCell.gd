@@ -12,5 +12,5 @@ func _ready():
 	if rank < 4:
 		color = "[color=red]";
 	$Text_Rank.bbcode_text = "[center]" + color + String(rank) + "[/color][/center]";
-	$Text_Name.bbcode_text = player_name;
+	$Text_Name.text = player_name;
 

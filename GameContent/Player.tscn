@@ -176,9 +176,10 @@ pitch_scale = 0.5
 attenuation = 0.233258
 
 [node name="Label_Name" type="RichTextLabel" parent="."]
-margin_left = -41.0
+anchor_right = 1.0
+margin_left = -100.0
 margin_top = -21.442
-margin_right = 124.0
+margin_right = 300.0
 margin_bottom = 0.557999
 rect_scale = Vector2( 0.5, 0.5 )
 rect_clip_content = false

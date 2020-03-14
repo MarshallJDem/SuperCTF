@@ -38,23 +38,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Text_Name" type="RichTextLabel" parent="."]
-margin_left = 38.616
-margin_top = 7.78254
-margin_right = 284.616
-margin_bottom = 47.7825
-rect_clip_content = false
-custom_fonts/normal_font = ExtResource( 1 )
-custom_colors/default_color = Color( 0, 0, 0, 1 )
-bbcode_enabled = true
-bbcode_text = "Guest 587231"
-meta_underlined = false
-text = "Guest 587231"
-scroll_active = false
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="ColorRect7" type="ColorRect" parent="."]
 margin_left = 31.0
 margin_top = 2.0
@@ -95,6 +78,21 @@ margin_left = 204.0
 margin_right = 206.0
 margin_bottom = 32.0
 color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Text_Name" type="Label" parent="."]
+margin_left = 36.0
+margin_top = -8.0
+margin_right = 240.0
+margin_bottom = 59.0
+rect_scale = Vector2( 0.813164, 0.813164 )
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "123456789012345"
+valign = 1
+clip_text = true
 __meta__ = {
 "_edit_use_anchors_": false
 }

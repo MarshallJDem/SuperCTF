@@ -290,7 +290,7 @@ remotesync func test_ping():
 remotesync func rpc_spawn_player(id, position):
 	spawn_player(id, position);
 
-func spawn_player(id, position, current_pos = null):
+func spawn_player(id, position, current_pos = null, control = false):
 	var player = load("res://GameContent/Player.tscn").instance();
 	player.set_name("P" + str(id));
 	player.set_network_master(players[id]["network_id"]);
@@ -300,6 +300,7 @@ func spawn_player(id, position, current_pos = null):
 	player.start_pos = position;
 	player.player_name = players[id]["name"];
 	if players[id]["network_id"] == get_tree().get_network_unique_id():
+		player.control = false;
 		player.activate_camera();
 	if current_pos:
 		player.position = current_pos;
@@ -428,7 +429,10 @@ remote func load_mid_round(players, scores, round_start_timer_timeleft, round_nu
 			spawn_pos = Vector2(-1300, 0);
 		elif players[player]["team_id"] == 1:
 			spawn_pos = Vector2(1300, 0);
-		spawn_player(player, spawn_pos, players[player]["position"]);
+		var enable_control = false;
+		if player == Globals.localPlayerID and (round_start_timer_timeleft) == 0:
+			enable_control = true;
+		spawn_player(player, spawn_pos, players[player]["position"], enable_control);
 	# Spawn flags
 	spawn_flag(0, Vector2(-1100, 0), 0);
 	spawn_flag(1, Vector2(1100, 0), 1);
@@ -439,7 +443,7 @@ remote func load_mid_round(players, scores, round_start_timer_timeleft, round_nu
 	get_tree().get_root().get_node("MainScene/UI_Layer").set_score_text(scores[0], scores[1]);
 	
 	get_tree().get_root().get_node("MainScene/UI_Layer").clear_big_label_text();
-	# If we joined in the middle of the countdown timer, then account for that. Also account for latency
+	# If we joined in the middle of the countdown timer, then account for that.
 	if (round_start_timer_timeleft) > 0:
 		$Round_Start_Timer.set_wait_time(round_start_timer_timeleft);
 		$Round_Start_Timer.start();
