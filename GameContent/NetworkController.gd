@@ -469,7 +469,8 @@ remotesync func end_match(winning_team_id):
 			team_name = "RED TEAM"
 		Globals.result_winning_team_id = winning_team_id;
 		get_tree().get_root().get_node("MainScene/UI_Layer").set_big_label_text(team_name + " WINS!", winning_team_id);
-		get_tree().get_root().get_node("MainScene/UI_Layer").enable_leave_match_button();
+		yield(get_tree().create_timer(4.0), "timeout");
+		leave_match();
 
 # Temporary storage of the winning_team_id to use since the call GameServerEndMatch may require multiple calls if it fails
 var winning_team_id_to_use;
