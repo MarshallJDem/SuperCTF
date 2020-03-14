@@ -10,15 +10,15 @@ func _area_entered(body):
 	# Ignore collisons after the round ends
 	if get_tree().get_root().get_node("MainScene/NetworkController").round_is_ended: 
 		return;
-	# Only detect collisions if we are the server
+	# If this player is dead, ignore any collisions
+	if get_parent().alive == false:
+		return;
+	if body.is_in_group("Flag_Home_Bodies"):
+		collided_with_flag_home(body.get_parent());
+	# Only detect collisions for these cases if we are the server
 	if !Globals.testing and get_tree().is_network_server():
-		# If this player is dead, ignore any collisions
-		if get_parent().alive == false:
-			return;
 		if body.is_in_group("Bullet_Bodies"):
 			collided_with_bullet(body.get_parent());
-		if body.is_in_group("Flag_Home_Bodies"):
-			collided_with_flag_home(body.get_parent());
 		if body.is_in_group("Laser_Bodies"):
 			collided_with_laser_body(body.get_parent());
 
@@ -59,7 +59,7 @@ func collided_with_flag_home(flag_home):
 				flag = each_flag;
 		# If this flag_home's flag is not at home, ignore it because you can't score yet
 		if !flag.is_at_home:
-			get_tree().get_root().get_node("MainScene/UI_Layer").set_alert_text("[center][color=orange]* [color=black]YOUR FLAG MUST BE HOME TO SCORE [color=orange]*");
+			get_tree().get_root().get_node("MainScene/UI_Layer").set_alert_text("[center][color=black]* YOUR FLAG MUST BE HOME TO SCORE *");
 		elif get_tree().is_network_server(): # Otherwise score if we're the server
 			print("Scoring : " + str(get_tree().get_root().get_node("MainScene/NetworkController").round_is_ended));
 			get_tree().get_root().get_node("MainScene/NetworkController").rpc("round_ended", player.team_id, player.player_id);
