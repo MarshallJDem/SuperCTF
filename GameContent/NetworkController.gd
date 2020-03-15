@@ -68,6 +68,7 @@ func reset_game():
 	client = null;
 	round_is_ended = false;
 	match_is_running = false;
+	round_num = 0;
 	get_tree().set_network_peer(null);
 	reset_game_objects();
 	Globals.allowedPlayers = [];

@@ -7,7 +7,7 @@ var testing = false;
 var serverIP = "";
 var serverPublicToken;
 var serverPrivateToken = "privatetoken42402";
-var isServer = false;
+var isServer = true;
 var allowedPlayers = [];
 var matchID;
 var allowCommands = true;
