@@ -79,7 +79,6 @@ script = ExtResource( 5 )
 position = Vector2( 10, -14 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 1 )
-frame = 2
 playing = true
 
 [node name="Area2D" type="Area2D" parent="Flag2" groups=[
@@ -387,6 +386,7 @@ __meta__ = {
 
 [node name="Titlemusic_Audio" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 20 )
+volume_db = -80.0
 
 [node name="Player_Status_Poll_Timer" type="Timer" parent="."]
 wait_time = 5.0
