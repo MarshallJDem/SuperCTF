@@ -267,7 +267,6 @@ remotesync func spawn_forcefield(pos, team_id):
 
 # Shoots a laser shot
 func shoot_laser():
-	print("SHOOT LASER");
 	if is_network_master():
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE);
 	# Only run if we're the server
@@ -355,10 +354,8 @@ func spawn_bullet(pos, player_id, direction, time_shot, bullet_name = null):
 	get_tree().get_root().get_node("MainScene").call_deferred("add_child", bullet);
 	if bullet_name != null:
 		bullet.name = bullet_name;
-		print("Received: " + bullet_name);
 	else:
 		bullet.name = bullet.name + "-" + str(player_id) + "-" + str(bullets_shot);
-		print("Made: " + bullet.name);
 	
 	
 	return bullet;
