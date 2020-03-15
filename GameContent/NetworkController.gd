@@ -1,6 +1,5 @@
 extends Node
 
-var		PORT			= 42402
 const	MAX_PLAYERS	= 10
 const	SCORE_LIMIT	= 2;
 var		players		= {};
@@ -83,7 +82,7 @@ func start_server():
 	if Globals.useSecure:
 		server.private_key = load("res://HTTPS_Keys/linux_privkey.key");
 		server.ssl_certificate = load("res://HTTPS_Keys/linux_cert.crt");
-	server.listen(PORT, PoolStringArray(), true);
+	server.listen(Globals.port, PoolStringArray(), true);
 	get_tree().set_network_peer(server);
 	print("Making Game Server Available");
 	$HTTPRequest_GameServerMakeAvailable.request(Globals.mainServerIP + "makeGameServerAvailable?publicToken=" + str("RANDOMTOKEN"), ["authorization: Bearer " + (Globals.serverPrivateToken)], false);
@@ -514,26 +513,6 @@ func _round_start_timer_ended():
 	if get_tree().is_network_server():
 		rpc("start_round");
 
-
-
-#-----------------------------------------------------
-#
-#func _input(event):
-#	if event is InputEventKey and event.pressed:
-#		if event.scancode == KEY_2:
-#			PORT = 42402;
-#		if event.scancode == KEY_3:
-#			PORT = 42403;
-#		if event.scancode == KEY_H: # HOST
-#			start_server();
-#		if event.scancode == KEY_J: # JOIN
-#			join_server();
-#		if event.scancode == KEY_L: # LEAVE
-#			leave_match();
-#		if event.scancode == KEY_M: # START MATCH
-#			start_match();
-#		if event.scancode == KEY_F:
-#			OS.window_fullscreen = !OS.window_fullscreen;
 
 
 

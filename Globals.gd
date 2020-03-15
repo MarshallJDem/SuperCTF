@@ -1,12 +1,14 @@
 extends Node
 
 # Whether to run in testing mode (for development uses)
-var testing = false;
+var testing = true;
 
 #Game Servers (Both clients and servers use these vars, but in different ways. overlapping would not work)
 var serverIP = "";
 var serverPublicToken;
-var serverPrivateToken = "privatetoken42402";
+var skirmishPort = "42402";
+var port = "42403";
+var serverPrivateToken = "privatetoken" + port;
 var isServer = false;
 var allowedPlayers = [];
 var matchID;
