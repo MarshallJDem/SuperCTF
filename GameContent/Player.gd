@@ -523,7 +523,7 @@ func hit_by_projectile(attacker_id, projectile_type):
 			var color = "blue"
 			if team_id == 1:
 				color = "red";
-			get_tree().get_root().get_node("MainScene/UI_Layer").set_alert_text("[center][color=black]KILLED [color=" + color +"]" + attacker_name);
+			get_tree().get_root().get_node("MainScene/UI_Layer").set_alert_text("[center][color=black]KILLED [color=" + color +"]" + player_name);
 		if is_network_master():
 			get_tree().get_root().get_node("MainScene/UI_Layer").set_big_label_text("KILLED BY\n" + str(attacker_name), attacker_team_id);
 			camera_ref.get_parent().remove_child(camera_ref);
@@ -567,9 +567,9 @@ func respawn():
 		control = true;
 	start_temporary_invincibility();
 	if is_network_master():
-			get_tree().get_root().get_node("MainScene/UI_Layer").clear_big_label_text();
-			camera_ref.get_parent().remove_child(camera_ref);
-			$Center_Pivot.add_child(camera_ref);
+		get_tree().get_root().get_node("MainScene/UI_Layer").clear_big_label_text();
+		camera_ref.get_parent().remove_child(camera_ref);
+		$Center_Pivot.add_child(camera_ref);
 	else:
 		lerp_start_pos = position;
 		lerp_end_pos = position;
