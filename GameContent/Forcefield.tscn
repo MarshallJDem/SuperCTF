@@ -9,6 +9,7 @@ radius = 37.9608
 height = 24.3483
 
 [node name="Forcefield" type="Node2D" groups=[
+"Forcefields",
 "Walls",
 ]]
 script = ExtResource( 1 )

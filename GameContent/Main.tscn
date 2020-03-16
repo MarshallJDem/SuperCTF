@@ -393,7 +393,7 @@ __meta__ = {
 }
 
 [node name="Sprite" type="Sprite" parent="Environment/Node2D"]
-scale = Vector2( -0.901302, -0.901302 )
+scale = Vector2( -0.995535, -0.995535 )
 texture = ExtResource( 26 )
 
 [node name="CPUParticles2D2" type="CPUParticles2D" parent="Environment"]

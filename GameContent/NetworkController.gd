@@ -37,6 +37,7 @@ func _ready():
 	_err = $Round_Start_Timer.connect("timeout", self, "_round_start_timer_ended");
 	_err = $Match_Start_Timer.connect("timeout", self, "_match_start_timer_ended");
 	_err = $Timing_Sync_Timer.connect("timeout", self, "_timing_sync_timer_ended");
+	_err = $Cancel_Match_Timer.connect("timeout", self, "_cancel_match_timer_ended");
 	_err = $Gameserver_Status_Timer.connect("timeout", self, "_gameserver_status_timer_ended");
 	_err = $HTTPRequest_GameServerCheckUser.connect("request_completed", self, "_HTTP_GameServerCheckUser_Completed");
 	_err = $HTTPRequest_GameServerPollStatus.connect("request_completed", self, "_HTTP_GameServerPollStatus_Completed");
@@ -58,7 +59,7 @@ func _process(delta):
 		client.poll();
 	if $Round_Start_Timer.time_left != 0:
 		get_tree().get_root().get_node("MainScene/UI_Layer/Countdown_Label").text = str(int($Round_Start_Timer.time_left) + 1);
-	if !isSkirmish and pollServerStatus && $HTTPRequest_GameServerPollStatus.get_http_client_status() == 0:
+	if !isSkirmish and pollServerStatus and $HTTPRequest_GameServerPollStatus.get_http_client_status() == 0:
 		$HTTPRequest_GameServerPollStatus.request(Globals.mainServerIP + "pollGameServerStatus", ["authorization: Bearer " + (Globals.serverPrivateToken)], false);
 
 
@@ -115,6 +116,7 @@ func _HTTP_GameServerMakeAvailable_Completed(result, response_code, headers, bod
 			pass;
 
 func _HTTP_GameServerPollStatus_Completed(result, response_code, headers, body):
+	pass;
 	if get_tree().is_network_server():
 		if(response_code == 200):
 			var json = JSON.parse(body.get_string_from_utf8());
@@ -122,7 +124,7 @@ func _HTTP_GameServerPollStatus_Completed(result, response_code, headers, body):
 			Globals.matchID = matchID;
 			if matchID:
 				pollServerStatus = false;
-				print("Getting Match Data for MatchID = " + str(matchID));
+				print("Getting Msatch Data for MatchID = " + str(matchID));
 				updateGameServerStatus(2);
 				$HTTPRequest_GetMatchData.request(Globals.mainServerIP + "getMatchData?matchID=" + str(matchID), ["authorization: Bearer " + (Globals.serverPrivateToken)], false);
 		else:
@@ -150,6 +152,16 @@ func _HTTP_GetMatchData_Completed(result, response_code, headers, body):
 
 func _gameserver_status_timer_ended():
 	updateGameServerStatus();
+
+func _cancel_match_timer_ended():
+	# Don't cancel the match if this is a skirmish
+	if isSkirmish:
+		return;
+	# If at this time there are zero connections, cancel the match
+	if get_tree().get_network_connected_peers().size() == 0:
+		leave_match();
+		get_tree().set_network_peer(null);
+		start_server();
 
 func updateGameServerStatus(status = null):
 	if status != null:
@@ -183,6 +195,7 @@ func start_match():
 		scores = [0, 0];
 		rpc("set_scores", scores);
 		$Match_Start_Timer.start();
+		$Cancel_Match_Timer.start();
 func _match_start_timer_ended():
 	# Tell everybody to load a new round
 	rpc("load_new_round");
@@ -403,20 +416,19 @@ remotesync func round_ended(scoring_team_id, scoring_player_id):
 func reset_game_objects():
 	# Remove any old player nodes
 	for player in get_tree().get_root().get_node("MainScene/Players").get_children():
-		get_tree().get_root().get_node("MainScene/Players").remove_child(player);
 		player.queue_free();
 	# Remove any old flags
 	for flag in get_tree().get_nodes_in_group("Flags"):
-		flag.get_parent().remove_child(flag);
 		flag.queue_free();
 	# Remove any old flag homes
 	for flag_home in get_tree().get_nodes_in_group("Flag_Homes"):
-		flag_home.get_parent().remove_child(flag_home);
 		flag_home.queue_free();
 	# Remove any old projectiles
 	for projectile in get_tree().get_nodes_in_group("Projectiles"):
-		projectile.get_parent().remove_child(projectile);
 		projectile.queue_free();
+	# Remove any old forcefields
+	for forcefield in get_tree().get_nodes_in_group("Forcefields"):
+		forcefield.queue_free();
 
 # Loads up a new round but does not start it yet
 # WARNING - you will likely need to make these edits in "load_mid_round" too
@@ -438,11 +450,9 @@ remotesync func load_new_round():
 	if get_tree().is_network_server():
 		# Spawn players
 		for player in players:
-			var spawn_pos = Vector2(0,0);
+			var spawn_pos = Vector2(1300,0);
 			if players[player]["team_id"] == 0:
 				spawn_pos = Vector2(-1300, 0);
-			elif players[player]["team_id"] == 1:
-				spawn_pos = Vector2(1300, 0);
 			rpc("rpc_spawn_player", player, spawn_pos);
 		# Spawn flags
 		rpc("rpc_spawn_flag", 0, Vector2(-1100, 0), 0);

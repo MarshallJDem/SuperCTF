@@ -1,19 +1,19 @@
 extends Node
 
 # Whether to run in testing mode (for development uses)
-var testing = true;
+var testing = false;
 
 #Game Servers (Both clients and servers use these vars, but in different ways. overlapping would not work)
 var serverIP = "";
 var serverPublicToken;
-var skirmishIP = "localhost:42402";
+var skirmishIP = "superctf.com:42402";
 var port = 42402;
 var serverPrivateToken = "privatetoken" + str(port);
 var isServer = false;
 var allowedPlayers = [];
 var matchID;
 var allowCommands = true;
-var useSecure = false;
+var useSecure = true;
 var gameserverStatus = 0;
 
 # Client data
@@ -63,7 +63,8 @@ func _ready():
 	HTTPRequest_GetMatchData.connect("request_completed", self, "_HTTP_GetMatchData_Completed")
 
 func _process(delta):
-	attempt_poll_player_status();
+	if !isServer:
+		attempt_poll_player_status();
 	
 
 # Polls the player's status
