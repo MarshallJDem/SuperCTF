@@ -1,6 +1,5 @@
 extends Node
 
-const	MAX_PLAYERS	= 10
 const	SCORE_LIMIT	= 2;
 var		players		= {};
 var		scores		= [];
@@ -8,6 +7,7 @@ var		round_num	= 0;
 
 var server = null;
 var client = null;
+var isSkirmish = false;
 
 
 var round_is_ended = false;
@@ -24,6 +24,10 @@ func _ready():
 	if Globals.testing:
 		call_deferred("spawn_flag", 1, Vector2(-200, 0), 0);
 		return;
+	if Globals.player_status == 1 or (Globals.isServer and Globals.port == 42402):
+		isSkirmish = true;
+	if isSkirmish:
+		Globals.serverIP = Globals.skirmishIP;
 	get_tree().connect("network_peer_connected",self, "_client_connected");
 	get_tree().connect("network_peer_disconnected",self, "_client_disconnected");
 	get_tree().connect("connected_to_server",self, "_connection_ok");
@@ -54,9 +58,8 @@ func _process(delta):
 		client.poll();
 	if $Round_Start_Timer.time_left != 0:
 		get_tree().get_root().get_node("MainScene/UI_Layer/Countdown_Label").text = str(int($Round_Start_Timer.time_left) + 1);
-	if pollServerStatus && $HTTPRequest_GameServerPollStatus.get_http_client_status() == 0:
+	if !isSkirmish and pollServerStatus && $HTTPRequest_GameServerPollStatus.get_http_client_status() == 0:
 		$HTTPRequest_GameServerPollStatus.request(Globals.mainServerIP + "pollGameServerStatus", ["authorization: Bearer " + (Globals.serverPrivateToken)], false);
-	
 
 
 # Resets all game data so that a new game can be started
@@ -84,12 +87,15 @@ func start_server():
 		server.ssl_certificate = load("res://HTTPS_Keys/linux_cert.crt");
 	server.listen(Globals.port, PoolStringArray(), true);
 	get_tree().set_network_peer(server);
-	print("Making Game Server Available");
-	$HTTPRequest_GameServerMakeAvailable.request(Globals.mainServerIP + "makeGameServerAvailable?publicToken=" + str("RANDOMTOKEN"), ["authorization: Bearer " + (Globals.serverPrivateToken)], false);
+	if !isSkirmish:
+		print("Making Game Server Available");
+		$HTTPRequest_GameServerMakeAvailable.request(Globals.mainServerIP + "makeGameServerAvailable?publicToken=" + str("RANDOMTOKEN"), ["authorization: Bearer " + (Globals.serverPrivateToken)], false);
+		updateGameServerStatus(1);
+		$Gameserver_Status_Timer.start();
 	AudioServer.set_bus_volume_db(0, -500);
-	updateGameServerStatus(1);
-	$Gameserver_Status_Timer.start();
 	$Timing_Sync_Timer.stop();
+	if isSkirmish:
+		start_match();
 
 var pollServerStatus = false;
 
@@ -188,7 +194,8 @@ remotesync func set_scores(new_scores):
 	scores = new_scores;
 	Globals.result_team0_score = scores[0];
 	Globals.result_team1_score = scores[1];
-	get_tree().get_root().get_node("MainScene/UI_Layer").set_score_text(scores[0], scores[1]);
+	if !isSkirmish:
+		get_tree().get_root().get_node("MainScene/UI_Layer").set_score_text(scores[0], scores[1]);
 	print("current scores: " + str(scores));
 	
 
@@ -218,7 +225,25 @@ func _connection_ok():
 	print("Connection OK");
 	rpc_id(1, "user_ready", get_tree().get_network_unique_id(), Globals.userToken);
 remotesync func update_players_data(players_data):
+	print(players_data);
 	players = players_data;
+	# Delete players that have left and spawn new players
+	if isSkirmish:
+		# For every old player that no longer exists
+		for player in get_tree().get_root().get_node("MainScene/Players").get_children():
+			var name = player.name;
+			name.erase(0,1);
+			if !players.has(int(name)):
+				print("DELETING PLAYER");
+				player.queue_free();
+		# For every new player
+		for player in players_data:
+			if !get_tree().get_root().get_node("MainScene/Players").has_node("P" + str(player)):
+				var control = false;
+				if $Round_Start_Timer.time_left == 0:
+					control = true;
+				spawn_player(player, players_data[player]["position"], players_data[player]["position"], control);
+	
 	for player_id in players:
 		if !get_tree().is_network_server() and players[player_id]["network_id"] == get_tree().get_network_unique_id():
 			Globals.localPlayerID = player_id;
@@ -245,14 +270,30 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 			var player_name = json.result.user.name;
 			var user_id = json.result.user.uid;
 			var network_id = int(json.result.networkID);
-			# If the user is one of the players in the current match
-			if(Globals.allowedPlayers.has(user_id)):
+			# If the user is one of the players in the current match or this is a skirmish
+			if(Globals.allowedPlayers.has(user_id) || isSkirmish):
+				if isSkirmish:
+					var team_id = 0;
+					var b=0; var r=0;
+					for player_id in players:
+						if players[player_id]["team_id"] == 0:
+							b += 1;
+						else:
+							r += 1;
+					if b > r:
+						team_id = 1;
+					var spawn_pos = Vector2(0,0);
+					if team_id == 0:
+						spawn_pos = Vector2(-1300, 0);
+					else:
+						spawn_pos = Vector2(1300, 0);
+					players[network_id] = {"name" : player_name, "team_id" : team_id, "user_id": user_id, "network_id": network_id, "position": spawn_pos};
 				# Get the player_id associated with this user_id
 				for player_id in players:
 					if players[player_id]['user_id'] == user_id:
 						# Update the players array and give it to everyvbody so they can update player data and network masters etc.
 						players[player_id]['name'] = player_name;
-						if players[player_id]['network_id'] != 1:
+						if players[player_id]['network_id'] != 1 and !isSkirmish:
 							server.disconnect_peer(players[player_id]['network_id'], 1000, "A new computer has connected as this player");
 						players[player_id]['network_id'] = network_id;
 						print("Authenticated new connection and giving them control of player");
@@ -315,6 +356,9 @@ func _client_connected(id):
 # Called on when a client disconnects
 func _client_disconnected(id):
 	print("Client " + str(id) + " disconnected from the Server");
+	players.erase(id);
+	rpc("update_players_data", players);
+	
 
 # Goes back to title screen and drops the socket connection and resets the game
 func leave_match():
@@ -336,6 +380,7 @@ func server_disconnect():
 remotesync func round_ended(scoring_team_id, scoring_player_id):
 	print("Player : " + str(scoring_player_id) + " won a point for team : " + str(scoring_team_id));
 	get_tree().get_root().get_node("MainScene").slowdown_music();
+	
 	get_tree().get_root().get_node("MainScene/UI_Layer").set_big_label_text(str(players[scoring_player_id]['name']) + "\nSCORED!", scoring_team_id);
 	get_tree().get_root().get_node("MainScene/Score_Audio").play();
 	var scoring_player = get_tree().get_root().get_node("MainScene/Players/P" + str(scoring_player_id));
@@ -349,8 +394,9 @@ remotesync func round_ended(scoring_team_id, scoring_player_id):
 		scoring_player.activate_camera();
 	# Else if we are the server
 	else:
-		scores[scoring_team_id] = scores[scoring_team_id] + 1;
-		rpc("set_scores", scores);
+		if !isSkirmish:
+			scores[scoring_team_id] = scores[scoring_team_id] + 1;
+			rpc("set_scores", scores);
 		$Round_End_Timer.start()
 
 # Resets all objects in the game scene by deleting them
@@ -419,7 +465,6 @@ remote func load_mid_round(players, scores, round_start_timer_timeleft, round_nu
 	self.round_num = round_num;
 	round_is_ended = false;
 	reset_game_objects();
-	get_tree().get_root().get_node("MainScene/Countdown_Audio").play();
 	self.players = players;
 	self.scores = scores;
 	# Spawn players
@@ -440,7 +485,10 @@ remote func load_mid_round(players, scores, round_start_timer_timeleft, round_nu
 	
 	Globals.result_team0_score = scores[0];
 	Globals.result_team1_score = scores[1];
-	get_tree().get_root().get_node("MainScene/UI_Layer").set_score_text(scores[0], scores[1]);
+	if !isSkirmish:
+		get_tree().get_root().get_node("MainScene/UI_Layer").set_score_text(scores[0], scores[1]);
+	else:
+		get_tree().get_root().get_node("MainScene/UI_Layer").set_score_text(scores[0], scores[1], true);
 	
 	get_tree().get_root().get_node("MainScene/UI_Layer").clear_big_label_text();
 	# If we joined in the middle of the countdown timer, then account for that.

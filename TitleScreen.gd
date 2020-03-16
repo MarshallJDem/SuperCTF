@@ -1,6 +1,5 @@
 extends Node2D
 
-var isInMMQueue = false;
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -8,13 +7,10 @@ func _ready():
 		get_tree().change_scene("res://GameContent/Main.tscn");
 	$HTTPRequest_FindMatch.connect("request_completed", self, "_HTTP_FindMatch_Completed");
 	$HTTPRequest_CancelQueue.connect("request_completed", self, "_HTTP_CancelQueue_Completed");
-	$HTTPRequest_PollPlayerStatus.connect("request_completed", self, "_HTTP_PollPlayerStatus_Completed");
-	$HTTPRequest_GetMatchData.connect("request_completed", self, "_HTTP_GetMatchData_Completed");
 	$HTTPRequest_CreateGuest.connect("request_completed", self, "_HTTP_CreateGuest_Completed");
 	$HTTPRequest_GetLeaderboard.connect("request_completed", self, "_HTTP_GetLeaderboard_Completed");
 	$Leaderboard_Refresh_Timer.connect("timeout", self, "_Leaderboard_Refresh_Ended");
 	
-	$Player_Status_Poll_Timer.connect("timeout", self, "_Player_Status_Poll_Timer_Ended");
 	$Headline_Update_Timer.connect("timeout", self, "_Headline_Update_Timer_Ended");
 	
 	Globals.load_save_data();
@@ -28,30 +24,17 @@ func _ready():
 		get_tree().change_scene("res://GameContent/Main.tscn");
 	$HTTPRequest_GetLeaderboard.request(Globals.mainServerIP + "getLeaderboardData", ["authorization: Bearer " + Globals.userToken]);
 
-var stat = 0;
-func _Player_Status_Poll_Timer_Ended():
-	# Attempt to poll the player status. Called every 5 seconds.
-	attempt_poll_player_status();
+
 func _Headline_Update_Timer_Ended():
 	var text = $UI_Layer/Headline_Rect/Headline_Text.bbcode_text;
 	var first = text.substr(0,1);
 	text = text.substr(1, len(text) - 1);
 	$UI_Layer/Headline_Rect/Headline_Text.bbcode_text = text + first;
-func attempt_poll_player_status():
-	# IF were not already in the middle of a poll, poll it
-	if $HTTPRequest_PollPlayerStatus.get_http_client_status() == 0:
-		$HTTPRequest_PollPlayerStatus.request(Globals.mainServerIP + "pollPlayerStatus", ["authorization: Bearer " + Globals.userToken]);
 func _process(delta):
-	# If there is an active player and we havn't received their rank / mmr yet
-	if Globals.userToken and (Globals.player_MMR == -1 or Globals.player_rank == -1):
-		attempt_poll_player_status();
-	# If were in queue, poll player status if we're not already polling it
-	if(isInMMQueue):
-		attempt_poll_player_status();
 	$UI_Layer.update_title_color($Titlemusic_Audio.get_playback_position() + 3.7);
-	if stat != $HTTPRequest_CreateGuest.get_http_client_status():
-		stat = $HTTPRequest_CreateGuest.get_http_client_status();
-		print(stat);
+	$UI_Layer.set_mmr_and_rank_labels(Globals.player_rank, Globals.player_MMR);
+	if Globals.player_status == 1:
+		get_tree().change_scene("res://GameContent/Main.tscn");
 
 func create_guest():
 	var name = $UI_Layer/UsernameLineEdit.text;
@@ -103,7 +86,6 @@ func load_leaderboard(leaderboard_data):
 
 func _HTTP_GetLeaderboard_Completed(result, response_code, headers, body):
 	var json = JSON.parse(body.get_string_from_utf8())
-	print(json.result);
 	if(response_code == 200 and json.result):
 		load_leaderboard(json.result);
 
@@ -116,18 +98,9 @@ func _Leaderboard_Refresh_Ended():
 func _HTTP_FindMatch_Completed(result, response_code, headers, body):
 	var json = JSON.parse(body.get_string_from_utf8())
 	if(response_code == 200):
-		isInMMQueue = true;
 		$UI_Layer.set_view($UI_Layer.VIEW_IN_QUEUE);
 	else:
 		$UI_Layer.set_view($UI_Layer.VIEW_MAIN);
-
-# Called when the GetMatchData HTTP request completes
-func _HTTP_GetMatchData_Completed(result, response_code, headers, body):
-	var json = JSON.parse(body.get_string_from_utf8())
-	Globals.serverIP = json.result.matchData.serverIP;
-	Globals.serverPublicToken = json.result.matchData.serverPublicToken;
-	Globals.result_match_id = json.result.matchData.matchID;
-	get_tree().change_scene("res://GameContent/Main.tscn");
 
 func _HTTP_CreateGuest_Completed(result, response_code, headers, body):
 	var json = JSON.parse(body.get_string_from_utf8())
@@ -143,28 +116,10 @@ func _HTTP_CreateGuest_Completed(result, response_code, headers, body):
 	else:
 		pass;
 
-# Polls the player's status
-func _HTTP_PollPlayerStatus_Completed(result, response_code, headers, body):
-	if response_code != 200:
-		return;
-	var json = JSON.parse(body.get_string_from_utf8())
-	print(json.result);
-	if json.result.rank || json.result.rank == 0:
-		Globals.player_rank = int(json.result.rank);
-	if json.result.mmr || json.result.mmr == 0:
-		Globals.player_MMR = int(json.result.mmr);
-	$UI_Layer.set_mmr_and_rank_labels(Globals.player_rank, Globals.player_MMR);
-	if(int(json.result.status) > 1):
-		print("Found Match : " + json.result.status);
-		var matchID = json.result.status;
-		var query = "matchID=" + matchID;
-		$HTTPRequest_GetMatchData.request(Globals.mainServerIP + "getMatchData?" + query, ["authorization: Bearer " + Globals.userToken], false, HTTPClient.METHOD_GET);
-		isInMMQueue = false;
 
 # Called when the Cancel Queue HTTP request completes
 func _HTTP_CancelQueue_Completed(result, response_code, headers, body):
 	if(response_code == 200):
-		isInMMQueue = false;
 		$UI_Layer.set_view($UI_Layer.VIEW_MAIN);
 	else:
 		$UI_Layer.set_view($UI_Layer.VIEW_IN_QUEUE);

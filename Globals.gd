@@ -6,14 +6,14 @@ var testing = true;
 #Game Servers (Both clients and servers use these vars, but in different ways. overlapping would not work)
 var serverIP = "";
 var serverPublicToken;
-var skirmishPort = "42402";
-var port = "42403";
-var serverPrivateToken = "privatetoken" + port;
+var skirmishIP = "localhost:42402";
+var port = 42402;
+var serverPrivateToken = "privatetoken" + str(port);
 var isServer = false;
 var allowedPlayers = [];
 var matchID;
 var allowCommands = true;
-var useSecure = true;
+var useSecure = false;
 var gameserverStatus = 0;
 
 # Client data
@@ -23,6 +23,7 @@ var localPlayerID;
 var userToken;
 var player_MMR = -1;
 var player_rank = -1;
+var player_status = 0;
 
 #Main Server
 var mainServerIP = "https://www.superctf.com" + ":42401/";
@@ -50,6 +51,53 @@ var lag_comp_headstart_dist = 15;
 var match_start_time = 0;
 
 # ----- Functions -----
+
+var HTTPRequest_PollPlayerStatus = HTTPRequest.new();
+var HTTPRequest_GetMatchData = HTTPRequest.new();
+
+func _ready():
+	
+	add_child(HTTPRequest_PollPlayerStatus);
+	add_child(HTTPRequest_GetMatchData);
+	HTTPRequest_PollPlayerStatus.connect("request_completed", self, "_HTTP_PollPlayerStatus_Completed")
+	HTTPRequest_GetMatchData.connect("request_completed", self, "_HTTP_GetMatchData_Completed")
+
+func _process(delta):
+	attempt_poll_player_status();
+	
+
+# Polls the player's status
+func _HTTP_PollPlayerStatus_Completed(result, response_code, headers, body):
+	if response_code != 200:
+		return;
+	var json = JSON.parse(body.get_string_from_utf8())
+	print(json.result)
+	if json.result.rank || json.result.rank == 0:
+		Globals.player_rank = int(json.result.rank);
+	if json.result.mmr || json.result.mmr == 0:
+		Globals.player_MMR = int(json.result.mmr);
+	if( player_status <= 1 and int(json.result.status) > 1):
+		print("Found Match : " + json.result.status);
+		var matchID = json.result.status;
+		var query = "matchID=" + matchID;
+		HTTPRequest_GetMatchData.request(Globals.mainServerIP + "getMatchData?" + query, ["authorization: Bearer " + Globals.userToken], false, HTTPClient.METHOD_GET);
+	elif(player_status == 1 and int(json.result.status) == 0):
+		get_tree().change_scene("res://TitleScreen.tscn");
+	player_status = int(json.result.status);
+
+func _HTTP_GetMatchData_Completed(result, response_code, headers, body):
+	var json = JSON.parse(body.get_string_from_utf8())
+	print(json.result)
+	serverIP = json.result.matchData.serverIP;
+	serverPublicToken = json.result.matchData.serverPublicToken;
+	result_match_id = json.result.matchData.matchID;
+	get_tree().change_scene("res://GameContent/Main.tscn");
+
+func attempt_poll_player_status():
+	# If were not already in the middle of a poll, poll it
+	if HTTPRequest_PollPlayerStatus.get_http_client_status() == 0:
+		HTTPRequest_PollPlayerStatus.request(Globals.mainServerIP + "pollPlayerStatus", ["authorization: Bearer " + Globals.userToken]);
+
 func write_save_data():
 	var file = File.new()
 	var content = "";

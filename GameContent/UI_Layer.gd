@@ -1,11 +1,19 @@
 extends CanvasLayer
 
+var start_time = OS.get_system_time_secs();
+
+
 func _ready():
 	var _err = $Leave_Match_Button.connect("pressed", self, "_leave_match_button_pressed");
 
 func _process(delta):
 	if Globals.isServer:
 		return;
+	if get_tree().get_root().get_node("MainScene/NetworkController").isSkirmish:
+		$Score_Label.bbcode_text = "[center][color=black]SEARCHING " + str(OS.get_system_time_secs() - start_time);
+		$Skirmsh_Subtext.visible = true;
+	else:
+		$Skirmsh_Subtext.visible = false;
 	if !Globals.is_typing_in_chat:
 		if Input.is_key_pressed(KEY_E):
 			$"Ability_GUIs/E_GUI".frame = 1;
@@ -122,8 +130,12 @@ func set_alert_text(text):
 	$Alert_Text.bbcode_text = text;
 	$Alert_Fade_Timer.start();
 # Sets the score label values
-func set_score_text(team0_score, team1_score):
-	$Score_Label.bbcode_text = "[center]" + "[color=#4C70BA]" + str(team0_score) + "[/color]" + "-" + "[color=#FF0000]" + str(team1_score) + "[/color]" + "[/center]";
+func set_score_text(team0_score, team1_score, isSkirmish = false):
+	if isSkirmish:
+		$Score_Label.bbcode_text = "[center][color=black]SKIRMISH LOBBY";
+	else:
+		$Score_Label.bbcode_text = "[center]" + "[color=#4C70BA]" + str(team0_score) + "[/color]" + "-" + "[color=#FF0000]" + str(team1_score) + "[/color]" + "[/center]";
+		
 	
 func enable_leave_match_button():
 	$Leave_Match_Button.visible = true;

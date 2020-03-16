@@ -598,9 +598,10 @@ func take_flag(flag_id):
 		teamNoun = "BLUE TEAM";
 	if player_id == Globals.localPlayerID:
 		subject = "You";
-	if get_tree().get_root().get_node("MainScene/NetworkController").players[Globals.localPlayerID]["team_id"] == flag_team_id:
-		teamNoun = "YOUR TEAM";
-	get_tree().get_root().get_node("MainScene/UI_Layer").set_alert_text("[center][color=" + subjectColor + "]" + subject + "[color=black] took " + "[color=" + color + "]" + teamNoun + "'s[color=black] flag!");
+	if !get_tree().is_network_server():
+		if get_tree().get_root().get_node("MainScene/NetworkController").players[Globals.localPlayerID]["team_id"] == flag_team_id:
+			teamNoun = "YOUR TEAM";
+		get_tree().get_root().get_node("MainScene/UI_Layer").set_alert_text("[center][color=" + subjectColor + "]" + subject + "[color=black] took " + "[color=" + color + "]" + teamNoun + "'s[color=black] flag!");
 	
 
 # Drops the currently held flag (If there is one)

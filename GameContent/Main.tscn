@@ -103,13 +103,19 @@ __meta__ = {
 
 [node name="Score_Label" type="RichTextLabel" parent="UI_Layer"]
 anchor_right = 1.0
-margin_top = 10.0
-margin_bottom = 100.0
+margin_top = 20.0
+margin_bottom = 110.0
+rect_clip_content = false
 size_flags_stretch_ratio = 0.0
 custom_fonts/normal_font = ExtResource( 7 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
+bbcode_text = "[center]SEARCHING..."
+text = "SEARCHING..."
 scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Countdown_Label" type="Label" parent="UI_Layer"]
 anchor_right = 1.0
@@ -355,6 +361,20 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Skirmsh_Subtext" type="RichTextLabel" parent="UI_Layer"]
+anchor_right = 1.0
+margin_top = 115.0
+margin_bottom = 145.0
+rect_clip_content = false
+custom_fonts/normal_font = ExtResource( 5 )
+bbcode_enabled = true
+bbcode_text = "[center][color=black] This is a skirmish lobby for waiting in matchmaking queue"
+text = " This is a skirmish lobby for waiting in matchmaking queue"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Alert_Fade_Timer" type="Timer" parent="UI_Layer"]
 wait_time = 3.0
 one_shot = true
@@ -375,7 +395,7 @@ __meta__ = {
 }
 
 [node name="Sprite" type="Sprite" parent="Environment/Node2D"]
-scale = Vector2( 0.900147, 0.900147 )
+scale = Vector2( -0.901302, -0.901302 )
 texture = ExtResource( 26 )
 
 [node name="CPUParticles2D2" type="CPUParticles2D" parent="Environment"]
