@@ -141,7 +141,7 @@ autostart = true
 one_shot = true
 
 [node name="Shoot_Cooldown_Timer" type="Timer" parent="."]
-wait_time = 0.2
+wait_time = 0.4
 one_shot = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
