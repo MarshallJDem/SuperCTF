@@ -6,14 +6,14 @@ var testing = false;
 #Game Servers (Both clients and servers use these vars, but in different ways. overlapping would not work)
 var serverIP = "";
 var serverPublicToken;
-var skirmishIP = "localhost:42402";
-var port = 42402;
+var skirmishIP = "superctf.com:42402";
+var port = 42403;
 var serverPrivateToken = "privatetoken" + str(port);
 var isServer = false;
 var allowedPlayers = [];
 var matchID;
 var allowCommands = true;
-var useSecure = false;
+var useSecure = true;
 var gameserverStatus = 0;
 
 # Client data
@@ -54,25 +54,35 @@ var match_start_time = 0;
 
 var HTTPRequest_PollPlayerStatus = HTTPRequest.new();
 var HTTPRequest_GetMatchData = HTTPRequest.new();
+var HTTPRequest_CancelQueue = HTTPRequest.new();
 
 func _ready():
 	
 	add_child(HTTPRequest_PollPlayerStatus);
 	add_child(HTTPRequest_GetMatchData);
+	add_child(HTTPRequest_CancelQueue);
 	HTTPRequest_PollPlayerStatus.connect("request_completed", self, "_HTTP_PollPlayerStatus_Completed")
 	HTTPRequest_GetMatchData.connect("request_completed", self, "_HTTP_GetMatchData_Completed")
+	HTTPRequest_CancelQueue.connect("request_completed", self, "_HTTP_CancelQueue_Completed");
 
 func _process(delta):
 	if !isServer:
 		attempt_poll_player_status();
 	
+func leave_MMQueue():
+	if !get_tree().is_network_server():
+		HTTPRequest_CancelQueue.request(Globals.mainServerIP + "leaveMMQueue", ["authorization: Bearer " + Globals.userToken]);
+
+# Called when the Cancel Queue HTTP request completes
+func _HTTP_CancelQueue_Completed(result, response_code, headers, body):
+	if(response_code == 200):
+		pass;
 
 # Polls the player's status
 func _HTTP_PollPlayerStatus_Completed(result, response_code, headers, body):
 	if response_code != 200:
 		return;
 	var json = JSON.parse(body.get_string_from_utf8())
-	print(json.result)
 	if json.result.rank || json.result.rank == 0:
 		Globals.player_rank = int(json.result.rank);
 	if json.result.mmr || json.result.mmr == 0:

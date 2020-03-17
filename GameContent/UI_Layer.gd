@@ -5,6 +5,7 @@ var start_time = OS.get_system_time_secs();
 
 func _ready():
 	var _err = $Leave_Match_Button.connect("pressed", self, "_leave_match_button_pressed");
+	_err = $Cancel_Button.connect("pressed", self, "_cancel_button_pressed");
 
 func _process(delta):
 	if Globals.isServer:
@@ -12,6 +13,7 @@ func _process(delta):
 	if get_tree().get_root().get_node("MainScene/NetworkController").isSkirmish:
 		$Score_Label.bbcode_text = "[center][color=black]SEARCHING " + str(OS.get_system_time_secs() - start_time);
 		$Skirmsh_Subtext.visible = true;
+		$Cancel_Button.visible = true;
 	else:
 		$Skirmsh_Subtext.visible = false;
 	if !Globals.is_typing_in_chat:
@@ -143,4 +145,6 @@ func enable_leave_match_button():
 func _leave_match_button_pressed():
 	print("pressed");
 	get_tree().get_root().get_node("MainScene/NetworkController").leave_match();
-	
+
+func _cancel_button_pressed():
+	Globals.leave_MMQueue();

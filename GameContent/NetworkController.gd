@@ -12,6 +12,7 @@ var isSkirmish = false;
 
 var round_is_ended = false;
 var match_is_running = false;
+var round_is_running = false;
 
 # Player "Struct"
 #	- name: string
@@ -19,6 +20,7 @@ var match_is_running = false;
 #	- user_id: int
 #	- network_id: int
 #	- position: Vector2D
+#	- spawn_pos: Vector2D
 
 func _ready():
 	if Globals.testing:
@@ -71,9 +73,10 @@ func reset_game():
 	client = null;
 	round_is_ended = false;
 	match_is_running = false;
+	round_is_running = false;
 	round_num = 0;
 	get_tree().set_network_peer(null);
-	reset_game_objects();
+	reset_game_objects(true);
 	Globals.allowedPlayers = [];
 	Globals.matchID = null;
 	get_tree().get_root().get_node("MainScene/UI_Layer").clear_big_label_text();
@@ -143,7 +146,12 @@ func _HTTP_GetMatchData_Completed(result, response_code, headers, body):
 				var team_id = 1;
 				if(float(Globals.allowedPlayers.find_last(user_id) + 1)/float(Globals.allowedPlayers.size()) <= 0.5):
 					team_id = 0;
-				players[i] = {"name" : "Player" + str(i), "team_id" : team_id, "user_id": user_id, "network_id": 1, "position": Vector2(0,0)};
+				var spawn_pos = Vector2(0,0);
+				if team_id == 0:
+					spawn_pos = Vector2(-1300, 0);
+				else:
+					spawn_pos = Vector2(1300, 0);
+				players[i] = {"name" : "Player" + str(i), "team_id" : team_id, "user_id": user_id, "network_id": 1, "spawn_pos": spawn_pos, "position": spawn_pos};
 				i += 1;
 			print(players);
 			start_match();
@@ -159,7 +167,6 @@ func _cancel_match_timer_ended():
 		return;
 	# If at this time there are zero connections, cancel the match
 	if get_tree().get_network_connected_peers().size() == 0:
-		leave_match();
 		get_tree().set_network_peer(null);
 		start_server();
 
@@ -237,25 +244,20 @@ func spawn_flag(team_id, position, flag_id):
 func _connection_ok():
 	print("Connection OK");
 	rpc_id(1, "user_ready", get_tree().get_network_unique_id(), Globals.userToken);
-remotesync func update_players_data(players_data):
-	print(players_data);
+remotesync func update_players_data(players_data, round_is_running):
 	players = players_data;
+	self.round_is_running = round_is_running;
 	# Delete players that have left and spawn new players
-	if isSkirmish:
-		# For every old player that no longer exists
-		for player in get_tree().get_root().get_node("MainScene/Players").get_children():
-			var name = player.name;
-			name.erase(0,1);
-			if !players.has(int(name)):
-				print("DELETING PLAYER");
-				player.queue_free();
-		# For every new player
-		for player in players_data:
-			if !get_tree().get_root().get_node("MainScene/Players").has_node("P" + str(player)):
-				var control = false;
-				if $Round_Start_Timer.time_left == 0:
-					control = true;
-				spawn_player(player, players_data[player]["position"], players_data[player]["position"], control);
+	# For every old player that no longer exists
+	for player in get_tree().get_root().get_node("MainScene/Players").get_children():
+		var name = player.name;
+		name.erase(0,1);
+		if !players.has(int(name)):
+			player.queue_free();
+	# For every new player
+	for player in players_data:
+		if !get_tree().get_root().get_node("MainScene/Players").has_node("P" + str(player)):
+			spawn_player(player);
 	
 	for player_id in players:
 		if !get_tree().is_network_server() and players[player_id]["network_id"] == get_tree().get_network_unique_id():
@@ -283,6 +285,13 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 			var player_name = json.result.user.name;
 			var user_id = json.result.user.uid;
 			var network_id = int(json.result.networkID);
+			# If this player disconnected already then dont make them a player
+			var is_connected = false;
+			for peer in get_tree().get_network_connected_peers():
+				if peer == network_id:
+					is_connected = true;
+			if !is_connected:
+				return;
 			# If the user is one of the players in the current match or this is a skirmish
 			if(Globals.allowedPlayers.has(user_id) || isSkirmish):
 				if isSkirmish:
@@ -300,7 +309,7 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 						spawn_pos = Vector2(-1300, 0);
 					else:
 						spawn_pos = Vector2(1300, 0);
-					players[network_id] = {"name" : player_name, "team_id" : team_id, "user_id": user_id, "network_id": network_id, "position": spawn_pos};
+					players[network_id] = {"name" : player_name, "team_id" : team_id, "user_id": user_id, "network_id": network_id,"spawn_pos": spawn_pos, "position": spawn_pos};
 				# Get the player_id associated with this user_id
 				for player_id in players:
 					if players[player_id]['user_id'] == user_id:
@@ -311,7 +320,7 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 						players[player_id]['network_id'] = network_id;
 						print("Authenticated new connection and giving them control of player");
 						print(players[player_id]);
-						rpc("update_players_data", players);
+						rpc("update_players_data", players, round_is_running);
 						# If this user is joining mid match
 						if match_is_running:
 							rpc_id(network_id, "load_mid_round", players, scores, $Round_Start_Timer.time_left, round_num, OS.get_system_time_msecs() - Globals.match_start_time); 
@@ -333,32 +342,30 @@ remote func user_ready(id, userToken):
 		http.connect("request_completed", self, "_HTTP_GameServerCheckUser_Completed")
 		http.request(Globals.mainServerIP + "gameServerCheckUser?" + "userToken=" + str(userToken) + "&networkID=" + str(id), ["authorization: Bearer " + Globals.serverPrivateToken], false);
 		yield(http, "request_completed");
-		print("Deleting httprequest object");
 		http.call_deferred("queue_free");
 
 # A test function for sending a ping
 remotesync func test_ping():
 	print("Test Ping");
 
-# Spawns a new player
-remotesync func rpc_spawn_player(id, position):
-	spawn_player(id, position);
 
-func spawn_player(id, position, current_pos = null, control = false):
+func spawn_player(id):
 	var player = load("res://GameContent/Player.tscn").instance();
 	player.set_name("P" + str(id));
 	player.set_network_master(players[id]["network_id"]);
 	player.player_id = id;
 	player.team_id = players[id]["team_id"];
-	player.position = position;
-	player.start_pos = position;
-	print("P" + str(id));
+	player.position = players[id]["position"];
+	player.start_pos = players[id]["spawn_pos"];
+	print("Spawning Player");
+	print(players[id]);
 	player.player_name = players[id]["name"];
 	if players[id]["network_id"] == get_tree().get_network_unique_id():
-		player.control = control;
+		player.control = round_is_running;
 		player.activate_camera();
-	if current_pos:
-		player.position = current_pos;
+	if get_tree().get_root().get_node("MainScene/Players").has_node("P" + str(id)):
+		get_tree().get_root().get_node("MainScene/Players/P" + str(id)).set_name("P" + str(id) + "DELETED");
+		get_tree().get_root().get_node("MainScene/Players/P" + str(id)).queue_free();
 	get_tree().get_root().get_node("MainScene/Players").call_deferred("add_child",player);
 	
 
@@ -370,8 +377,9 @@ func _client_connected(id):
 # Called on when a client disconnects
 func _client_disconnected(id):
 	print("Client " + str(id) + " disconnected from the Server");
-	players.erase(id);
-	rpc("update_players_data", players);
+	if get_tree().is_network_server():
+		players.erase(id);
+		rpc("update_players_data", players, round_is_running);
 	
 
 # Goes back to title screen and drops the socket connection and resets the game
@@ -399,6 +407,7 @@ remotesync func round_ended(scoring_team_id, scoring_player_id):
 	get_tree().get_root().get_node("MainScene/Score_Audio").play();
 	var scoring_player = get_tree().get_root().get_node("MainScene/Players/P" + str(scoring_player_id));
 	round_is_ended = true;
+	round_is_running = false;
 	print("Round_is_ended");
 	# If we are not the server
 	if !get_tree().is_network_server():
@@ -414,26 +423,30 @@ remotesync func round_ended(scoring_team_id, scoring_player_id):
 		$Round_End_Timer.start()
 
 # Resets all objects in the game scene by deleting them
-func reset_game_objects():
+func reset_game_objects(kill_players = false):
 	# Remove any old player nodes
 	for player in get_tree().get_root().get_node("MainScene/Players").get_children():
-		player.name = player.name + "DELETING";
-		player.queue_free();
+		player.position = player.start_pos;
+		player.visible = true;
+		if player.player_id == Globals.localPlayerID:
+			player.activate_camera();
+		if kill_players:
+			player.queue_free();
 	# Remove any old flags
 	for flag in get_tree().get_nodes_in_group("Flags"):
-		flag.name = flag.name + "DELETING";
+		flag.set_name(flag.name + "DELETING");
 		flag.queue_free();
 	# Remove any old flag homes
 	for flag_home in get_tree().get_nodes_in_group("Flag_Homes"):
-		flag_home.name = flag_home.name + "DELETING";
+		flag_home.set_name(flag_home.name + "DELETING");
 		flag_home.queue_free();
 	# Remove any old projectiles
 	for projectile in get_tree().get_nodes_in_group("Projectiles"):
-		projectile.name = projectile.name + "DELETING";
+		projectile.set_name(projectile.name + "DELETING");
 		projectile.queue_free();
 	# Remove any old forcefields
 	for forcefield in get_tree().get_nodes_in_group("Forcefields"):
-		forcefield.name = forcefield.name + "DELETING";
+		forcefield.set_name(forcefield.name + "DELETING");
 		forcefield.queue_free();
 
 # Loads up a new round but does not start it yet
@@ -454,12 +467,6 @@ remotesync func load_new_round():
 	get_tree().get_root().get_node("MainScene/Countdown_Audio").play();
 	# If we're the server, instruct other to spawn game nodes
 	if get_tree().is_network_server():
-		# Spawn players
-		for player in players:
-			var spawn_pos = Vector2(1300,0);
-			if players[player]["team_id"] == 0:
-				spawn_pos = Vector2(-1300, 0);
-			rpc("rpc_spawn_player", player, spawn_pos);
 		# Spawn flags
 		rpc("rpc_spawn_flag", 0, Vector2(-1100, 0), 0);
 		rpc("rpc_spawn_flag", 1, Vector2(1100, 0), 1);
@@ -477,27 +484,13 @@ remote func load_mid_round(players, scores, round_start_timer_timeleft, round_nu
 	Globals.match_start_time = OS.get_system_time_msecs() - round_time_elapsed;
 	# Account for a 1 way of latency
 	Globals.match_start_time -= Globals.player_lerp_time/2;
-	
 	self.round_num = round_num;
 	round_is_ended = false;
 	self.players = players;
 	self.scores = scores;
-	if !isSkirmish:
-		# Spawn players
-		for player in players:
-			var spawn_pos = Vector2(0,0);
-			if players[player]["team_id"] == 0:
-				spawn_pos = Vector2(-1300, 0);
-			elif players[player]["team_id"] == 1:
-				spawn_pos = Vector2(1300, 0);
-			var enable_control = false;
-			if player == Globals.localPlayerID and (round_start_timer_timeleft) == 0:
-				enable_control = true;
-			spawn_player(player, spawn_pos, players[player]["position"], enable_control);
 	# Spawn flags
 	spawn_flag(0, Vector2(-1100, 0), 0);
 	spawn_flag(1, Vector2(1100, 0), 1);
-	
 	
 	Globals.result_team0_score = scores[0];
 	Globals.result_team1_score = scores[1];
@@ -515,6 +508,7 @@ remote func load_mid_round(players, scores, round_start_timer_timeleft, round_nu
 # Starts the currently loaded round
 remotesync func start_round():
 	print("Starting Round");
+	round_is_running = true;
 	get_tree().get_root().get_node("MainScene").slowdown_music();
 	# If we are not the server
 	if !get_tree().is_network_server():

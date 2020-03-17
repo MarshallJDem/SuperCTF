@@ -1,7 +1,7 @@
 extends KinematicBody2D
 
 var direction = Vector2(0,0);
-var speed = 400;
+var speed = 500;
 var player_id;
 var team_id = -1;
 var show_death_particles = true;

@@ -5,7 +5,7 @@ var IS_CONTROLLED_BY_MOUSE = false;
 # The ID of this player 0,1,2 etc. NOT the network unique ID
 var player_id = -1;
 var team_id = -1;
-const BASE_SPEED = 800;
+const BASE_SPEED = 200;
 const AIMING_SPEED = 15;
 const SPRINT_SPEED = 50;
 const TELEPORT_SPEED = 2000;
@@ -60,8 +60,7 @@ func _ready():
 		activate_camera();
 		control = true
 	
-	if Globals.testing or is_network_master():
-		activate_camera();
+	if Globals.testing or Globals.localPlayerID == player_id:
 		$Laser_Timer.wait_time += 0.1;
 		$Laser_Charge_Audio.set_pitch_scale(float(0.5)/$Laser_Timer.wait_time);
 		Globals.result_player_team_id = team_id;
@@ -137,6 +136,7 @@ func _input(event):
 
 func _process(delta):
 	if control:
+		activate_camera();
 		# Don't look around if we're shooting a laser
 		if $Laser_Timer.time_left == 0:
 			update_look_direction();

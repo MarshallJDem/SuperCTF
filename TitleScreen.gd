@@ -6,7 +6,6 @@ func _ready():
 	if Globals.testing:
 		get_tree().change_scene("res://GameContent/Main.tscn");
 	$HTTPRequest_FindMatch.connect("request_completed", self, "_HTTP_FindMatch_Completed");
-	$HTTPRequest_CancelQueue.connect("request_completed", self, "_HTTP_CancelQueue_Completed");
 	$HTTPRequest_CreateGuest.connect("request_completed", self, "_HTTP_CreateGuest_Completed");
 	$HTTPRequest_GetLeaderboard.connect("request_completed", self, "_HTTP_GetLeaderboard_Completed");
 	$Leaderboard_Refresh_Timer.connect("timeout", self, "_Leaderboard_Refresh_Ended");
@@ -45,8 +44,6 @@ func create_guest():
 func join_MM_queue():
 	print("Token : " + Globals.userToken);
 	$HTTPRequest_FindMatch.request(Globals.mainServerIP + "joinMMQueue", ["authorization: Bearer " + Globals.userToken]);
-func leave_MM_queue():
-	$HTTPRequest_CancelQueue.request(Globals.mainServerIP + "leaveMMQueue", ["authorization: Bearer " + Globals.userToken]);
 func logout():
 	Globals.userToken = "";
 	Globals.write_save_data();
@@ -117,11 +114,5 @@ func _HTTP_CreateGuest_Completed(result, response_code, headers, body):
 		pass;
 
 
-# Called when the Cancel Queue HTTP request completes
-func _HTTP_CancelQueue_Completed(result, response_code, headers, body):
-	if(response_code == 200):
-		$UI_Layer.set_view($UI_Layer.VIEW_MAIN);
-	else:
-		$UI_Layer.set_view($UI_Layer.VIEW_IN_QUEUE);
 
 
