@@ -5,7 +5,7 @@ var IS_CONTROLLED_BY_MOUSE = false;
 # The ID of this player 0,1,2 etc. NOT the network unique ID
 var player_id = -1;
 var team_id = -1;
-const BASE_SPEED = 200;
+const BASE_SPEED = 800;
 const AIMING_SPEED = 15;
 const SPRINT_SPEED = 50;
 const TELEPORT_SPEED = 2000;

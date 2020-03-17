@@ -352,13 +352,14 @@ func spawn_player(id, position, current_pos = null, control = false):
 	player.team_id = players[id]["team_id"];
 	player.position = position;
 	player.start_pos = position;
+	print("P" + str(id));
 	player.player_name = players[id]["name"];
 	if players[id]["network_id"] == get_tree().get_network_unique_id():
 		player.control = control;
 		player.activate_camera();
 	if current_pos:
 		player.position = current_pos;
-	get_tree().get_root().get_node("MainScene/Players").add_child(player);
+	get_tree().get_root().get_node("MainScene/Players").call_deferred("add_child",player);
 	
 
 # Called when a new peer connects
@@ -401,7 +402,7 @@ remotesync func round_ended(scoring_team_id, scoring_player_id):
 	print("Round_is_ended");
 	# If we are not the server
 	if !get_tree().is_network_server():
-		var local_player = get_tree().get_root().get_node("MainScene/Players/P" + str(get_tree().get_network_unique_id()));
+		var local_player = get_tree().get_root().get_node("MainScene/Players/P" + str(Globals.localPlayerID));
 		local_player.control = false;
 		local_player.deactivate_camera();
 		scoring_player.activate_camera();
@@ -416,18 +417,23 @@ remotesync func round_ended(scoring_team_id, scoring_player_id):
 func reset_game_objects():
 	# Remove any old player nodes
 	for player in get_tree().get_root().get_node("MainScene/Players").get_children():
+		player.name = player.name + "DELETING";
 		player.queue_free();
 	# Remove any old flags
 	for flag in get_tree().get_nodes_in_group("Flags"):
+		flag.name = flag.name + "DELETING";
 		flag.queue_free();
 	# Remove any old flag homes
 	for flag_home in get_tree().get_nodes_in_group("Flag_Homes"):
+		flag_home.name = flag_home.name + "DELETING";
 		flag_home.queue_free();
 	# Remove any old projectiles
 	for projectile in get_tree().get_nodes_in_group("Projectiles"):
+		projectile.name = projectile.name + "DELETING";
 		projectile.queue_free();
 	# Remove any old forcefields
 	for forcefield in get_tree().get_nodes_in_group("Forcefields"):
+		forcefield.name = forcefield.name + "DELETING";
 		forcefield.queue_free();
 
 # Loads up a new round but does not start it yet
@@ -474,20 +480,20 @@ remote func load_mid_round(players, scores, round_start_timer_timeleft, round_nu
 	
 	self.round_num = round_num;
 	round_is_ended = false;
-	reset_game_objects();
 	self.players = players;
 	self.scores = scores;
-	# Spawn players
-	for player in players:
-		var spawn_pos = Vector2(0,0);
-		if players[player]["team_id"] == 0:
-			spawn_pos = Vector2(-1300, 0);
-		elif players[player]["team_id"] == 1:
-			spawn_pos = Vector2(1300, 0);
-		var enable_control = false;
-		if player == Globals.localPlayerID and (round_start_timer_timeleft) == 0:
-			enable_control = true;
-		spawn_player(player, spawn_pos, players[player]["position"], enable_control);
+	if !isSkirmish:
+		# Spawn players
+		for player in players:
+			var spawn_pos = Vector2(0,0);
+			if players[player]["team_id"] == 0:
+				spawn_pos = Vector2(-1300, 0);
+			elif players[player]["team_id"] == 1:
+				spawn_pos = Vector2(1300, 0);
+			var enable_control = false;
+			if player == Globals.localPlayerID and (round_start_timer_timeleft) == 0:
+				enable_control = true;
+			spawn_player(player, spawn_pos, players[player]["position"], enable_control);
 	# Spawn flags
 	spawn_flag(0, Vector2(-1100, 0), 0);
 	spawn_flag(1, Vector2(1100, 0), 1);
