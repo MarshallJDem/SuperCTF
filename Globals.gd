@@ -67,7 +67,10 @@ func _ready():
 			arguments[key_value[0].lstrip("--")] = key_value[1]
 	
 	print(arguments);
+	print(arguments["port"]);
 	if arguments["port"] != null:
+		print("setting port");
+		print(int(arguments["port"]));
 		port = int(arguments["port"]);
 	if arguments["isServer"] != null:
 		isServer = bool(arguments["isServer"]);
