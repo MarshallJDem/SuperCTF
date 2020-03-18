@@ -56,8 +56,7 @@ var HTTPRequest_PollPlayerStatus = HTTPRequest.new();
 var HTTPRequest_GetMatchData = HTTPRequest.new();
 var HTTPRequest_CancelQueue = HTTPRequest.new();
 
-func _ready():
-	
+func _init():
 	var arguments = {}
 	for argument in OS.get_cmdline_args():
 		print(argument);
@@ -76,6 +75,8 @@ func _ready():
 		isServer = bool(arguments["isServer"]);
 	if arguments["testing"] != null:
 		testing = bool(arguments["testing"]);
+
+func _ready():
 	
 	
 	add_child(HTTPRequest_PollPlayerStatus);
