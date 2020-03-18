@@ -28,7 +28,13 @@ func _ready():
 		return;
 	print("Port is " + str(Globals.port));
 	print("Status is " + str(Globals.player_status));
+	print(Globals.player_status == 1 or (Globals.isServer and Globals.port == 42402));
+	print(Globals.player_status == 1);
+	print(Globals.isServer and Globals.port == 42402);
+	print(Globals.isServer);
+	print(Globals.port == 42402);
 	if Globals.player_status == 1 or (Globals.isServer and Globals.port == 42402):
+		print("Setting is skirmish to true");
 		isSkirmish = true;
 	if isSkirmish:
 		Globals.serverIP = Globals.skirmishIP;
