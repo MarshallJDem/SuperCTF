@@ -20,6 +20,7 @@ func _ready():
 	else:
 		start();
 	if Globals.isServer:
+		print("Checking is server");
 		get_tree().change_scene("res://GameContent/Main.tscn");
 	$HTTPRequest_GetLeaderboard.request(Globals.mainServerIP + "getLeaderboardData", ["authorization: Bearer " + Globals.userToken]);
 
