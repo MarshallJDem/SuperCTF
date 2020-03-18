@@ -156,6 +156,7 @@ func _process(delta):
 	z_index = global_position.y + 15;
 	
 	
+	
 	# If we are a puppet and not the server, then lerp our position
 	if !Globals.testing and !is_network_master() and !get_tree().is_network_server():
 		position = lerp(lerp_start_pos, lerp_end_pos, clamp(float(OS.get_ticks_msec() - time_of_last_received_pos)/float(Globals.player_lerp_time), 0.0, 1.0));
