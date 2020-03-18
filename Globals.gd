@@ -56,7 +56,7 @@ var HTTPRequest_PollPlayerStatus = HTTPRequest.new();
 var HTTPRequest_GetMatchData = HTTPRequest.new();
 var HTTPRequest_CancelQueue = HTTPRequest.new();
 
-func _init():
+func _enter_tree():
 	var arguments = {}
 	for argument in OS.get_cmdline_args():
 		print(argument);
