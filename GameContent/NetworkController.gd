@@ -27,6 +27,7 @@ func _ready():
 		call_deferred("spawn_flag", 1, Vector2(-200, 0), 0);
 		return;
 	print("Port is " + str(Globals.port));
+	print("Status is " + str(Globals.player_status));
 	if Globals.player_status == 1 or (Globals.isServer and Globals.port == 42402):
 		isSkirmish = true;
 	if isSkirmish:
@@ -48,8 +49,6 @@ func _ready():
 	_err = $HTTPRequest_GameServerEndMatch.connect("request_completed", self, "_HTTP_GameServerEndMatch_Completed");
 	_err = $HTTPRequest_GetMatchData.connect("request_completed", self, "_HTTP_GetMatchData_Completed");
 	_err = $HTTPRequest_GameServerUpdateStatus.connect("request_completed", self, "_HTTP_GameServerUpdateStatus_Completed");
-	print("HERE");
-	print(Globals.isServer);
 	if(Globals.isServer):
 		start_server();
 	else:
@@ -94,6 +93,7 @@ func start_server():
 		server.ssl_certificate = load("res://HTTPS_Keys/linux_cert.crt");
 	server.listen(Globals.port, PoolStringArray(), true);
 	get_tree().set_network_peer(server);
+	print("IsSkirmish" + str(isSkirmish));
 	if !isSkirmish:
 		print("Making Game Server Available");
 		$HTTPRequest_GameServerMakeAvailable.request(Globals.mainServerIP + "makeGameServerAvailable?publicToken=" + str("RANDOMTOKEN"), ["authorization: Bearer " + (Globals.serverPrivateToken)], false);
