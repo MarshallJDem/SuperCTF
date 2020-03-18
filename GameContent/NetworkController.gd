@@ -47,6 +47,8 @@ func _ready():
 	_err = $HTTPRequest_GameServerEndMatch.connect("request_completed", self, "_HTTP_GameServerEndMatch_Completed");
 	_err = $HTTPRequest_GetMatchData.connect("request_completed", self, "_HTTP_GetMatchData_Completed");
 	_err = $HTTPRequest_GameServerUpdateStatus.connect("request_completed", self, "_HTTP_GameServerUpdateStatus_Completed");
+	print("HERE");
+	print(Globals.isServer);
 	if(Globals.isServer):
 		start_server();
 	else:

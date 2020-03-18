@@ -73,6 +73,8 @@ func _enter_tree():
 		port = int(arguments["port"]);
 	if arguments["isServer"] != null:
 		isServer = bool(arguments["isServer"]);
+		print(arguments["isServer"]);
+		print(isServer);
 	if arguments["testing"] != null:
 		testing = bool(arguments["testing"]);
 
