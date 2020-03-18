@@ -26,6 +26,7 @@ func _ready():
 	if Globals.testing:
 		call_deferred("spawn_flag", 1, Vector2(-200, 0), 0);
 		return;
+	print("Port is " + str(Globals.port));
 	if Globals.player_status == 1 or (Globals.isServer and Globals.port == 42402):
 		isSkirmish = true;
 	if isSkirmish:
