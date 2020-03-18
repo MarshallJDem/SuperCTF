@@ -65,18 +65,12 @@ func _enter_tree():
 			var key_value = argument.split("=")
 			arguments[key_value[0].lstrip("--")] = key_value[1]
 	
-	print(arguments);
-	print(arguments["port"]);
 	if arguments["port"] != null:
-		print("setting port");
-		print(int(arguments["port"]));
 		port = int(arguments["port"]);
 	if arguments["isServer"] != null:
-		isServer = bool(arguments["isServer"]);
-		print(arguments["isServer"]);
-		print(isServer);
+		isServer = true if arguments["isServer"] == "true" else false;
 	if arguments["testing"] != null:
-		testing = bool(arguments["testing"]);
+		testing = true if arguments["testing"] == "true" else false;
 
 func _ready():
 	
