@@ -7,7 +7,7 @@ var testing = false;
 var serverIP = "";
 var serverPublicToken;
 var skirmishIP = "superctf.com:42402";
-var port = 42402;
+var port = 42403;
 var serverPrivateToken = "privatetoken" + str(port);
 var isServer = false;
 var allowedPlayers = [];
@@ -66,7 +66,7 @@ func _enter_tree():
 			arguments[key_value[0].lstrip("--")] = key_value[1]
 	
 	if arguments["port"] != null:
-		port = int(arguments["port"]);
+		port = arguments["port"];
 	if arguments["isServer"] != null:
 		isServer = true if arguments["isServer"] == "true" else false;
 	if arguments["testing"] != null:
