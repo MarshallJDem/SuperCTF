@@ -25,11 +25,12 @@ var round_is_running = false;
 
 # flag_data Struct (Indexed by flag id)
 #	- holder_player_id: int
-#	- position: int
+#	- position: Vector2D
+#	- team_id: int
 
 func _ready():
 	if Globals.testing:
-		call_deferred("spawn_flag", 1, Vector2(-200, 0), 0);
+		call_deferred("spawn_flag", 1, Vector2(-200, 0));
 		return;
 	if Globals.player_status == 1 or (Globals.isServer and Globals.port == 42402):
 		isSkirmish = true;
@@ -223,35 +224,32 @@ remotesync func set_scores(new_scores):
 	print("current scores: " + str(scores));
 	
 
-# Spawns a new flag
-remotesync func rpc_spawn_flag(team_id, position, flag_id):
-	spawn_flag(team_id, position, flag_id);
-
-func spawn_flag(team_id, position, flag_id):
+func spawn_flag(flag_id, home_position):
 	# Spawn Flag Home
 	var flag_holder = load("res://GameContent/Flag_Home.tscn").instance();
-	flag_holder.position = position;
-	flag_holder.team_id = team_id;
+	flag_holder.position = home_position;
+	flag_holder.team_id = flags_data[str(flag_id)]["team_id"];
 	flag_holder.flag_id = flag_id;
 	flag_holder.name = "Flag_Holder-" + str(flag_id);
 	get_tree().get_root().get_node("MainScene").add_child(flag_holder);
 	# Spawn Flag
 	var flag = load("res://GameContent/Flag.tscn").instance();
-	flag.position = position;
+	flag.position = flags_data[str(flag_id)]["position"];
 	flag.flag_id = flag_id;
-	flag.set_team(team_id);
-	flag.home_position = position;
+	flag.set_team(flags_data[str(flag_id)]["team_id"]);
+	flag.home_position = home_position;
 	flag.name = "Flag-" + str(flag_id);
-	get_tree().get_root().get_node("MainScene").add_child(flag);
-	flags_data[str(flag_id)] = {"holder_player_id" : -1, "position": position};
+	if flags_data[str(flag_id)]["holder_player_id"] != -1:
+		get_tree().get_root().get_node("MainScene/Players/P" + str(flags_data[str(flag_id)]["holder_player_id"])).take_flag(flag_id);
+	else:
+		get_tree().get_root().get_node("MainScene").add_child(flag);
 
 # Called when the client's connection is ready, and then tells the server
 func _connection_ok():
 	print("Connection OK");
 	rpc_id(1, "user_ready", get_tree().get_network_unique_id(), Globals.userToken);
-remotesync func update_players_data(players_data, round_is_running):
-	players = players_data;
-	self.round_is_running = round_is_running;
+
+func update_player_objects():
 	# Delete players that have left and spawn new players
 	# For every old player that no longer exists
 	for player in get_tree().get_root().get_node("MainScene/Players").get_children():
@@ -262,7 +260,7 @@ remotesync func update_players_data(players_data, round_is_running):
 				player.drop_current_flag();
 			player.queue_free();
 	# For every new player
-	for player in players_data:
+	for player in players:
 		if !get_tree().get_root().get_node("MainScene/Players").has_node("P" + str(player)):
 			spawn_player(player);
 	
@@ -274,6 +272,11 @@ remotesync func update_players_data(players_data, round_is_running):
 			player_node.team_id = players[player_id]["team_id"];
 			player_node.player_name = players[player_id]["name"];
 			player_node.set_network_master(players[player_id]['network_id']);
+
+remotesync func update_players_data(players_data, round_is_running):
+	players = players_data;
+	self.round_is_running = round_is_running;
+	update_player_objects();
 
 # Resync the clocks between server and clients by using current server time elapsed 
 remotesync func update_timing_sync(time_elapsed):
@@ -343,10 +346,11 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 func update_flags_data():
 	for node in get_tree().get_nodes_in_group("Flags"):
 		if node.get_parent().name == "MainScene":
-			flags_data[str(node.flag_id)] = {"holder_player_id" : -1, "position" : node.position};
+			flags_data[str(node.flag_id)]["holder_player_id"] = -1;
 		else:
 			var holding_player = node.get_parent().get_parent();
-			flags_data[str(node.flag_id)] = {"holder_player_id" : holding_player.player_id, "position" : node.position};
+			flags_data[str(node.flag_id)]["holder_player_id"] = holding_player.player_id;
+		flags_data[str(node.flag_id)]["position"] = node.position;
 
 # Client calls this on the server to notify that the client's connection is ready
 remote func user_ready(id, userToken):
@@ -483,11 +487,13 @@ remotesync func load_new_round():
 	get_tree().get_root().get_node("MainScene/Countdown_Audio").play();
 	# If we're the server, instruct other to spawn game nodes
 	if get_tree().is_network_server():
-		# Spawn flags
-		rpc("rpc_spawn_flag", 0, Vector2(-1100, 0), 0);
-		rpc("rpc_spawn_flag", 1, Vector2(1100, 0), 1);
 		# Update score
 		rpc("set_scores", scores);
+	
+	flags_data[str(0)] = {"holder_player_id" : -1, "position": Vector2(-1100, 0), "team_id" : 0};
+	flags_data[str(1)] = {"holder_player_id" : -1, "position": Vector2(1100, 0), "team_id" : 1};
+	spawn_flag(0, Vector2(-1100, 0));
+	spawn_flag(1, Vector2(1100, 0));
 	
 	get_tree().get_root().get_node("MainScene/UI_Layer").clear_big_label_text();
 	$Round_Start_Timer.set_wait_time(3);
@@ -497,7 +503,7 @@ remotesync func load_new_round():
 remote func load_mid_round(players, scores, round_start_timer_timeleft, round_num, round_time_elapsed, flags_data):
 	print("Loading in the middle of a round" + str(round_num));
 	
-	print(flags_data);
+	update_player_objects();
 	
 	Globals.match_start_time = OS.get_system_time_msecs() - round_time_elapsed;
 	# Account for a 1 way of latency
@@ -506,10 +512,15 @@ remote func load_mid_round(players, scores, round_start_timer_timeleft, round_nu
 	round_is_ended = false;
 	self.players = players;
 	self.scores = scores;
-	# Spawn flags
-	spawn_flag(0, Vector2(-1100, 0), 0);
-	spawn_flag(1, Vector2(1100, 0), 1);
 	
+	self.flags_data = flags_data;
+	
+	# Spawn flags
+	spawn_flag(0, Vector2(-1100, 0));
+	spawn_flag(1, Vector2(1100, 0));
+	
+	
+			
 	Globals.result_team0_score = scores[0];
 	Globals.result_team1_score = scores[1];
 	if !isSkirmish:
