@@ -606,13 +606,12 @@ func take_flag(flag_id):
 	
 
 # Drops the currently held flag (If there is one)
-func drop_current_flag(flag_position):
-	
-	if Globals.testing or is_network_master():
-		get_tree().get_root().get_node("MainScene").slowdown_music();
-	$Flag_Drop_Audio.play();
+func drop_current_flag(flag_position = $Flag_Holder.get_global_position()):
 	# Only run if there is a flag in the Flag_Holder
 	if $Flag_Holder.get_child_count() > 0:
+		if Globals.testing or is_network_master():
+			get_tree().get_root().get_node("MainScene").slowdown_music();
+		$Flag_Drop_Audio.play();
 		# Just get the first flag because there should only ever be one
 		var flag = $Flag_Holder.get_children()[0];
 		flag.get_node("Area2D").player_id_drop_buffer = player_id;

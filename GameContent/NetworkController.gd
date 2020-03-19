@@ -258,6 +258,8 @@ remotesync func update_players_data(players_data, round_is_running):
 		var name = player.name;
 		name.erase(0,1);
 		if !players.has(int(name)):
+			if isSkirmish:
+				player.drop_current_flag();
 			player.queue_free();
 	# For every new player
 	for player in players_data:
