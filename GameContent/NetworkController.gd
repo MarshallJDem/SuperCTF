@@ -2,6 +2,7 @@ extends Node
 
 const	SCORE_LIMIT	= 2;
 var		players		= {};
+var		flags_data	= {};
 var		scores		= [];
 var		round_num	= 0;
 
@@ -14,13 +15,17 @@ var round_is_ended = false;
 var match_is_running = false;
 var round_is_running = false;
 
-# Player "Struct"
+# players Struct (Indexed by player game ID (which is only the same as network_id on skirmish, and never the same as uid))
 #	- name: string
 #	- team_id: int
 #	- user_id: int
 #	- network_id: int
 #	- position: Vector2D
 #	- spawn_pos: Vector2D
+
+# flag_data Struct (Indexed by flag id)
+#	- holder_player_id: int
+#	- position: int
 
 func _ready():
 	if Globals.testing:
@@ -180,7 +185,6 @@ func updateGameServerStatus(status = null):
 func join_server():
 	print("joining server");
 	client = WebSocketClient.new();
-	#client.trusted_ssl_certificate = load("res://HTTPSKeys/linux_fullchain.crt");
 	
 	var url = "ws://" + Globals.serverIP;
 	if Globals.useSecure:
@@ -192,7 +196,6 @@ func join_server():
 	else:
 		print(error);
 		# Infinetely attempt to reconnect
-		# TODO : check user status. If we are no longer supposed to be connecting, then stop trying.
 		yield(get_tree().create_timer(1.0), "timeout");
 		join_server();
 
@@ -240,6 +243,7 @@ func spawn_flag(team_id, position, flag_id):
 	flag.home_position = position;
 	flag.name = "Flag-" + str(flag_id);
 	get_tree().get_root().get_node("MainScene").add_child(flag);
+	flags_data[str(flag_id)] = {"holder_player_id" : -1, "position": position};
 
 # Called when the client's connection is ready, and then tells the server
 func _connection_ok():
@@ -324,7 +328,8 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 						rpc("update_players_data", players, round_is_running);
 						# If this user is joining mid match
 						if match_is_running:
-							rpc_id(network_id, "load_mid_round", players, scores, $Round_Start_Timer.time_left, round_num, OS.get_system_time_msecs() - Globals.match_start_time); 
+							update_flags_data();
+							rpc_id(network_id, "load_mid_round", players, scores, $Round_Start_Timer.time_left, round_num, OS.get_system_time_msecs() - Globals.match_start_time, flags_data); 
 			else:
 				print("Disconnecting player " + str(network_id) + " because they are not in the allowed players list (they mightve connected before we got match data)");
 				server.disconnect_peer(network_id, 1000, "You are not a player in this match")
@@ -332,6 +337,14 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 			print("WE SHOULD BE DISCONNECTING A player because the checkUser backend call failed with a non 200 status BUT WE DON'T KNOW THEIR NETWORKID'");
 			#server.disconnect_peer(player_check_queue[0]['networkID'], 1000, "An Unknown Error Occurred.")
 
+
+func update_flags_data():
+	for node in get_tree().get_nodes_in_group("Flags"):
+		if node.get_parent().name == "MainScene":
+			flags_data[str(node.flag_id)] = {"holder_player_id" : -1, "position" : node.position};
+		else:
+			var holding_player = node.get_parent();
+			flags_data[str(node.flag_id)] = {"holder_player_id" : holding_player.player_id, "position" : node.position};
 
 # Client calls this on the server to notify that the client's connection is ready
 remote func user_ready(id, userToken):
@@ -479,8 +492,10 @@ remotesync func load_new_round():
 	$Round_Start_Timer.start();
 
 # For when a player joins mid round
-remote func load_mid_round(players, scores, round_start_timer_timeleft, round_num, round_time_elapsed):
+remote func load_mid_round(players, scores, round_start_timer_timeleft, round_num, round_time_elapsed, flags_data):
 	print("Loading in the middle of a round" + str(round_num));
+	
+	print(flags_data);
 	
 	Globals.match_start_time = OS.get_system_time_msecs() - round_time_elapsed;
 	# Account for a 1 way of latency
