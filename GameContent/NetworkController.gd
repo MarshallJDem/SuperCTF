@@ -345,7 +345,7 @@ func update_flags_data():
 		if node.get_parent().name == "MainScene":
 			flags_data[str(node.flag_id)] = {"holder_player_id" : -1, "position" : node.position};
 		else:
-			var holding_player = node.get_parent();
+			var holding_player = node.get_parent().get_parent();
 			flags_data[str(node.flag_id)] = {"holder_player_id" : holding_player.player_id, "position" : node.position};
 
 # Client calls this on the server to notify that the client's connection is ready
