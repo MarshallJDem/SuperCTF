@@ -391,6 +391,8 @@ func spawn_player(id):
 
 # Called when a new peer connects
 func _client_connected(id):
+	if get_tree().is_network_server():
+		rpc("update_players_data", players, round_is_running);
 	print("Client " + str(id) + " connected to Server");
 	
 	
@@ -503,9 +505,15 @@ remotesync func load_new_round():
 remote func load_mid_round(players, scores, round_start_timer_timeleft, round_num, round_time_elapsed, flags_data):
 	print("Loading in the middle of a round" + str(round_num));
 	
+	print(get_tree().get_root().get_node("MainScene/Players").get_child_count());
+	print(get_tree().get_root().get_node("MainScene/Players").get_children());
 	# Wait till our player objects have initialized
 	while get_tree().get_root().get_node("MainScene/Players").get_child_count() == 0:
+		print("waiting");
 		yield(get_tree().create_timer(0.1), "timeout");
+	
+	for node in get_tree().get_root().get_node("MainScene/Players").get_children():
+		print(node.name);
 	
 	Globals.match_start_time = OS.get_system_time_msecs() - round_time_elapsed;
 	# Account for a 1 way of latency
