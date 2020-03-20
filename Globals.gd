@@ -122,9 +122,11 @@ func _HTTP_GetMatchData_Completed(result, response_code, headers, body):
 	get_tree().change_scene("res://GameContent/Main.tscn");
 
 func attempt_poll_player_status():
-	# If were not already in the middle of a poll, poll it
-	if HTTPRequest_PollPlayerStatus.get_http_client_status() == 0:
-		HTTPRequest_PollPlayerStatus.request(Globals.mainServerIP + "pollPlayerStatus", ["authorization: Bearer " + Globals.userToken]);
+	# If we are logged in
+	if Globals.userToken:
+		# If were not already in the middle of a poll, poll it
+		if HTTPRequest_PollPlayerStatus.get_http_client_status() == 0:
+			HTTPRequest_PollPlayerStatus.request(Globals.mainServerIP + "pollPlayerStatus", ["authorization: Bearer " + Globals.userToken]);
 
 func write_save_data():
 	var file = File.new()
