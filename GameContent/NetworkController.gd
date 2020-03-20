@@ -239,10 +239,10 @@ func spawn_flag(flag_id, home_position):
 	flag.set_team(flags_data[str(flag_id)]["team_id"]);
 	flag.home_position = home_position;
 	flag.name = "Flag-" + str(flag_id);
+	get_tree().get_root().get_node("MainScene").add_child(flag);
+	
 	if flags_data[str(flag_id)]["holder_player_id"] != -1:
-		get_tree().get_root().get_node("MainScene/Players/P" + str(flags_data[str(flag_id)]["holder_player_id"])).take_flag(flag_id);
-	else:
-		get_tree().get_root().get_node("MainScene").add_child(flag);
+		get_tree().get_root().get_node("MainScene/Players/P" + str(flags_data[str(flag_id)]["holder_player_id"])).call_deferred("take_flag",(flag_id));
 
 # Called when the client's connection is ready, and then tells the server
 func _connection_ok():
@@ -256,8 +256,7 @@ func update_player_objects():
 		var name = player.name;
 		name.erase(0,1);
 		if !players.has(int(name)):
-			if isSkirmish:
-				player.drop_current_flag();
+			player.drop_current_flag();
 			player.queue_free();
 	# For every new player
 	for player in players:
@@ -272,6 +271,9 @@ func update_player_objects():
 			player_node.team_id = players[player_id]["team_id"];
 			player_node.player_name = players[player_id]["name"];
 			player_node.set_network_master(players[player_id]['network_id']);
+			if !get_tree().is_network_server() and players[player_id]['network_id'] == get_tree().get_network_unique_id():
+				player_node.control = round_is_running;
+				player_node.activate_camera();
 
 remotesync func update_players_data(players_data, round_is_running):
 	players = players_data;
@@ -379,6 +381,7 @@ func spawn_player(id):
 	player.start_pos = players[id]["spawn_pos"];
 	print("Spawning Player");
 	print(players[id]);
+	print(get_tree().get_network_unique_id());
 	player.player_name = players[id]["name"];
 	if players[id]["network_id"] == get_tree().get_network_unique_id():
 		player.control = round_is_running;
@@ -391,8 +394,8 @@ func spawn_player(id):
 
 # Called when a new peer connects
 func _client_connected(id):
-	if get_tree().is_network_server():
-		rpc("update_players_data", players, round_is_running);
+	#if get_tree().is_network_server():
+		#rpc("update_players_data", players, round_is_running);
 	print("Client " + str(id) + " connected to Server");
 	
 	
@@ -505,15 +508,9 @@ remotesync func load_new_round():
 remote func load_mid_round(players, scores, round_start_timer_timeleft, round_num, round_time_elapsed, flags_data):
 	print("Loading in the middle of a round" + str(round_num));
 	
-	print(get_tree().get_root().get_node("MainScene/Players").get_child_count());
-	print(get_tree().get_root().get_node("MainScene/Players").get_children());
 	# Wait till our player objects have initialized
 	while get_tree().get_root().get_node("MainScene/Players").get_child_count() == 0:
-		print("waiting");
 		yield(get_tree().create_timer(0.1), "timeout");
-	
-	for node in get_tree().get_root().get_node("MainScene/Players").get_children():
-		print(node.name);
 	
 	Globals.match_start_time = OS.get_system_time_msecs() - round_time_elapsed;
 	# Account for a 1 way of latency
