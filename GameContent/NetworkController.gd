@@ -152,7 +152,7 @@ func _HTTP_GetMatchData_Completed(result, response_code, headers, body):
 			# Go through each new allowed player and populate the players array
 			for user_id in Globals.allowedPlayers:
 				var team_id = 1;
-				if(float(Globals.allowedPlayers.find_last(user_id) + 1)/float(Globals.allowedPlayers.size()) <= 0.5):
+				if(i <= ceil(Globals.allowedPlayers.size()/2)):
 					team_id = 0;
 				var spawn_pos = Vector2(0,0);
 				if team_id == 0:
