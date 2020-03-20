@@ -34,7 +34,8 @@ func collided_with_bullet(bullet):
 		get_parent().rpc("receive_death");
 		flagged_for_death = true;
 	else:
-		get_parent().call_deferred("preliminary_death");
+		pass;# Don't do preliminary death anymore because this is often inaccurate
+		#get_parent().call_deferred("preliminary_death");
 
 # Called when the bullet collides with a laser
 func collided_with_laser(laser):

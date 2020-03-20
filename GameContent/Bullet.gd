@@ -1,7 +1,7 @@
 extends KinematicBody2D
 
 var direction = Vector2(0,0);
-var speed = 500;
+var speed = 400;
 var player_id;
 var team_id = -1;
 var show_death_particles = true;
@@ -25,14 +25,19 @@ func _ready():
 		is_from_puppet = true;
 	
 	initial_real_pos = position;
+	
+	$Lag_Comp_Timer.start();
 	if is_from_puppet:
-		$Lag_Comp_Timer.start();
 		# Start the bullet slightly down directory to help with lag sync a bit
 		position = position + (direction * Globals.lag_comp_headstart_dist);
 		initial_puppet_pos = position;
 		puppet_time_shot = OS.get_system_time_msecs() - Globals.match_start_time;
 		if Globals.testing:
 			initial_time_shot = initial_time_shot - 100;
+	else:
+		puppet_time_shot = initial_time_shot;
+		initial_time_shot += 50;
+		initial_puppet_pos = position;
 
 func _process(_delta):
 	pass;
@@ -47,12 +52,14 @@ func _physics_process(_delta):
 # Given an amount of delta time, moves the bullet in its trajectory direction using its speed
 func move():
 	var time_elapsed = ((OS.get_system_time_msecs() - Globals.match_start_time) - initial_time_shot)/1000.0;
+	if time_elapsed < 0:
+		time_elapsed = 0;
 	var real_position = initial_real_pos + (direction * speed * time_elapsed);
 	var new_pos;
 	if $Lag_Comp_Timer.time_left > 0:
 		var puppet_time_elapsed = ((OS.get_system_time_msecs() - Globals.match_start_time) - puppet_time_shot)/1000.0;
 		var puppet_position = initial_puppet_pos + (direction * speed * puppet_time_elapsed);
-		new_pos = lerp(puppet_position, real_position, 1.0 - ($Lag_Comp_Timer.time_left/$Lag_Comp_Timer.wait_time))
+		new_pos = lerp(puppet_position, real_position, pow((1.0 - ($Lag_Comp_Timer.time_left/$Lag_Comp_Timer.wait_time)),2))
 	else:
 		new_pos = real_position;
 	var change = move_and_collide(new_pos - position);

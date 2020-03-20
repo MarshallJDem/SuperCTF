@@ -300,8 +300,8 @@ func _draw():
 
 # Shoots a bullet shot
 func shoot_bullet(d):
-	var direction = d.normalized();
 	$Shoot_Cooldown_Timer.start();
+	var direction = d.normalized();
 	bullets_shot = bullets_shot + 1;
 	# Re-enable the code below to have the bullet start out of the end of the gun
 	var bullet_start = position + get_node("Bullet_Starts/" + String($Sprite_Top.frame % $Sprite_Top.hframes)).position;
@@ -330,7 +330,7 @@ func spawn_bullet(pos, player_id, direction, time_shot, bullet_name = null):
 	particles.rotation = Vector2(0,0).angle_to_point(direction) + PI;
 	
 #	# If this was fired by another player, compensate for player lerp speed
-	if !Globals.testing and player_id != Globals.localPlayerID && !get_tree().is_network_server():
+	if !Globals.testing and player_id != Globals.localPlayerID:
 		var t = Timer.new()
 		t.set_wait_time(float(Globals.player_lerp_time)/float(1000.0))
 		t.set_one_shot(true)

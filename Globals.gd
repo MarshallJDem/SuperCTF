@@ -41,7 +41,7 @@ var result_match_id = -1;
 # ----- Constants -----
 
 # The amount of delay to lerp over for lag interpolation for players and various other things
-var player_lerp_time = 100; # In millis
+var player_lerp_time = 50; # In millis
 # Whether or not lasers should destroy bullets
 var lasers_destroy_bullets = true;
 var forcefield_cooldown = 3;
