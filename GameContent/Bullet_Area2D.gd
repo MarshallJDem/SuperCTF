@@ -34,8 +34,11 @@ func collided_with_bullet(bullet):
 		get_parent().rpc("receive_death");
 		flagged_for_death = true;
 	else:
-		pass;# Don't do preliminary death anymore because this is often inaccurate
-		#get_parent().call_deferred("preliminary_death");
+		# Only do a preliminary death if both bullets are done compensating lag
+		if get_parent().get_node("Lag_Comp_Timer").time_left == 0 and bullet.get_node("Lag_Comp_Timer").time_left == 0:
+			get_parent().call_deferred("preliminary_death");
+		else:
+			print("Not calling it mother yucker");
 
 # Called when the bullet collides with a laser
 func collided_with_laser(laser):
