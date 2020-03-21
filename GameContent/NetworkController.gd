@@ -204,7 +204,6 @@ func _cancel_match_timer_ended():
 	if get_tree().get_network_connected_peers().size() == 0:
 		get_tree().set_network_peer(null);
 		start_server();
-
 func updateGameServerStatus(status = null):
 	if status != null:
 		Globals.gameserverStatus = status;
@@ -364,7 +363,7 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 						# If this user is joining mid match
 						if match_is_running:
 							update_flags_data();
-							rpc_id(network_id, "load_mid_round", players, scores, $Round_Start_Timer.time_left, round_num, OS.get_system_time_msecs() - Globals.match_start_time, flags_data); 
+							rpc_id(network_id, "load_mid_round", players, scores, $Round_Start_Timer.time_left, round_num, OS.get_system_time_msecs() - Globals.match_start_time, flags_data, game_vars); 
 			else:
 				print("Disconnecting player " + str(network_id) + " because they are not in the allowed players list (they mightve connected before we got match data)");
 				server.disconnect_peer(network_id, 1000, "You are not a player in this match")
@@ -431,6 +430,8 @@ func _client_connected(id):
 func _client_disconnected(id):
 	print("Client " + str(id) + " disconnected from the Server");
 	if get_tree().is_network_server():
+		if get_tree().get_network_connected_peers().size() == 0:
+			game_vars = game_var_defaults.duplicate();
 		players.erase(id);
 		rpc("update_players_data", players, round_is_running);
 	
@@ -533,12 +534,14 @@ remotesync func load_new_round():
 	$Round_Start_Timer.start();
 
 # For when a player joins mid round
-remote func load_mid_round(players, scores, round_start_timer_timeleft, round_num, round_time_elapsed, flags_data):
+remote func load_mid_round(players, scores, round_start_timer_timeleft, round_num, round_time_elapsed, flags_data, game_vars):
 	print("Loading in the middle of a round" + str(round_num));
 	
 	# Wait till our player objects have initialized
 	while get_tree().get_root().get_node("MainScene/Players").get_child_count() == 0:
 		yield(get_tree().create_timer(0.1), "timeout");
+	
+	self.game_vars = game_vars;
 	
 	Globals.match_start_time = OS.get_system_time_msecs() - round_time_elapsed;
 	# Account for a 1 way of latency
