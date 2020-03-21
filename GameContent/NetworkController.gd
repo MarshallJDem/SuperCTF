@@ -180,15 +180,7 @@ func _HTTP_GetMatchData_Completed(result, response_code, headers, body):
 			pollServerStatus = true;
 
 remotesync func set_game_var(variable, value):
-	var table = {"playerSpeed" : Vector2(50, 600), "playerLagTime" : Vector2(0, 250),
-	"bulletSpeed" : Vector2(100, 1000), "bulletCooldown" : Vector2(100, 2000), 
-	"laserChargeTime" : Vector2(50, 5000), "laserCooldown" : Vector2(100, 8000), 
-	"laserWidth" : Vector2(2, 50), "laserLength" : Vector2(10, 5000),
-	"dashDistance" : Vector2(100, 5000), "dashCooldown" : Vector2(100, 8000), 
-	"forcefieldCooldown" : Vector2(100, 6000),
-	"scoreLimit" : Vector2(1, 15)};
-	var val = clamp(value, table[variable].x, table[variable].y);
-	game_vars[variable] = val;
+	game_vars[variable] = value;
 
 func get_game_var(name):
 	return game_vars[name];

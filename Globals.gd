@@ -38,7 +38,18 @@ var result_team1_score = 0;
 var result_player_team_id = -1;
 var result_match_id = -1;
 
+
+
 # ----- Constants -----
+
+
+var game_var_limits = {"playerSpeed" : Vector2(50, 600), "playerLagTime" : Vector2(0, 250),
+"bulletSpeed" : Vector2(100, 1000), "bulletCooldown" : Vector2(100, 2000), 
+"laserChargeTime" : Vector2(50, 5000), "laserCooldown" : Vector2(100, 8000), 
+"laserWidth" : Vector2(2, 50), "laserLength" : Vector2(10, 5000),
+"dashDistance" : Vector2(100, 5000), "dashCooldown" : Vector2(100, 8000), 
+"forcefieldCooldown" : Vector2(100, 6000),
+"scoreLimit" : Vector2(1, 15)};
 
 # The amount of delay to lerp over for lag interpolation for players and various other things
 var player_lerp_time = 50; # In millis
