@@ -18,6 +18,7 @@ var gameserverStatus = 0;
 
 # Client data
 var localPlayerID;
+var localPlayerTeamID;
 
 #User data
 var userToken;
@@ -35,7 +36,6 @@ var is_typing_in_chat = false;
 var result_winning_team_id = -1;
 var result_team0_score = 0;
 var result_team1_score = 0;
-var result_player_team_id = -1;
 var result_match_id = -1;
 
 

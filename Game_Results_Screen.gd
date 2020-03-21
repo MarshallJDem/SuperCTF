@@ -18,7 +18,7 @@ func _ready():
 	winning_team_ID = Globals.result_winning_team_id;
 	team_0_score = Globals.result_team0_score;
 	team_1_score = Globals.result_team1_score;
-	player_team_ID = Globals.result_player_team_id;
+	player_team_ID = Globals.localPlayerTeamID;
 	match_ID = Globals.result_match_id;
 	old_mmr = Globals.player_MMR;
 	

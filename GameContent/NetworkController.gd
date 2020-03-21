@@ -285,6 +285,7 @@ func update_player_objects():
 	for player_id in players:
 		if !get_tree().is_network_server() and players[player_id]["network_id"] == get_tree().get_network_unique_id():
 			Globals.localPlayerID = player_id;
+			Globals.localPlayerTeamID = players[player_id]["team_id"];
 		if get_tree().get_root().get_node("MainScene/Players").has_node("P" + str(player_id)):
 			var player_node = get_tree().get_root().get_node("MainScene/Players/P" + str(player_id));
 			player_node.team_id = players[player_id]["team_id"];
