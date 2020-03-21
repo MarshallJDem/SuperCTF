@@ -42,8 +42,6 @@ remotesync func receive_message(message, sender_id):
 		return;
 	add_message(message, sender_id);
 	if Globals.allowCommands and get_tree().is_network_server():
-		print("Message Left");
-		print(message.left(1));
 		if message.left(1) == "/":
 			process_command(message);
 func process_command(command):
@@ -59,6 +57,11 @@ func process_command(command):
 	var noun = command.substr(first_space+1, (second_space-first_space) - 1).strip_edges();
 	var value = command.substr(second_space+1).strip_edges();
 	
+	print("Checking");
+	print(noun);
+	print(value);
+	print(get_tree().get_root().get_node("MainScene/NetworkController").game_var_defaults.has(noun));
+	print(typeof(value));
 	if !get_tree().get_root().get_node("MainScene/NetworkController").game_var_defaults.has(noun) or typeof(value) != TYPE_INT:
 		rpc("receive_message", "[color=red] > Invalid Command < [/color]", -1);
 		return; 
