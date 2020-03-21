@@ -28,7 +28,7 @@ animations = [ {
 } ]
 
 [sub_resource type="ConvexPolygonShape2D" id=3]
-points = PoolVector2Array( 0, 0, 18.693, 3.609, 18.937, 14.698, 0, 28.805 )
+points = PoolVector2Array( -3, -2.99, 18.693, 3.609, 18.937, 14.698, -2.482, 30.443 )
 
 [node name="Flag" type="Node2D" groups=[
 "Flags",
