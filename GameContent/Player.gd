@@ -574,7 +574,7 @@ func respawn():
 	visible = true;
 	alive = true;
 	position = start_pos;
-	if is_network_master():
+	if is_network_master() and get_tree().get_root().get_node("MainScene/NetworkController").round_is_running:
 		control = true;
 	start_temporary_invincibility();
 	if is_network_master():
