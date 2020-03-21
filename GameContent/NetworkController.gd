@@ -185,10 +185,10 @@ remotesync func set_game_var(variable, value):
 	"laserChargeTime" : Vector2(50, 5000), "laserCooldown" : Vector2(100, 8000), 
 	"laserWidth" : Vector2(2, 50), "laserLength" : Vector2(10, 5000),
 	"dashDistance" : Vector2(100, 5000), "dashCooldown" : Vector2(100, 8000), 
-	"forcefieldCooldown" : Vector2(500, 6000),
+	"forcefieldCooldown" : Vector2(100, 6000),
 	"scoreLimit" : Vector2(1, 15)};
 	var val = clamp(value, table[variable].x, table[variable].y);
-	game_vars[variable] = value;
+	game_vars[variable] = val;
 
 func get_game_var(name):
 	return game_vars[name];
