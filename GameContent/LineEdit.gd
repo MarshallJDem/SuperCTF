@@ -66,12 +66,12 @@ func process_command(command):
 		get_tree().get_root().get_node("MainScene/NetworkController").rpc("set_game_var", noun, int(value));
 	
 func add_message(message, sender_id):
-	var player_name = "";
-	var color = "";
+	var player_name = "BOB";
+	var color = "red";
 	if !Globals.testing and sender_id != -1:
 		player_name = get_tree().get_root().get_node("MainScene/NetworkController").players[sender_id]["name"];
 		if get_tree().get_root().get_node("MainScene/NetworkController").players[sender_id]["team_id"] == 0:
-			color = "#4C70BA";
+			color = "blue";
 	if sender_id == -1:
 		get_parent().get_node("Chat_Box").bbcode_text = get_parent().get_node("Chat_Box").bbcode_text + message + "\n";
 	else:
