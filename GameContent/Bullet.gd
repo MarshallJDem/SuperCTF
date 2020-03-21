@@ -40,6 +40,7 @@ func _ready():
 		initial_puppet_pos = position;
 
 func _process(_delta):
+	speed = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("bulletSpeed");
 	pass;
 
 # stupid workaround neccessary to make particles not flash random colors upon spawning

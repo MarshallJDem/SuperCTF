@@ -10,11 +10,13 @@ func _ready():
 	$Death_Timer.connect("timeout", self, "_death_timer_ended");
 
 func _process(delta):
+	
+	
 	update();
 
 func _draw():
-	var size = 15
-	var length = 1000
+	var size = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("laserWidth");
+	var length = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("laserLength");
 	var red = 1 if team_id == 1 else 0;
 	var green = 10.0/255.0 if team_id == 1 else 130.0/255.0;
 	var blue = 1 if team_id == 0 else 0;

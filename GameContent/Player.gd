@@ -5,10 +5,10 @@ var IS_CONTROLLED_BY_MOUSE = false;
 # The ID of this player 0,1,2 etc. NOT the network unique ID
 var player_id = -1;
 var team_id = -1;
-const BASE_SPEED = 200;
+var BASE_SPEED = 200;
 const AIMING_SPEED = 15;
 const SPRINT_SPEED = 50;
-const TELEPORT_SPEED = 2000;
+var TELEPORT_SPEED = 2000;
 var player_name = "Guest999";
 var speed = BASE_SPEED;
 # Where this player starts on the map and should respawn at
@@ -135,6 +135,16 @@ func _input(event):
 					pass;
 
 func _process(delta):
+	var new_speed = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("playerSpeed");
+	if speed == BASE_SPEED:
+		speed = new_speed;
+	BASE_SPEED = new_speed;
+	TELEPORT_SPEED = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("dashDistance");
+	$Shoot_Cooldown_Timer.wait_time = float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("bulletCooldown"))/1000.0;
+	$Laser_Cooldown_Timer.wait_time = float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("laserCooldown"))/1000.0;
+	$Forcefield_Timer.wait_time = float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("forcefieldCooldown"))/1000.0;
+	$Teleport_Timer.wait_time = float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("dashCooldown"))/1000.0;
+	$Laser_Timer.wait_time = float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("laserChargeTime"))/1000.0;
 	if control:
 		activate_camera();
 		# Don't look around if we're shooting a laser
@@ -211,7 +221,7 @@ func start_laser(direction, start_pos, frame):
 	laser_direction = direction;
 	laser_position = start_pos;
 	$Laser_Timer.start();
-	speed= AIMING_SPEED;
+	speed = AIMING_SPEED;
 	camera_ref.shake($Laser_Timer.wait_time, 1, true);
 	$Laser_Charge_Audio.play();
 
@@ -244,7 +254,6 @@ func forcefield_placed():
 	else:
 		forcefield_position = position;
 	rpc("spawn_forcefield", forcefield_position, team_id);
-	$Forcefield_Timer.wait_time = Globals.forcefield_cooldown;
 	$Forcefield_Timer.start();
 	if Globals.testing:
 		var forcefield = load("res://GameContent/Forcefield.tscn").instance();

@@ -132,6 +132,7 @@ one_shot = true
 one_shot = true
 
 [node name="Forcefield_Timer" type="Timer" parent="."]
+wait_time = 3.0
 one_shot = true
 
 [node name="Animation_Timer" type="Timer" parent="."]

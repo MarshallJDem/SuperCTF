@@ -1,8 +1,19 @@
 extends Node
 
-const	SCORE_LIMIT	= 2;
+var		SCORE_LIMIT	= 2;
 var		players		= {};
 var		flags_data	= {};
+
+
+const	game_var_defaults = {"playerSpeed" : 200, "playerLagTime" : 50,
+	"bulletSpeed" : 400, "bulletCooldown" : 400, 
+	"laserChargeTime" : 400, "laserCooldown" : 500, 
+	"laserWidth" :15, "laserLength" : 1000,
+	"dashDistance" : 2000, "dashCooldown" : 1000, 
+	"forcefieldCooldown" : 3000,
+	"scoreLimit" : 2};
+
+var		game_vars	= game_var_defaults
 var		scores		= [];
 var		round_num	= 0;
 
@@ -61,6 +72,7 @@ func _ready():
 	
 		
 func _process(delta):
+	SCORE_LIMIT = get_game_var("scoreLimit");
 	if server != null and server.is_listening():
 		server.poll();
 	if client != null and (client.get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_CONNECTED || 
@@ -82,6 +94,7 @@ func reset_game():
 	match_is_running = false;
 	round_is_running = false;
 	round_num = 0;
+	game_vars = game_var_defaults;
 	get_tree().set_network_peer(null);
 	reset_game_objects(true);
 	Globals.allowedPlayers = [];
@@ -165,6 +178,20 @@ func _HTTP_GetMatchData_Completed(result, response_code, headers, body):
 			start_match();
 		else: #If it failed, try repolling the server status.
 			pollServerStatus = true;
+
+remotesync func set_game_var(variable, value):
+	var table = {"playerSpeed" : Vector2(50, 600), "playerLagTime" : Vector2(0, 250),
+	"bulletSpeed" : Vector2(100, 1000), "bulletCooldown" : Vector2(100, 2000), 
+	"laserChargeTime" : Vector2(50, 5000), "laserCooldown" : Vector2(100, 8000), 
+	"laserWidth" : Vector2(2, 50), "laserLength" : Vector2(10, 5000),
+	"dashDistance" : Vector2(100, 5000), "dashCooldown" : Vector2(100, 8000), 
+	"forcefieldCooldown" : Vector2(500, 6000),
+	"scoreLimit" : Vector2(1, 15)};
+	var val = clamp(value, table[variable].x, table[variable].y);
+	game_vars[variable] = value;
+
+func get_game_var(name):
+	return game_vars[name];
 
 func _gameserver_status_timer_ended():
 	updateGameServerStatus();

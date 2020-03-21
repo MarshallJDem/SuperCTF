@@ -23,6 +23,7 @@ func _ready():
 		print("Checking is server");
 		get_tree().change_scene("res://GameContent/Main.tscn");
 	$HTTPRequest_GetLeaderboard.request(Globals.mainServerIP + "getLeaderboardData", ["authorization: Bearer " + Globals.userToken]);
+	
 
 
 func _Headline_Update_Timer_Ended():

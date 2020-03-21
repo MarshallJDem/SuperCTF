@@ -1,7 +1,7 @@
 extends Node
 
 # Whether to run in testing mode (for development uses)
-var testing = false;
+var testing = true;
 
 #Game Servers (Both clients and servers use these vars, but in different ways. overlapping would not work)
 var serverIP = "";
@@ -44,7 +44,6 @@ var result_match_id = -1;
 var player_lerp_time = 50; # In millis
 # Whether or not lasers should destroy bullets
 var lasers_destroy_bullets = true;
-var forcefield_cooldown = 3;
 var lag_comp_headstart_dist = 15;
 
 # ----- Quick Access global variables -----
@@ -83,6 +82,8 @@ func _ready():
 	HTTPRequest_CancelQueue.connect("request_completed", self, "_HTTP_CancelQueue_Completed");
 
 func _process(delta):
+	if get_tree().get_root().has_node("MainScene/NetworkController"):
+		Globals.player_lerp_time = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("playerLagTime");
 	if !isServer:
 		attempt_poll_player_status();
 	
@@ -160,5 +161,3 @@ func _input(event):
 		if event.scancode == KEY_F:
 			#OS.window_fullscreen = !OS.window_fullscreen;
 			pass;
-		if event.scancode == KEY_1:
-			player_lerp_time = 100;

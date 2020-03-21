@@ -42,16 +42,39 @@ remotesync func receive_message(message, sender_id):
 		return;
 	add_message(message, sender_id);
 	if Globals.allowCommands and get_tree().is_network_server():
-		if message == "/endmatch 0":
-			get_tree().get_root().get_node("MainScene/NetworkController").rpc("end_match",0);
-		if message == "/endmatch 1":
-			get_tree().get_root().get_node("MainScene/NetworkController").rpc("end_match",1);
-
+		print("Message Left");
+		print(message.left(1));
+		if message.left(1) == "/":
+			process_command(message);
+func process_command(command):
+	if command == "/endmatch 0":
+		get_tree().get_root().get_node("MainScene/NetworkController").rpc("end_match",0);
+		return;
+	if command == "/endmatch 1":
+		get_tree().get_root().get_node("MainScene/NetworkController").rpc("end_match",1);
+		return;
+	var first_space = command.findn(" ", 0);
+	var verb = command.substr(1, first_space-1);
+	var second_space = command.findn(" ", first_space+1);
+	var noun = command.substr(first_space+1, (second_space-first_space) - 1);
+	var value = command.substr(second_space+1).strip_edges();
+	
+	if !get_tree().get_root().get_node("MainScene/NetworkController").game_var_defaults.has(noun) or typeof(value) != TYPE_INT:
+		rpc("receive_message", "[color=red] > Invalid Command < [/color]", -1);
+		return; 
+	
+	if verb == "set":
+		rpc("receive_message", "[color=green] > Successfully set game " + noun + " < [/color]", -1);
+		get_tree().get_root().get_node("MainScene/NetworkController").rpc("set_game_var", noun, value);
+	
 func add_message(message, sender_id):
-	var player_name = "BOB";
-	var color = "#ff0000";
-	if !Globals.testing:
+	var player_name = "";
+	var color = "";
+	if !Globals.testing and sender_id != -1:
 		player_name = get_tree().get_root().get_node("MainScene/NetworkController").players[sender_id]["name"];
 		if get_tree().get_root().get_node("MainScene/NetworkController").players[sender_id]["team_id"] == 0:
 			color = "#4C70BA";
-	get_parent().get_node("Chat_Box").bbcode_text = get_parent().get_node("Chat_Box").bbcode_text + "[color=" + color + "]" + str(player_name) + "[/color][color=#3F4A4D]: " + message + "[/color]" + "\n";
+	if sender_id == -1:
+		get_parent().get_node("Chat_Box").bbcode_text = get_parent().get_node("Chat_Box").bbcode_text + message;
+	else:
+		get_parent().get_node("Chat_Box").bbcode_text = get_parent().get_node("Chat_Box").bbcode_text + "[color=" + color + "]" + str(player_name) + "[/color][color=#3F4A4D]: " + message + "[/color]" + "\n";
