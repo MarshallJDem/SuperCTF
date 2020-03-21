@@ -430,9 +430,10 @@ func _client_connected(id):
 func _client_disconnected(id):
 	print("Client " + str(id) + " disconnected from the Server");
 	if get_tree().is_network_server():
-		if get_tree().get_network_connected_peers().size() == 0:
-			game_vars = game_var_defaults.duplicate();
 		players.erase(id);
+		if isSkirmish:
+			if players.size() == 0:
+				game_vars = game_var_defaults.duplicate();
 		rpc("update_players_data", players, round_is_running);
 	
 
