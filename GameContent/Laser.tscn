@@ -2,9 +2,8 @@
 
 [ext_resource path="res://GameContent/Laser.gd" type="Script" id=1]
 
-[sub_resource type="CapsuleShape2D" id=1]
-radius = 7.5
-height = 1000.0
+[sub_resource type="SegmentShape2D" id=1]
+b = Vector2( 0, 1 )
 
 [node name="Laser" type="Node2D" groups=[
 "Lasers",
@@ -24,5 +23,4 @@ autostart = true
 ]]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2( 0, 500 )
 shape = SubResource( 1 )

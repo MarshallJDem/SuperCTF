@@ -17,6 +17,9 @@ func _process(delta):
 func _draw():
 	var size = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("laserWidth");
 	var length = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("laserLength");
+	
+	$Area2D/CollisionShape2D.scale = Vector2(size/3, length);
+	
 	var red = 1 if team_id == 1 else 0;
 	var green = 10.0/255.0 if team_id == 1 else 130.0/255.0;
 	var blue = 1 if team_id == 0 else 0;
