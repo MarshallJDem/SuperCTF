@@ -56,7 +56,7 @@ func process_command(command):
 	var first_space = command.findn(" ", 0);
 	var verb = command.substr(1, first_space-1);
 	var second_space = command.findn(" ", first_space+1);
-	var noun = command.substr(first_space+1, (second_space-first_space) - 1);
+	var noun = command.substr(first_space+1, (second_space-first_space) - 1).strip_edges();
 	var value = command.substr(second_space+1).strip_edges();
 	
 	if !get_tree().get_root().get_node("MainScene/NetworkController").game_var_defaults.has(noun) or typeof(value) != TYPE_INT:
@@ -75,6 +75,6 @@ func add_message(message, sender_id):
 		if get_tree().get_root().get_node("MainScene/NetworkController").players[sender_id]["team_id"] == 0:
 			color = "#4C70BA";
 	if sender_id == -1:
-		get_parent().get_node("Chat_Box").bbcode_text = get_parent().get_node("Chat_Box").bbcode_text + message;
+		get_parent().get_node("Chat_Box").bbcode_text = get_parent().get_node("Chat_Box").bbcode_text + message + "\n";
 	else:
 		get_parent().get_node("Chat_Box").bbcode_text = get_parent().get_node("Chat_Box").bbcode_text + "[color=" + color + "]" + str(player_name) + "[/color][color=#3F4A4D]: " + message + "[/color]" + "\n";
