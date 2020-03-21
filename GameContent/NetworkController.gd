@@ -13,7 +13,7 @@ const	game_var_defaults = {"playerSpeed" : 200, "playerLagTime" : 50,
 	"forcefieldCooldown" : 3000,
 	"scoreLimit" : 2};
 
-var		game_vars	= game_var_defaults
+var		game_vars	= game_var_defaults;
 var		scores		= [];
 var		round_num	= 0;
 
@@ -95,6 +95,7 @@ func reset_game():
 	round_is_running = false;
 	round_num = 0;
 	game_vars = game_var_defaults;
+	print(game_var_defaults);
 	get_tree().set_network_peer(null);
 	reset_game_objects(true);
 	Globals.allowedPlayers = [];
