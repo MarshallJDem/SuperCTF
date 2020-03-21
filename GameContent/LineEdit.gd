@@ -61,10 +61,10 @@ func process_command(command):
 		rpc("receive_message", "[color=red] > Invalid Command < [/color]", -1);
 		return; 
 	
-	var val = clamp(value, Globals.game_var_limits[noun].x, Globals.game_var_limits[noun].y);
+	var val = clamp(int(value), Globals.game_var_limits[noun].x, Globals.game_var_limits[noun].y);
 	
 	if verb == "set":
-		rpc("receive_message", "[color=green] > Successfully set game " + noun + " = " + val + "< [/color]", -1);
+		rpc("receive_message", "[color=green] > Successfully set " + noun + " = " + str(val) + "< [/color]", -1);
 		get_tree().get_root().get_node("MainScene/NetworkController").rpc("set_game_var", noun, int(val));
 	
 func add_message(message, sender_id):
