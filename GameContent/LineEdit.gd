@@ -57,18 +57,13 @@ func process_command(command):
 	var noun = command.substr(first_space+1, (second_space-first_space) - 1).strip_edges();
 	var value = command.substr(second_space+1).strip_edges();
 	
-	print("Checking");
-	print(noun);
-	print(value);
-	print(get_tree().get_root().get_node("MainScene/NetworkController").game_var_defaults.has(noun));
-	print(typeof(value));
-	if !get_tree().get_root().get_node("MainScene/NetworkController").game_var_defaults.has(noun) or typeof(value) != TYPE_INT:
+	if !get_tree().get_root().get_node("MainScene/NetworkController").game_var_defaults.has(noun) or !value.is_valid_integer():
 		rpc("receive_message", "[color=red] > Invalid Command < [/color]", -1);
 		return; 
 	
 	if verb == "set":
 		rpc("receive_message", "[color=green] > Successfully set game " + noun + " < [/color]", -1);
-		get_tree().get_root().get_node("MainScene/NetworkController").rpc("set_game_var", noun, value);
+		get_tree().get_root().get_node("MainScene/NetworkController").rpc("set_game_var", noun, int(value));
 	
 func add_message(message, sender_id):
 	var player_name = "";
