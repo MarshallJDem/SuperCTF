@@ -103,7 +103,8 @@ func _input(event):
 					$Teleport_Timer.start();
 			if event.scancode == KEY_E:
 				# If were not holding a flag, create forcefield
-				if $Flag_Holder.get_child_count() == 0:
+				# This is now disabled. You can place forcefield whenever you please kiddo
+				if true || $Flag_Holder.get_child_count() == 0:
 					if $Forcefield_Timer.time_left == 0:
 						forcefield_placed();
 		elif IS_CONTROLLED_BY_MOUSE and event is InputEventMouseButton:
