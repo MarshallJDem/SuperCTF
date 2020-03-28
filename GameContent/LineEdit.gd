@@ -57,7 +57,7 @@ func process_command(command):
 	var noun = command.substr(first_space+1, (second_space-first_space) - 1).strip_edges();
 	var value = command.substr(second_space+1).strip_edges();
 	
-	if !get_tree().get_root().get_node("MainScene/NetworkController").game_var_defaults.has(noun) or !value.is_valid_integer():
+	if !Globals.game_var_defaults.has(noun) or !value.is_valid_integer():
 		rpc("receive_message", "[color=red] > Invalid Command < [/color]", -1);
 		return; 
 	
