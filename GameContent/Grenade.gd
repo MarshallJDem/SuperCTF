@@ -41,7 +41,7 @@ func move():
 	var speed_distance = initial_real_pos.distance_to(initial_real_pos + (Vector2.ONE * speed));
 	var target_distance = initial_real_pos.distance_to(target_pos);
 	var t;
-	if target_distance == Vector2.ZERO:
+	if target_distance == 0:
 		t = time_elapsed
 	else:
 		t = time_elapsed * (speed_distance / target_distance);
