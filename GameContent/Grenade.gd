@@ -17,8 +17,6 @@ func _ready():
 	$Detonation_Timer.connect("timeout", self, "_detonation_timer_ended");
 	$Animation_Timer.connect("timeout", self, "_animation_timer_ended");
 	position = initial_real_pos;
-	var radius = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("grenadeRadius");
-	$Area2D/CollisionShape2D.scale = Vector2(radius,radius);
 	if team_id == 1:
 		$Sprite.set_texture(grenade_atlas_red);
 	else:

@@ -1,10 +1,7 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Assets/Weapons/grenade_b.png" type="Texture" id=1]
 [ext_resource path="res://GameContent/Grenade.gd" type="Script" id=2]
-
-[sub_resource type="CircleShape2D" id=1]
-radius = 1.0
 
 [node name="Node" type="Node2D"]
 script = ExtResource( 2 )
@@ -22,11 +19,3 @@ autostart = true
 
 [node name="Detonation_Timer" type="Timer" parent="."]
 one_shot = true
-
-[node name="Area2D" type="Area2D" parent="." groups=[
-"Grenade_Bodies",
-]]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-scale = Vector2( 50, 50 )
-shape = SubResource( 1 )
