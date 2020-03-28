@@ -25,8 +25,9 @@ Globals="*res://Globals.gd"
 
 [display]
 
-window/size/width=1088
-window/size/height=612
+window/size/width=1920
+window/size/height=1080
+window/size/always_on_top=true
 window/size/test_width=940
 window/size/test_height=640
 mouse_cursor/custom_image="res://crosshair.png"
