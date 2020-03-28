@@ -4,9 +4,6 @@ var		SCORE_LIMIT	= 2;
 var		players		= {};
 var		flags_data	= {};
 
-
-
-
 var		game_vars	= Globals.game_var_defaults.duplicate();
 var		scores		= [];
 var		round_num	= 0;

@@ -2,6 +2,7 @@ extends Node2D
 
 var radius;
 var team_id;
+var player_id;
 var alpha = 0.4;
 
 func _ready():

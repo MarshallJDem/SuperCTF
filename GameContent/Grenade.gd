@@ -57,6 +57,7 @@ func explode():
 	explosion.position = position;
 	explosion.z_index = z_index;
 	explosion.team_id = team_id;
+	explosion.player_id = player_id;
 	get_tree().get_root().get_node("MainScene").call_deferred("add_child", explosion);
 	call_deferred("queue_free");
 		
