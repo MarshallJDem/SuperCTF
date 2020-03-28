@@ -1,7 +1,7 @@
 extends Node
 
 # Whether to run in testing mode (for development uses)
-var testing = false;
+var testing = true;
 
 #Game Servers (Both clients and servers use these vars, but in different ways. overlapping would not work)
 var serverIP = "";
@@ -41,7 +41,14 @@ var result_match_id = -1;
 
 
 # ----- Constants -----
-
+const game_var_defaults = {"playerSpeed" : 200, "playerLagTime" : 50,
+	"bulletSpeed" : 400, "bulletCooldown" : 400, 
+	"laserChargeTime" : 400, "laserCooldown" : 500, 
+	"laserWidth" :15, "laserLength" : 1000,
+	"dashDistance" : 2000, "dashCooldown" : 1000, 
+	"forcefieldCooldown" : 3000,
+	"scoreLimit" : 2,
+	"grenadeRadius" : 50};
 
 var game_var_limits = {"playerSpeed" : Vector2(50, 600), "playerLagTime" : Vector2(0, 250),
 "bulletSpeed" : Vector2(100, 1000), "bulletCooldown" : Vector2(100, 2000), 
@@ -49,7 +56,9 @@ var game_var_limits = {"playerSpeed" : Vector2(50, 600), "playerLagTime" : Vecto
 "laserWidth" : Vector2(2, 50), "laserLength" : Vector2(10, 5000),
 "dashDistance" : Vector2(100, 5000), "dashCooldown" : Vector2(100, 8000), 
 "forcefieldCooldown" : Vector2(100, 6000),
-"scoreLimit" : Vector2(1, 15)};
+"scoreLimit" : Vector2(1, 15),
+"grenadeRadius" : Vector2(5,500)};
+
 
 # The amount of delay to lerp over for lag interpolation for players and various other things
 var player_lerp_time = 50; # In millis

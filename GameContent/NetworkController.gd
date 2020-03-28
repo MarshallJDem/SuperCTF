@@ -5,15 +5,9 @@ var		players		= {};
 var		flags_data	= {};
 
 
-const	game_var_defaults = {"playerSpeed" : 200, "playerLagTime" : 50,
-	"bulletSpeed" : 400, "bulletCooldown" : 400, 
-	"laserChargeTime" : 400, "laserCooldown" : 500, 
-	"laserWidth" :15, "laserLength" : 1000,
-	"dashDistance" : 2000, "dashCooldown" : 1000, 
-	"forcefieldCooldown" : 3000,
-	"scoreLimit" : 2};
 
-var		game_vars	= game_var_defaults.duplicate();
+
+var		game_vars	= Globals.game_var_defaults.duplicate();
 var		scores		= [];
 var		round_num	= 0;
 
@@ -94,7 +88,7 @@ func reset_game():
 	match_is_running = false;
 	round_is_running = false;
 	round_num = 0;
-	game_vars = game_var_defaults.duplicate();
+	game_vars = Globals.game_var_defaults.duplicate();
 	get_tree().set_network_peer(null);
 	reset_game_objects(true);
 	Globals.allowedPlayers = [];
@@ -426,7 +420,7 @@ func _client_disconnected(id):
 		players.erase(id);
 		if isSkirmish:
 			if players.size() == 0:
-				game_vars = game_var_defaults.duplicate();
+				game_vars = Globals.game_var_defaults.duplicate();
 		rpc("update_players_data", players, round_is_running);
 	
 

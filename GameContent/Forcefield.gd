@@ -15,7 +15,6 @@ var team_id = -1;
 func _ready():
 	$Death_Timer.connect("timeout", self, "_death_timer_ended");
 	$Death_Animation_Timer.connect("timeout", self, "_death_animation_timer_ended");
-	$Death_Timer.wait_time = Globals.forcefield_cooldown;
 	$Animation_Timer.connect("timeout", self, "_animation_timer_ended");
 	if team_id == 1:
 		$Sprite_Top.set_texture(sprite_top_R);
