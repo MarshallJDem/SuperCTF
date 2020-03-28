@@ -26,7 +26,6 @@ func _ready():
 	
 	initial_real_pos = position;
 	
-	$Lag_Comp_Timer.start();
 	if is_from_puppet:
 		# Start the bullet slightly down directory to help with lag sync a bit
 		position = position + (direction * Globals.lag_comp_headstart_dist);
@@ -34,6 +33,7 @@ func _ready():
 		puppet_time_shot = OS.get_system_time_msecs() - Globals.match_start_time;
 		if Globals.testing:
 			initial_time_shot = initial_time_shot - 100;
+		$Lag_Comp_Timer.start();
 	else:
 		puppet_time_shot = initial_time_shot;
 		initial_time_shot += 50;
@@ -60,7 +60,7 @@ func move():
 	if $Lag_Comp_Timer.time_left > 0:
 		var puppet_time_elapsed = ((OS.get_system_time_msecs() - Globals.match_start_time) - puppet_time_shot)/1000.0;
 		var puppet_position = initial_puppet_pos + (direction * speed * puppet_time_elapsed);
-		new_pos = lerp(puppet_position, real_position, pow((1.0 - ($Lag_Comp_Timer.time_left/$Lag_Comp_Timer.wait_time)),2))
+		new_pos = lerp(puppet_position, real_position, ($Lag_Comp_Timer.time_left/$Lag_Comp_Timer.wait_time))
 	else:
 		new_pos = real_position;
 	var change = move_and_collide(new_pos - position);
