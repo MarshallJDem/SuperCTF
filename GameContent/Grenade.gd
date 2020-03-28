@@ -10,6 +10,8 @@ var initial_time_shot;
 var initial_real_pos;
 
 
+var grenade_atlas_blue = preload("res://Assets/Weapons/grenade_b.png");
+var grenade_atlas_red = preload("res://Assets/Weapons/grenade_r.png");
 
 func _ready():
 	$Detonation_Timer.connect("timeout", self, "_detonation_timer_ended");
@@ -17,7 +19,10 @@ func _ready():
 	position = initial_real_pos;
 	var radius = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("grenadeRadius");
 	$Area2D/CollisionShape2D.scale = Vector2(radius,radius);
-	
+	if team_id == 0:
+		$Sprite.set_texture(grenade_atlas_red);
+	else:
+		$Sprite.set_texture(grenade_atlas_blue);
 	
 func _process(_delta):
 	speed = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("bulletSpeed");
@@ -44,15 +49,18 @@ func move():
 # Called when the animation timer fires
 func _animation_timer_ended():
 	$Sprite.frame = ($Sprite.frame + 1) % $Sprite.hframes;
-func die():
-	spawn_death_particles();
+
+func explode():
+	var explosion = load("res://GameContent/Grenade_Explosion.tscn").instance();
+	explosion.position = position;
+	explosion.z_index = z_index;
+	explosion.team_id = team_id;
+	get_tree().get_root().get_node("MainScene").call_deferred("add_child", explosion);
 	call_deferred("queue_free");
 		
 # Called when the death timer finishes
 # NOTE- we can trust each client to handle it's own grenade deaths because the server detects collisions anyways
 func _detonation_timer_ended():
-	die();
+	explode();
 
 
-func spawn_death_particles():
-	draw_circle(position, get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("grenadeRadius"), Color(0,0,0,0.2));

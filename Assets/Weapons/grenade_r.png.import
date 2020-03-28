@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/player_atlas_blue.png-04af49bd7e52843b3c0ceead24808f12.stex"
+path="res://.import/grenade_r.png-6cbf9c5c1d083bb4cea018b14257db8b.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://GameContent/player_atlas_blue.png"
-dest_files=[ "res://.import/player_atlas_blue.png-04af49bd7e52843b3c0ceead24808f12.stex" ]
+source_file="res://Assets/Weapons/grenade_r.png"
+dest_files=[ "res://.import/grenade_r.png-6cbf9c5c1d083bb4cea018b14257db8b.stex" ]
 
 [params]
 

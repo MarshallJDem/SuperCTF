@@ -314,8 +314,9 @@ func _draw():
 		blue = blue + lightener;
 		draw_line(laser_position, laser_direction * 1000, Color(red, green, blue, 1 - ($Laser_Timer.time_left / $Laser_Timer.wait_time)), size);
 	if last_grenade_position != Vector2.ZERO:
-		draw_line(Vector2.ZERO, last_grenade_position,Color(0,0,0,1), 1.0, true);
+		#draw_line(Vector2.ZERO, last_grenade_position,Color(0,0,0,1), 1.0, true);
 		draw_circle(last_grenade_position, get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("grenadeRadius"), Color(0,0,0,0.2));
+		draw_circle(last_grenade_position, get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("grenadeRadius")/10, Color(0,0,0,0.2));
 
 # Shoots a bullet shot
 func shoot_bullet(d):
@@ -445,6 +446,7 @@ func aim_grenade(direction):
 		started_aiming_grenade = true;
 		$Grenade_Aiming_Timer.start();
 	var x =  ($Grenade_Aiming_Timer.wait_time - $Grenade_Aiming_Timer.time_left)/$Grenade_Aiming_Timer.wait_time;
+	x = clamp(x, 0.01, 1.0);
 	if last_grenade_direction != direction:
 		if grenade_input_change_buffer < 3:
 			grenade_input_change_buffer += 1;
@@ -455,7 +457,6 @@ func aim_grenade(direction):
 	
 
 remotesync func shoot_grenade(from_pos, to_pos, time_shot):
-	print(last_grenade_position);
 	started_aiming_grenade = false;
 	grenade_enabled = false;
 	$Grenade_Cooldown_Timer.start();
