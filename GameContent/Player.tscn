@@ -153,6 +153,10 @@ one_shot = true
 wait_time = 0.5
 one_shot = true
 
+[node name="Powerup_Timer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0.0194966, 9.97446 )
 rotation = 1.5708

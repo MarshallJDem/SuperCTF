@@ -9,6 +9,7 @@ var BASE_SPEED = 200;
 const AIMING_SPEED = 15;
 const SPRINT_SPEED = 50;
 var TELEPORT_SPEED = 2000;
+var POWERUP_SPEED = 0;
 var player_name = "Guest999";
 var speed = BASE_SPEED;
 # Where this player starts on the map and should respawn at
@@ -73,6 +74,7 @@ func _ready():
 	$Invincibility_Timer.connect("timeout", self, "_invincibility_timer_ended");
 	$Laser_Timer.connect("timeout", self, "_laser_timer_ended");
 	$Laser_Input_Timer.connect("timeout", self, "_laser_input_timer_ended");
+	$Powerup_Timer.connect("timeout", self, "_powerup_timer_ended");
 	#$Laser_Cooldown_Timer.connect("timeout", self, "_laser_cooldown_timer_ended");
 	$Forcefield_Timer.connect("timeout", self, "_forcefield_timer_ended");
 	$Animation_Timer.connect("timeout", self, "_animation_timer_ended");
@@ -390,7 +392,7 @@ func move_on_inputs(teleport = false):
 	last_movement_input = input;
 	
 	
-	var move_speed = speed;
+	var move_speed = speed + POWERUP_SPEED;
 	if sprintEnabled:
 		move_speed += SPRINT_SPEED;
 	if teleport:
@@ -470,6 +472,15 @@ func toggle_grenade():
 	started_aiming_grenade = false;
 	grenade_enabled = !grenade_enabled;
 	last_grenade_position = Vector2(0,0);
+
+func enable_powerup(type):
+	if type == 1:
+		POWERUP_SPEED = 50;
+		$Powerup_Timer.wait_time = 10;
+	$Powerup_Timer.start();
+
+func _powerup_timer_ended():
+	POWERUP_SPEED = 0;
 
 remotesync func create_ghost_trail(start, end):
 	$Teleport_Audio.play();

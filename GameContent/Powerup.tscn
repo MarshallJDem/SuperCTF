@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Assets/Items/powerup-g.png" type="Texture" id=1]
+[ext_resource path="res://GameContent/Powerup.gd" type="Script" id=2]
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 1 )
@@ -26,9 +27,24 @@ animations = [ {
 "speed": 10.0
 } ]
 
+[sub_resource type="CapsuleShape2D" id=6]
+radius = 11.3411
+height = 8.61446
+
 [node name="Powerup" type="Node2D"]
+script = ExtResource( 2 )
 
 [node name="Sprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 5 )
-frame = 1
+frame = 2
 playing = true
+
+[node name="Area2D" type="Area2D" parent="." groups=[
+"Powerup_Bodies",
+]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" groups=[
+"Powerup_Bodies",
+]]
+position = Vector2( 0.0852585, 1.10835 )
+shape = SubResource( 6 )

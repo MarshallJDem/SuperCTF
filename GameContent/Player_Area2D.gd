@@ -14,7 +14,9 @@ func _area_entered(body):
 	if get_parent().alive == false:
 		return;
 	if body.is_in_group("Flag_Home_Bodies"):
-		collided_with_flag_home(body.get_parent());
+		collided_with_flag_home(body.get_parent());	
+	if body.is_in_group("Powerup_Bodies"):
+		collided_with_powerup_body(body.get_parent());
 	# Only detect collisions for these cases if we are the server
 	if !Globals.testing and get_tree().is_network_server():
 		if body.is_in_group("Bullet_Bodies"):
@@ -91,3 +93,9 @@ func collided_with_grenade_body(grenade_parent):
 		return;
 	# Otherwise receive a hit from the grenade
 	player.rpc("receive_hit", grenade_parent.player_id, 2);
+func collided_with_powerup_body(powerup_parent):
+	if get_tree().get_root().get_node("MainScene/NetworkController").round_is_ended: return;
+	var player = get_parent();
+	powerup_parent.call_deferred("queue_free");
+	powerup_parent.used = true;
+	player.enable_powerup(powerup_parent.type);
