@@ -19,7 +19,7 @@ func _ready():
 	position = initial_real_pos;
 	var radius = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("grenadeRadius");
 	$Area2D/CollisionShape2D.scale = Vector2(radius,radius);
-	if team_id == 0:
+	if team_id == 1:
 		$Sprite.set_texture(grenade_atlas_red);
 	else:
 		$Sprite.set_texture(grenade_atlas_blue);
@@ -40,7 +40,11 @@ func move():
 		time_elapsed = 0;
 	var speed_distance = initial_real_pos.distance_to(initial_real_pos + (Vector2.ONE * speed));
 	var target_distance = initial_real_pos.distance_to(target_pos);
-	var t = time_elapsed * (speed_distance / target_distance);
+	var t;
+	if target_distance == Vector2.ZERO:
+		t = time_elapsed
+	else:
+		t = time_elapsed * (speed_distance / target_distance);
 	position = lerp(initial_real_pos, target_pos, clamp(t, 0.0, 1.0));
 	if t >= 1 and $Detonation_Timer.time_left == 0:
 		$Detonation_Timer.start();

@@ -356,7 +356,6 @@ func spawn_bullet(pos, player_id, direction, time_shot, bullet_name = null):
 		t.start()
 		yield(t, "timeout")
 		t.queue_free();
-		print("waited");
 	
 	# Initialize Bullet
 	var bullet = load("res://GameContent/Bullet.tscn").instance();
@@ -434,7 +433,7 @@ func shoot_on_inputs():
 			if Globals.testing:
 				shoot_grenade(self.global_position, self.global_position + last_grenade_position, OS.get_system_time_msecs());
 			else:
-				rpc("shoot_grenade",self.global_position, self.global_position + last_grenade_position, OS.get_system_time_msecs());
+				rpc("shoot_grenade",self.global_position, self.global_position + last_grenade_position, OS.get_system_time_msecs() - Globals.match_start_time);
 var started_aiming_grenade = false;
 var last_grenade_position = Vector2(0,0);
 var last_grenade_direction = Vector2(0,0);
