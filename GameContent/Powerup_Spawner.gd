@@ -2,6 +2,7 @@ extends Node2D
 
 var spawner_id = 0;
 
+
 func _ready():
 	$Spawner_Timer.connect("timeout", self, "_spawner_timer_ended");
 	if Globals.testing:
@@ -19,7 +20,8 @@ func _process(delta):
 remotesync func spawn_powerup():
 	var powerup = load("res://GameContent/Powerup.tscn").instance();
 	powerup.position = position + Vector2(0, -15);
-	powerup.type = 1;
+	powerup.type = randi()%5+1; #%11+1 means random number 1-10
+	print(powerup.type);
 	powerup.spawner = self;
 	get_tree().get_root().get_node("MainScene").call_deferred("add_child", powerup);
 	

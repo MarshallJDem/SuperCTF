@@ -4,6 +4,7 @@
 var player_id = -1;
 # The team id this laser belongs to
 var team_id = -1;
+var WIDTH_PMODIFIER = 0;
 
 
 func _ready():
@@ -15,7 +16,7 @@ func _process(delta):
 	update();
 
 func _draw():
-	var size = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("laserWidth");
+	var size = WIDTH_PMODIFIER + get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("laserWidth");
 	var length = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("laserLength");
 	
 	$Area2D/CollisionShape2D.scale = Vector2(size/3, length);

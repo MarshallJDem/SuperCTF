@@ -10,6 +10,10 @@ const AIMING_SPEED = 15;
 const SPRINT_SPEED = 50;
 var TELEPORT_SPEED = 2000;
 var POWERUP_SPEED = 0;
+var BULLET_COOLDOWN_PMODIFIER = 0;
+var DASH_COOLDOWN_PMODIFIER = 0;
+var FORCEFIELD_COOLDOWN_PMODIFIER = 0;
+var LASER_WIDTH_PMODIFIER = 0;
 var player_name = "Guest999";
 var speed = BASE_SPEED;
 # Where this player starts on the map and should respawn at
@@ -148,10 +152,10 @@ func _process(delta):
 		speed = new_speed;
 	BASE_SPEED = new_speed;
 	TELEPORT_SPEED = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("dashDistance");
-	$Shoot_Cooldown_Timer.wait_time = float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("bulletCooldown"))/1000.0;
+	$Shoot_Cooldown_Timer.wait_time = BULLET_COOLDOWN_PMODIFIER + float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("bulletCooldown"))/1000.0;
 	$Laser_Cooldown_Timer.wait_time = float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("laserCooldown"))/1000.0;
-	$Forcefield_Timer.wait_time = float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("forcefieldCooldown"))/1000.0;
-	$Teleport_Timer.wait_time = float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("dashCooldown"))/1000.0;
+	$Forcefield_Timer.wait_time = FORCEFIELD_COOLDOWN_PMODIFIER + float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("forcefieldCooldown"))/1000.0;
+	$Teleport_Timer.wait_time = DASH_COOLDOWN_PMODIFIER + float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("dashCooldown"))/1000.0;
 	$Laser_Timer.wait_time = float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("laserChargeTime"))/1000.0;
 	if control:
 		activate_camera();
@@ -294,6 +298,7 @@ func shoot_laser():
 	laser.rotation = Vector2(0,0).angle_to_point(laser_direction) + PI/2;
 	laser.player_id = player_id;
 	laser.team_id = team_id;
+	laser.WIDTH_PMODIFIER = LASER_WIDTH_PMODIFIER;
 	$Laser_Fire_Audio.play();
 	$Laser_Cooldown_Timer.start();
 
@@ -474,13 +479,40 @@ func toggle_grenade():
 	last_grenade_position = Vector2(0,0);
 
 func enable_powerup(type):
+	var text = "";
 	if type == 1:
 		POWERUP_SPEED = 50;
 		$Powerup_Timer.wait_time = 10;
+		text = "[color=green]^^ SPEED UP ^^";
+	elif type == 2:
+		DASH_COOLDOWN_PMODIFIER = -0.5;
+		$Powerup_Timer.wait_time = 6;
+		text = "[color=blue]˅˅˅˅˅˅^^ DASH RATE UP ^^";
+	elif type == 3:
+		BULLET_COOLDOWN_PMODIFIER = -0.2;
+		$Powerup_Timer.wait_time = 8;
+		text = "[color=red]^^ BULLET FIRE RATE UP ^^";
+	elif type == 4:
+		LASER_WIDTH_PMODIFIER = 15;
+		$Powerup_Timer.wait_time = 6;
+		text = "[color=orange]^^ LASER WIDTH UP ^^";
+	elif type == 5:
+		FORCEFIELD_COOLDOWN_PMODIFIER = -1.5;
+		$Powerup_Timer.wait_time = 10;
+		text = "[color=purple]^^ FORCEFIELD RATE UP ^^";
+	
+	
+	# Only display message if this is our local player
+	if Globals.testing or get_parent().player_id == Globals.localPlayerID:
+		get_tree().get_root().get_node("MainScene/UI_Layer").set_alert_text("[center]" + text);
 	$Powerup_Timer.start();
 
 func _powerup_timer_ended():
 	POWERUP_SPEED = 0;
+	DASH_COOLDOWN_PMODIFIER = 0;
+	BULLET_COOLDOWN_PMODIFIER = 0;
+	FORCEFIELD_COOLDOWN_PMODIFIER = 0;
+	LASER_WIDTH_PMODIFIER = 0;
 
 remotesync func create_ghost_trail(start, end):
 	$Teleport_Audio.play();
