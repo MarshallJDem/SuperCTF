@@ -1,0 +1,36 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://fonts/Pixel_Chat.tres" type="DynamicFont" id=1]
+[ext_resource path="res://GameContent/flagHome.png" type="Texture" id=2]
+[ext_resource path="res://GameContent/Powerup_Spawner.gd" type="Script" id=3]
+
+[node name="Powerup_Spawner" type="Node2D"]
+z_index = -50
+script = ExtResource( 3 )
+
+[node name="Text" type="RichTextLabel" parent="."]
+margin_left = -44.2216
+margin_top = 35.0455
+margin_right = 133.778
+margin_bottom = 107.046
+rect_scale = Vector2( 0.5, 0.5 )
+rect_clip_content = false
+custom_fonts/normal_font = ExtResource( 1 )
+bbcode_enabled = true
+bbcode_text = "[center][color=black]POWERUP IN
+20"
+text = "POWERUP IN
+20"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( -38, -30 )
+scale = Vector2( 4, 4 )
+texture = ExtResource( 2 )
+centered = false
+
+[node name="Spawner_Timer" type="Timer" parent="."]
+wait_time = 20.0
+one_shot = true
