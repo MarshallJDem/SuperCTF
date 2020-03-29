@@ -35,7 +35,7 @@ func update_title_color(playback_position):
 		color = "#4C70BA";
 	else:
 		color = "#ff0000";
-	$Title.bbcode_text = "[center]SUPER[color=" + color + "]" + "CTF" + "[/color]";
+	$Title.bbcode_text = "[center]SUPER[color=" + color + "]" + "CTF" + "[/color].COM";
 func set_mmr_and_rank_labels(rank, mmr):
 	$PlayerRank.bbcode_text = "[center][color=green]" + String(rank);
 	$PlayerMMR.bbcode_text = "[center][color=green]" + String(mmr);

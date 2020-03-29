@@ -62,7 +62,7 @@ func start():
 	#OS.window_fullscreen = true;
 var leaderboard_parent;
 func load_leaderboard(leaderboard_data):
-	var origin = Vector2(30,190);
+	var origin = Vector2(136,213);
 	if leaderboard_parent:
 		leaderboard_parent.call_deferred("queue_free");
 	leaderboard_parent = Node2D.new();
@@ -70,8 +70,8 @@ func load_leaderboard(leaderboard_data):
 	call_deferred("add_child", leaderboard_parent);
 	var cell_size = Vector2(206, 33);
 	var rows = 10;
-	var columns = 5;
-	for i in range(50):
+	var columns = 8;
+	for i in range(80):
 		var data = leaderboard_data[i];
 		var cell = load("res://LeaderboardCell.tscn").instance();
 		cell.mmr = data.mmr;

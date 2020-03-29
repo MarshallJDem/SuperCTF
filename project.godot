@@ -17,7 +17,8 @@ _global_script_class_icons={
 
 config/name="CTF"
 run/main_scene="res://TitleScreen.tscn"
-config/icon="res://icon.png"
+boot_splash/bg_color=Color( 1, 1, 1, 1 )
+config/icon="res://flag_frames/flagRed1.png"
 
 [autoload]
 
@@ -30,7 +31,6 @@ window/size/height=1080
 window/size/always_on_top=true
 window/size/test_width=940
 window/size/test_height=640
-mouse_cursor/custom_image="res://crosshair.png"
 mouse_cursor/custom_image_hotspot=Vector2( 18, 18 )
 window/stretch/mode="viewport"
 window/stretch/aspect="keep"

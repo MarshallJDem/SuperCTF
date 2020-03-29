@@ -48,7 +48,7 @@ border_color = Color( 0, 0, 0, 1 )
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_horizontal_guides_": [  ],
-"_edit_vertical_guides_": [ 544.182 ]
+"_edit_vertical_guides_": [ 959.427 ]
 }
 
 [node name="HTTPRequest_FindMatch" type="HTTPRequest" parent="."]
@@ -60,13 +60,13 @@ __meta__ = {
 [node name="HTTPRequest_GetLeaderboard" type="HTTPRequest" parent="."]
 
 [node name="Flag" parent="." instance=ExtResource( 4 )]
-position = Vector2( 929.353, 105.254 )
+position = Vector2( 1633, 123 )
 scale = Vector2( 4, 3.04 )
 
 [node name="Flag2" type="Node2D" parent="." groups=[
 "Flags",
 ]]
-position = Vector2( 75.678, 105 )
+position = Vector2( 220, 123 )
 scale = Vector2( 4, 3.04 )
 z_as_relative = false
 script = ExtResource( 5 )
@@ -75,7 +75,6 @@ script = ExtResource( 5 )
 position = Vector2( 10, -14 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 1 )
-frame = 2
 playing = true
 
 [node name="Area2D" type="Area2D" parent="Flag2" groups=[
@@ -108,8 +107,8 @@ custom_fonts/bold_font = ExtResource( 3 )
 custom_fonts/normal_font = ExtResource( 3 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
-bbcode_text = "[center]SUPERCTF"
-text = "SUPERCTF"
+bbcode_text = "[center]SUPERCTF.COM"
+text = "SUPERCTF.COM"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -118,10 +117,10 @@ __meta__ = {
 [node name="Subtitle" type="RichTextLabel" parent="UI_Layer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 352.681
-margin_top = 125.224
-margin_right = -135.319
-margin_bottom = -432.776
+margin_left = 501.957
+margin_top = 143.738
+margin_right = 13.9568
+margin_bottom = -414.262
 rect_scale = Vector2( 0.639761, 0.639761 )
 custom_fonts/mono_font = ExtResource( 10 )
 custom_fonts/normal_font = ExtResource( 18 )
@@ -135,10 +134,10 @@ __meta__ = {
 }
 
 [node name="PlayerRank" type="RichTextLabel" parent="UI_Layer"]
-margin_left = 750.526
-margin_top = 527.474
-margin_right = 998.526
-margin_bottom = 620.474
+margin_left = 1398.95
+margin_top = 950.632
+margin_right = 1646.95
+margin_bottom = 1043.63
 rect_scale = Vector2( 0.576526, 0.576526 )
 custom_fonts/normal_font = ExtResource( 11 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
@@ -151,10 +150,10 @@ __meta__ = {
 }
 
 [node name="PlayerMMR" type="RichTextLabel" parent="UI_Layer"]
-margin_left = 904.579
-margin_top = 527.0
-margin_right = 1214.58
-margin_bottom = 620.0
+margin_left = 1627.74
+margin_top = 952.263
+margin_right = 1937.74
+margin_bottom = 1045.26
 rect_scale = Vector2( 0.576526, 0.576526 )
 custom_fonts/normal_font = ExtResource( 11 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
@@ -169,10 +168,10 @@ __meta__ = {
 [node name="PlayerRankSubtitle" type="RichTextLabel" parent="UI_Layer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 774.798
-margin_top = 579.647
-margin_right = -168.202
-margin_bottom = 14.6466
+margin_left = 1160.06
+margin_top = 1028.07
+margin_right = 217.061
+margin_bottom = 463.068
 rect_scale = Vector2( 0.639761, 0.639761 )
 custom_fonts/mono_font = ExtResource( 10 )
 custom_fonts/normal_font = ExtResource( 18 )
@@ -188,10 +187,10 @@ __meta__ = {
 [node name="PlayerMMRSubtitle" type="RichTextLabel" parent="UI_Layer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 927.145
-margin_top = 580.954
-margin_right = 48.1448
-margin_bottom = 22.9542
+margin_left = 1383.99
+margin_top = 1027.27
+margin_right = 504.987
+margin_bottom = 469.271
 rect_scale = Vector2( 0.639761, 0.639761 )
 custom_fonts/mono_font = ExtResource( 10 )
 custom_fonts/normal_font = ExtResource( 18 )
@@ -207,10 +206,10 @@ __meta__ = {
 [node name="CancelQueueButton" type="Button" parent="UI_Layer"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -83.0275
-margin_top = 532.389
-margin_right = 84.9725
-margin_bottom = 602.389
+margin_left = -81.9747
+margin_top = 969.231
+margin_right = 86.0253
+margin_bottom = 1039.23
 custom_styles/hover = ExtResource( 15 )
 custom_styles/pressed = ExtResource( 16 )
 custom_styles/normal = ExtResource( 17 )
@@ -224,10 +223,10 @@ __meta__ = {
 [node name="FindMatchButton" type="Button" parent="UI_Layer"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -158.724
-margin_top = 525.695
-margin_right = 159.276
-margin_bottom = 607.695
+margin_left = -160.829
+margin_top = 962.537
+margin_right = 157.171
+margin_bottom = 1044.54
 custom_styles/hover = ExtResource( 15 )
 custom_styles/pressed = ExtResource( 16 )
 custom_styles/normal = ExtResource( 17 )
@@ -238,10 +237,10 @@ text = "Find Match"
 [node name="PlayAsGuestButton" type="Button" parent="UI_Layer"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = 172.227
-margin_top = 524.584
-margin_right = 336.703
-margin_bottom = 607.584
+margin_left = 182.753
+margin_top = 960.374
+margin_right = 347.229
+margin_bottom = 1043.37
 custom_styles/hover = ExtResource( 15 )
 custom_styles/pressed = ExtResource( 16 )
 custom_styles/normal = ExtResource( 17 )
@@ -261,10 +260,10 @@ margin_bottom = 286.078
 text = "Sign In"
 
 [node name="LogoutButton" type="Button" parent="UI_Layer"]
-margin_left = 11.0073
-margin_top = 538.577
-margin_right = 185.007
-margin_bottom = 620.577
+margin_left = 18.6073
+margin_top = 17.0267
+margin_right = 192.607
+margin_bottom = 99.0267
 rect_scale = Vector2( 0.742863, 0.742863 )
 custom_styles/hover = ExtResource( 15 )
 custom_styles/pressed = ExtResource( 16 )
@@ -297,13 +296,12 @@ __meta__ = {
 }
 
 [node name="SplashStartButton" type="Button" parent="UI_Layer"]
-visible = false
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -204.588
-margin_top = 532.572
-margin_right = 204.412
-margin_bottom = 602.572
+margin_left = -206.175
+margin_top = 968.907
+margin_right = 202.825
+margin_bottom = 1038.91
 custom_styles/hover = ExtResource( 15 )
 custom_styles/pressed = ExtResource( 16 )
 custom_styles/normal = ExtResource( 17 )
@@ -317,10 +315,10 @@ __meta__ = {
 [node name="Searching_Text" type="Label" parent="UI_Layer"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -328.034
-margin_top = 542.977
-margin_right = -127.034
-margin_bottom = 589.977
+margin_left = -474.35
+margin_top = 987.188
+margin_right = -273.35
+margin_bottom = 1034.19
 custom_fonts/font = ExtResource( 18 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Searching"
@@ -336,35 +334,35 @@ autostart = true
 anchor_top = -0.00072185
 anchor_right = 1.0
 anchor_bottom = -0.00072185
-margin_left = 30.0
-margin_top = 160.0
-margin_right = -28.0
-margin_bottom = 190.0
+margin_left = 136.0
+margin_top = 185.0
+margin_right = -136.0
+margin_bottom = 215.0
 color = Color( 0, 0, 0, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Headline_Text" type="RichTextLabel" parent="UI_Layer/Headline_Rect"]
-margin_left = 5.38458
-margin_top = 10.1205
-margin_right = 1036.38
-margin_bottom = 45.1205
+margin_left = 5.0
+margin_top = 10.0
+margin_right = 1644.0
+margin_bottom = 45.0
 rect_clip_content = false
 custom_fonts/normal_font = SubResource( 3 )
 bbcode_enabled = true
-bbcode_text = "---GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD---"
-text = "---GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD---"
+bbcode_text = "---GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD---"
+text = "---GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD---"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="UsernameLineEdit" type="LineEdit" parent="UI_Layer"]
-margin_left = 384.665
-margin_top = 536.395
-margin_right = 702.665
-margin_bottom = 598.761
+margin_left = 800.455
+margin_top = 973.237
+margin_right = 1118.45
+margin_bottom = 1035.6
 custom_styles/normal = SubResource( 4 )
 custom_fonts/font = ExtResource( 10 )
 custom_colors/selection_color = Color( 0, 0, 0, 1 )

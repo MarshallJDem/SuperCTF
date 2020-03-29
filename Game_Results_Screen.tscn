@@ -11,15 +11,19 @@
 
 [node name="Game_Results_Screen" type="Node2D"]
 script = ExtResource( 8 )
+__meta__ = {
+"_edit_horizontal_guides_": [  ],
+"_edit_vertical_guides_": [ 959.899 ]
+}
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Text_Result" type="RichTextLabel" parent="CanvasLayer"]
 anchor_right = 1.0
-margin_left = -3.01471
-margin_top = 13.2577
-margin_right = -776.015
-margin_bottom = 242.258
+margin_left = 387.277
+margin_top = 15.8424
+margin_right = -385.723
+margin_bottom = 244.843
 rect_scale = Vector2( 1, 0.964805 )
 custom_fonts/mono_font = ExtResource( 2 )
 custom_fonts/normal_font = ExtResource( 2 )
@@ -34,10 +38,10 @@ __meta__ = {
 [node name="Text_Score" type="RichTextLabel" parent="CanvasLayer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 80.3818
-margin_top = 114.985
-margin_right = -760.618
-margin_bottom = -284.015
+margin_left = 655.481
+margin_top = 118.862
+margin_right = -185.519
+margin_bottom = -280.138
 rect_scale = Vector2( 0.563012, 0.563012 )
 custom_fonts/mono_font = ExtResource( 2 )
 custom_fonts/normal_font = ExtResource( 2 )
@@ -53,8 +57,9 @@ __meta__ = {
 [node name="Text_MMR" type="RichTextLabel" parent="CanvasLayer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = 237.0
+margin_top = 385.621
 margin_right = -1.0
+margin_bottom = 148.621
 custom_fonts/mono_font = ExtResource( 1 )
 custom_fonts/bold_italics_font = ExtResource( 2 )
 custom_fonts/italics_font = ExtResource( 2 )
@@ -71,9 +76,9 @@ __meta__ = {
 [node name="Text_MMR_Sub" type="RichTextLabel" parent="CanvasLayer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = 422.0
+margin_top = 591.299
 margin_right = -1.0
-margin_bottom = 1.0
+margin_bottom = 170.299
 rect_scale = Vector2( 1, 0.983539 )
 custom_fonts/mono_font = ExtResource( 3 )
 custom_fonts/bold_italics_font = ExtResource( 2 )
@@ -89,10 +94,10 @@ __meta__ = {
 }
 
 [node name="Button_Titlescreen" type="Button" parent="CanvasLayer"]
-margin_left = 324.088
-margin_top = 526.507
-margin_right = 767.088
-margin_bottom = 598.507
+margin_left = 740.227
+margin_top = 797.902
+margin_right = 1183.23
+margin_bottom = 869.902
 custom_styles/hover = ExtResource( 6 )
 custom_styles/pressed = ExtResource( 7 )
 custom_styles/normal = ExtResource( 5 )

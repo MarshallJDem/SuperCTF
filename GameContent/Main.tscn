@@ -174,31 +174,34 @@ custom_colors/font_color = Color( 0.172549, 0.172549, 0.172549, 1 )
 text = "Leave Match"
 
 [node name="Cancel_Button" type="Button" parent="UI_Layer"]
-visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = 392.909
-margin_top = -289.114
-margin_right = 518.909
-margin_bottom = -222.114
+margin_left = 791.164
+margin_top = -504.902
+margin_right = 917.164
+margin_bottom = -437.902
 custom_styles/hover = ExtResource( 9 )
 custom_styles/pressed = ExtResource( 10 )
 custom_styles/normal = ExtResource( 11 )
 custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color = Color( 0.172549, 0.172549, 0.172549, 1 )
 text = "Cancel"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Ability_GUIs" type="Control" parent="UI_Layer"]
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = -20.0
-margin_top = -49.0
-margin_right = 20.0
-margin_bottom = -29.0
+margin_left = -19.9999
+margin_top = -99.767
+margin_right = 20.0001
+margin_bottom = -79.7671
+rect_scale = Vector2( 2, 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -365,8 +368,10 @@ __meta__ = {
 
 [node name="Alert_Text" type="RichTextLabel" parent="UI_Layer"]
 anchor_right = 1.0
-margin_top = 440.0
-margin_bottom = 470.0
+margin_left = -1.58667
+margin_top = 787.481
+margin_right = -1.58667
+margin_bottom = 817.481
 rect_clip_content = false
 custom_fonts/normal_font = ExtResource( 5 )
 bbcode_enabled = true

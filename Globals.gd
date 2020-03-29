@@ -121,9 +121,9 @@ func _HTTP_PollPlayerStatus_Completed(result, response_code, headers, body):
 	if response_code != 200:
 		return;
 	var json = JSON.parse(body.get_string_from_utf8())
-	if json.result.rank || json.result.rank == 0:
+	if json.result.has("rank") and json.result.rank == 0:
 		Globals.player_rank = int(json.result.rank);
-	if json.result.mmr || json.result.mmr == 0:
+	if json.result.has("mmr") and json.result.mmr == 0:
 		Globals.player_MMR = int(json.result.mmr);
 	if( player_status <= 1 and int(json.result.status) > 1):
 		print("Found Match : " + json.result.status);
