@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=2]
+[gd_scene load_steps=36 format=2]
 
 [ext_resource path="res://GameContent/Main.gd" type="Script" id=1]
 [ext_resource path="res://GameContent/Player.tscn" type="PackedScene" id=2]
@@ -44,9 +44,6 @@ bg_color = Color( 0, 0, 0, 0 )
 content_margin_left = 8.0
 content_margin_top = 8.0
 bg_color = Color( 1, 1, 1, 0 )
-
-[sub_resource type="Gradient" id=4]
-colors = PoolColorArray( 0, 0, 0, 1, 1, 1, 1, 0 )
 
 [node name="MainScene" type="Node2D"]
 script = ExtResource( 1 )
@@ -409,42 +406,12 @@ one_shot = true
 [node name="Node2D" type="Node2D" parent="Environment"]
 z_index = -4096
 
-[node name="ColorRect" type="ColorRect" parent="Environment/Node2D"]
-show_behind_parent = true
-margin_left = -1354.0
-margin_top = -468.0
-margin_right = 1354.0
-margin_bottom = 468.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="Sprite" type="Sprite" parent="Environment/Node2D"]
 scale = Vector2( 0.903, 0.903 )
 texture = ExtResource( 26 )
-
-[node name="CPUParticles2D2" type="CPUParticles2D" parent="Environment"]
-position = Vector2( -461.929, -21.5548 )
-z_index = -4096
-emitting = false
-amount = 2500
-lifetime = 1.78
-explosiveness = 0.77
-emission_shape = 2
-emission_rect_extents = Vector2( 5000, 2500 )
-flag_align_y = true
-spread = 0.0
-gravity = Vector2( 0, 0 )
-initial_velocity = 53.1
-initial_velocity_random = 1.0
-angular_velocity = 63.72
-angular_velocity_random = 0.19
-angle = 720.0
-angle_random = 1.0
-scale_amount = 168.14
-scale_amount_random = 1.0
-color_ramp = SubResource( 4 )
-hue_variation_random = 1.0
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="Bound3" parent="Environment" instance=ExtResource( 16 )]
 visible = false

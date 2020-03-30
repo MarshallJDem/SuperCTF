@@ -10,4 +10,3 @@ func _button_clicked():
 	Globals.toggle_options_menu();
 	$CanvasLayer/Button.release_focus();
 
-

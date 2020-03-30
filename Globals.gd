@@ -109,7 +109,9 @@ var volume_sliders = Vector2(50,50);
 func toggle_options_menu():
 	if get_tree().get_root().has_node("Options_Menu"):
 		get_tree().get_root().get_node("Options_Menu").call_deferred("queue_free");
+		write_save_data();
 	else:
+		load_save_data();
 		var menu = load("res://GameContent/Options_Menu.tscn").instance();
 		get_tree().get_root().add_child(menu);
 
@@ -163,7 +165,11 @@ func write_save_data():
 	if err:
 		print(err);
 		return;
-	file.store_string(str(userToken));
+	file.store_string(str(userToken) + "\n");
+	file.store_string(str(AudioServer.get_bus_volume_db(0)) + "\n");
+	file.store_string(str(AudioServer.get_bus_volume_db(1)) + "\n");
+	file.store_string(str(volume_sliders.x) + "\n");
+	file.store_string(str(volume_sliders.y));
 	file.close()
 
 func load_save_data():
@@ -180,6 +186,10 @@ func load_save_data():
 		index += 1
 	f.close();
 	userToken = result["1"];
+	if result.has("2"):
+		AudioServer.set_bus_volume_db(0,float(result["2"]));
+		AudioServer.set_bus_volume_db(1,float(result["3"]));
+		volume_sliders = Vector2(int(result["4"]), int(result["5"]));
 
 func _input(event):
 	if event is InputEventKey and event.pressed:
