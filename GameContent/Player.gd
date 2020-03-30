@@ -495,7 +495,7 @@ func enable_powerup(type):
 	elif type == 4:
 		LASER_WIDTH_PMODIFIER = 15;
 		$Powerup_Timer.wait_time = 6;
-		text = "[color=orange]^^ LASER WIDTH UP ^^";
+		text = "[color=brown]^^ LASER WIDTH UP ^^";
 	elif type == 5:
 		FORCEFIELD_COOLDOWN_PMODIFIER = -1.5;
 		$Powerup_Timer.wait_time = 10;
