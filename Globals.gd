@@ -92,8 +92,6 @@ func _enter_tree():
 		testing = true if arguments["testing"] == "true" else false;
 
 func _ready():
-	
-	
 	add_child(HTTPRequest_PollPlayerStatus);
 	add_child(HTTPRequest_GetMatchData);
 	add_child(HTTPRequest_CancelQueue);
@@ -106,7 +104,15 @@ func _process(delta):
 		Globals.player_lerp_time = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("playerLagTime");
 	if !isServer:
 		attempt_poll_player_status();
-	
+
+func toggle_options_menu():
+	if get_tree().get_root().has_node("Options_Menu"):
+		get_tree().get_root().get_node("Options_Menu").call_deferred("queue_free");
+	else:
+		var menu = load("res://GameContent/Options_Menu.tscn").instance();
+		get_tree().get_root().add_child(menu);
+
+
 func leave_MMQueue():
 	if !get_tree().is_network_server():
 		HTTPRequest_CancelQueue.request(Globals.mainServerIP + "leaveMMQueue", ["authorization: Bearer " + Globals.userToken]);
@@ -181,3 +187,5 @@ func _input(event):
 		if event.scancode == KEY_F:
 			#OS.window_fullscreen = !OS.window_fullscreen;
 			pass;
+		if event.scancode == KEY_ESCAPE:
+			toggle_options_menu();

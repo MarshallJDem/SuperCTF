@@ -1,0 +1,252 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://Hover_Button_Style.tres" type="StyleBox" id=1]
+[ext_resource path="res://Normal_Button_Style.tres" type="StyleBox" id=2]
+[ext_resource path="res://Pressed_Button_Style.tres" type="StyleBox" id=3]
+[ext_resource path="res://fonts/Pixel_Button.tres" type="DynamicFont" id=4]
+[ext_resource path="res://fonts/Pixel_SubTitle.tres" type="DynamicFont" id=5]
+[ext_resource path="res://fonts/Pixel_Title.tres" type="DynamicFont" id=6]
+[ext_resource path="res://GameContent/Options_Menu.gd" type="Script" id=7]
+
+[sub_resource type="StyleBoxLine" id=1]
+content_margin_top = 0.0
+color = Color( 0.0745098, 0.0745098, 0.0745098, 1 )
+grow_begin = 0.0
+grow_end = 0.0
+thickness = 10
+
+[sub_resource type="StyleBoxLine" id=2]
+color = Color( 0.960784, 0.960784, 0.960784, 1 )
+grow_begin = 0.0
+grow_end = 0.0
+thickness = 10
+
+[node name="Options_Menu" type="Node2D"]
+script = ExtResource( 7 )
+__meta__ = {
+"_edit_horizontal_guides_": [ 389.749 ],
+"_edit_vertical_guides_": [ 1474.44 ]
+}
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 2
+
+[node name="Background" type="ColorRect" parent="CanvasLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 0.847059 )
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Close_Button" type="Button" parent="CanvasLayer"]
+margin_left = 1614.4
+margin_top = 25.3639
+margin_right = 1892.4
+margin_bottom = 135.364
+custom_styles/hover = ExtResource( 1 )
+custom_styles/pressed = ExtResource( 3 )
+custom_styles/normal = ExtResource( 2 )
+custom_fonts/font = ExtResource( 4 )
+custom_colors/font_color_disabled = Color( 0, 0, 0, 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
+custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
+text = "Close (ESC)"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer"]
+margin_left = 26.3712
+margin_top = 49.2264
+margin_right = 1137.37
+margin_bottom = 377.226
+rect_clip_content = false
+custom_fonts/normal_font = ExtResource( 6 )
+bbcode_enabled = true
+bbcode_text = "SUPER[color=red]CTF"
+text = "SUPERCTF"
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="CanvasLayer"]
+margin_left = 1020.94
+margin_top = 138.79
+margin_right = 1265.94
+margin_bottom = 257.79
+custom_fonts/normal_font = ExtResource( 5 )
+bbcode_enabled = true
+bbcode_text = ".com
+"
+text = ".com
+"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="CanvasLayer"]
+margin_left = 28.0
+margin_top = 241.0
+margin_right = 1311.0
+margin_bottom = 1075.0
+custom_fonts/normal_font = ExtResource( 4 )
+bbcode_enabled = true
+bbcode_text = "Created by Marshall Demirjian (carshalljd)
+Based on rtschutter's PureCTF
+
+With help from
+[color=gray]Teho
+Grigoreen
+
+[color=white]Special thanks to
+[color=gray]Ammut
+jpcogan
+phomohobe
+rtschutter
+Casty
+Valance
+Fooz
+Lanzer
+rhizersc
+"
+text = "Created by Marshall Demirjian (carshalljd)
+Based on rtschutter's PureCTF
+
+With help from
+Teho
+Grigoreen
+
+Special thanks to
+Ammut
+jpcogan
+phomohobe
+rtschutter
+Casty
+Valance
+Fooz
+Lanzer
+rhizersc
+"
+scroll_active = false
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel4" type="RichTextLabel" parent="CanvasLayer"]
+margin_left = 272.374
+margin_top = 627.779
+margin_right = 1555.37
+margin_bottom = 1461.78
+custom_fonts/normal_font = ExtResource( 4 )
+bbcode_enabled = true
+bbcode_text = "[color=gray]You, the player
+themuffinman1999
+Auxive
+r/starcraft
+Godot Engine"
+text = "You, the player
+themuffinman1999
+Auxive
+r/starcraft
+Godot Engine"
+scroll_active = false
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel5" type="RichTextLabel" parent="CanvasLayer"]
+margin_left = 1135.47
+margin_top = 388.396
+margin_right = 2418.47
+margin_bottom = 1222.4
+custom_fonts/normal_font = ExtResource( 4 )
+bbcode_enabled = true
+bbcode_text = "[color=white]Master Volume
+
+Music Volume
+
+
+
+"
+text = "Master Volume
+
+Music Volume
+
+
+
+"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel6" type="RichTextLabel" parent="CanvasLayer"]
+margin_left = 1669.31
+margin_top = 1030.2
+margin_right = 2106.31
+margin_bottom = 1106.2
+custom_fonts/normal_font = ExtResource( 4 )
+custom_colors/default_color = Color( 0.658824, 0.658824, 0.658824, 1 )
+bbcode_enabled = true
+bbcode_text = "Made in Godot
+
+"
+text = "Made in Godot
+
+"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel7" type="RichTextLabel" parent="CanvasLayer"]
+margin_left = 1360.5
+margin_top = 279.273
+margin_right = 1797.5
+margin_bottom = 355.273
+custom_fonts/normal_font = ExtResource( 4 )
+custom_colors/default_color = Color( 0.658824, 0.658824, 0.658824, 1 )
+bbcode_enabled = true
+bbcode_text = "[color=white]OPTIONS
+
+"
+text = "OPTIONS
+
+"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MasterVolume_Slider" type="HSlider" parent="CanvasLayer"]
+margin_left = 1473.26
+margin_top = 382.201
+margin_right = 1830.26
+margin_bottom = 433.201
+custom_styles/slider = SubResource( 1 )
+custom_styles/grabber_area = SubResource( 2 )
+value = 50.0
+rounded = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MusicVolume_Slider" type="HSlider" parent="CanvasLayer"]
+margin_left = 1473.26
+margin_top = 480.816
+margin_right = 1830.26
+margin_bottom = 531.816
+custom_styles/slider = SubResource( 1 )
+custom_styles/grabber_area = SubResource( 2 )
+value = 50.0
+rounded = true
+__meta__ = {
+"_edit_use_anchors_": false
+}

@@ -24,6 +24,7 @@ func _ready():
 		get_tree().change_scene("res://GameContent/Main.tscn");
 	$HTTPRequest_GetLeaderboard.request(Globals.mainServerIP + "getLeaderboardData", ["authorization: Bearer " + Globals.userToken]);
 	
+	$Titlemusic_Audio.play(0.0);
 
 
 func _Headline_Update_Timer_Ended():
