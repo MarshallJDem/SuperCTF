@@ -105,6 +105,7 @@ func _process(delta):
 	if !isServer:
 		attempt_poll_player_status();
 
+var volume_sliders = Vector2(50,50);
 func toggle_options_menu():
 	if get_tree().get_root().has_node("Options_Menu"):
 		get_tree().get_root().get_node("Options_Menu").call_deferred("queue_free");

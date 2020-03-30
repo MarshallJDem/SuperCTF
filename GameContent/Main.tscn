@@ -600,7 +600,8 @@ scale = Vector2( 2.984, 466.302 )
 
 [node name="Music_Audio" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 19 )
-volume_db = -80.0
+autoplay = true
+bus = "MusicBus"
 
 [node name="Score_Audio" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 20 )
