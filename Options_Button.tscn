@@ -10,6 +10,7 @@
 script = ExtResource( 5 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 2
 
 [node name="Button" type="Button" parent="CanvasLayer"]
 margin_left = 1716.34
