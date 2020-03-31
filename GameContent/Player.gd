@@ -356,12 +356,12 @@ func spawn_bullet(pos, player_id, direction, time_shot, bullet_name = null):
 	
 #	# If this was fired by another player, compensate for player lerp speed
 	if !Globals.testing and player_id != Globals.localPlayerID:
-		var t = Timer.new()
-		t.set_wait_time(float(Globals.player_lerp_time)/float(1000.0))
-		t.set_one_shot(true)
-		self.add_child(t)
-		t.start()
-		yield(t, "timeout")
+		var t = Timer.new();
+		t.set_wait_time(float(Globals.player_lerp_time)/float(1000.0));
+		t.set_one_shot(true);
+		self.add_child(t);
+		t.start();
+		yield(t, "timeout");
 		t.queue_free();
 	
 	# Initialize Bullet
@@ -495,7 +495,7 @@ func enable_powerup(type):
 	elif type == 4:
 		LASER_WIDTH_PMODIFIER = 15;
 		$Powerup_Timer.wait_time = 6;
-		text = "[color=brown]^^ LASER WIDTH UP ^^";
+		text = "[color=#FF8C00]^^ LASER WIDTH UP ^^";
 	elif type == 5:
 		FORCEFIELD_COOLDOWN_PMODIFIER = -1.5;
 		$Powerup_Timer.wait_time = 10;
