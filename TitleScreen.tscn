@@ -60,13 +60,13 @@ __meta__ = {
 [node name="HTTPRequest_GetLeaderboard" type="HTTPRequest" parent="."]
 
 [node name="Flag" parent="." instance=ExtResource( 4 )]
-position = Vector2( 1633, 123 )
+position = Vector2( 1581.88, 123 )
 scale = Vector2( 4, 3.04 )
 
 [node name="Flag2" type="Node2D" parent="." groups=[
 "Flags",
 ]]
-position = Vector2( 220, 123 )
+position = Vector2( 292.86, 123 )
 scale = Vector2( 4, 3.04 )
 z_as_relative = false
 script = ExtResource( 5 )
@@ -75,7 +75,7 @@ script = ExtResource( 5 )
 position = Vector2( 10, -14 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 1 )
-frame = 2
+frame = 1
 playing = true
 
 [node name="Area2D" type="Area2D" parent="Flag2" groups=[
@@ -204,6 +204,41 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="MOTDText" type="RichTextLabel" parent="UI_Layer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 145.0
+margin_top = 631.0
+margin_right = 798.0
+margin_bottom = 73.0
+rect_scale = Vector2( 0.639761, 0.639761 )
+focus_mode = 2
+custom_fonts/mono_font = ExtResource( 10 )
+custom_fonts/normal_font = ExtResource( 18 )
+custom_colors/default_color = Color( 0.368627, 0.368627, 0.368627, 1 )
+bbcode_enabled = true
+bbcode_text = "[color=black]This game is currently in beta development. While we build a player base, you may have trouble finding a match. Come join our discord so you can see when people are getting on to play (we organize 4v4s etc.) and for sick memes. If you don't join, I will hack your computer. I have your IP now.
+
+Discord Link:[color=blue] [url]https://discord.gg/D3Ban34[/url][color=black]
+Twitter:[color=blue] [url]https://twitter.com/SuperCTFGame[/url][color=black]
+
+Also we are always looking for people to get involved and make suggestions or help build the game. Join our discord to get involved!
+
+- Carshalljd (add me on discord [color=green]carshalljd#4808[color=black] or email me at [color=green]marshalljdem@gmail.com[color=black])"
+text = "This game is currently in beta development. While we build a player base, you may have trouble finding a match. Come join our discord so you can see when people are getting on to play (we organize 4v4s etc.) and for sick memes. If you don't join, I will hack your computer. I have your IP now.
+
+Discord Link: https://discord.gg/D3Ban34
+Twitter: https://twitter.com/SuperCTFGame
+
+Also we are always looking for people to get involved and make suggestions or help build the game. Join our discord to get involved!
+
+- Carshalljd (add me on discord carshalljd#4808 or email me at marshalljdem@gmail.com)"
+scroll_active = false
+selection_enabled = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="CancelQueueButton" type="Button" parent="UI_Layer"]
 anchor_left = 0.5
 anchor_right = 0.5
@@ -284,17 +319,6 @@ margin_right = 538.369
 margin_bottom = 343.723
 custom_colors/font_color = Color( 0.431373, 0.74902, 1, 1 )
 text = "Create Account"
-
-[node name="SplashBackground" type="ColorRect" parent="UI_Layer"]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -0.568817
-margin_right = -0.568848
-color = Color( 1, 1, 1, 0 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="SplashStartButton" type="Button" parent="UI_Layer"]
 anchor_left = 0.5

@@ -12,7 +12,11 @@ func _ready():
 	$LogoutButton.connect("pressed", self, "_logout_pressed");
 	$SplashStartButton.connect("pressed", self, "_splash_start_pressed");
 	$Searching_Text_Timer.connect("timeout", self, "_searching_text_timer_ended");
+	$MOTDText.connect("meta_clicked", self, "_MOTD_meta_clicked");
 	disable_buttons();
+
+func _MOTD_meta_clicked(meta):
+	OS.shell_open(meta)
 
 var current_search_dot_count = 0;
 # Called when the Searching text timer ends
@@ -47,7 +51,6 @@ func disable_buttons():
 	$SignInButton.visible = false;
 	$CreateAccountButton.visible = false;
 	$SplashStartButton.visible = false;
-	$SplashBackground.visible = false;
 	$Searching_Text.visible = false;
 	$PlayerRank.visible = false;
 	$PlayerMMR.visible = false;
@@ -83,7 +86,6 @@ func set_view(state):
 		VIEW_SPLASH:
 			$LogoutButton.visible = false;
 			$SplashStartButton.visible = true;
-			$SplashBackground.visible = true;
 	
 	# temporary while these buttons are useless
 	$SignInButton.visible = false;

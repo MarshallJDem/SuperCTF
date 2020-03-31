@@ -1,7 +1,7 @@
 extends Node
 
 # Whether to run in testing mode (for development uses)
-var testing = true;
+var testing = false;
 
 #Game Servers (Both clients and servers use these vars, but in different ways. overlapping would not work)
 var serverIP = "";
@@ -74,6 +74,7 @@ var match_start_time = 0;
 var HTTPRequest_PollPlayerStatus = HTTPRequest.new();
 var HTTPRequest_GetMatchData = HTTPRequest.new();
 var HTTPRequest_CancelQueue = HTTPRequest.new();
+var PollPlayerStatus_Timer = Timer.new();
 
 func _enter_tree():
 	var arguments = {}
@@ -98,6 +99,11 @@ func _ready():
 	HTTPRequest_PollPlayerStatus.connect("request_completed", self, "_HTTP_PollPlayerStatus_Completed")
 	HTTPRequest_GetMatchData.connect("request_completed", self, "_HTTP_GetMatchData_Completed")
 	HTTPRequest_CancelQueue.connect("request_completed", self, "_HTTP_CancelQueue_Completed");
+	PollPlayerStatus_Timer.one_shot = true;
+	PollPlayerStatus_Timer.autostart = false;
+	PollPlayerStatus_Timer.wait_time = 5;
+	add_child(PollPlayerStatus_Timer);
+	
 
 func _process(delta):
 	if get_tree().get_root().has_node("MainScene/NetworkController"):
@@ -127,6 +133,7 @@ func _HTTP_CancelQueue_Completed(result, response_code, headers, body):
 
 # Polls the player's status
 func _HTTP_PollPlayerStatus_Completed(result, response_code, headers, body):
+	PollPlayerStatus_Timer.start();
 	if response_code != 200:
 		return;
 	var json = JSON.parse(body.get_string_from_utf8())
@@ -152,6 +159,9 @@ func _HTTP_GetMatchData_Completed(result, response_code, headers, body):
 	get_tree().change_scene("res://GameContent/Main.tscn");
 
 func attempt_poll_player_status():
+	# Don't poll if we just recently polled
+	if PollPlayerStatus_Timer.time_left > 0:
+		return;
 	# If we are logged in
 	if Globals.userToken:
 		# If were not already in the middle of a poll, poll it
