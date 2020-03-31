@@ -171,6 +171,7 @@ custom_colors/font_color = Color( 0.172549, 0.172549, 0.172549, 1 )
 text = "Leave Match"
 
 [node name="Cancel_Button" type="Button" parent="UI_Layer"]
+visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
