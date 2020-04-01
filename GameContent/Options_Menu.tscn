@@ -41,10 +41,10 @@ __meta__ = {
 }
 
 [node name="Close_Button" type="Button" parent="CanvasLayer"]
-margin_left = 1614.4
-margin_top = 25.3639
-margin_right = 1892.4
-margin_bottom = 135.364
+margin_left = 1708.0
+margin_top = 25.0
+margin_right = 1893.0
+margin_bottom = 135.0
 custom_styles/hover = ExtResource( 1 )
 custom_styles/pressed = ExtResource( 3 )
 custom_styles/normal = ExtResource( 2 )
@@ -53,7 +53,7 @@ custom_colors/font_color_disabled = Color( 0, 0, 0, 1 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
 custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
-text = "Close (ESC)"
+text = "Close"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -163,9 +163,9 @@ __meta__ = {
 
 [node name="RichTextLabel5" type="RichTextLabel" parent="CanvasLayer"]
 margin_left = 1135.47
-margin_top = 388.396
+margin_top = 339.169
 margin_right = 2418.47
-margin_bottom = 1222.4
+margin_bottom = 1173.17
 custom_fonts/normal_font = ExtResource( 4 )
 bbcode_enabled = true
 bbcode_text = "[color=white]Master Volume

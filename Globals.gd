@@ -208,5 +208,3 @@ func _input(event):
 		if event.scancode == KEY_F:
 			#OS.window_fullscreen = !OS.window_fullscreen;
 			pass;
-		if event.scancode == KEY_ESCAPE:
-			toggle_options_menu();

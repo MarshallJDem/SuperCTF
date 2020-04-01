@@ -13,10 +13,10 @@ script = ExtResource( 5 )
 layer = 2
 
 [node name="Button" type="Button" parent="CanvasLayer"]
-margin_left = 1716.34
-margin_top = 8.81148
-margin_right = 1912.34
-margin_bottom = 73.8115
+margin_left = 1777.0
+margin_top = 9.0
+margin_right = 1912.0
+margin_bottom = 74.0
 custom_styles/hover = ExtResource( 1 )
 custom_styles/pressed = ExtResource( 3 )
 custom_styles/normal = ExtResource( 2 )
@@ -25,7 +25,7 @@ custom_colors/font_color_disabled = Color( 0, 0, 0, 1 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
 custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
-text = "Options (ESC)"
+text = "Options"
 __meta__ = {
 "_edit_use_anchors_": false
 }
