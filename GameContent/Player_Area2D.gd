@@ -40,7 +40,7 @@ func collided_with_bullet(bullet):
 		return;
 	# If we're currently in a forcefield, ignore it
 	for area in get_overlapping_areas():
-		if area.is_in_group("Forcefield_Areas"):
+		if area.is_in_group("Forcefield_Bodies"):
 			return;
 	# Else we've been hit by an enemy
 	player.rpc("receive_hit", bullet.player_id, 0);

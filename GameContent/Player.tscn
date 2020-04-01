@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://GameContent/Player.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Player/running_top_B.png" type="Texture" id=2]
@@ -20,10 +20,6 @@ radius = 5.49852
 height = 5.43134
 
 [sub_resource type="CapsuleShape2D" id=2]
-radius = 5.69239
-height = 5.16805
-
-[sub_resource type="CapsuleShape2D" id=3]
 radius = 1.61246
 height = 5.37553
 
@@ -72,13 +68,6 @@ script = ExtResource( 6 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2( 0, 1.855 )
 shape = SubResource( 1 )
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="Area2D"]
-position = Vector2( 0, 1.889 )
-shape = SubResource( 2 )
-__meta__ = {
-"_editor_description_": ""
-}
 
 [node name="Flag_Holder" type="Node2D" parent="."]
 
@@ -160,7 +149,7 @@ one_shot = true
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0.0194966, 9.97446 )
 rotation = 1.5708
-shape = SubResource( 3 )
+shape = SubResource( 2 )
 
 [node name="Death_Audio" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 7 )
