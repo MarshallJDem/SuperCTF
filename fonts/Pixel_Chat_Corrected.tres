@@ -1,0 +1,8 @@
+[gd_resource type="DynamicFont" load_steps=2 format=2]
+
+[ext_resource path="res://fonts/pixel.TTF" type="DynamicFontData" id=1]
+
+[resource]
+outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
+extra_spacing_top = 3
+font_data = ExtResource( 1 )

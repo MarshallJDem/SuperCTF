@@ -135,10 +135,10 @@ __meta__ = {
 }
 
 [node name="PlayerRank" type="RichTextLabel" parent="UI_Layer"]
-margin_left = 1398.95
-margin_top = 950.632
-margin_right = 1646.95
-margin_bottom = 1043.63
+margin_left = 266.95
+margin_top = 951.632
+margin_right = 514.95
+margin_bottom = 1044.63
 rect_scale = Vector2( 0.576526, 0.576526 )
 custom_fonts/normal_font = ExtResource( 11 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
@@ -151,10 +151,10 @@ __meta__ = {
 }
 
 [node name="PlayerMMR" type="RichTextLabel" parent="UI_Layer"]
-margin_left = 1627.74
-margin_top = 952.263
-margin_right = 1937.74
-margin_bottom = 1045.26
+margin_left = 495.74
+margin_top = 953.263
+margin_right = 805.74
+margin_bottom = 1046.26
 rect_scale = Vector2( 0.576526, 0.576526 )
 custom_fonts/normal_font = ExtResource( 11 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
@@ -169,10 +169,10 @@ __meta__ = {
 [node name="PlayerRankSubtitle" type="RichTextLabel" parent="UI_Layer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 1160.06
-margin_top = 1028.07
-margin_right = 217.061
-margin_bottom = 463.068
+margin_left = 27.0597
+margin_top = 1030.07
+margin_right = -915.939
+margin_bottom = 465.068
 rect_scale = Vector2( 0.639761, 0.639761 )
 custom_fonts/mono_font = ExtResource( 10 )
 custom_fonts/normal_font = ExtResource( 18 )
@@ -188,10 +188,10 @@ __meta__ = {
 [node name="PlayerMMRSubtitle" type="RichTextLabel" parent="UI_Layer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 1383.99
-margin_top = 1027.27
-margin_right = 504.987
-margin_bottom = 469.271
+margin_left = 253.876
+margin_top = 1031.29
+margin_right = -625.127
+margin_bottom = 473.29
 rect_scale = Vector2( 0.639761, 0.639761 )
 custom_fonts/mono_font = ExtResource( 10 )
 custom_fonts/normal_font = ExtResource( 18 )
@@ -296,10 +296,10 @@ margin_bottom = 286.078
 text = "Sign In"
 
 [node name="LogoutButton" type="Button" parent="UI_Layer"]
-margin_left = 18.6073
-margin_top = 17.0267
-margin_right = 192.607
-margin_bottom = 99.0267
+margin_left = 40.3733
+margin_top = 976.091
+margin_right = 214.373
+margin_bottom = 1058.09
 rect_scale = Vector2( 0.742863, 0.742863 )
 custom_styles/hover = ExtResource( 15 )
 custom_styles/pressed = ExtResource( 16 )
@@ -340,10 +340,10 @@ __meta__ = {
 [node name="Searching_Text" type="Label" parent="UI_Layer"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -474.35
-margin_top = 987.188
-margin_right = -273.35
-margin_bottom = 1034.19
+margin_left = 185.221
+margin_top = 981.996
+margin_right = 386.221
+margin_bottom = 1029.0
 custom_fonts/font = ExtResource( 18 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Searching"
@@ -407,6 +407,7 @@ __meta__ = {
 
 [node name="Titlemusic_Audio" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 20 )
+volume_db = -46.141
 bus = "MusicBus"
 
 [node name="Leaderboard_Refresh_Timer" type="Timer" parent="."]

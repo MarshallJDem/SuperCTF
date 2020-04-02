@@ -1,0 +1,90 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Global_Overlay.gd" type="Script" id=1]
+[ext_resource path="res://Hover_Button_Style.tres" type="StyleBox" id=2]
+[ext_resource path="res://Normal_Button_Style.tres" type="StyleBox" id=3]
+[ext_resource path="res://Pressed_Button_Style.tres" type="StyleBox" id=4]
+[ext_resource path="res://fonts/Pixel_Chat.tres" type="DynamicFont" id=5]
+[ext_resource path="res://fonts/Pixel_Chat_Corrected.tres" type="DynamicFont" id=6]
+[ext_resource path="res://Assets/Environment/background.png" type="Texture" id=7]
+
+[node name="Global_Overlay" type="Node2D"]
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_horizontal_guides_": [ 22.2457 ]
+}
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 2
+
+[node name="Options_Button" type="Button" parent="CanvasLayer"]
+margin_left = 1759.65
+margin_top = 22.2246
+margin_right = 1894.65
+margin_bottom = 87.2246
+custom_styles/hover = ExtResource( 2 )
+custom_styles/pressed = ExtResource( 4 )
+custom_styles/normal = ExtResource( 3 )
+custom_fonts/font = ExtResource( 5 )
+custom_colors/font_color_disabled = Color( 0, 0, 0, 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
+custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
+text = "Options"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Music_Background" type="ColorRect" parent="CanvasLayer"]
+margin_left = 1510.0
+margin_top = 1017.0
+margin_right = 1921.0
+margin_bottom = 1065.0
+color = Color( 0, 0, 0, 0.6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Music_Title" type="Label" parent="CanvasLayer/Music_Background"]
+margin_left = 59.0
+margin_top = 13.0
+margin_right = 401.0
+margin_bottom = 48.0
+custom_fonts/font = ExtResource( 6 )
+custom_colors/font_color = Color( 1, 1, 1, 0.756863 )
+text = "Stephen Walking - \"Dads in Space\""
+clip_text = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Music_Image" type="TextureRect" parent="CanvasLayer/Music_Background"]
+margin_right = 48.0
+margin_bottom = 48.0
+texture = ExtResource( 7 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Skip_Text" type="RichTextLabel" parent="CanvasLayer/Music_Background"]
+margin_left = 314.723
+margin_top = -29.3581
+margin_right = 397.723
+margin_bottom = -0.358139
+custom_fonts/normal_font = ExtResource( 6 )
+custom_colors/default_color = Color( 0, 0, 0, 0.721569 )
+bbcode_enabled = true
+bbcode_text = "[center][url]skip >>"
+text = "skip >>"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Title_Rotate_Buffer" type="Timer" parent="CanvasLayer/Music_Background"]
+wait_time = 3.0
+one_shot = true
+
+[node name="Music_Player" type="AudioStreamPlayer" parent="."]
+bus = "MusicBus"

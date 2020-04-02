@@ -23,7 +23,7 @@ config/icon="res://flag_frames/flagRed1.png"
 [autoload]
 
 Globals="*res://Globals.gd"
-Options_Button="*res://Options_Button.tscn"
+Global_Overlay="*res://Global_Overlay.tscn"
 
 [display]
 
