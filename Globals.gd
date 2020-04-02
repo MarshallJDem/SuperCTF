@@ -179,7 +179,8 @@ func write_save_data():
 	file.store_string(str(AudioServer.get_bus_volume_db(0)) + "\n");
 	file.store_string(str(AudioServer.get_bus_volume_db(1)) + "\n");
 	file.store_string(str(volume_sliders.x) + "\n");
-	file.store_string(str(volume_sliders.y));
+	file.store_string(str(volume_sliders.y) + "\n");
+	file.store_string(str(Global_Overlay.current_song));
 	file.close()
 
 func load_save_data():
@@ -198,8 +199,15 @@ func load_save_data():
 	userToken = result["1"];
 	if result.has("2"):
 		AudioServer.set_bus_volume_db(0,float(result["2"]));
+	if result.has("3"):
 		AudioServer.set_bus_volume_db(1,float(result["3"]));
+	if result.has("4") and result.has("5"):
 		volume_sliders = Vector2(int(result["4"]), int(result["5"]));
+	if result.has("6"):
+		Global_Overlay.saved_song_loaded(int(result["6"]));
+	else:
+		Global_Overlay.saved_song_loaded(-1);
+		
 
 func _input(event):
 	if event is InputEventKey and event.pressed:

@@ -12,7 +12,6 @@ func _ready() -> void:
 	$CanvasLayer/Options_Button.connect("button_up", self, "_button_clicked");
 	$CanvasLayer/Music_Background/Skip_Text.connect("meta_clicked", self, "_skip_pressed");
 	$Music_Player.connect("finished", self, "play_next_song");
-	play_next_song();
 
 var rotation_delay = 0.5;
 var time_elapsed = 0;
@@ -23,11 +22,18 @@ func _process(delta: float) -> void:
 			time_elapsed = 0;
 			rotate_music_title();
 
+func saved_song_loaded(song_id):
+	if current_song == -1:
+		current_song = song_id;
+		play_next_song();
+		
+
 func _skip_pressed(meta):
 	play_next_song();
 
 func play_next_song():
 	current_song = (current_song + 1) % table.size();
+	Globals.write_save_data();
 	$CanvasLayer/Music_Background/Music_Title.text = table[song_ids[current_song]] + "  |  ";
 	$CanvasLayer/Music_Background/Title_Rotate_Buffer.start();
 	$CanvasLayer/Music_Background/Music_Image.texture = load("res://Assets/Music/" + str(song_ids[current_song]) + ".jpg");
