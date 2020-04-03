@@ -1,7 +1,7 @@
 extends Node
 
 # Whether to run in testing mode (for development uses)
-var testing = true;
+var testing = false;
 
 #Game Servers (Both clients and servers use these vars, but in different ways. overlapping would not work)
 var serverIP = "";
@@ -28,7 +28,7 @@ var player_status = 0;
 
 #Main Server
 var mainServerIP = "https://www.superctf.com" + ":42401/";
-
+ 
 var game_just_started = true;
 var is_typing_in_chat = false;
 
