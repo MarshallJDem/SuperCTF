@@ -3,6 +3,7 @@ extends Node2D
 var table = ['"Dads in Space" - Stephen Walking','"Crystal Dolphin" - Engelwood','"Fireball" - Pitbull', 
 '"Back Again" - Archie', '"Oh Mama" - Run The Jewels', '"Good Time" - Nightcore Remix','"Superman" - Goldfinger',
 '"Bubbletea" - Dark Cat', '"When Can I See You Again" - Nightcore Remix', '"Hello" - Martin Solveig'];
+var db_table = [1,6,4,7,9,10,4,5,10,5];
 var current_song = -1;
 var song_ids = [0,1,2,3,4,5,6,7,8,9];
 
@@ -38,6 +39,7 @@ func play_next_song():
 	$CanvasLayer/Music_Background/Title_Rotate_Buffer.start();
 	$CanvasLayer/Music_Background/Music_Image.texture = load("res://Assets/Music/" + str(song_ids[current_song]) + ".jpg");
 	$Music_Player.stream = load("res://Assets/Music/" + str(song_ids[current_song]) + ".ogg");
+	$Music_Player.volume_db = db_table[current_song];
 	$Music_Player.play();
 
 func rotate_music_title():

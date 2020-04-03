@@ -61,6 +61,10 @@ func _process(delta):
 			$"Ability_GUIs/E_GUI".frame = 1;
 		else:
 			$"Ability_GUIs/E_GUI".frame = 0;
+		if Input.is_key_pressed(KEY_Q):
+			$"Ability_GUIs/Q_GUI".frame = 1;
+		else:
+			$"Ability_GUIs/Q_GUI".frame = 0;
 		if Input.is_key_pressed(KEY_SHIFT):
 			$"Ability_GUIs/SHIFT_GUI".frame = 1;
 		else:
@@ -108,6 +112,12 @@ func _process(delta):
 		else:
 			$Ability_GUIs/Shoot_GUI_Text.text = "FIRE\nBULLET";
 		
+		# Grenade
+		var grenade_time_left = local_player.get_node("Grenade_Cooldown_Timer").time_left;
+		if grenade_time_left == 0:
+			$Ability_GUIs/Grenade_GUI_Text.text = "GRENADE";
+		else:
+			$Ability_GUIs/Grenade_GUI_Text.text = "%0.2f" % grenade_time_left;
 		
 		# If player is holding a flag
 		if local_player.get_node("Flag_Holder").get_child_count() > 0:
@@ -115,7 +125,7 @@ func _process(delta):
 			$Ability_GUIs/DOWN_GUI.modulate = Color(1,1,1,0.4);
 			$Ability_GUIs/LEFT_GUI.modulate = Color(1,1,1,0.4);
 			$Ability_GUIs/RIGHT_GUI.modulate = Color(1,1,1,0.4);
-			$Ability_GUIs/E_GUI.modulate = Color(1,1,1,0.4);
+			$Ability_GUIs/Q_GUI.modulate = Color(1,1,1,0.4);
 
 # Color 0 = blue, 1 = red
 func set_big_label_text(text, color):

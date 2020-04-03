@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=2]
+[gd_scene load_steps=37 format=2]
 
 [ext_resource path="res://GameContent/Main.gd" type="Script" id=1]
 [ext_resource path="res://GameContent/Player.tscn" type="PackedScene" id=2]
@@ -13,6 +13,7 @@
 [ext_resource path="res://Normal_Button_Style.tres" type="StyleBox" id=11]
 [ext_resource path="res://fonts/Pixel_Game_UI.tres" type="DynamicFont" id=12]
 [ext_resource path="res://Assets/GUI/W-Key-GUI.png" type="Texture" id=13]
+[ext_resource path="res://Assets/GUI/Q-Key-GUI.png" type="Texture" id=14]
 [ext_resource path="res://GameContent/Powerup_Spawner.tscn" type="PackedScene" id=15]
 [ext_resource path="res://GameContent/Wall.tscn" type="PackedScene" id=16]
 [ext_resource path="res://GameContent/Wall_H_M_B.tscn" type="PackedScene" id=17]
@@ -49,7 +50,7 @@ bg_color = Color( 1, 1, 1, 0 )
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_horizontal_guides_": [  ],
-"_edit_vertical_guides_": [ 544.046 ]
+"_edit_vertical_guides_": [ 544.046, 959.644 ]
 }
 
 [node name="Test_Player" parent="." instance=ExtResource( 2 )]
@@ -73,9 +74,10 @@ position = Vector2( 15.6066, 14.9669 )
 script = ExtResource( 4 )
 
 [node name="LineEdit" type="LineEdit" parent="UI_Layer"]
-margin_top = 337.0
+margin_top = 679.47
 margin_right = 294.0
-margin_bottom = 381.0
+margin_bottom = 723.47
+rect_scale = Vector2( 2, 2 )
 mouse_filter = 2
 custom_styles/focus = SubResource( 1 )
 custom_styles/normal = SubResource( 2 )
@@ -90,6 +92,7 @@ __meta__ = {
 [node name="Chat_Box" type="RichTextLabel" parent="UI_Layer"]
 margin_right = 292.0
 margin_bottom = 334.0
+rect_scale = Vector2( 2, 2 )
 custom_styles/normal = SubResource( 3 )
 custom_fonts/normal_font = ExtResource( 12 )
 bbcode_enabled = true
@@ -120,6 +123,9 @@ custom_fonts/font = ExtResource( 8 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 align = 1
 valign = 1
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="Big_Label_Blue" type="Label" parent="UI_Layer"]
 anchor_right = 1.0
@@ -133,6 +139,7 @@ custom_colors/font_color = Color( 0, 0.180392, 1, 1 )
 align = 1
 valign = 1
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -150,6 +157,7 @@ custom_colors/font_color = Color( 1, 0, 0, 1 )
 align = 1
 valign = 1
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -171,6 +179,7 @@ custom_colors/font_color = Color( 0.172549, 0.172549, 0.172549, 1 )
 text = "Leave Match"
 
 [node name="Cancel_Button" type="Button" parent="UI_Layer"]
+visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -194,59 +203,66 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = -19.9999
+margin_left = -32.0
 margin_top = -99.767
 margin_right = 20.0001
 margin_bottom = -79.7671
-rect_scale = Vector2( 2, 2 )
+rect_scale = Vector2( 1.5, 1.5 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="W_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
-position = Vector2( -188.177, -59 )
+position = Vector2( -224.49, -59 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 13 )
 centered = false
 hframes = 2
 
 [node name="A_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
-position = Vector2( -221.264, -26 )
+position = Vector2( -257.577, -26 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 29 )
 centered = false
 hframes = 2
 
 [node name="S_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
-position = Vector2( -188.264, -26 )
+position = Vector2( -224.577, -26 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 28 )
 centered = false
 hframes = 2
 
 [node name="D_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
-position = Vector2( -155.264, -26 )
+position = Vector2( -191.577, -26 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 27 )
 centered = false
 hframes = 2
 
 [node name="E_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
-position = Vector2( 5, -26 )
+position = Vector2( 39.7944, -26.4901 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 33 )
 centered = false
 hframes = 2
 
+[node name="Q_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
+position = Vector2( -30.7009, -26.4901 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 14 )
+centered = false
+hframes = 2
+
 [node name="UP_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
-position = Vector2( 200, -60 )
+position = Vector2( 231.364, -60 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 30 )
 centered = false
 hframes = 2
 
 [node name="LEFT_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
-position = Vector2( 166, 4.088 )
+position = Vector2( 197.364, 4.08801 )
 rotation = -1.5708
 scale = Vector2( 2, 2 )
 texture = ExtResource( 30 )
@@ -254,7 +270,7 @@ centered = false
 hframes = 2
 
 [node name="DOWN_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
-position = Vector2( 230, 4 )
+position = Vector2( 261.364, 4 )
 rotation = 3.14159
 scale = Vector2( 2, 2 )
 texture = ExtResource( 30 )
@@ -262,7 +278,7 @@ centered = false
 hframes = 2
 
 [node name="RIGHT_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
-position = Vector2( 264, -26 )
+position = Vector2( 295.364, -26 )
 rotation = 1.5708
 scale = Vector2( 2, 2 )
 texture = ExtResource( 30 )
@@ -270,23 +286,23 @@ centered = false
 hframes = 2
 
 [node name="SHIFT_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
-position = Vector2( 73, -26 )
+position = Vector2( 104.364, -26 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 31 )
 centered = false
 hframes = 2
 
 [node name="SPACE_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
-position = Vector2( -88, -26 )
+position = Vector2( -124.313, -26 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 32 )
 centered = false
 hframes = 2
 
 [node name="Shoot_GUI_Text" type="Label" parent="UI_Layer/Ability_GUIs"]
-margin_left = 150.0
+margin_left = 181.364
 margin_top = 11.0
-margin_right = 284.0
+margin_right = 315.364
 margin_bottom = 44.0
 custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
@@ -299,9 +315,9 @@ __meta__ = {
 }
 
 [node name="Teleport_GUI_Text" type="Label" parent="UI_Layer/Ability_GUIs"]
-margin_left = -126.0
+margin_left = -162.313
 margin_top = 20.0
-margin_right = 8.0004
+margin_right = -28.313
 margin_bottom = 35.0
 rect_pivot_offset = Vector2( -533.113, 40.108 )
 custom_fonts/font = ExtResource( 12 )
@@ -314,9 +330,9 @@ __meta__ = {
 }
 
 [node name="Forcefield_GUI_Text" type="Label" parent="UI_Layer/Ability_GUIs"]
-margin_left = -47.0
+margin_left = -11.2255
 margin_top = 20.0
-margin_right = 87.0
+margin_right = 122.774
 margin_bottom = 35.0
 rect_pivot_offset = Vector2( -533.113, 40.108 )
 custom_fonts/font = ExtResource( 12 )
@@ -328,12 +344,27 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Grenade_GUI_Text" type="Label" parent="UI_Layer/Ability_GUIs"]
+margin_left = -81.7208
+margin_top = 20.0
+margin_right = 52.2792
+margin_bottom = 35.0
+rect_pivot_offset = Vector2( -533.113, 40.108 )
+custom_fonts/font = ExtResource( 12 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "GRENADE"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="ToggleWeapon_GUI_Text2" type="Label" parent="UI_Layer/Ability_GUIs"]
 anchor_left = -3.8147e-07
 anchor_right = -3.8147e-07
-margin_left = 34.891
+margin_left = 66.255
 margin_top = 11.0
-margin_right = 168.891
+margin_right = 200.255
 margin_bottom = 44.0
 rect_pivot_offset = Vector2( -533.113, 40.108 )
 custom_fonts/font = ExtResource( 12 )
@@ -349,9 +380,9 @@ __meta__ = {
 [node name="Move_GUI_Text" type="Label" parent="UI_Layer/Ability_GUIs"]
 anchor_top = 0.00432434
 anchor_bottom = 0.00432434
-margin_left = -240.0
+margin_left = -276.313
 margin_top = 20.0
-margin_right = -106.0
+margin_right = -142.313
 margin_bottom = 35.0
 rect_pivot_offset = Vector2( -533.113, 40.108 )
 custom_fonts/font = ExtResource( 12 )
@@ -366,9 +397,9 @@ __meta__ = {
 [node name="Alert_Text" type="RichTextLabel" parent="UI_Layer"]
 anchor_right = 1.0
 margin_left = -1.58667
-margin_top = 787.481
+margin_top = 851.323
 margin_right = -1.58667
-margin_bottom = 817.481
+margin_bottom = 881.323
 rect_clip_content = false
 custom_fonts/normal_font = ExtResource( 5 )
 bbcode_enabled = true

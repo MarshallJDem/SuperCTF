@@ -1,6 +1,6 @@
 extends Node2D
 
-var speed = 400;
+var speed = 600;
 var player_id;
 var team_id = -1;
 var target_pos = Vector2(0,0);
@@ -23,7 +23,6 @@ func _ready():
 		$Sprite.set_texture(grenade_atlas_blue);
 	
 func _process(_delta):
-	speed = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("bulletSpeed");
 	pass;
 
 # stupid workaround neccessary to make particles not flash random colors upon spawning
