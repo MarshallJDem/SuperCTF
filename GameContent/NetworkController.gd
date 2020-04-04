@@ -72,7 +72,6 @@ func _process(delta):
 	if $Round_Start_Timer.time_left != 0:
 		get_tree().get_root().get_node("MainScene/UI_Layer/Countdown_Label").text = str(int($Round_Start_Timer.time_left) + 1);
 	if !isSkirmish and pollServerStatus and $HTTPRequest_GameServerPollStatus.get_http_client_status() == 0:
-		print("POLLING");
 		$HTTPRequest_GameServerPollStatus.request(Globals.mainServerIP + "pollGameServerStatus", ["authorization: Bearer " + (Globals.serverPrivateToken)], false);
 
 
