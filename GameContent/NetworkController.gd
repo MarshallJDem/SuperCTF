@@ -72,6 +72,7 @@ func _process(delta):
 	if $Round_Start_Timer.time_left != 0:
 		get_tree().get_root().get_node("MainScene/UI_Layer/Countdown_Label").text = str(int($Round_Start_Timer.time_left) + 1);
 	if !isSkirmish and pollServerStatus and $HTTPRequest_GameServerPollStatus.get_http_client_status() == 0:
+		print("POLLING");
 		$HTTPRequest_GameServerPollStatus.request(Globals.mainServerIP + "pollGameServerStatus", ["authorization: Bearer " + (Globals.serverPrivateToken)], false);
 
 
@@ -131,7 +132,6 @@ func _HTTP_GameServerMakeAvailable_Completed(result, response_code, headers, bod
 			pass;
 
 func _HTTP_GameServerPollStatus_Completed(result, response_code, headers, body):
-	pass;
 	if get_tree().is_network_server():
 		if(response_code == 200):
 			var json = JSON.parse(body.get_string_from_utf8());
@@ -139,7 +139,7 @@ func _HTTP_GameServerPollStatus_Completed(result, response_code, headers, body):
 			Globals.matchID = matchID;
 			if matchID:
 				pollServerStatus = false;
-				print("Getting Msatch Data for MatchID = " + str(matchID));
+				print("Getting Matchh Data for MatchID = " + str(matchID));
 				updateGameServerStatus(2);
 				$HTTPRequest_GetMatchData.request(Globals.mainServerIP + "getMatchData?matchID=" + str(matchID), ["authorization: Bearer " + (Globals.serverPrivateToken)], false);
 		else:
