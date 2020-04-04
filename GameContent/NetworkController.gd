@@ -315,6 +315,9 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 					is_connected = true;
 			if !is_connected:
 				return;
+			print("HERE");
+			print(Globals.allowedPlayers);
+			print(user_id);
 			# If the user is one of the players in the current match or this is a skirmish
 			if(Globals.allowedPlayers.has(user_id) || isSkirmish):
 				if isSkirmish:
