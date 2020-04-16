@@ -26,7 +26,7 @@ func rotate_to_arrow_keys():
 func update_camera_offset_from_mouse():
 	var mpos2 = get_viewport().get_mouse_position();
 	var distance = sqrt(pow(mpos2.x - get_viewport_rect().size.x/2,2) + pow(mpos2.y - get_viewport_rect().size.y/2,2));
-	$'..'.camera_ref.position.x = distance * 0.1;
+	$'..'.camera_ref.position.x = distance * 0.05;
 	
 func update_camera_offset_from_arrow_keys():
 	var input = Vector2(0,0);

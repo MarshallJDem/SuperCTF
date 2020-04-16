@@ -36,7 +36,7 @@ func _ready():
 		$Lag_Comp_Timer.start();
 	else:
 		puppet_time_shot = initial_time_shot;
-		initial_time_shot += 50;
+		#initial_time_shot += 50;
 		initial_puppet_pos = position;
 
 func _process(_delta):

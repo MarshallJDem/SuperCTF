@@ -1,7 +1,7 @@
 extends KinematicBody2D
 
 var control = false;
-var IS_CONTROLLED_BY_MOUSE = false;
+var IS_CONTROLLED_BY_MOUSE = true;
 # The ID of this player 0,1,2 etc. NOT the network unique ID
 var player_id = -1;
 var team_id = -1;
@@ -117,14 +117,23 @@ func _input(event):
 				# If the grenade cooldown is over
 				if $Grenade_Cooldown_Timer.time_left == 0:
 					toggle_grenade();
-		elif IS_CONTROLLED_BY_MOUSE and event is InputEventMouseButton:
+		elif event is InputEventMouseButton:
+			IS_CONTROLLED_BY_MOUSE = true;
 			if event.button_index == BUTTON_LEFT:
 				if event.pressed: # Click down
 					# Only accepts clicks if we're not aiming a laser
 					if $Laser_Timer.time_left == 0:
 						if $Flag_Holder.get_child_count() == 0:
-							if $Shoot_Cooldown_Timer.time_left == 0:
-								shoot_bullet((get_global_mouse_position() - global_position).normalized());
+							if current_weapon == 0:
+								if $Shoot_Cooldown_Timer.time_left == 0:
+									call_deferred("shoot_bullet", ((get_global_mouse_position() - global_position).normalized()));
+							else:
+								var direction = (get_global_mouse_position() - global_position).normalized();
+								laser_direction = direction;
+								laser_position = get_node("Bullet_Starts/" + String($Sprite_Top.frame % $Sprite_Top.hframes)).position;
+								# If we are still in input phase, update direction
+								if $Laser_Input_Timer.time_left == 0:
+									start_laser_input();
 							sprintEnabled = false;
 						else: # Otherwise drop our flag
 							drop_current_flag($Flag_Holder.get_global_position());
@@ -132,20 +141,29 @@ func _input(event):
 				else: # Click up
 					pass
 			if event.button_index == BUTTON_RIGHT:
+				IS_CONTROLLED_BY_MOUSE = true;
 				if event.pressed:
 					# Only accepts clicks if we're not aiming a laser
 					if $Laser_Timer.time_left == 0:
+						# If were not holding a flag
 						if $Flag_Holder.get_child_count() == 0:
-							var direction = (get_global_mouse_position() - global_position).normalized();
-							rpc_id(1, "send_start_laser", direction, position, $Sprite_Top.frame);
-							start_laser(direction, position, $Sprite_Top.frame);
+							if $Grenade_Cooldown_Timer.time_left == 0:
+								grenade_enabled = true;
+								aim_grenade(get_local_mouse_position().normalized());
 							sprintEnabled = false;
 						else: # Otherwise drop our flag
 							drop_current_flag($Flag_Holder.get_global_position());
 							rpc_id(1, "send_drop_flag", $Flag_Holder.get_global_position());
 				else:
-					pass;
-
+					if grenade_enabled:
+						# Fire grenade on right mouse up
+						if Globals.testing:
+							shoot_grenade(self.global_position, self.global_position + last_grenade_position, OS.get_system_time_msecs());
+						else:
+							rpc("shoot_grenade",self.global_position, self.global_position + last_grenade_position, OS.get_system_time_msecs() - Globals.match_start_time);
+		elif event is InputEventMouseMotion:
+			if IS_CONTROLLED_BY_MOUSE and grenade_enabled:
+				aim_grenade(get_local_mouse_position().normalized());
 func _process(delta):
 	var new_speed = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("playerSpeed");
 	if speed == BASE_SPEED:
@@ -167,8 +185,7 @@ func _process(delta):
 		# Move & Shoot around as long as we aren't typing in chat
 		if !Globals.is_typing_in_chat:
 			move_on_inputs();
-			if !IS_CONTROLLED_BY_MOUSE:
-				shoot_on_inputs();
+			shoot_on_inputs();
 	update();
 	if $Invincibility_Timer.time_left > 0:
 		var t = $Invincibility_Timer.time_left / $Invincibility_Timer.wait_time 
@@ -256,20 +273,11 @@ func switch_weapons():
 # Called when the player attempts to place a forcefield
 # This function will either place it in the appropriate spot or deny it (bad location or something)
 func forcefield_placed():
-	var forcefield_position;
-	if IS_CONTROLLED_BY_MOUSE:
-		var distance = get_global_mouse_position().distance_to(position);
-		forcefield_position = get_global_mouse_position();
-		if distance > max_forcefield_distance:
-			var direction = (get_global_mouse_position() - global_position).normalized();
-			forcefield_position = global_position + (direction * max_forcefield_distance);
-	else:
-		forcefield_position = position;
-	rpc("spawn_forcefield", forcefield_position, team_id);
+	rpc("spawn_forcefield", position, team_id);
 	$Forcefield_Timer.start();
 	if Globals.testing:
 		var forcefield = load("res://GameContent/Forcefield.tscn").instance();
-		forcefield.position = forcefield_position;
+		forcefield.position = position;
 		forcefield.team_id = team_id;
 		get_tree().get_root().get_node("MainScene").add_child(forcefield);
 		
@@ -420,6 +428,8 @@ func shoot_on_inputs():
 	input.y = (1 if Input.is_key_pressed(KEY_DOWN) else 0) - (1 if Input.is_key_pressed(KEY_UP) else 0)
 	input = input.normalized();
 	if input != Vector2.ZERO:
+		
+		IS_CONTROLLED_BY_MOUSE = false;
 		if $Flag_Holder.get_child_count() != 0:
 			drop_current_flag($Flag_Holder.get_global_position());
 			if !Globals.testing:
@@ -436,7 +446,7 @@ func shoot_on_inputs():
 			elif $Laser_Timer.time_left == 0:
 				start_laser_input();
 	else:
-		if started_aiming_grenade:
+		if started_aiming_grenade and !IS_CONTROLLED_BY_MOUSE:
 			if Globals.testing:
 				shoot_grenade(self.global_position, self.global_position + last_grenade_position, OS.get_system_time_msecs());
 			else:
@@ -449,13 +459,20 @@ func aim_grenade(direction):
 	if !started_aiming_grenade:
 		started_aiming_grenade = true;
 		$Grenade_Aiming_Timer.start();
-	var x =  ($Grenade_Aiming_Timer.wait_time - $Grenade_Aiming_Timer.time_left)/$Grenade_Aiming_Timer.wait_time;
-	x = clamp(x, 0.01, 1.0);
-	if last_grenade_direction != direction:
-		if grenade_input_change_buffer < 3:
-			grenade_input_change_buffer += 1;
-			return;
-	last_grenade_position = direction * x * 300;
+	if !IS_CONTROLLED_BY_MOUSE:
+		var x =  ($Grenade_Aiming_Timer.wait_time - $Grenade_Aiming_Timer.time_left)/$Grenade_Aiming_Timer.wait_time;
+		x = clamp(x, 0.01, 1.0);
+		if last_grenade_direction != direction:
+			if grenade_input_change_buffer < 3:
+				grenade_input_change_buffer += 1;
+				return;
+		last_grenade_position = direction * x * 500;
+	else:
+		print(get_global_mouse_position().distance_to(position));
+		if get_local_mouse_position().length() <= 500:
+			last_grenade_position = get_local_mouse_position();
+		else:
+			last_grenade_position = direction * 500;
 	last_grenade_direction = direction;
 	grenade_input_change_buffer = 0;
 	
