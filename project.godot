@@ -32,6 +32,7 @@ window/size/height=1080
 window/size/always_on_top=true
 window/size/test_width=940
 window/size/test_height=640
+mouse_cursor/custom_image="res://crosshair.png"
 mouse_cursor/custom_image_hotspot=Vector2( 18, 18 )
 window/stretch/mode="viewport"
 window/stretch/aspect="keep"

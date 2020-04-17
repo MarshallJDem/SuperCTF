@@ -170,7 +170,10 @@ func _process(delta):
 		speed = new_speed;
 	BASE_SPEED = new_speed;
 	TELEPORT_SPEED = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("dashDistance");
-	$Shoot_Cooldown_Timer.wait_time = BULLET_COOLDOWN_PMODIFIER + float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("bulletCooldown"))/1000.0;
+	var wait = BULLET_COOLDOWN_PMODIFIER + float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("bulletCooldown"))/1000.0;
+	if !IS_CONTROLLED_BY_MOUSE:
+		wait += 0.1;
+	$Shoot_Cooldown_Timer.wait_time = wait;
 	$Laser_Cooldown_Timer.wait_time = float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("laserCooldown"))/1000.0;
 	$Forcefield_Timer.wait_time = FORCEFIELD_COOLDOWN_PMODIFIER + float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("forcefieldCooldown"))/1000.0;
 	$Teleport_Timer.wait_time = DASH_COOLDOWN_PMODIFIER + float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("dashCooldown"))/1000.0;
@@ -506,7 +509,7 @@ func enable_powerup(type):
 		$Powerup_Timer.wait_time = 6;
 		text = "[color=blue]˅˅˅˅˅˅^^ DASH RATE UP ^^";
 	elif type == 3:
-		BULLET_COOLDOWN_PMODIFIER = -0.2;
+		BULLET_COOLDOWN_PMODIFIER = -0.1;
 		$Powerup_Timer.wait_time = 8;
 		text = "[color=red]^^ BULLET FIRE RATE UP ^^";
 	elif type == 4:
