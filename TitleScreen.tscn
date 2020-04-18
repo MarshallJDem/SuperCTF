@@ -126,8 +126,8 @@ custom_fonts/mono_font = ExtResource( 10 )
 custom_fonts/normal_font = ExtResource( 18 )
 custom_colors/default_color = Color( 0.368627, 0.368627, 0.368627, 1 )
 bbcode_enabled = true
-bbcode_text = "[center]-RANKED CAPTURE THE FLAG-"
-text = "-RANKED CAPTURE THE FLAG-"
+bbcode_text = "[center]RANKED MULTIPLAYER CAPTURE THE FLAG"
+text = "RANKED MULTIPLAYER CAPTURE THE FLAG"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
