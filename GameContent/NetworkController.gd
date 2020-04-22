@@ -71,7 +71,7 @@ func _process(delta):
 		client.poll();
 	if $Round_Start_Timer.time_left != 0:
 		get_tree().get_root().get_node("MainScene/UI_Layer/Countdown_Label").text = str(int($Round_Start_Timer.time_left) + 1);
-	if !isSkirmish and pollServerStatus and $HTTPRequest_GameServerPollStatus.get_http_client_status() == 0:
+	if !isSkirmish and $ServerPollStatus_Timer.time_left == 0 and $HTTPRequest_GameServerPollStatus.get_http_client_status() == 0:
 		$HTTPRequest_GameServerPollStatus.request(Globals.mainServerIP + "pollGameServerStatus", ["authorization: Bearer " + (Globals.serverPrivateToken)], false);
 
 
@@ -113,7 +113,6 @@ func start_server():
 	if isSkirmish:
 		start_match();
 
-var pollServerStatus = false;
 
 func _HTTP_GameServerUpdateStatus_Completed(result, response_code, headers, body):
 	if get_tree().is_network_server():
@@ -126,19 +125,21 @@ func _HTTP_GameServerMakeAvailable_Completed(result, response_code, headers, bod
 	if get_tree().is_network_server():
 		if(response_code == 200):
 			var json = JSON.parse(body.get_string_from_utf8());
-			pollServerStatus = true;
 		else:
 			pass;
 
 func _HTTP_GameServerPollStatus_Completed(result, response_code, headers, body):
+	$ServerPollStatus_Timer.start();
 	if get_tree().is_network_server():
 		if(response_code == 200):
 			var json = JSON.parse(body.get_string_from_utf8());
 			var matchID = json.result.matchID;
+			# If we are already aware of this match
+			if Globals.matchID == matchID:
+				return;
 			Globals.matchID = matchID;
 			if matchID:
-				pollServerStatus = false;
-				print("Getting Matchh Data for MatchID = " + str(matchID));
+				print("Getting Match Data for MatchID = " + str(matchID));
 				updateGameServerStatus(2);
 				$HTTPRequest_GetMatchData.request(Globals.mainServerIP + "getMatchData?matchID=" + str(matchID), ["authorization: Bearer " + (Globals.serverPrivateToken)], false);
 		else:
@@ -166,8 +167,6 @@ func _HTTP_GetMatchData_Completed(result, response_code, headers, body):
 				i += 1;
 			print(players);
 			start_match();
-		else: #If it failed, try repolling the server status.
-			pollServerStatus = true;
 
 remotesync func set_game_var(variable, value):
 	game_vars[variable] = value;
