@@ -1,11 +1,11 @@
 extends Node2D
 
-var table = ['"Dads in Space" - Stephen Walking','"Crystal Dolphin" - Engelwood','"Fireball" - Pitbull', 
+var table = ['"Dads in Space" - Stephen Walking','"Crystal Dolphin" - Engelwood', 
 '"Back Again" - Archie', '"Oh Mama" - Run The Jewels', '"Good Time" - Nightcore Remix','"Superman" - Goldfinger',
-'"Bubbletea" - Dark Cat', '"When Can I See You Again" - Nightcore Remix', '"Hello" - Martin Solveig'];
-var db_table = [1,6,4,7,9,10,4,5,10,5];
+'"Bubbletea" - Dark Cat', '"When Can I See You Again" - Nightcore Remix'];
+var db_table = [1,6,7,9,10,4,5,10];
 var current_song = -1;
-var song_ids = [0,1,2,3,4,5,6,7,8,9];
+var song_ids = [0,1,2,3,4,5,6,7];
 
 
 # Called when the node enters the scene tree for the first time.
