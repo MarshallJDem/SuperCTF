@@ -42,7 +42,7 @@ var result_match_id = -1;
 
 # ----- Constants -----
 const game_var_defaults = {"playerSpeed" : 250, "playerLagTime" : 50,
-	"bulletSpeed" : 400, "bulletCooldown" : 150, 
+	"bulletSpeed" : 400, "bulletCooldown" : 250, 
 	"laserChargeTime" : 650, "laserCooldown" : 500, 
 	"laserWidth" :15, "laserLength" : 1300,
 	"dashDistance" : 2000, "dashCooldown" : 1000, 

@@ -8,6 +8,7 @@ var team_id = -1;
 var BASE_SPEED = 200;
 const AIMING_SPEED = 15;
 const SPRINT_SPEED = 50;
+const FLAG_SLOWDOWN_SPEED = -50;
 var TELEPORT_SPEED = 2000;
 var POWERUP_SPEED = 0;
 var BULLET_COOLDOWN_PMODIFIER = 0;
@@ -118,49 +119,13 @@ func _input(event):
 				if $Grenade_Cooldown_Timer.time_left == 0:
 					toggle_grenade();
 		elif event is InputEventMouseButton:
-			IS_CONTROLLED_BY_MOUSE = true;
-			if event.button_index == BUTTON_LEFT:
-				if event.pressed: # Click down
-					# Only accepts clicks if we're not aiming a laser
-					if $Laser_Timer.time_left == 0:
-						if $Flag_Holder.get_child_count() == 0:
-							if current_weapon == 0:
-								if $Shoot_Cooldown_Timer.time_left == 0:
-									call_deferred("shoot_bullet", ((get_global_mouse_position() - global_position).normalized()));
-							else:
-								var direction = (get_global_mouse_position() - global_position).normalized();
-								laser_direction = direction;
-								laser_position = get_node("Bullet_Starts/" + String($Sprite_Top.frame % $Sprite_Top.hframes)).position;
-								# If we are still in input phase, update direction
-								if $Laser_Input_Timer.time_left == 0:
-									start_laser_input();
-							sprintEnabled = false;
-						else: # Otherwise drop our flag
-							drop_current_flag($Flag_Holder.get_global_position());
-							rpc_id(1, "send_drop_flag", $Flag_Holder.get_global_position());
-				else: # Click up
-					pass
-			if event.button_index == BUTTON_RIGHT:
-				IS_CONTROLLED_BY_MOUSE = true;
-				if event.pressed:
-					# Only accepts clicks if we're not aiming a laser
-					if $Laser_Timer.time_left == 0:
-						# If were not holding a flag
-						if $Flag_Holder.get_child_count() == 0:
-							if $Grenade_Cooldown_Timer.time_left == 0:
-								grenade_enabled = true;
-								aim_grenade(get_local_mouse_position().normalized());
-							sprintEnabled = false;
-						else: # Otherwise drop our flag
-							drop_current_flag($Flag_Holder.get_global_position());
-							rpc_id(1, "send_drop_flag", $Flag_Holder.get_global_position());
-				else:
-					if grenade_enabled:
-						# Fire grenade on right mouse up
-						if Globals.testing:
-							shoot_grenade(self.global_position, self.global_position + last_grenade_position, OS.get_system_time_msecs());
-						else:
-							rpc("shoot_grenade",self.global_position, self.global_position + last_grenade_position, OS.get_system_time_msecs() - Globals.match_start_time);
+			if !event.is_pressed():
+				if grenade_enabled:
+					# Fire grenade on right mouse up
+					if Globals.testing:
+						shoot_grenade(self.global_position, self.global_position + last_grenade_position, OS.get_system_time_msecs());
+					else:
+						rpc("shoot_grenade",self.global_position, self.global_position + last_grenade_position, OS.get_system_time_msecs() - Globals.match_start_time);
 		elif event is InputEventMouseMotion:
 			if IS_CONTROLLED_BY_MOUSE and grenade_enabled:
 				aim_grenade(get_local_mouse_position().normalized());
@@ -171,8 +136,6 @@ func _process(delta):
 	BASE_SPEED = new_speed;
 	TELEPORT_SPEED = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("dashDistance");
 	var wait = BULLET_COOLDOWN_PMODIFIER + float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("bulletCooldown"))/1000.0;
-	if !IS_CONTROLLED_BY_MOUSE:
-		wait += 0.1;
 	$Shoot_Cooldown_Timer.wait_time = wait;
 	$Laser_Cooldown_Timer.wait_time = float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("laserCooldown"))/1000.0;
 	$Forcefield_Timer.wait_time = FORCEFIELD_COOLDOWN_PMODIFIER + float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("forcefieldCooldown"))/1000.0;
@@ -409,6 +372,8 @@ func move_on_inputs(teleport = false):
 	
 	
 	var move_speed = speed + POWERUP_SPEED;
+	if($Flag_Holder.get_child_count() > 0):
+		move_speed += FLAG_SLOWDOWN_SPEED;
 	if sprintEnabled:
 		move_speed += SPRINT_SPEED;
 	if teleport:
@@ -430,6 +395,7 @@ func shoot_on_inputs():
 	input.x = (1 if Input.is_key_pressed(KEY_RIGHT) else 0) - (1 if Input.is_key_pressed(KEY_LEFT) else 0)
 	input.y = (1 if Input.is_key_pressed(KEY_DOWN) else 0) - (1 if Input.is_key_pressed(KEY_UP) else 0)
 	input = input.normalized();
+	
 	if input != Vector2.ZERO:
 		
 		IS_CONTROLLED_BY_MOUSE = false;
@@ -449,6 +415,36 @@ func shoot_on_inputs():
 			elif $Laser_Timer.time_left == 0:
 				start_laser_input();
 	else:
+		# Check for mouse input
+		if Input.is_action_pressed("clickL"):
+			IS_CONTROLLED_BY_MOUSE = true;
+			# Only accepts clicks if we're not aiming a laser
+			if $Laser_Timer.time_left == 0:
+				if $Flag_Holder.get_child_count() == 0:
+					if current_weapon == 0:
+						if $Shoot_Cooldown_Timer.time_left == 0:
+							call_deferred("shoot_bullet", ((get_global_mouse_position() - global_position).normalized()));
+					else:
+						var direction = (get_global_mouse_position() - global_position).normalized();
+						laser_direction = direction;
+						laser_position = get_node("Bullet_Starts/" + String($Sprite_Top.frame % $Sprite_Top.hframes)).position;
+						# If we are still in input phase, update direction
+						if $Laser_Input_Timer.time_left == 0:
+							start_laser_input();
+					sprintEnabled = false;
+				else: # Otherwise drop our flag
+					drop_current_flag($Flag_Holder.get_global_position());
+					rpc_id(1, "send_drop_flag", $Flag_Holder.get_global_position());
+		if Input.is_action_pressed("clickR"):
+			# If were not holding a flag
+			if $Flag_Holder.get_child_count() == 0:
+				if $Grenade_Cooldown_Timer.time_left == 0:
+					grenade_enabled = true;
+					aim_grenade(get_local_mouse_position().normalized());
+				sprintEnabled = false;
+			else: # Otherwise drop our flag
+				drop_current_flag($Flag_Holder.get_global_position());
+				rpc_id(1, "send_drop_flag", $Flag_Holder.get_global_position());
 		if started_aiming_grenade and !IS_CONTROLLED_BY_MOUSE:
 			if Globals.testing:
 				shoot_grenade(self.global_position, self.global_position + last_grenade_position, OS.get_system_time_msecs());

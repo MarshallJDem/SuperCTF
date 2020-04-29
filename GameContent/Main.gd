@@ -8,13 +8,15 @@ func _ready():
 		$Test_Player.queue_free();
 		
 func _process(delta):
-	if abs($Music_Audio.pitch_scale - target_music_pitch) < 0.03:
-		$Music_Audio.set_pitch_scale(target_music_pitch);
-	else:
-		var change = 0.4 * delta;
-		if $Music_Audio.pitch_scale > target_music_pitch:
-			change *= -1;
-		$Music_Audio.set_pitch_scale($Music_Audio.pitch_scale + change);
+	
+	#if abs($Music_Audio.pitch_scale - target_music_pitch) < 0.03:
+	#	$Music_Audio.set_pitch_scale(target_music_pitch);
+	#else:
+	#	var change = 0.4 * delta;
+	#	if $Music_Audio.pitch_scale > target_music_pitch:
+	#		change *= -1;
+	#	$Music_Audio.set_pitch_scale($Music_Audio.pitch_scale + change);
+	pass;
 	
 	
 var target_music_pitch = 1.0;

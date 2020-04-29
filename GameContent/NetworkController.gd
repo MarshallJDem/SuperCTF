@@ -32,8 +32,9 @@ var round_is_running = false;
 
 func _ready():
 	if Globals.testing:
-		#call_deferred("spawn_flag", 0, Vector2(-200, 0));
-		#call_deferred("spawn_flag", 1, Vector2(-200, 0));
+		
+		flags_data["1"] = {"team_id" : 1, "position" : Vector2(-200, 0), "holder_player_id" : -1};
+		call_deferred("spawn_flag", 1, Vector2(-200, 0));
 		return;
 	if Globals.player_status == 1 or (Globals.isServer and Globals.port == 42402):
 		isSkirmish = true;
