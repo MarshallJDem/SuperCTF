@@ -33,6 +33,7 @@ func _skip_pressed(meta):
 	play_next_song();
 
 func play_next_song():
+	return;
 	current_song = (current_song + 1) % table.size();
 	Globals.write_save_data();
 	$CanvasLayer/Music_Background/Music_Title.text = table[song_ids[current_song]] + "  |  ";

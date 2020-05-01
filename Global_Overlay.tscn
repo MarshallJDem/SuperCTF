@@ -36,6 +36,7 @@ __meta__ = {
 }
 
 [node name="Music_Background" type="ColorRect" parent="CanvasLayer"]
+visible = false
 margin_left = 1510.0
 margin_top = 1017.0
 margin_right = 1921.0
