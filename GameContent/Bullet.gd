@@ -60,7 +60,7 @@ func move():
 	if $Lag_Comp_Timer.time_left > 0:
 		var puppet_time_elapsed = ((OS.get_system_time_msecs() - Globals.match_start_time) - puppet_time_shot)/1000.0;
 		var puppet_position = initial_puppet_pos + (direction * speed * puppet_time_elapsed);
-		new_pos = lerp(puppet_position, real_position, ($Lag_Comp_Timer.time_left/$Lag_Comp_Timer.wait_time))
+		new_pos = lerp(puppet_position, real_position, 1-($Lag_Comp_Timer.time_left/$Lag_Comp_Timer.wait_time))
 	else:
 		new_pos = real_position;
 	var change = move_and_collide(new_pos - position);
