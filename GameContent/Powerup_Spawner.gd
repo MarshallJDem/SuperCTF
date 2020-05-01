@@ -2,6 +2,8 @@ extends Node2D
 
 var spawner_id = 0;
 
+var Powerup = preload("res://GameContent/Powerup.tscn");
+
 
 func _ready():
 	$Spawner_Timer.connect("timeout", self, "_spawner_timer_ended");
@@ -18,7 +20,7 @@ func _process(delta):
 		$Text.bbcode_text = "[center][color=black]POWERUP IN\n" + str(int($Spawner_Timer.time_left) + 1);
 
 remotesync func spawn_powerup():
-	var powerup = load("res://GameContent/Powerup.tscn").instance();
+	var powerup = Powerup.instance();
 	powerup.position = position + Vector2(0, -15);
 	powerup.type = randi()%5+1; #%11+1 means random number 1-10
 	print(powerup.type);

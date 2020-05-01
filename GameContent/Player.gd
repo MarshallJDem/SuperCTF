@@ -59,6 +59,15 @@ var shooting_top_atlas_red = preload("res://Assets/Player/shooting_top_R.png");
 var idle_top_atlas_blue = preload("res://Assets/Player/idle_top_B.png");
 var idle_top_atlas_red = preload("res://Assets/Player/idle_top_R.png");
 
+var Muzzle_Bullet = preload("res://GameContent/Muzzle_Bullet.tscn");
+var Bullet = preload("res://GameContent/Bullet.tscn");
+var Forcefield = preload("res://GameContent/Forcefield.tscn");
+var Laser = preload("res://GameContent/Laser.tscn");
+var Grenade = preload("res://GameContent/Grenade.tscn");
+var Ghost_Trail = preload("res://GameContent/Ghost_Trail.tscn");
+var Player_Death = preload("res://GameContent/Player_Death.tscn");
+
+
 func _ready():
 	camera_ref = $Center_Pivot/Camera;
 	
@@ -241,7 +250,7 @@ func forcefield_placed():
 	rpc("spawn_forcefield", position, team_id);
 	$Forcefield_Timer.start();
 	if Globals.testing:
-		var forcefield = load("res://GameContent/Forcefield.tscn").instance();
+		var forcefield = Forcefield.instance();
 		forcefield.position = position;
 		forcefield.team_id = team_id;
 		get_tree().get_root().get_node("MainScene").add_child(forcefield);
@@ -253,7 +262,7 @@ func _forcefield_timer_ended():
 # Called by client telling everyone to spawn a forcefield in a spot
 # TODO - in future this should be handled by servers - not the client.
 remotesync func spawn_forcefield(pos, team_id):
-	var forcefield = load("res://GameContent/Forcefield.tscn").instance();
+	var forcefield = Forcefield.instance();
 	forcefield.position = pos;
 	forcefield.player_id = player_id;
 	forcefield.team_id = team_id;
@@ -265,7 +274,7 @@ func shoot_laser():
 	if is_network_master():
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE);
 	# Only run if we're the server
-	var laser = load("res://GameContent/Laser.tscn").instance();
+	var laser = Laser.instance();
 	get_tree().get_root().get_node("MainScene").add_child(laser);
 	laser.position = position + laser_position;
 	laser.rotation = Vector2(0,0).angle_to_point(laser_direction) + PI/2;
@@ -320,7 +329,7 @@ func shoot_bullet(d):
 func spawn_bullet(pos, player_id, direction, time_shot, bullet_name = null):
 	
 	# Muzzle Flair
-	var particles = load("res://GameContent/Muzzle_Bullet.tscn").instance();
+	var particles = Muzzle_Bullet.instance();
 	particles.team_id = team_id;
 	#get_tree().get_root().get_node("MainScene").add_child(particles);
 	call_deferred("add_child", particles);
@@ -338,7 +347,7 @@ func spawn_bullet(pos, player_id, direction, time_shot, bullet_name = null):
 		t.queue_free();
 	
 	# Initialize Bullet
-	var bullet = load("res://GameContent/Bullet.tscn").instance();
+	var bullet = Bullet.instance();
 	bullet.position = pos;
 	bullet.direction = direction;
 	bullet.player_id = player_id;
@@ -479,7 +488,7 @@ remotesync func shoot_grenade(from_pos, to_pos, time_shot):
 	started_aiming_grenade = false;
 	grenade_enabled = false;
 	$Grenade_Cooldown_Timer.start();
-	var node = load("res://GameContent/Grenade.tscn").instance();
+	var node = Grenade.instance();
 	node.initial_real_pos = from_pos;
 	node.target_pos = to_pos;
 	node.initial_time_shot = time_shot;
@@ -532,7 +541,7 @@ func _powerup_timer_ended():
 remotesync func create_ghost_trail(start, end):
 	$Teleport_Audio.play();
 	for i in range(6):
-		var node = load("res://GameContent/Ghost_Trail.tscn").instance();
+		var node = Ghost_Trail.instance();
 		get_tree().get_root().get_node("MainScene").add_child(node);
 		node.position = start;
 		node.position.x = node.position.x + ((i) * (end.x - start.x)/4)
@@ -668,7 +677,7 @@ func die():
 		$Killed_Audio.play();
 
 func spawn_death_particles():
-	var node = load("res://GameContent/Player_Death.tscn").instance();
+	var node = Player_Death.instance();
 	node.position = position;
 	node.xFrame = $Sprite_Top.frame_coords.x;
 	node.z_index = z_index;

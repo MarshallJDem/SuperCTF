@@ -16,6 +16,7 @@ var allowCommands = true;
 var useSecure = true;
 var gameserverStatus = 0;
 
+
 # Client data
 var localPlayerID;
 var localPlayerTeamID;

@@ -98,7 +98,7 @@ func preliminary_death():
 
 
 func spawn_death_particles():
-	var particles = load("res://GameContent/Bullet_Death_Particles.tscn").instance();
+	var particles = get_tree().get_root().get_node("MainScene").Bullet_Death_Particles.instance();
 	particles.position = position;
 	particles.rotation = rotation;
 	particles.z_index = z_index;

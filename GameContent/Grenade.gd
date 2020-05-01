@@ -13,6 +13,8 @@ var initial_real_pos;
 var grenade_atlas_blue = preload("res://Assets/Weapons/grenade_b.png");
 var grenade_atlas_red = preload("res://Assets/Weapons/grenade_r.png");
 
+var Grenade_Explosion = preload("res://GameContent/Grenade_Explosion.tscn");
+
 func _ready():
 	$Detonation_Timer.connect("timeout", self, "_detonation_timer_ended");
 	$Animation_Timer.connect("timeout", self, "_animation_timer_ended");
@@ -52,7 +54,7 @@ func _animation_timer_ended():
 	$Sprite.frame = ($Sprite.frame + 1) % $Sprite.hframes;
 
 func explode():
-	var explosion = load("res://GameContent/Grenade_Explosion.tscn").instance();
+	var explosion = Grenade_Explosion.instance();
 	explosion.position = position;
 	explosion.z_index = z_index;
 	explosion.team_id = team_id;

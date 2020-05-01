@@ -1,5 +1,6 @@
 extends Node2D
 
+var LeaderboardCell = preload("res://LeaderboardCell.tscn");
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -73,7 +74,7 @@ func load_leaderboard(leaderboard_data):
 	var columns = 8;
 	for i in range(80):
 		var data = leaderboard_data[i];
-		var cell = load("res://LeaderboardCell.tscn").instance();
+		var cell = LeaderboardCell.instance();
 		cell.mmr = data.mmr;
 		cell.player_name = data.name;
 		cell.player_id = data.uid;
