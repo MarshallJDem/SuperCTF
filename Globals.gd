@@ -1,7 +1,7 @@
 extends Node
 
 # Whether to run in testing mode (for development uses)
-var testing = false;
+var testing = true;
 
 #Game Servers (Both clients and servers use these vars, but in different ways. overlapping would not work)
 var serverIP = "";
@@ -42,7 +42,7 @@ var result_match_id = -1;
 
 # ----- Constants -----
 const game_var_defaults = {"playerSpeed" : 250, "playerLagTime" : 50,
-	"bulletSpeed" : 400, "bulletCooldown" : 250, 
+	"bulletSpeed" : 400, "bulletCooldown" : 350, 
 	"laserChargeTime" : 650, "laserCooldown" : 500, 
 	"laserWidth" :15, "laserLength" : 1300,
 	"dashDistance" : 2000, "dashCooldown" : 1000, 
