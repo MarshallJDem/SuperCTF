@@ -436,10 +436,10 @@ func _client_disconnected(id):
 		
 		rpc("update_players_data", players, round_is_running);
 		if !isSkirmish:
-			if players.size() == 0:
+			if get_tree().get_network_connected_peers().size() == 0:
 				# If this is an actual match, if after 15 seconds go by and there is still 0 connections cancel the match
 				yield(get_tree().create_timer(15), "timeout");
-				if players.size() == 0:
+				if get_tree().get_network_connected_peers().size() == 0:
 					get_tree().set_network_peer(null);
 					start_server();
 	
