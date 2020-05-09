@@ -43,7 +43,7 @@ func _ready():
 	get_tree().connect("network_peer_connected",self, "_client_connected");
 	get_tree().connect("network_peer_disconnected",self, "_client_disconnected");
 	get_tree().connect("connected_to_server",self, "_connection_ok");
-	get_tree().connect("connection_failed",self, "_connection_fail");
+	get_tree().connect("connection_failed",self, "_connection_failed");
 	get_tree().connect("server_disconnected",self, "_server_disconnect");
 	var _err = $Round_End_Timer.connect("timeout", self, "_round_end_timer_ended");
 	_err = $Round_Start_Timer.connect("timeout", self, "_round_start_timer_ended");
@@ -194,7 +194,7 @@ func updateGameServerStatus(status = null):
 		$HTTPRequest_GameServerUpdateStatus.request(Globals.mainServerIP + "updateGameServerStatus?status=" + String(Globals.gameserverStatus), ["authorization: Bearer " + (Globals.serverPrivateToken)], false);
 # Joins a server
 func join_server():
-	print("joining server");
+	print("Attempting to join server");
 	client = WebSocketClient.new();
 	
 	var url = "ws://" + Globals.serverIP;
@@ -258,6 +258,10 @@ func spawn_flag(flag_id, home_position):
 func _connection_ok():
 	print("Connection OK");
 	rpc_id(1, "user_ready", get_tree().get_network_unique_id(), Globals.userToken);
+
+func _connection_failed():
+	# Try again cuz this is probably a 1 off issue
+	join_server();
 
 func update_player_objects():
 	# Delete players that have left and spawn new players
