@@ -374,12 +374,14 @@ remote func user_ready(id, userToken):
 	print("User Ready");
 	# Now if we are the server we will add this player to the queue of players to be checked
 	if get_tree().is_network_server():
-		# Wait for match data to come in
-		while(true):
-			if(Globals.allowedPlayers != []):
-				break;
-			print("Waiting for allowed match data to download");
-			yield(get_tree().create_timer(0.5), "timeout");
+		
+		# Wait for match data to come in if this isn't a skirmish
+		if(!isSkirmish):
+			while(true):
+				if(Globals.allowedPlayers != []):
+					break;
+				print("Waiting for allowed match data to download");
+				yield(get_tree().create_timer(0.5), "timeout");
 		var http = HTTPRequest.new()
 		add_child(http);
 		http.connect("request_completed", self, "_HTTP_GameServerCheckUser_Completed")
