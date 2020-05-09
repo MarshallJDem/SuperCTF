@@ -433,7 +433,15 @@ func _client_disconnected(id):
 		if isSkirmish:
 			if players.size() == 0:
 				game_vars = Globals.game_var_defaults.duplicate();
+		
 		rpc("update_players_data", players, round_is_running);
+		if !isSkirmish:
+			if players.size() == 0:
+				# If this is an actual match, if after 15 seconds go by and there is still 0 connections cancel the match
+				yield(get_tree().create_timer(15), "timeout");
+				if players.size() == 0:
+					get_tree().set_network_peer(null);
+					start_server();
 	
 
 # Goes back to title screen and drops the socket connection and resets the game
