@@ -151,6 +151,8 @@ func _HTTP_GetMatchData_Completed(result, response_code, headers, body):
 		if(response_code == 200):
 			var json = JSON.parse(body.get_string_from_utf8());
 			# Have to parse again because players is stored as a JSON string
+			
+			yield(get_tree().create_timer(5), "timeout");
 			Globals.allowedPlayers = JSON.parse(json.result.matchData.players).result;
 			print("Found match and retrieved matchData.");
 			var i = 0;
@@ -372,6 +374,12 @@ remote func user_ready(id, userToken):
 	print("User Ready");
 	# Now if we are the server we will add this player to the queue of players to be checked
 	if get_tree().is_network_server():
+		# Wait for match data to come in
+		while(true):
+			if(Globals.allowedPlayers != []):
+				break;
+			print("Waiting for allowed match data to download");
+			yield(get_tree().create_timer(0.5), "timeout");
 		var http = HTTPRequest.new()
 		add_child(http);
 		http.connect("request_completed", self, "_HTTP_GameServerCheckUser_Completed")
