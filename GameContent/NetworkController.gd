@@ -152,7 +152,6 @@ func _HTTP_GetMatchData_Completed(result, response_code, headers, body):
 			var json = JSON.parse(body.get_string_from_utf8());
 			# Have to parse again because players is stored as a JSON string
 			
-			yield(get_tree().create_timer(5), "timeout");
 			Globals.allowedPlayers = JSON.parse(json.result.matchData.players).result;
 			print("Found match and retrieved matchData.");
 			var i = 0;
