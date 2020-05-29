@@ -32,9 +32,8 @@ var round_is_running = false;
 
 func _ready():
 	if Globals.testing:
-		
-		flags_data["0"] = {"team_id" : 0, "position" : Vector2(-1100, 0), "holder_player_id" : -1};
-		flags_data["1"] = {"team_id" : 1, "position" : Vector2(1100, 0), "holder_player_id" : -1};
+		flags_data["0"] = {"team_id" : 0, "position" : get_tree().get_root().get_node("MainScene/Map/Flag_Home-" + str(0)).position, "holder_player_id" : -1};
+		flags_data["1"] = {"team_id" : 1, "position" : get_tree().get_root().get_node("MainScene/Map/Flag_Home-" + str(1)).position, "holder_player_id" : -1};
 		spawn_flag(0);
 		spawn_flag(1);
 		#call_deferred("spawn_flag", 1, Vector2(-200, 0));

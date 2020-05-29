@@ -14,7 +14,7 @@
 [ext_resource path="res://fonts/Pixel_Game_UI.tres" type="DynamicFont" id=12]
 [ext_resource path="res://Assets/GUI/W-Key-GUI.png" type="Texture" id=13]
 [ext_resource path="res://Assets/GUI/Q-Key-GUI.png" type="Texture" id=14]
-[ext_resource path="res://GameContent/Maps/Map1.tscn" type="PackedScene" id=16]
+[ext_resource path="res://GameContent/Maps/TehoMap1.tscn" type="PackedScene" id=15]
 [ext_resource path="res://Assets/Sound/score.wav" type="AudioStream" id=20]
 [ext_resource path="res://Assets/Sound/Countdown.wav" type="AudioStream" id=21]
 [ext_resource path="res://Assets/GUI/D-Key-GUI.png" type="Texture" id=27]
@@ -421,8 +421,6 @@ __meta__ = {
 wait_time = 3.0
 one_shot = true
 
-[node name="Map" parent="." instance=ExtResource( 16 )]
-
 [node name="Score_Audio" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 20 )
 volume_db = 2.0
@@ -434,3 +432,5 @@ volume_db = 2.0
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
 zoom = Vector2( 4, 4 )
+
+[node name="Map" parent="." instance=ExtResource( 15 )]
