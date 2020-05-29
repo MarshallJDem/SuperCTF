@@ -33,8 +33,11 @@ var round_is_running = false;
 func _ready():
 	if Globals.testing:
 		
-		flags_data["1"] = {"team_id" : 1, "position" : Vector2(-200, 0), "holder_player_id" : -1};
-		call_deferred("spawn_flag", 1, Vector2(-200, 0));
+		flags_data["0"] = {"team_id" : 0, "position" : Vector2(-1100, 0), "holder_player_id" : -1};
+		flags_data["1"] = {"team_id" : 1, "position" : Vector2(1100, 0), "holder_player_id" : -1};
+		spawn_flag(0);
+		spawn_flag(1);
+		#call_deferred("spawn_flag", 1, Vector2(-200, 0));
 		return;
 	if Globals.player_status == 1 or (Globals.isServer and Globals.port == 42402):
 		isSkirmish = true;
@@ -234,22 +237,16 @@ remotesync func set_scores(new_scores):
 	print("current scores: " + str(scores));
 	
 
-func spawn_flag(flag_id, home_position):
-	# Spawn Flag Home
-	var flag_holder = load("res://GameContent/Flag_Home.tscn").instance();
-	flag_holder.position = home_position;
-	flag_holder.team_id = flags_data[str(flag_id)]["team_id"];
-	flag_holder.flag_id = flag_id;
-	flag_holder.name = "Flag_Holder-" + str(flag_id);
-	get_tree().get_root().get_node("MainScene").add_child(flag_holder);
+func spawn_flag(flag_id):
+	
 	# Spawn Flag
 	var flag = load("res://GameContent/Flag.tscn").instance();
 	flag.position = flags_data[str(flag_id)]["position"];
 	flag.flag_id = flag_id;
 	flag.set_team(flags_data[str(flag_id)]["team_id"]);
-	flag.home_position = home_position;
+	flag.home_position = get_tree().get_root().get_node("MainScene/Map/Flag_Home-" + str(flag_id)).position;
 	flag.name = "Flag-" + str(flag_id);
-	get_tree().get_root().get_node("MainScene").add_child(flag);
+	get_tree().get_root().get_node("MainScene").call_deferred("add_child", flag);
 	
 	if flags_data[str(flag_id)]["holder_player_id"] != -1:
 		get_tree().get_root().get_node("MainScene/Players/P" + str(flags_data[str(flag_id)]["holder_player_id"])).call_deferred("take_flag",(flag_id));
@@ -498,10 +495,6 @@ func reset_game_objects(kill_players = false):
 	for flag in get_tree().get_nodes_in_group("Flags"):
 		flag.set_name(flag.name + "DELETING");
 		flag.queue_free();
-	# Remove any old flag homes
-	for flag_home in get_tree().get_nodes_in_group("Flag_Homes"):
-		flag_home.set_name(flag_home.name + "DELETING");
-		flag_home.queue_free();
 	# Remove any old projectiles
 	for projectile in get_tree().get_nodes_in_group("Projectiles"):
 		projectile.set_name(projectile.name + "DELETING");
@@ -532,10 +525,10 @@ remotesync func load_new_round():
 		# Update score
 		rpc("set_scores", scores);
 	
-	flags_data[str(0)] = {"holder_player_id" : -1, "position": Vector2(-1100, 0), "team_id" : 0};
-	flags_data[str(1)] = {"holder_player_id" : -1, "position": Vector2(1100, 0), "team_id" : 1};
-	spawn_flag(0, Vector2(-1100, 0));
-	spawn_flag(1, Vector2(1100, 0));
+	flags_data[str(0)] = {"holder_player_id" : -1, "position": get_tree().get_root().get_node("MainScene/Map/Flag_Home-" + str(0)).position, "team_id" : 0};
+	flags_data[str(1)] = {"holder_player_id" : -1, "position": get_tree().get_root().get_node("MainScene/Map/Flag_Home-" + str(1)).position, "team_id" : 1};
+	spawn_flag(0);
+	spawn_flag(1);
 	
 	get_tree().get_root().get_node("MainScene/UI_Layer").clear_big_label_text();
 	$Round_Start_Timer.set_wait_time(3);
@@ -562,8 +555,8 @@ remote func load_mid_round(players, scores, round_start_timer_timeleft, round_nu
 	self.flags_data = flags_data;
 	
 	# Spawn flags
-	spawn_flag(0, Vector2(-1100, 0));
-	spawn_flag(1, Vector2(1100, 0));
+	spawn_flag(0);
+	spawn_flag(1);
 	
 	Globals.result_team0_score = scores[0];
 	Globals.result_team1_score = scores[1];
