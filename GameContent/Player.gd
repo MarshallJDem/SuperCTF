@@ -46,6 +46,12 @@ var last_position = Vector2(0,0);
 # Whether the grenade weapon is currently enabled
 var grenade_enabled = false;
 
+# Kits / Classes
+var grenade_equipped = false;
+var laser_equipped = false;
+var bullet_equipped = false;
+enum Kits {Bullet, Laser, Grenade};
+
 
 var bullet_atlas_blue = preload("res://Assets/Weapons/bullet_b.png");
 var bullet_atlas_red = preload("res://Assets/Weapons/bullet_r.png");
@@ -70,6 +76,7 @@ var Player_Death = preload("res://GameContent/Player_Death.tscn");
 
 func _ready():
 	camera_ref = $Center_Pivot/Camera;
+	set_kit(Kits.Bullet);
 	
 	last_position = position;
 	
@@ -102,6 +109,12 @@ func _input(event):
 		return;
 	if control:
 		if event is InputEventKey and event.pressed:
+			if event.scancode == KEY_1:
+				set_kit(Kits.Bullet);
+			if event.scancode == KEY_2:
+				set_kit(Kits.Laser);
+			if event.scancode == KEY_3:
+				set_kit(Kits.Grenade);
 			if event.scancode == KEY_T:
 				get_tree().get_root().get_node("MainScene/NetworkController").rpc("test_ping");
 			if event.scancode == KEY_CONTROL:
@@ -129,14 +142,14 @@ func _input(event):
 					toggle_grenade();
 		elif event is InputEventMouseButton:
 			if !event.is_pressed():
-				if grenade_enabled:
+				if grenade_equipped and grenade_enabled:
 					# Fire grenade on right mouse up
 					if Globals.testing:
 						shoot_grenade(self.global_position, self.global_position + last_grenade_position, OS.get_system_time_msecs());
 					else:
 						rpc("shoot_grenade",self.global_position, self.global_position + last_grenade_position, OS.get_system_time_msecs() - Globals.match_start_time);
 		elif event is InputEventMouseMotion:
-			if IS_CONTROLLED_BY_MOUSE and grenade_enabled:
+			if IS_CONTROLLED_BY_MOUSE and grenade_equipped and grenade_enabled:
 				aim_grenade(get_local_mouse_position().normalized());
 func _process(delta):
 	var new_speed = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("playerSpeed");
@@ -206,7 +219,21 @@ func _process(delta):
 		color = "red";
 	$Label_Name.bbcode_text = "[center][color=" + color + "]" + player_name;
 	last_position = position;
-	
+
+func set_kit(kit):
+	bullet_equipped = false;
+	laser_equipped = false;
+	grenade_equipped = false;
+	if kit == Kits.Bullet:
+		bullet_equipped = true;
+		current_weapon = 0;
+	elif kit == Kits.Laser:
+		laser_equipped = true;
+		current_weapon = 1;
+	elif kit == Kits.Grenade:
+		grenade_equipped = true;
+
+
 remote func send_start_laser(direction, player_pos, frame):
 	if get_tree().is_network_server():# Only run if it's the server
 		var clients = get_tree().get_network_connected_peers();
@@ -242,7 +269,8 @@ func _laser_input_timer_ended():
 	
 var current_weapon = 0;
 func switch_weapons():
-	current_weapon = 1 if current_weapon == 0 else 0;
+	return;
+	#current_weapon = 1 if current_weapon == 0 else 0;
 
 # Called when the player attempts to place a forcefield
 # This function will either place it in the appropriate spot or deny it (bad location or something)
@@ -411,11 +439,11 @@ func shoot_on_inputs():
 			drop_current_flag($Flag_Holder.get_global_position());
 			if !Globals.testing:
 				rpc_id(1, "send_drop_flag", $Flag_Holder.get_global_position());
-		elif grenade_enabled and $Grenade_Cooldown_Timer.time_left == 0:
+		elif grenade_equipped and grenade_enabled and $Grenade_Cooldown_Timer.time_left == 0:
 			aim_grenade(input);
-		elif current_weapon == 0 and $Shoot_Cooldown_Timer.time_left == 0:
+		elif current_weapon == 0 and bullet_equipped and $Shoot_Cooldown_Timer.time_left == 0:
 			shoot_bullet(input);
-		elif current_weapon == 1 and $Laser_Cooldown_Timer.time_left == 0:
+		elif current_weapon == 1 and laser_equipped and $Laser_Cooldown_Timer.time_left == 0:
 			# If we are still in input phase, update direction
 			if $Laser_Input_Timer.time_left != 0:
 				laser_direction = input;
@@ -429,16 +457,20 @@ func shoot_on_inputs():
 			# Only accepts clicks if we're not aiming a laser
 			if $Laser_Timer.time_left == 0:
 				if $Flag_Holder.get_child_count() == 0:
-					if current_weapon == 0:
+					if current_weapon == 0 and bullet_equipped:
 						if $Shoot_Cooldown_Timer.time_left == 0:
 							call_deferred("shoot_bullet", ((get_global_mouse_position() - global_position).normalized()));
-					else:
+					elif current_weapon == 1 and laser_equipped:
 						var direction = (get_global_mouse_position() - global_position).normalized();
 						laser_direction = direction;
 						laser_position = get_node("Bullet_Starts/" + String($Sprite_Top.frame % $Sprite_Top.hframes)).position;
 						# If we are still in input phase, update direction
 						if $Laser_Input_Timer.time_left == 0:
 							start_laser_input();
+					elif grenade_equipped:
+						if $Grenade_Cooldown_Timer.time_left == 0:
+							grenade_enabled = true;
+							aim_grenade(get_local_mouse_position().normalized());
 					sprintEnabled = false;
 				else: # Otherwise drop our flag
 					drop_current_flag($Flag_Holder.get_global_position());
@@ -446,7 +478,7 @@ func shoot_on_inputs():
 		if Input.is_action_pressed("clickR"):
 			# If were not holding a flag
 			if $Flag_Holder.get_child_count() == 0:
-				if $Grenade_Cooldown_Timer.time_left == 0:
+				if grenade_equipped and $Grenade_Cooldown_Timer.time_left == 0:
 					grenade_enabled = true;
 					aim_grenade(get_local_mouse_position().normalized());
 				sprintEnabled = false;
@@ -473,13 +505,13 @@ func aim_grenade(direction):
 			if grenade_input_change_buffer < 3:
 				grenade_input_change_buffer += 1;
 				return;
-		last_grenade_position = direction * x * 500;
+		last_grenade_position = direction * x * 1000;
 	else:
 		print(get_global_mouse_position().distance_to(position));
-		if get_local_mouse_position().length() <= 500:
+		if get_local_mouse_position().length() <= 1000:
 			last_grenade_position = get_local_mouse_position();
 		else:
-			last_grenade_position = direction * 500;
+			last_grenade_position = direction * 1000;
 	last_grenade_direction = direction;
 	grenade_input_change_buffer = 0;
 	

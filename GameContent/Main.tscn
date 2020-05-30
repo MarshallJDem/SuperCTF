@@ -4,26 +4,26 @@
 [ext_resource path="res://GameContent/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://GameContent/NetworkController.tscn" type="PackedScene" id=3]
 [ext_resource path="res://GameContent/UI_Layer.gd" type="Script" id=4]
-[ext_resource path="res://fonts/Pixel_Chat.tres" type="DynamicFont" id=5]
+[ext_resource path="res://fonts/Pixel_Game_UI.tres" type="DynamicFont" id=5]
 [ext_resource path="res://GameContent/LineEdit.gd" type="Script" id=6]
 [ext_resource path="res://fonts/Pixel_SubTitle.tres" type="DynamicFont" id=7]
 [ext_resource path="res://fonts/Pixel_Title.tres" type="DynamicFont" id=8]
 [ext_resource path="res://Hover_Button_Style.tres" type="StyleBox" id=9]
 [ext_resource path="res://Pressed_Button_Style.tres" type="StyleBox" id=10]
 [ext_resource path="res://Normal_Button_Style.tres" type="StyleBox" id=11]
-[ext_resource path="res://fonts/Pixel_Game_UI.tres" type="DynamicFont" id=12]
+[ext_resource path="res://fonts/Pixel_Chat.tres" type="DynamicFont" id=12]
 [ext_resource path="res://Assets/GUI/W-Key-GUI.png" type="Texture" id=13]
-[ext_resource path="res://Assets/GUI/Q-Key-GUI.png" type="Texture" id=14]
-[ext_resource path="res://GameContent/Maps/TehoMap1.tscn" type="PackedScene" id=15]
-[ext_resource path="res://Assets/Sound/score.wav" type="AudioStream" id=20]
-[ext_resource path="res://Assets/Sound/Countdown.wav" type="AudioStream" id=21]
-[ext_resource path="res://Assets/GUI/D-Key-GUI.png" type="Texture" id=27]
-[ext_resource path="res://Assets/GUI/S-Key-GUI.png" type="Texture" id=28]
-[ext_resource path="res://Assets/GUI/A-Key-GUI.png" type="Texture" id=29]
-[ext_resource path="res://Assets/GUI/Arrow-Key-GUI.png" type="Texture" id=30]
-[ext_resource path="res://Assets/GUI/Shift-Key-GUI.png" type="Texture" id=31]
-[ext_resource path="res://Assets/GUI/Space-Key-GUI.png" type="Texture" id=32]
-[ext_resource path="res://Assets/GUI/E-Key-GUI.png" type="Texture" id=33]
+[ext_resource path="res://Assets/GUI/A-Key-GUI.png" type="Texture" id=14]
+[ext_resource path="res://Assets/GUI/S-Key-GUI.png" type="Texture" id=15]
+[ext_resource path="res://Assets/GUI/D-Key-GUI.png" type="Texture" id=16]
+[ext_resource path="res://Assets/GUI/E-Key-GUI.png" type="Texture" id=17]
+[ext_resource path="res://Assets/GUI/Q-Key-GUI.png" type="Texture" id=18]
+[ext_resource path="res://Assets/GUI/Arrow-Key-GUI.png" type="Texture" id=19]
+[ext_resource path="res://Assets/GUI/Shift-Key-GUI.png" type="Texture" id=20]
+[ext_resource path="res://Assets/GUI/Space-Key-GUI.png" type="Texture" id=21]
+[ext_resource path="res://Assets/Sound/score.wav" type="AudioStream" id=22]
+[ext_resource path="res://Assets/Sound/Countdown.wav" type="AudioStream" id=23]
+[ext_resource path="res://GameContent/Maps/TehoMap1.tscn" type="PackedScene" id=24]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0, 0, 0, 0.145098 )
@@ -72,7 +72,7 @@ rect_scale = Vector2( 2, 2 )
 mouse_filter = 2
 custom_styles/focus = SubResource( 1 )
 custom_styles/normal = SubResource( 2 )
-custom_fonts/font = ExtResource( 12 )
+custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color = Color( 0.243137, 0.243137, 0.243137, 1 )
 placeholder_text = "Press ENTER to chat"
 script = ExtResource( 6 )
@@ -85,7 +85,7 @@ margin_right = 292.0
 margin_bottom = 334.0
 rect_scale = Vector2( 2, 2 )
 custom_styles/normal = SubResource( 3 )
-custom_fonts/normal_font = ExtResource( 12 )
+custom_fonts/normal_font = ExtResource( 5 )
 bbcode_enabled = true
 scroll_active = false
 scroll_following = true
@@ -135,10 +135,9 @@ __meta__ = {
 }
 
 [node name="Big_Label_Red" type="Label" parent="UI_Layer"]
-anchor_left = -0.000801928
 anchor_top = 0.000501296
 anchor_right = 0.999198
-anchor_bottom = 1.0005
+anchor_bottom = 1.0
 margin_left = -33.055
 margin_right = 28.9451
 grow_horizontal = 2
@@ -165,7 +164,7 @@ margin_bottom = 213.099
 custom_styles/hover = ExtResource( 9 )
 custom_styles/pressed = ExtResource( 10 )
 custom_styles/normal = ExtResource( 11 )
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color = Color( 0.172549, 0.172549, 0.172549, 1 )
 text = "Leave Match"
 
@@ -182,7 +181,7 @@ margin_bottom = 485.557
 custom_styles/hover = ExtResource( 9 )
 custom_styles/pressed = ExtResource( 10 )
 custom_styles/normal = ExtResource( 11 )
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color = Color( 0.172549, 0.172549, 0.172549, 1 )
 text = "Cancel"
 __meta__ = {
@@ -213,42 +212,42 @@ hframes = 2
 [node name="A_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
 position = Vector2( -257.577, -26 )
 scale = Vector2( 2, 2 )
-texture = ExtResource( 29 )
+texture = ExtResource( 14 )
 centered = false
 hframes = 2
 
 [node name="S_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
 position = Vector2( -224.577, -26 )
 scale = Vector2( 2, 2 )
-texture = ExtResource( 28 )
+texture = ExtResource( 15 )
 centered = false
 hframes = 2
 
 [node name="D_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
 position = Vector2( -191.577, -26 )
 scale = Vector2( 2, 2 )
-texture = ExtResource( 27 )
+texture = ExtResource( 16 )
 centered = false
 hframes = 2
 
 [node name="E_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
 position = Vector2( 39.7944, -26.4901 )
 scale = Vector2( 2, 2 )
-texture = ExtResource( 33 )
+texture = ExtResource( 17 )
 centered = false
 hframes = 2
 
 [node name="Q_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
 position = Vector2( -30.7009, -26.4901 )
 scale = Vector2( 2, 2 )
-texture = ExtResource( 14 )
+texture = ExtResource( 18 )
 centered = false
 hframes = 2
 
 [node name="UP_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
 position = Vector2( 231.364, -60 )
 scale = Vector2( 2, 2 )
-texture = ExtResource( 30 )
+texture = ExtResource( 19 )
 centered = false
 hframes = 2
 
@@ -256,7 +255,7 @@ hframes = 2
 position = Vector2( 197.364, 4.08801 )
 rotation = -1.5708
 scale = Vector2( 2, 2 )
-texture = ExtResource( 30 )
+texture = ExtResource( 19 )
 centered = false
 hframes = 2
 
@@ -264,7 +263,7 @@ hframes = 2
 position = Vector2( 261.364, 4 )
 rotation = 3.14159
 scale = Vector2( 2, 2 )
-texture = ExtResource( 30 )
+texture = ExtResource( 19 )
 centered = false
 hframes = 2
 
@@ -272,21 +271,21 @@ hframes = 2
 position = Vector2( 295.364, -26 )
 rotation = 1.5708
 scale = Vector2( 2, 2 )
-texture = ExtResource( 30 )
+texture = ExtResource( 19 )
 centered = false
 hframes = 2
 
 [node name="SHIFT_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
 position = Vector2( 104.364, -26 )
 scale = Vector2( 2, 2 )
-texture = ExtResource( 31 )
+texture = ExtResource( 20 )
 centered = false
 hframes = 2
 
 [node name="SPACE_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
 position = Vector2( -124.313, -26 )
 scale = Vector2( 2, 2 )
-texture = ExtResource( 32 )
+texture = ExtResource( 21 )
 centered = false
 hframes = 2
 
@@ -295,7 +294,7 @@ margin_left = 181.364
 margin_top = 11.0
 margin_right = 315.364
 margin_bottom = 44.0
-custom_fonts/font = ExtResource( 12 )
+custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "FIRE
 BULLET"
@@ -311,7 +310,7 @@ margin_top = 20.0
 margin_right = -28.313
 margin_bottom = 35.0
 rect_pivot_offset = Vector2( -533.113, 40.108 )
-custom_fonts/font = ExtResource( 12 )
+custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "DASH"
 align = 1
@@ -326,7 +325,7 @@ margin_top = 20.0
 margin_right = 122.774
 margin_bottom = 35.0
 rect_pivot_offset = Vector2( -533.113, 40.108 )
-custom_fonts/font = ExtResource( 12 )
+custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "FORCEFIELD"
 align = 1
@@ -341,7 +340,7 @@ margin_top = 20.0
 margin_right = 52.2792
 margin_bottom = 35.0
 rect_pivot_offset = Vector2( -533.113, 40.108 )
-custom_fonts/font = ExtResource( 12 )
+custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "GRENADE"
 align = 1
@@ -351,14 +350,12 @@ __meta__ = {
 }
 
 [node name="ToggleWeapon_GUI_Text2" type="Label" parent="UI_Layer/Ability_GUIs"]
-anchor_left = -3.8147e-07
-anchor_right = -3.8147e-07
 margin_left = 66.255
 margin_top = 11.0
 margin_right = 200.255
 margin_bottom = 44.0
 rect_pivot_offset = Vector2( -533.113, 40.108 )
-custom_fonts/font = ExtResource( 12 )
+custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "SWITCH
 WEAPON"
@@ -376,7 +373,7 @@ margin_top = 20.0
 margin_right = -142.313
 margin_bottom = 35.0
 rect_pivot_offset = Vector2( -533.113, 40.108 )
-custom_fonts/font = ExtResource( 12 )
+custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "MOVE"
 align = 1
@@ -392,7 +389,7 @@ margin_top = 851.323
 margin_right = -1.58667
 margin_bottom = 881.323
 rect_clip_content = false
-custom_fonts/normal_font = ExtResource( 5 )
+custom_fonts/normal_font = ExtResource( 12 )
 bbcode_enabled = true
 bbcode_text = "[center][color=black] KILLED"
 text = " KILLED"
@@ -408,7 +405,7 @@ margin_right = 58.0
 margin_bottom = 215.462
 rect_scale = Vector2( 0.950764, 0.950764 )
 rect_clip_content = false
-custom_fonts/normal_font = ExtResource( 5 )
+custom_fonts/normal_font = ExtResource( 12 )
 bbcode_enabled = true
 bbcode_text = "[center][color=black] This is a skirmish lobby for waiting in matchmaking queue."
 text = " This is a skirmish lobby for waiting in matchmaking queue."
@@ -422,15 +419,15 @@ wait_time = 3.0
 one_shot = true
 
 [node name="Score_Audio" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 20 )
+stream = ExtResource( 22 )
 volume_db = 2.0
 
 [node name="Countdown_Audio" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 21 )
+stream = ExtResource( 23 )
 volume_db = 2.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
 zoom = Vector2( 4, 4 )
 
-[node name="Map" parent="." instance=ExtResource( 15 )]
+[node name="Map" parent="." instance=ExtResource( 24 )]
