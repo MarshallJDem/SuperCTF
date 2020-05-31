@@ -306,6 +306,7 @@ func shoot_laser():
 	get_tree().get_root().get_node("MainScene").add_child(laser);
 	laser.position = position + laser_position;
 	laser.rotation = Vector2(0,0).angle_to_point(laser_direction) + PI/2;
+	laser.direction = laser_direction;
 	laser.player_id = player_id;
 	laser.team_id = team_id;
 	laser.WIDTH_PMODIFIER = LASER_WIDTH_PMODIFIER;

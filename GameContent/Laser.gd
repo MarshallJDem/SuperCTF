@@ -5,19 +5,25 @@ var player_id = -1;
 # The team id this laser belongs to
 var team_id = -1;
 var WIDTH_PMODIFIER = 0;
+var direction;
 
-
+var first_frame = true;
 func _ready():
 	$Death_Timer.connect("timeout", self, "_death_timer_ended");
-
-func _process(delta):
 	
-	
+func _physics_process(delta):
+	if first_frame:
+		$CollisionTester.move_and_collide(direction * 1000.0)
+		first_frame = false;
 	update();
+func _process(delta):
+	pass;
+	
+	
 
 func _draw():
 	var size = WIDTH_PMODIFIER + get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("laserWidth");
-	var length = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("laserLength");
+	var length =  $CollisionTester.position.distance_to(Vector2.ZERO) + 10;
 	
 	$Area2D/CollisionShape2D.scale = Vector2(size/3, length);
 	

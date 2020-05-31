@@ -1,9 +1,12 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://GameContent/Laser.gd" type="Script" id=1]
 
 [sub_resource type="SegmentShape2D" id=1]
 b = Vector2( 0, 1 )
+
+[sub_resource type="CircleShape2D" id=2]
+radius = 3.74436
 
 [node name="Laser" type="Node2D" groups=[
 "Lasers",
@@ -21,6 +24,15 @@ autostart = true
 [node name="Area2D" type="Area2D" parent="." groups=[
 "Laser_Bodies",
 ]]
+visible = false
+collision_layer = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource( 1 )
+
+[node name="CollisionTester" type="KinematicBody2D" parent="."]
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CollisionTester"]
+shape = SubResource( 2 )
+one_way_collision = true
