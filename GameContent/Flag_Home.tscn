@@ -4,7 +4,7 @@
 [ext_resource path="res://GameContent/flagHome.png" type="Texture" id=2]
 
 [sub_resource type="CircleShape2D" id=1]
-radius = 14.7535
+radius = 8.53316
 
 [node name="Flag_Home" type="Node2D" groups=[
 "Flag_Homes",
@@ -20,5 +20,6 @@ texture = ExtResource( 2 )
 ]]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-scale = Vector2( 1.24, 1 )
+position = Vector2( -0.491974, -0.368988 )
+scale = Vector2( 1.19413, 1.01917 )
 shape = SubResource( 1 )

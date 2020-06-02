@@ -273,11 +273,14 @@ scale = Vector2( 2.984, 466.302 )
 position = Vector2( -942.622, 2.25647 )
 scale = Vector2( 2, 2 )
 z_index = -4016
+team_id = 0
+flag_id = 0
 
 [node name="Flag_Home-1" parent="." instance=ExtResource( 4 )]
 position = Vector2( 878.421, -1.50739 )
 scale = Vector2( 2, 2 )
 z_index = -4016
+team_id = 1
 
 [node name="Sprite" type="Sprite" parent="."]
 position = Vector2( -1.75816, 4.39527 )
