@@ -2,7 +2,6 @@ extends Node
 
 # Whether to run in testing mode (for development uses)
 var testing = false;
-# Whether to run as an experimental version for public testing
 var experimental = false;
 
 #Game Servers (Both clients and servers use these vars, but in different ways. overlapping would not work)
@@ -93,8 +92,8 @@ func _enter_tree():
 		port = int(arguments["port"]);
 	if arguments.has("isServer"):
 		isServer = true if arguments["isServer"] == "true" else false;
-	if arguments.has("experimental"):
-		experimental = true if arguments["experimental"] == "true" else false;
+		
+	experimental = OS.has_feature("debug") and !OS.has_feature("editor");
 	if experimental:
 		get_tree().change_scene("res://GameContent/Main.tscn");
 
