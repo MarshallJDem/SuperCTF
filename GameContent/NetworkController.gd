@@ -457,7 +457,7 @@ func server_disconnect():
 	get_tree().get_root().get_node("MainScene/UI_Layer").enable_leave_match_button();
 	get_tree().change_scene("res://Game_Results_Screen.tscn");
 	
-
+#blah
 # Called when a player scores a point
 remotesync func round_ended(scoring_team_id, scoring_player_id):
 	print("Player : " + str(scoring_player_id) + " won a point for team : " + str(scoring_team_id));
