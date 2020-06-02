@@ -1,13 +1,15 @@
 extends Node
 
 # Whether to run in testing mode (for development uses)
-var testing = true;
+var testing = false;
+# Whether to run as an experimental version for public testing
+var experimental = true;
 
 #Game Servers (Both clients and servers use these vars, but in different ways. overlapping would not work)
 var serverIP = "";
 var serverPublicToken;
 var skirmishIPPrefix = "superctf.com:";
-var port = 42403;
+var port = 42402;
 var serverPrivateToken = "privatetoken" + str(port);
 var isServer = false;
 var allowedPlayers = [];
@@ -91,8 +93,10 @@ func _enter_tree():
 		port = int(arguments["port"]);
 	if arguments.has("isServer"):
 		isServer = true if arguments["isServer"] == "true" else false;
-	if arguments.has("testing"):
-		testing = true if arguments["testing"] == "true" else false;
+	if arguments.has("experimental"):
+		experimental = true if arguments["experimental"] == "true" else false;
+	if experimental:
+		get_tree().change_scene("res://GameContent/Main.tscn");
 
 func _ready():
 	add_child(HTTPRequest_PollPlayerStatus);

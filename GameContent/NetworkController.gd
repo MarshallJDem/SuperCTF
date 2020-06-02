@@ -38,9 +38,11 @@ func _ready():
 		spawn_flag(1);
 		#call_deferred("spawn_flag", 1, Vector2(-200, 0));
 		return;
-	if Globals.player_status == 1 or (Globals.isServer and (Globals.port == 42402 or Globals.port == 42499)):
+	if Globals.experimental or Globals.player_status == 1 or (Globals.isServer and (Globals.port == 42402 or Globals.port == 42499)):
 		isSkirmish = true;
 	if isSkirmish:
+		if Globals.experimental:
+			Globals.port = 42499;
 		Globals.serverIP = Globals.skirmishIPPrefix + str(Globals.port);
 	get_tree().connect("network_peer_connected",self, "_client_connected");
 	get_tree().connect("network_peer_disconnected",self, "_client_disconnected");
