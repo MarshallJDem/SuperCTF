@@ -107,7 +107,7 @@ func start_server():
 		server.ssl_certificate = load("res://HTTPS_Keys/linux_cert.crt");
 	server.listen(Globals.port, PoolStringArray(), true);
 	get_tree().set_network_peer(server);
-	print("IsSkirmish" + str(isSkirmish));
+	print("IsSkirmish? - " + str(isSkirmish));
 	if !isSkirmish:
 		print("Making Game Server Available");
 		$HTTPRequest_GameServerMakeAvailable.request(Globals.mainServerIP + "makeGameServerAvailable?publicToken=" + str("RANDOMTOKEN"), ["authorization: Bearer " + (Globals.serverPrivateToken)], false);
@@ -526,8 +526,8 @@ remotesync func load_new_round():
 		# Update score
 		rpc("set_scores", scores);
 	
-	flags_data[str(0)] = {"holder_player_id" : -1, "position": get_tree().get_root().get_node("MainScene/Map/Flag_Home-" + str(0)).position, "team_id" : 0};
-	flags_data[str(1)] = {"holder_player_id" : -1, "position": get_tree().get_root().get_node("MainScene/Map/Flag_Home-" + str(1)).position, "team_id" : 1};
+	flags_data[str(0)] = {"holder_player_id" : -1, "position": get_tree().get_root().get_node("MainScene/Map/YSort/Flag_Home-" + str(0)).position, "team_id" : 0};
+	flags_data[str(1)] = {"holder_player_id" : -1, "position": get_tree().get_root().get_node("MainScene/Map/YSort/Flag_Home-" + str(1)).position, "team_id" : 1};
 	spawn_flag(0);
 	spawn_flag(1);
 	
