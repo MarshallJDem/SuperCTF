@@ -32,8 +32,8 @@ var round_is_running = false;
 
 func _ready():
 	if Globals.testing:
-		flags_data["0"] = {"team_id" : 0, "position" : get_tree().get_root().get_node("MainScene/Map/Flag_Home-" + str(0)).position, "holder_player_id" : -1};
-		flags_data["1"] = {"team_id" : 1, "position" : get_tree().get_root().get_node("MainScene/Map/Flag_Home-" + str(1)).position, "holder_player_id" : -1};
+		flags_data["0"] = {"team_id" : 0, "position" : get_tree().get_root().get_node("MainScene/Map/YSort/Flag_Home-" + str(0)).position, "holder_player_id" : -1};
+		flags_data["1"] = {"team_id" : 1, "position" : get_tree().get_root().get_node("MainScene/Map/YSort/Flag_Home-" + str(1)).position, "holder_player_id" : -1};
 		spawn_flag(0);
 		spawn_flag(1);
 		#call_deferred("spawn_flag", 1, Vector2(-200, 0));
@@ -245,7 +245,7 @@ func spawn_flag(flag_id):
 	flag.position = flags_data[str(flag_id)]["position"];
 	flag.flag_id = flag_id;
 	flag.set_team(flags_data[str(flag_id)]["team_id"]);
-	flag.home_position = get_tree().get_root().get_node("MainScene/Map/Flag_Home-" + str(flag_id)).position;
+	flag.home_position = get_tree().get_root().get_node("MainScene/Map/YSort/Flag_Home-" + str(flag_id)).position;
 	flag.name = "Flag-" + str(flag_id);
 	get_tree().get_root().get_node("MainScene").call_deferred("add_child", flag);
 	
