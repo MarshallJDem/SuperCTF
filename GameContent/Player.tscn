@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://GameContent/Player.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Player/running_top_B.png" type="Texture" id=2]
@@ -22,6 +22,9 @@ height = 5.43134
 [sub_resource type="CapsuleShape2D" id=2]
 radius = 1.61246
 height = 5.37553
+
+[sub_resource type="CircleShape2D" id=3]
+radius = 0.922888
 
 [node name="Player" type="KinematicBody2D"]
 collision_layer = 2
@@ -196,3 +199,9 @@ scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="CollisionTester" type="KinematicBody2D" parent="."]
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CollisionTester"]
+shape = SubResource( 3 )

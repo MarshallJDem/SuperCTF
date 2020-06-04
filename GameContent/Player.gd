@@ -309,6 +309,7 @@ func shoot_laser():
 	laser.direction = laser_direction;
 	laser.player_id = player_id;
 	laser.team_id = team_id;
+	laser.z_index = z_index;
 	laser.WIDTH_PMODIFIER = LASER_WIDTH_PMODIFIER;
 	$Laser_Fire_Audio.play();
 	$Laser_Cooldown_Timer.start();
@@ -320,7 +321,7 @@ func _draw():
 		if $Laser_Input_Timer.time_left > 0:
 			size = 0;
 		else:
-			size = clamp(1 / ($Laser_Timer.time_left / $Laser_Timer.wait_time), 0 , 5);
+			size = clamp(1 / ($Laser_Timer.time_left / $Laser_Timer.wait_time), 0 , 3);
 		var red = 1 if team_id == 1 else 0;
 		var green = 10.0/255.0 if team_id == 1 else 130.0/255.0;
 		var blue = 1 if team_id == 0 else 0;
@@ -328,7 +329,10 @@ func _draw():
 		red = red + lightener;
 		green = green + lightener;
 		blue = blue + lightener;
-		draw_line(laser_position, laser_direction * 1000, Color(red, green, blue, 1 - ($Laser_Timer.time_left / $Laser_Timer.wait_time)), size);
+		$CollisionTester.position = Vector2(0,0);
+		$CollisionTester.move_and_collide(laser_direction * 1000.0)
+		var length = $CollisionTester.position.distance_to(Vector2.ZERO) + 10;
+		draw_line(laser_position, laser_direction * length, Color(red, green, blue, 1 - ($Laser_Timer.time_left / $Laser_Timer.wait_time)), size);
 	if last_grenade_position != Vector2.ZERO:
 		#draw_line(Vector2.ZERO, last_grenade_position,Color(0,0,0,1), 1.0, true);
 		draw_circle(last_grenade_position, get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("grenadeRadius"), Color(0,0,0,0.2));
