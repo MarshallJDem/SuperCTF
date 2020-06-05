@@ -1,7 +1,7 @@
 [gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://GameContent/Player.gd" type="Script" id=1]
-[ext_resource path="res://Assets/Player/generic_idle_body.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Player/SUPERCTF_LASER_BODY.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Player/universal_bottom_B.png" type="Texture" id=3]
 [ext_resource path="res://GameContent/Center_Pivot.gd" type="Script" id=4]
 [ext_resource path="res://GameContent/Camera.gd" type="Script" id=5]
@@ -15,7 +15,7 @@
 [ext_resource path="res://Assets/Sound/Teleport.wav" type="AudioStream" id=13]
 [ext_resource path="res://fonts/Pixel_Chat.tres" type="DynamicFont" id=14]
 [ext_resource path="res://Assets/Player/SUPERCTF_laser_gun.png" type="Texture" id=15]
-[ext_resource path="res://Assets/Player/generic_idle_head.png" type="Texture" id=16]
+[ext_resource path="res://Assets/Player/SUPERCTF_LASER_HEAD.png" type="Texture" id=16]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 5.49852

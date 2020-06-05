@@ -214,9 +214,11 @@ func _process(delta):
 			pass;
 		$Sprite_Legs.frame = look_direction + (int((1-($Leg_Animation_Timer.time_left / $Leg_Animation_Timer.wait_time)) * 4)%4) * $Sprite_Legs.hframes;
 	
-		
+	
 	$Sprite_Head.position.y = int(2 * sin((1 - $Top_Animation_Timer.time_left/$Top_Animation_Timer.wait_time)*(2 * PI)))/2.0;
 	$Sprite_Gun.position.y = int(2 * sin((PI * 0.25) + (1 - $Top_Animation_Timer.time_left/$Top_Animation_Timer.wait_time)*(2 * PI)))/2.0;
+	$Sprite_Gun.position.x = 0;
+	
 	# Shooting Animation (Overrides idleness)
 	if $Shoot_Animation_Timer.time_left > 0:
 		if team_id == 1:
@@ -230,7 +232,7 @@ func _process(delta):
 		elif look_direction == 1 or look_direction == 2 or look_direction == 3:
 			$Sprite_Gun.position.y = -10 * $Shoot_Animation_Timer.time_left;
 			$Sprite_Gun.position.x = -10 * $Shoot_Animation_Timer.time_left;
-			
+		
 	# Name tag
 	var color = "blue";
 	if team_id == 1:
@@ -471,7 +473,7 @@ func shoot_on_inputs():
 			# If we are still in input phase, update direction
 			if $Laser_Input_Timer.time_left != 0:
 				laser_direction = input;
-				laser_position = get_node("Bullet_Starts/" + String(look_direction)).position;
+				laser_position = get_node("Bullet_Starts/" + String(look_direction)).position * 20;
 			elif $Laser_Timer.time_left == 0:
 				start_laser_input();
 	else:
@@ -487,7 +489,9 @@ func shoot_on_inputs():
 					elif current_weapon == 1 and laser_equipped:
 						var direction = (get_global_mouse_position() - global_position).normalized();
 						laser_direction = direction;
-						laser_position = get_node("Bullet_Starts/" + String(look_direction)).position;
+						print(get_node("Bullet_Starts/" + String(look_direction)).position);
+						print(get_node("Bullet_Starts/" + String(look_direction)).position * 20);
+						laser_position = get_node("Bullet_Starts/" + String(look_direction)).position * 20;
 						# If we are still in input phase, update direction
 						if $Laser_Input_Timer.time_left == 0:
 							start_laser_input();

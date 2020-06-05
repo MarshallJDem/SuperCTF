@@ -29,22 +29,6 @@ func _process(delta):
 			$"Ability_GUIs/SPACE_GUI".frame = 1;
 		else:
 			$"Ability_GUIs/SPACE_GUI".frame = 0;
-		if Input.is_key_pressed(KEY_LEFT):
-			$"Ability_GUIs/LEFT_GUI".frame = 1;
-		else:
-			$"Ability_GUIs/LEFT_GUI".frame = 0;
-		if Input.is_key_pressed(KEY_RIGHT):
-			$"Ability_GUIs/RIGHT_GUI".frame = 1;
-		else:
-			$"Ability_GUIs/RIGHT_GUI".frame = 0;
-		if Input.is_key_pressed(KEY_UP):
-			$"Ability_GUIs/UP_GUI".frame = 1;
-		else:
-			$"Ability_GUIs/UP_GUI".frame = 0;
-		if Input.is_key_pressed(KEY_DOWN):
-			$"Ability_GUIs/DOWN_GUI".frame = 1;
-		else:
-			$"Ability_GUIs/DOWN_GUI".frame = 0;
 		if Input.is_key_pressed(KEY_W):
 			$"Ability_GUIs/W_GUI".frame = 1;
 		else:
@@ -103,18 +87,6 @@ func _process(delta):
 			$Ability_GUIs/Forcefield_GUI_Text.text = "%0.2f" % ff_time_left;
 			$Ability_GUIs/E_GUI.modulate = Color(1,1,1,0.2 + 0.4 * ((ff_wait_time - ff_time_left) / ff_wait_time) );
 		
-		# Laser button
-		if local_player.current_weapon == 1:
-			var laser_time_left = local_player.get_node("Laser_Cooldown_Timer").time_left;
-			var laser_wait_time = local_player.get_node("Laser_Cooldown_Timer").wait_time;
-			if laser_time_left == 0:
-				$Ability_GUIs/Shoot_GUI_Text.text = "FIRE\nLASER";
-				#$Ability_GUIs/UP_GUI.modulate = Color(1,1,1,1);
-			else:
-				$Ability_GUIs/Shoot_GUI_Text.text = "%0.2f" % laser_time_left;
-				#$Ability_GUIs/UP_GUI.modulate = Color(1,1,1,0.2 + 0.4 * ((laser_wait_time - laser_time_left) / laser_wait_time) );
-		else:
-			$Ability_GUIs/Shoot_GUI_Text.text = "FIRE\nBULLET";
 		
 		# Grenade
 		var grenade_time_left = local_player.get_node("Grenade_Cooldown_Timer").time_left;

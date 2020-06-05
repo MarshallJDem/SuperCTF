@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://GameContent/Main.gd" type="Script" id=1]
 [ext_resource path="res://GameContent/Player.tscn" type="PackedScene" id=2]
@@ -18,7 +18,6 @@
 [ext_resource path="res://Assets/GUI/D-Key-GUI.png" type="Texture" id=16]
 [ext_resource path="res://Assets/GUI/E-Key-GUI.png" type="Texture" id=17]
 [ext_resource path="res://Assets/GUI/Q-Key-GUI.png" type="Texture" id=18]
-[ext_resource path="res://Assets/GUI/Arrow-Key-GUI.png" type="Texture" id=19]
 [ext_resource path="res://Assets/GUI/Shift-Key-GUI.png" type="Texture" id=20]
 [ext_resource path="res://Assets/GUI/Space-Key-GUI.png" type="Texture" id=21]
 [ext_resource path="res://Assets/Sound/score.wav" type="AudioStream" id=22]
@@ -244,37 +243,6 @@ texture = ExtResource( 18 )
 centered = false
 hframes = 2
 
-[node name="UP_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
-position = Vector2( 231.364, -60 )
-scale = Vector2( 2, 2 )
-texture = ExtResource( 19 )
-centered = false
-hframes = 2
-
-[node name="LEFT_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
-position = Vector2( 197.364, 4.08801 )
-rotation = -1.5708
-scale = Vector2( 2, 2 )
-texture = ExtResource( 19 )
-centered = false
-hframes = 2
-
-[node name="DOWN_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
-position = Vector2( 261.364, 4 )
-rotation = 3.14159
-scale = Vector2( 2, 2 )
-texture = ExtResource( 19 )
-centered = false
-hframes = 2
-
-[node name="RIGHT_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
-position = Vector2( 295.364, -26 )
-rotation = 1.5708
-scale = Vector2( 2, 2 )
-texture = ExtResource( 19 )
-centered = false
-hframes = 2
-
 [node name="SHIFT_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
 position = Vector2( 104.364, -26 )
 scale = Vector2( 2, 2 )
@@ -288,21 +256,6 @@ scale = Vector2( 2, 2 )
 texture = ExtResource( 21 )
 centered = false
 hframes = 2
-
-[node name="Shoot_GUI_Text" type="Label" parent="UI_Layer/Ability_GUIs"]
-margin_left = 181.364
-margin_top = 11.0
-margin_right = 315.364
-margin_bottom = 44.0
-custom_fonts/font = ExtResource( 5 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "FIRE
-BULLET"
-align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Teleport_GUI_Text" type="Label" parent="UI_Layer/Ability_GUIs"]
 margin_left = -162.313
