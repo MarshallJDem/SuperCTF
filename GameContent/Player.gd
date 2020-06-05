@@ -8,7 +8,7 @@ var team_id = -1;
 var BASE_SPEED = 200;
 const AIMING_SPEED = 15;
 const SPRINT_SPEED = 50;
-const FLAG_SLOWDOWN_SPEED = -50;
+const FLAG_SLOWDOWN_SPEED = -25;
 var TELEPORT_SPEED = 2000;
 var POWERUP_SPEED = 0;
 var BULLET_COOLDOWN_PMODIFIER = 0;
@@ -45,6 +45,8 @@ var remote_db_level = -10;
 var last_position = Vector2(0,0);
 # Whether the grenade weapon is currently enabled
 var grenade_enabled = false;
+# The frame of the all of the sprite on the top (Gun, Head, Body)
+var look_direction = 0;
 
 # Kits / Classes
 var grenade_equipped = false;
@@ -98,9 +100,9 @@ func _ready():
 	$Powerup_Timer.connect("timeout", self, "_powerup_timer_ended");
 	#$Laser_Cooldown_Timer.connect("timeout", self, "_laser_cooldown_timer_ended");
 	$Forcefield_Timer.connect("timeout", self, "_forcefield_timer_ended");
-	$Animation_Timer.connect("timeout", self, "_animation_timer_ended");
-	$Shoot_Animation_Timer.connect("timeout", self, "_shoot_animation_timer_ended");
-	$Shoot_Animation_Timer.wait_time = $Animation_Timer.wait_time * $Sprite_Top.vframes;
+	#$Top_Animation_Timer.connect("timeout", self, "_animation_timer_ended");
+	#$Shoot_Animation_Timer.connect("timeout", self, "_shoot_animation_timer_ended");
+	#$Shoot_Animation_Timer.wait_time = $Animation_Timer.wait_time;
 	lerp_start_pos = position;
 	lerp_end_pos = position;
 
@@ -177,8 +179,8 @@ func _process(delta):
 	if $Invincibility_Timer.time_left > 0:
 		var t = $Invincibility_Timer.time_left / $Invincibility_Timer.wait_time 
 		var x =  (t * 10);
-		$Sprite_Top.modulate = Color(1,1,1,(sin( (PI / 2) + (x * (1 + (t * ((2 * PI) - 1))))) + 1)/2)
-		$Sprite_Bottom.modulate = Color(1,1,1,(sin( (PI / 2) + (x * (1 + (t * ((2 * PI) - 1))))) + 1)/2)
+		var color = Color(1,1,1,(sin( (PI / 2) + (x * (1 + (t * ((2 * PI) - 1))))) + 1)/2);
+		modulate = color
 	z_index = global_position.y + 15;
 	
 	
@@ -191,28 +193,44 @@ func _process(delta):
 		rpc_unreliable_id(1, "send_position", position, player_id);
 	
 	
-	# Idle Animation
+	# Animation
 	var diff = last_position - position;
 	if sqrt(pow(diff.x, 2) + pow(diff.y, 2)) < 1:
+		# Idle
 		if team_id == 1:
-			$Sprite_Top.set_texture(idle_top_atlas_red);
+			#$Sprite_Top.set_texture(idle_top_atlas_red);
+			pass;
 		else:
-			$Sprite_Top.set_texture(idle_top_atlas_blue);
-		$Sprite_Bottom.frame = $Sprite_Top.frame % $Sprite_Top.hframes;
+			#$Sprite_Top.set_texture(idle_top_atlas_blue);
+			pass;
+		$Sprite_Legs.frame = look_direction;
 	else:
+		# Moving
 		if team_id == 1:
-			$Sprite_Top.set_texture(running_top_atlas_red);
+			#$Sprite_Top.set_texture(running_top_atlas_red);
+			pass;
 		else:
-			$Sprite_Top.set_texture(running_top_atlas_blue);
-		$Sprite_Bottom.frame = $Sprite_Top.frame;
+			#$Sprite_Top.set_texture(running_top_atlas_blue);
+			pass;
+		$Sprite_Legs.frame = look_direction + (int((1-($Leg_Animation_Timer.time_left / $Leg_Animation_Timer.wait_time)) * 4)%4) * $Sprite_Legs.hframes;
+	
 		
+	$Sprite_Head.position.y = int(2 * sin((1 - $Top_Animation_Timer.time_left/$Top_Animation_Timer.wait_time)*(2 * PI)))/2.0;
+	$Sprite_Gun.position.y = int(2 * sin((PI * 0.25) + (1 - $Top_Animation_Timer.time_left/$Top_Animation_Timer.wait_time)*(2 * PI)))/2.0;
 	# Shooting Animation (Overrides idleness)
 	if $Shoot_Animation_Timer.time_left > 0:
 		if team_id == 1:
-			$Sprite_Top.set_texture(shooting_top_atlas_red);
+			#$Sprite_Top.set_texture(shooting_top_atlas_red);
+			pass;
 		else:
-			$Sprite_Top.set_texture(shooting_top_atlas_blue);
-		
+			#$Sprite_Top.set_texture(shooting_top_atlas_blue);
+			pass;
+		if look_direction == 0:
+			$Sprite_Gun.position.y = 20 * $Shoot_Animation_Timer.time_left;
+		elif look_direction == 1 or look_direction == 2 or look_direction == 3:
+			$Sprite_Gun.position.y = -10 * $Shoot_Animation_Timer.time_left;
+			$Sprite_Gun.position.x = -10 * $Shoot_Animation_Timer.time_left;
+			
 	# Name tag
 	var color = "blue";
 	if team_id == 1:
@@ -234,20 +252,22 @@ func set_kit(kit):
 		grenade_equipped = true;
 
 
-remote func send_start_laser(direction, player_pos, frame):
+remote func send_start_laser(direction, player_pos, look_direction):
 	if get_tree().is_network_server():# Only run if it's the server
 		var clients = get_tree().get_network_connected_peers();
 		for i in clients: # For each connected client
 			if i != get_tree().get_rpc_sender_id(): # Don't do it for the player who sent it
-				rpc_id(i, "receive_start_laser", direction, player_pos, frame);
-		start_laser(direction, player_pos, frame); # Also call it locally for the server
+				rpc_id(i, "receive_start_laser", direction, player_pos, look_direction);
+		start_laser(direction, player_pos, look_direction); # Also call it locally for the server
 
-remote func receive_start_laser(direction, player_pos, frame):
-	start_laser(direction, player_pos, frame);
+remote func receive_start_laser(direction, player_pos, look_direction):
+	start_laser(direction, player_pos, look_direction);
 
-func start_laser(direction, start_pos, frame):
-	$Sprite_Top.frame = frame;
-	$Sprite_Bottom.frame = frame;
+func start_laser(direction, start_pos, look_direction):
+	$Sprite_Gun.frame = look_direction;
+	$Sprite_Head.frame = look_direction;
+	$Sprite_Body.frame = look_direction;
+	$Sprite_Legs.frame = look_direction;
 	laser_direction = direction;
 	laser_position = start_pos;
 	$Laser_Timer.start();
@@ -262,9 +282,9 @@ func _laser_timer_ended():
 func start_laser_input():
 	$Laser_Input_Timer.start();
 func _laser_input_timer_ended():
-	var start_pos = get_node("Bullet_Starts/" + String($Sprite_Top.frame % $Sprite_Top.hframes)).position;
-	rpc_id(1, "send_start_laser", laser_direction, start_pos, $Sprite_Top.frame);
-	start_laser(laser_direction, start_pos, $Sprite_Top.frame);
+	var start_pos = get_node("Bullet_Starts/" + String(look_direction)).position;
+	rpc_id(1, "send_start_laser", laser_direction, start_pos, look_direction);
+	start_laser(laser_direction, start_pos, look_direction);
 	sprintEnabled = false;
 	
 var current_weapon = 0;
@@ -344,7 +364,7 @@ func shoot_bullet(d):
 	var direction = d.normalized();
 	bullets_shot = bullets_shot + 1;
 	# Re-enable the code below to have the bullet start out of the end of the gun
-	var bullet_start = position + get_node("Bullet_Starts/" + String($Sprite_Top.frame % $Sprite_Top.hframes)).position;
+	var bullet_start = position + get_node("Bullet_Starts/" + String(look_direction)).position;
 	# Offset bullet start by a bit because player frames are perfectly centered
 	if false and direction.y == 0:
 		bullet_start += Vector2(0, 10);
@@ -354,7 +374,6 @@ func shoot_bullet(d):
 	var bullet = spawn_bullet(bullet_start, 0 if Globals.testing else player_id, direction,time, null);
 	#camera_ref.shake();
 	$Shoot_Animation_Timer.start();
-	animation_set_frame = 0;
 	if !Globals.testing:
 		rpc_id(1, "send_bullet", bullet_start,player_id, direction, time, bullet.name);
 
@@ -366,7 +385,7 @@ func spawn_bullet(pos, player_id, direction, time_shot, bullet_name = null):
 	particles.team_id = team_id;
 	#get_tree().get_root().get_node("MainScene").add_child(particles);
 	call_deferred("add_child", particles);
-	particles.position = get_node("Bullet_Starts/" + String($Sprite_Top.frame % $Sprite_Top.hframes)).position;
+	particles.position = get_node("Bullet_Starts/" + String(look_direction)).position;
 	particles.rotation = Vector2(0,0).angle_to_point(direction) + PI;
 	
 #	# If this was fired by another player, compensate for player lerp speed
@@ -452,7 +471,7 @@ func shoot_on_inputs():
 			# If we are still in input phase, update direction
 			if $Laser_Input_Timer.time_left != 0:
 				laser_direction = input;
-				laser_position = get_node("Bullet_Starts/" + String($Sprite_Top.frame % $Sprite_Top.hframes)).position;
+				laser_position = get_node("Bullet_Starts/" + String(look_direction)).position;
 			elif $Laser_Timer.time_left == 0:
 				start_laser_input();
 	else:
@@ -468,7 +487,7 @@ func shoot_on_inputs():
 					elif current_weapon == 1 and laser_equipped:
 						var direction = (get_global_mouse_position() - global_position).normalized();
 						laser_direction = direction;
-						laser_position = get_node("Bullet_Starts/" + String($Sprite_Top.frame % $Sprite_Top.hframes)).position;
+						laser_position = get_node("Bullet_Starts/" + String(look_direction)).position;
 						# If we are still in input phase, update direction
 						if $Laser_Input_Timer.time_left == 0:
 							start_laser_input();
@@ -583,17 +602,14 @@ remotesync func create_ghost_trail(start, end):
 		node.position = start;
 		node.position.x = node.position.x + ((i) * (end.x - start.x)/4)
 		node.position.y = node.position.y + ((i) * (end.y - start.y)/4)
+		node.look_direction = look_direction;
+		node.sprite_scale = $Sprite_Body.scale
+		node.legs_frame = $Sprite_Legs.frame;
 		node.get_node("Death_Timer").start((i) * 0.05 + 0.0001);
-		node.get_node("Sprite_Top").texture = $Sprite_Top.texture
-		node.get_node("Sprite_Top").hframes = $Sprite_Top.hframes
-		node.get_node("Sprite_Top").vframes = $Sprite_Top.vframes
-		node.get_node("Sprite_Top").frame = $Sprite_Top.frame
-		node.get_node("Sprite_Top").scale = $Sprite_Top.scale
-		node.get_node("Sprite_Bottom").texture = $Sprite_Bottom.texture
-		node.get_node("Sprite_Bottom").hframes = $Sprite_Bottom.hframes
-		node.get_node("Sprite_Bottom").vframes = $Sprite_Bottom.vframes
-		node.get_node("Sprite_Bottom").frame = $Sprite_Bottom.frame
-		node.get_node("Sprite_Bottom").scale = $Sprite_Bottom.scale
+		node.get_node("Sprite_Gun").texture = $Sprite_Top.texture
+		node.get_node("Sprite_Head").texture = $Sprite_Bottom.texture
+		node.get_node("Sprite_Body").texture = $Sprite_Top.texture
+		node.get_node("Sprite_Legs").texture = $Sprite_Bottom.texture
 	# If this is a puppet, use this ghost trail as an oppurtunity to also update its position
 	if !is_network_master():
 		lerp_start_pos = end;
@@ -623,23 +639,12 @@ func update_look_direction():
 	var angle = get_vector_angle(dist);
 	var adjustedAngle = -1 * (angle + (PI/8));
 	var octant = (adjustedAngle / (2 * PI)) * 8
-	var frame = int((octant + 9) + 4) % 8;
-	frame += animation_set_frame * $Sprite_Top.hframes;
-	if frame != $Sprite_Top.frame: # If it changed since last time
-		set_look_direction(frame);
+	var dir = int((octant + 9) + 4) % 8;
+	if dir != look_direction: # If it changed since last time
+		set_look_direction(dir);
 		if !Globals.testing:
-			rpc_unreliable_id(1, "send_look_direction", frame, player_id);
-var animation_set_frame = 0;
-# Called when the animation timer fires
-func _animation_timer_ended():
-	animation_set_frame += 1;
-	animation_set_frame = animation_set_frame % $Sprite_Top.vframes;
+			rpc_unreliable_id(1, "send_look_direction", dir, player_id);
 
-func _shoot_animation_timer_ended():
-	if team_id == 1:
-		$Sprite_Top.set_texture(running_top_atlas_red);
-	else:
-		$Sprite_Top.set_texture(running_top_atlas_blue);
 
 # Gets the angle that a vector is making
 func get_vector_angle(dist):
@@ -651,9 +656,20 @@ func get_vector_angle(dist):
 	return angle;
 
 # Set the direction that the player is "looking" at by changing sprite frame
-func set_look_direction(frame):
-	$Sprite_Top.frame = frame;
-	$Sprite_Bottom.frame = frame;
+func set_look_direction(dir):
+	look_direction = dir;
+	$Sprite_Head.frame = dir;
+	$Sprite_Gun.frame = dir;
+	$Sprite_Body.frame = dir;
+	$Sprite_Legs.frame = look_direction + (int((1-($Leg_Animation_Timer.time_left / $Leg_Animation_Timer.wait_time)) * 4)%4) * $Sprite_Legs.hframes;
+	if dir == 2 or dir == 3:
+		$Sprite_Head.z_index =1;
+		$Sprite_Body.z_index =0;
+		$Sprite_Gun.z_index =2;
+	else:
+		$Sprite_Head.z_index =2;
+		$Sprite_Body.z_index =0;
+		$Sprite_Gun.z_index =1;
 	
 
 # Updates this player's position with the new given position. Only ever called remotely
@@ -716,7 +732,7 @@ func die():
 func spawn_death_particles():
 	var node = Player_Death.instance();
 	node.position = position;
-	node.xFrame = $Sprite_Top.frame_coords.x;
+	node.xFrame = look_direction;
 	node.z_index = z_index;
 	get_tree().get_root().get_node("MainScene").add_child(node);
 
@@ -872,5 +888,4 @@ remotesync func receive_respawn():
 remotesync func receive_end_invinciblity():
 	invincible = false;
 	$Invincibility_Timer.stop();
-	$Sprite_Top.modulate = Color(1,1,1,1);
-	$Sprite_Bottom.modulate = Color(1,1,1,1);
+	modulate = Color(1,1,1,1);

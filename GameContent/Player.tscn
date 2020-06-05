@@ -1,7 +1,7 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://GameContent/Player.gd" type="Script" id=1]
-[ext_resource path="res://Assets/Player/running_top_B.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Player/generic_idle_body.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Player/universal_bottom_B.png" type="Texture" id=3]
 [ext_resource path="res://GameContent/Center_Pivot.gd" type="Script" id=4]
 [ext_resource path="res://GameContent/Camera.gd" type="Script" id=5]
@@ -14,6 +14,8 @@
 [ext_resource path="res://Assets/Sound/Flag_Drop.wav" type="AudioStream" id=12]
 [ext_resource path="res://Assets/Sound/Teleport.wav" type="AudioStream" id=13]
 [ext_resource path="res://fonts/Pixel_Chat.tres" type="DynamicFont" id=14]
+[ext_resource path="res://Assets/Player/SUPERCTF_laser_gun.png" type="Texture" id=15]
+[ext_resource path="res://Assets/Player/generic_idle_head.png" type="Texture" id=16]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 5.49852
@@ -30,18 +32,30 @@ radius = 0.922888
 collision_layer = 2
 script = ExtResource( 1 )
 
-[node name="Sprite_Bottom" type="Sprite" parent="."]
+[node name="Sprite_Legs" type="Sprite" parent="."]
 scale = Vector2( 1.3, 1.3 )
 texture = ExtResource( 3 )
 vframes = 4
 hframes = 8
+frame = 1
 
-[node name="Sprite_Top" type="Sprite" parent="."]
+[node name="Sprite_Gun" type="Sprite" parent="."]
+scale = Vector2( 1.3, 1.3 )
+texture = ExtResource( 15 )
+hframes = 8
+frame = 1
+
+[node name="Sprite_Body" type="Sprite" parent="."]
 scale = Vector2( 1.3, 1.3 )
 texture = ExtResource( 2 )
-vframes = 4
 hframes = 8
-frame = 7
+frame = 1
+
+[node name="Sprite_Head" type="Sprite" parent="."]
+scale = Vector2( 1.3, 1.3 )
+texture = ExtResource( 16 )
+hframes = 8
+frame = 1
 
 [node name="Center_Pivot" type="Position2D" parent="."]
 script = ExtResource( 4 )
@@ -129,11 +143,16 @@ one_shot = true
 wait_time = 3.0
 one_shot = true
 
-[node name="Animation_Timer" type="Timer" parent="."]
-wait_time = 0.08
+[node name="Top_Animation_Timer" type="Timer" parent="."]
+wait_time = 0.35
+autostart = true
+
+[node name="Leg_Animation_Timer" type="Timer" parent="."]
+wait_time = 0.271
 autostart = true
 
 [node name="Shoot_Animation_Timer" type="Timer" parent="."]
+wait_time = 0.2
 one_shot = true
 
 [node name="Shoot_Cooldown_Timer" type="Timer" parent="."]
