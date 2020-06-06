@@ -607,7 +607,6 @@ remotesync func create_ghost_trail(start, end):
 		node.position.y = node.position.y + ((i) * (end.y - start.y)/4)
 		node.look_direction = look_direction;
 		node.scale = $Sprite_Body.scale
-		node.get_node("Death_Timer").start((i) * 0.05 + 0.0001);
 		node.get_node("Sprite_Gun").texture = $Sprite_Gun.texture
 		node.get_node("Sprite_Gun").z_index = $Sprite_Gun.z_index
 		node.get_node("Sprite_Head").texture = $Sprite_Head.texture
@@ -617,6 +616,7 @@ remotesync func create_ghost_trail(start, end):
 		node.get_node("Sprite_Legs").texture = $Sprite_Legs.texture
 		node.get_node("Sprite_Legs").frame = $Sprite_Legs.frame
 		get_tree().get_root().get_node("MainScene").add_child(node);  
+		node.get_node("Death_Timer").start((i) * 0.05 + 0.0001);
 	# If this is a puppet, use this ghost trail as an oppurtunity to also update its position
 	if !is_network_master():
 		lerp_start_pos = end;
