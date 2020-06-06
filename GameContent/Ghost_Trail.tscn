@@ -18,4 +18,5 @@ hframes = 8
 hframes = 8
 
 [node name="Sprite_Legs" type="Sprite" parent="."]
+vframes = 4
 hframes = 8
