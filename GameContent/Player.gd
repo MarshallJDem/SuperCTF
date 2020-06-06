@@ -607,13 +607,16 @@ remotesync func create_ghost_trail(start, end):
 		node.position.x = node.position.x + ((i) * (end.x - start.x)/4)
 		node.position.y = node.position.y + ((i) * (end.y - start.y)/4)
 		node.look_direction = look_direction;
-		node.sprite_scale = $Sprite_Body.scale
-		node.legs_frame = $Sprite_Legs.frame;
+		node.scale = $Sprite_Body.scale
 		node.get_node("Death_Timer").start((i) * 0.05 + 0.0001);
-		node.get_node("Sprite_Gun").texture = $Sprite_Top.texture
-		node.get_node("Sprite_Head").texture = $Sprite_Bottom.texture
-		node.get_node("Sprite_Body").texture = $Sprite_Top.texture
-		node.get_node("Sprite_Legs").texture = $Sprite_Bottom.texture
+		node.get_node("Sprite_Gun").texture = $Sprite_Gun.texture
+		node.get_node("Sprite_Gun").z_index = $Sprite_Gun.z_index
+		node.get_node("Sprite_Head").texture = $Sprite_Head.texture
+		node.get_node("Sprite_Head").z_index = $Sprite_Head.z_index
+		node.get_node("Sprite_Body").texture = $Sprite_Body.texture
+		node.get_node("Sprite_Body").z_index = $Sprite_Body.z_index
+		node.get_node("Sprite_Legs").texture = $Sprite_Legs.texture
+		node.get_node("Sprite_Legs").frame = $Sprite_Legs.frame
 	# If this is a puppet, use this ghost trail as an oppurtunity to also update its position
 	if !is_network_master():
 		lerp_start_pos = end;
