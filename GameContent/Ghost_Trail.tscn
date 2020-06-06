@@ -9,9 +9,13 @@ script = ExtResource( 1 )
 one_shot = true
 
 [node name="Sprite_Head" type="Sprite" parent="."]
+hframes = 8
 
 [node name="Sprite_Body" type="Sprite" parent="."]
+hframes = 8
 
 [node name="Sprite_Gun" type="Sprite" parent="."]
+hframes = 8
 
 [node name="Sprite_Legs" type="Sprite" parent="."]
+hframes = 8
