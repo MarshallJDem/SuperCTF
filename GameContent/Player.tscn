@@ -1,7 +1,7 @@
 [gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://GameContent/Player.gd" type="Script" id=1]
-[ext_resource path="res://Assets/Player/SUPERCTF_LASER_BODY.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Player/Demo_Body_SUPERCTF.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Player/universal_bottom_B.png" type="Texture" id=3]
 [ext_resource path="res://GameContent/Center_Pivot.gd" type="Script" id=4]
 [ext_resource path="res://GameContent/Camera.gd" type="Script" id=5]
@@ -14,8 +14,8 @@
 [ext_resource path="res://Assets/Sound/Flag_Drop.wav" type="AudioStream" id=12]
 [ext_resource path="res://Assets/Sound/Teleport.wav" type="AudioStream" id=13]
 [ext_resource path="res://fonts/Pixel_Chat.tres" type="DynamicFont" id=14]
-[ext_resource path="res://Assets/Player/SUPERCTF_laser_gun.png" type="Texture" id=15]
-[ext_resource path="res://Assets/Player/SUPERCTF_LASER_HEAD.png" type="Texture" id=16]
+[ext_resource path="res://Assets/Player/Blue_Demo_SUPERCTF_1.png" type="Texture" id=15]
+[ext_resource path="res://Assets/Player/blue_demo_SUPERCTF.png" type="Texture" id=16]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 8.67661
@@ -41,9 +41,9 @@ frame = 1
 
 [node name="Sprite_Gun" type="Sprite" parent="."]
 scale = Vector2( 1.3, 1.3 )
-texture = ExtResource( 15 )
+texture = ExtResource( 16 )
 hframes = 8
-frame = 1
+frame = 7
 
 [node name="Sprite_Body" type="Sprite" parent="."]
 scale = Vector2( 1.3, 1.3 )
@@ -53,7 +53,7 @@ frame = 1
 
 [node name="Sprite_Head" type="Sprite" parent="."]
 scale = Vector2( 1.3, 1.3 )
-texture = ExtResource( 16 )
+texture = ExtResource( 15 )
 hframes = 8
 frame = 1
 
@@ -115,6 +115,32 @@ position = Vector2( -11.8332, 3.68774 )
 
 [node name="7" type="Node2D" parent="Bullet_Starts"]
 position = Vector2( -8.81878, -4.44531 )
+
+[node name="Laser_Starts" type="Node" parent="."]
+
+[node name="0" type="Node2D" parent="Laser_Starts"]
+position = Vector2( -0.074, -15.546 )
+
+[node name="1" type="Node2D" parent="Laser_Starts"]
+position = Vector2( 14.883, -11.08 )
+
+[node name="2" type="Node2D" parent="Laser_Starts"]
+position = Vector2( 18.684, 5.418 )
+
+[node name="3" type="Node2D" parent="Laser_Starts"]
+position = Vector2( 14.907, 13.945 )
+
+[node name="4" type="Node2D" parent="Laser_Starts"]
+position = Vector2( 0.026, 21.111 )
+
+[node name="5" type="Node2D" parent="Laser_Starts"]
+position = Vector2( -14.038, 14.125 )
+
+[node name="6" type="Node2D" parent="Laser_Starts"]
+position = Vector2( -18.521, 5.602 )
+
+[node name="7" type="Node2D" parent="Laser_Starts"]
+position = Vector2( -14.045, -10.795 )
 
 [node name="Respawn_Timer" type="Timer" parent="."]
 wait_time = 3.0

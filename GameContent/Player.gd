@@ -287,7 +287,7 @@ func _laser_timer_ended():
 func start_laser_input():
 	$Laser_Input_Timer.start();
 func _laser_input_timer_ended():
-	var start_pos = get_node("Bullet_Starts/" + String(look_direction)).position;
+	var start_pos = get_node("Laser_Starts/" + String(look_direction)).position;
 	rpc_id(1, "send_start_laser", laser_direction, start_pos, look_direction);
 	start_laser(laser_direction, start_pos, look_direction);
 	sprintEnabled = false;
@@ -334,7 +334,7 @@ func shoot_laser():
 	laser.direction = laser_direction;
 	laser.player_id = player_id;
 	laser.team_id = team_id;
-	laser.z_index = z_index;
+	laser.z_index = z_index + 1;
 	laser.WIDTH_PMODIFIER = LASER_WIDTH_PMODIFIER;
 	$Laser_Fire_Audio.play();
 	$Laser_Cooldown_Timer.start();
@@ -477,7 +477,7 @@ func shoot_on_inputs():
 			# If we are still in input phase, update direction
 			if $Laser_Input_Timer.time_left != 0:
 				laser_direction = input;
-				laser_position = get_node("Bullet_Starts/" + String(look_direction)).position * 20;
+				laser_position = get_node("Laser_Starts/" + String(look_direction)).position * 20;
 			elif $Laser_Timer.time_left == 0:
 				start_laser_input();
 	else:
@@ -493,9 +493,7 @@ func shoot_on_inputs():
 					elif current_weapon == 1 and laser_equipped:
 						var direction = (get_global_mouse_position() - global_position).normalized();
 						laser_direction = direction;
-						print(get_node("Bullet_Starts/" + String(look_direction)).position);
-						print(get_node("Bullet_Starts/" + String(look_direction)).position * 20);
-						laser_position = get_node("Bullet_Starts/" + String(look_direction)).position * 20;
+						laser_position = get_node("Laser_Starts/" + String(look_direction)).position * 20;
 						# If we are still in input phase, update direction
 						if $Laser_Input_Timer.time_left == 0:
 							start_laser_input();
