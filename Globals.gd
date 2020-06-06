@@ -8,7 +8,7 @@ var experimental = false;
 var serverIP = "";
 var serverPublicToken;
 var skirmishIPPrefix = "superctf.com:";
-var port = 42401;
+var port = 42402;
 var serverPrivateToken = "privatetoken" + str(port);
 var isServer = false;
 var allowedPlayers = [];
