@@ -47,6 +47,8 @@ var last_position = Vector2(0,0);
 var grenade_enabled = false;
 # The frame of the all of the sprite on the top (Gun, Head, Body)
 var look_direction = 0;
+# Whether we teleported during this frame
+var just_teleported = false;
 
 # Kits / Classes
 var grenade_equipped = false;
@@ -154,6 +156,7 @@ func _input(event):
 			if IS_CONTROLLED_BY_MOUSE and grenade_equipped and grenade_enabled:
 				aim_grenade(get_local_mouse_position().normalized());
 func _process(delta):
+	just_teleported = false;
 	var new_speed = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("playerSpeed");
 	if speed == BASE_SPEED:
 		speed = new_speed;
@@ -440,6 +443,7 @@ func move_on_inputs(teleport = false):
 		move_speed += SPRINT_SPEED;
 	if teleport:
 		move_speed = TELEPORT_SPEED;
+		just_teleported = true;
 	var vec = (input * move_speed);
 	
 	var previous_pos = position;
