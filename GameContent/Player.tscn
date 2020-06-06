@@ -18,8 +18,8 @@
 [ext_resource path="res://Assets/Player/SUPERCTF_LASER_HEAD.png" type="Texture" id=16]
 
 [sub_resource type="CapsuleShape2D" id=1]
-radius = 5.49852
-height = 5.43134
+radius = 8.67661
+height = 13.2677
 
 [sub_resource type="CapsuleShape2D" id=2]
 radius = 1.61246
@@ -85,7 +85,7 @@ one_shot = true
 script = ExtResource( 6 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2( 0, 1.855 )
+position = Vector2( 0.0646133, 3.80024 )
 shape = SubResource( 1 )
 
 [node name="Flag_Holder" type="Node2D" parent="."]
@@ -171,7 +171,7 @@ wait_time = 5.0
 one_shot = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 0.0194966, 9.97446 )
+position = Vector2( 0.11248, 11.9272 )
 rotation = 1.5708
 shape = SubResource( 2 )
 

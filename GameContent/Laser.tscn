@@ -24,7 +24,6 @@ autostart = true
 [node name="Area2D" type="Area2D" parent="." groups=[
 "Laser_Bodies",
 ]]
-visible = false
 collision_layer = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
