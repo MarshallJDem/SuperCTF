@@ -1,7 +1,7 @@
 extends Node
 
 # Whether to run in testing mode (for development uses)
-var testing = false;
+var testing = true;
 var experimental = false;
 
 #Game Servers (Both clients and servers use these vars, but in different ways. overlapping would not work)
@@ -48,7 +48,7 @@ const game_var_defaults = {"playerSpeed" : 200, "playerLagTime" : 50,
 	"bulletSpeed" : 350, "bulletCooldown" : 250, 
 	"laserChargeTime" : 650, "laserCooldown" : 500, 
 	"laserWidth" :15, "laserLength" : 1300,
-	"dashDistance" : 2000, "dashCooldown" : 1000, 
+	"dashDistance" : 3000, "dashCooldown" : 3000, 
 	"forcefieldCooldown" : 8000,
 	"scoreLimit" : 2,
 	"grenadeRadius" : 50};
