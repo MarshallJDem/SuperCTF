@@ -40,6 +40,9 @@ func _draw():
 	draw_line(Vector2(0,shrinkage), Vector2(0, length - shrinkage), Color(red + 0.3, green + 0.3, blue + 0.3, 1 - progress), size/1.5);
 	draw_line(Vector2(0,shrinkage), Vector2(0, length - shrinkage), Color(red + 0.7, green + 0.7, blue + 0.7, 1 - progress), size/2.5);
 	draw_circle(Vector2.ZERO, size/2, Color(1,1,1));
+	draw_circle(Vector2.ZERO, size/2 + 10, Color(red + 0.3, green + 0.3, blue + 0.3, (sin(progress * 2 * PI * 25)+1)/2.0));
+	draw_circle(Vector2(0, length - shrinkage), size/2, Color(1,1,1));
+	draw_circle(Vector2(0, length - shrinkage), size/2 + 5, Color(red + 0.3, green + 0.3, blue + 0.3, (sin(progress * 2 * PI * 25)+1)/2.0));
 
 # Called when the death timer ends;
 func _death_timer_ended():

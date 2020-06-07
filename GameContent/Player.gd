@@ -240,7 +240,7 @@ func _process(delta):
 	var color = "blue";
 	if team_id == 1:
 		color = "red";
-	$Label_Name.bbcode_text = "[center][color=" + color + "]" + player_name;
+	$Name_Parent/Label_Name.bbcode_text = "[center][color=" + color + "]" + player_name;
 	last_position = position;
 
 func set_kit(kit):
@@ -279,6 +279,16 @@ func start_laser(direction, start_pos, look_direction):
 	speed = AIMING_SPEED;
 	camera_ref.shake($Laser_Timer.wait_time, 1, true);
 	$Laser_Charge_Audio.play();
+	var red = 1 if team_id == 1 else 0;
+	var green = 10.0/255.0 if team_id == 1 else 130.0/255.0;
+	var blue = 1 if team_id == 0 else 0;
+	var lightener = 0.2;
+	red = red + lightener;
+	green = green + lightener;
+	blue = blue + lightener;
+	$Laser_Particles.color = Color(red, green, blue);
+	$Laser_Particles.emitting = true;
+	$Laser_Particles.position = start_pos;
 
 func _laser_timer_ended():
 	shoot_laser();
@@ -334,7 +344,7 @@ func shoot_laser():
 	laser.direction = laser_direction;
 	laser.player_id = player_id;
 	laser.team_id = team_id;
-	laser.z_index = z_index + 1;
+	laser.z_index = z_index + 3;
 	laser.WIDTH_PMODIFIER = LASER_WIDTH_PMODIFIER;
 	$Laser_Fire_Audio.play();
 	$Laser_Cooldown_Timer.start();
