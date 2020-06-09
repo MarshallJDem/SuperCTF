@@ -241,7 +241,7 @@ scale = Vector2( 1359.11, 5.042 )
 z_as_relative = false
 
 [node name="Border_Wall_H2" type="Sprite" parent="YSort"]
-position = Vector2( 0, -452 )
+position = Vector2( 0, -452.309 )
 z_index = -1500
 z_as_relative = false
 texture = ExtResource( 10 )

@@ -13,7 +13,7 @@ func _process(delta):
 		var ease_factor = 1;
 		if ease_enabled:
 			ease_factor = clamp(($Shake_Timer.time_left / $Shake_Timer.wait_time), 0.1, 100);
-		offset = Vector2(rand_range(0, shake_amplitude / ease_factor), rand_range(0, shake_amplitude / ease_factor))
+		#offset = Vector2(rand_range(0, shake_amplitude / ease_factor), rand_range(0, shake_amplitude / ease_factor))
 	if $Smooth_Timer.time_left > 0:
 		smoothing_speed = lerp(smooth_lag_start, 10, 1 - $Smooth_Timer.time_left/$Smooth_Timer.wait_time);
 # Shakes the camera for the given duration
@@ -34,5 +34,6 @@ func _smooth_timer_ended():
 	smoothing_speed = 10;
 
 func _shake_timer_ended():
-	offset = Vector2(0,0);
+	#offset = Vector2(0,0);
+	pass;
 	

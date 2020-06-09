@@ -1,6 +1,7 @@
 extends Position2D
 	
 func _process(delta):
+	return;
 	if get_parent().IS_CONTROLLED_BY_MOUSE:
 		rotate_to_mouse();
 		update_camera_offset_from_mouse();
