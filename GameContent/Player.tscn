@@ -2,7 +2,7 @@
 
 [ext_resource path="res://GameContent/Player.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Player/SuperCTF_Laser_Body_Resized.png" type="Texture" id=2]
-[ext_resource path="res://Assets/Player/universal_bottom_B.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Player/Universal_Legs_Resized_1.png" type="Texture" id=3]
 [ext_resource path="res://GameContent/Center_Pivot.gd" type="Script" id=4]
 [ext_resource path="res://GameContent/Camera.gd" type="Script" id=5]
 [ext_resource path="res://GameContent/Player_Area2D.gd" type="Script" id=6]
