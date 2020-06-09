@@ -24,6 +24,8 @@ func _ready():
 		print("Checking is server");
 		get_tree().change_scene("res://GameContent/Main.tscn");
 	$HTTPRequest_GetLeaderboard.request(Globals.mainServerIP + "getLeaderboardData", ["authorization: Bearer " + Globals.userToken]);
+	
+	get_tree().set_screen_stretch(SceneTree.STRETCH_MODE_VIEWPORT, SceneTree.STRETCH_ASPECT_KEEP, Vector2(1920,1080));
 
 
 
@@ -60,7 +62,7 @@ func start():
 		$UI_Layer.set_view($UI_Layer.VIEW_START);
 	
 	$Titlemusic_Audio.play(0.0);
-	#OS.window_fullscreen = true;
+
 var leaderboard_parent;
 func load_leaderboard(leaderboard_data):
 	var origin = Vector2(136,213);

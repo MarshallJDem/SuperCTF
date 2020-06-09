@@ -61,7 +61,6 @@ frame = 1
 script = ExtResource( 4 )
 
 [node name="Camera" type="Camera2D" parent="Center_Pivot"]
-position = Vector2( 100.105, 0 )
 zoom = Vector2( 0.5, 0.5 )
 smoothing_enabled = true
 smoothing_speed = 10.0

@@ -1,7 +1,7 @@
 extends Node
 
 # Whether to run in testing mode (for development uses)
-var testing = true;
+var testing = false;
 var experimental = false;
 
 #Game Servers (Both clients and servers use these vars, but in different ways. overlapping would not work)
@@ -78,6 +78,8 @@ var HTTPRequest_PollPlayerStatus = HTTPRequest.new();
 var HTTPRequest_GetMatchData = HTTPRequest.new();
 var HTTPRequest_CancelQueue = HTTPRequest.new();
 var PollPlayerStatus_Timer = Timer.new();
+
+onready var viewport = get_viewport()
 
 func _enter_tree():
 	var arguments = {}
@@ -213,7 +215,6 @@ func load_save_data():
 		Global_Overlay.saved_song_loaded(int(result["6"]));
 	else:
 		Global_Overlay.saved_song_loaded(-1);
-		
 
 func _input(event):
 	if event is InputEventKey and event.pressed:
