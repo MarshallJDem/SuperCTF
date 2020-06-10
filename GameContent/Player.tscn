@@ -2,7 +2,7 @@
 
 [ext_resource path="res://GameContent/Player.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Player/SuperCTF_Laser_Body_Resized.png" type="Texture" id=2]
-[ext_resource path="res://Assets/Player/Universal_Legs_Resized_1 (1).png" type="Texture" id=3]
+[ext_resource path="res://Assets/Player/Universal_Legs_Resized_2.png" type="Texture" id=3]
 [ext_resource path="res://GameContent/Center_Pivot.gd" type="Script" id=4]
 [ext_resource path="res://GameContent/Camera.gd" type="Script" id=5]
 [ext_resource path="res://GameContent/Player_Area2D.gd" type="Script" id=6]
@@ -196,7 +196,7 @@ wait_time = 5.0
 one_shot = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 0.11248, 11.9272 )
+position = Vector2( 0.0367583, 14.0096 )
 rotation = 1.5708
 shape = SubResource( 2 )
 
