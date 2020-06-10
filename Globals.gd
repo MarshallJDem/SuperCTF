@@ -94,8 +94,8 @@ func _enter_tree():
 		port = int(arguments["port"]);
 	if arguments.has("isServer"):
 		isServer = true if arguments["isServer"] == "true" else false;
-	#if !OS.has_feature("editor"):
-	#	testing = false;
+	if !OS.has_feature("editor"):
+		testing = false;
 	experimental = OS.has_feature("debug") and !OS.has_feature("editor");
 	if experimental:
 		get_tree().change_scene("res://GameContent/Main.tscn");
