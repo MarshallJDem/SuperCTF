@@ -299,7 +299,8 @@ func start_laser(direction, start_pos, look_direction):
 	green = green + lightener;
 	blue = blue + lightener;
 	$Laser_Particles.color = Color(red, green, blue);
-	$Laser_Particles.emitting = true;
+	$Laser_Particles.restart();
+	#$Laser_Particles.emitting = true;
 	$Laser_Particles.position = start_pos;
 
 func _laser_timer_ended():
