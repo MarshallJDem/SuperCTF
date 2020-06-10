@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://GameContent/Player.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Player/SuperCTF_Blue_Gunner_Body_2.png" type="Texture" id=2]
@@ -16,6 +16,7 @@
 [ext_resource path="res://fonts/Pixel_Chat.tres" type="DynamicFont" id=14]
 [ext_resource path="res://Assets/Player/Blue_Gunner_Gun.png" type="Texture" id=15]
 [ext_resource path="res://Assets/Player/SuperCTF_Blue_Gunner_Head_Resized.png" type="Texture" id=16]
+[ext_resource path="res://GameContent/Ability_Node.gd" type="Script" id=17]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 8.67661
@@ -35,6 +36,13 @@ _data = [ Vector2( 0.791667, 4.71545 ), 0.0, 0.0, 0, 0, Vector2( 1, 334.25 ), 37
 [node name="Player" type="KinematicBody2D"]
 collision_layer = 2
 script = ExtResource( 1 )
+
+[node name="Ability_Node" type="Node2D" parent="."]
+script = ExtResource( 17 )
+
+[node name="Forcefield_Timer" type="Timer" parent="Ability_Node"]
+wait_time = 3.0
+one_shot = true
 
 [node name="Sprite_Legs" type="Sprite" parent="."]
 texture = ExtResource( 3 )
@@ -162,10 +170,6 @@ wait_time = 0.5
 one_shot = true
 
 [node name="Teleport_Timer" type="Timer" parent="."]
-one_shot = true
-
-[node name="Forcefield_Timer" type="Timer" parent="."]
-wait_time = 3.0
 one_shot = true
 
 [node name="Top_Animation_Timer" type="Timer" parent="."]

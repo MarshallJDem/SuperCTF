@@ -13,7 +13,6 @@ var TELEPORT_SPEED = 3000;
 var POWERUP_SPEED = 0;
 var BULLET_COOLDOWN_PMODIFIER = 0;
 var DASH_COOLDOWN_PMODIFIER = 0;
-var FORCEFIELD_COOLDOWN_PMODIFIER = 0;
 var LASER_WIDTH_PMODIFIER = 0;
 var player_name = "Guest999";
 var speed = BASE_SPEED;
@@ -39,7 +38,6 @@ var lerp_start_pos = Vector2(0,0);
 var lerp_end_pos = Vector2(0,0);
 # Whether or not the player is sprinting
 var sprintEnabled = false;
-var max_forcefield_distance = 5000;
 var remote_db_level = -10;
 # The position the player was in last frame
 var last_position = Vector2(0,0);
@@ -71,7 +69,6 @@ var idle_top_atlas_red = preload("res://Assets/Player/idle_top_R.png");
 
 var Muzzle_Bullet = preload("res://GameContent/Muzzle_Bullet.tscn");
 var Bullet = preload("res://GameContent/Bullet.tscn");
-var Forcefield = preload("res://GameContent/Forcefield.tscn");
 var Laser = preload("res://GameContent/Laser.tscn");
 var Grenade = preload("res://GameContent/Grenade.tscn");
 var Ghost_Trail = preload("res://GameContent/Ghost_Trail.tscn");
@@ -101,7 +98,6 @@ func _ready():
 	$Laser_Input_Timer.connect("timeout", self, "_laser_input_timer_ended");
 	$Powerup_Timer.connect("timeout", self, "_powerup_timer_ended");
 	#$Laser_Cooldown_Timer.connect("timeout", self, "_laser_cooldown_timer_ended");
-	$Forcefield_Timer.connect("timeout", self, "_forcefield_timer_ended");
 	#$Top_Animation_Timer.connect("timeout", self, "_animation_timer_ended");
 	#$Shoot_Animation_Timer.connect("timeout", self, "_shoot_animation_timer_ended");
 	#$Shoot_Animation_Timer.wait_time = $Animation_Timer.wait_time;
@@ -134,12 +130,6 @@ func _input(event):
 					move_on_inputs(true);
 					camera_ref.lag_smooth();
 					$Teleport_Timer.start();
-			if event.scancode == KEY_E:
-				# If were not holding a flag, create forcefield
-				# This is now disabled. You can place forcefield whenever you please kiddo
-				if true || $Flag_Holder.get_child_count() == 0:
-					if $Forcefield_Timer.time_left == 0:
-						forcefield_placed();
 			if event.scancode == KEY_Q:
 				# If the grenade cooldown is over
 				if $Grenade_Cooldown_Timer.time_left == 0:
@@ -164,7 +154,6 @@ func _process(delta):
 	TELEPORT_SPEED = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("dashDistance");
 	$Shoot_Cooldown_Timer.wait_time = BULLET_COOLDOWN_PMODIFIER + float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("bulletCooldown"))/1000.0;
 	$Laser_Cooldown_Timer.wait_time = float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("laserCooldown"))/1000.0;
-	$Forcefield_Timer.wait_time = FORCEFIELD_COOLDOWN_PMODIFIER + float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("forcefieldCooldown"))/1000.0;
 	$Teleport_Timer.wait_time = DASH_COOLDOWN_PMODIFIER + float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("dashCooldown"))/1000.0;
 	$Laser_Timer.wait_time = float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("laserChargeTime"))/1000.0;
 	if control:
@@ -319,31 +308,6 @@ var current_weapon = 0;
 func switch_weapons():
 	return;
 	#current_weapon = 1 if current_weapon == 0 else 0;
-
-# Called when the player attempts to place a forcefield
-# This function will either place it in the appropriate spot or deny it (bad location or something)
-func forcefield_placed():
-	rpc("spawn_forcefield", position, team_id);
-	$Forcefield_Timer.start();
-	if Globals.testing:
-		var forcefield = Forcefield.instance();
-		forcefield.position = position;
-		forcefield.team_id = team_id;
-		get_tree().get_root().get_node("MainScene").add_child(forcefield);
-		
-# Called when the forcefield cooldown timer ends
-func _forcefield_timer_ended():
-	pass;
-
-# Called by client telling everyone to spawn a forcefield in a spot
-# TODO - in future this should be handled by servers - not the client.
-remotesync func spawn_forcefield(pos, team_id):
-	var forcefield = Forcefield.instance();
-	forcefield.position = pos;
-	forcefield.player_id = player_id;
-	forcefield.team_id = team_id;
-	get_tree().get_root().get_node("MainScene").add_child(forcefield);
-
 
 # Shoots a laser shot
 func shoot_laser():
@@ -611,7 +575,6 @@ func enable_powerup(type):
 		$Powerup_Timer.wait_time = 6;
 		text = "[color=#FF8C00]^^ LASER WIDTH UP ^^";
 	elif type == 5:
-		FORCEFIELD_COOLDOWN_PMODIFIER = -1.5;
 		$Powerup_Timer.wait_time = 10;
 		text = "[color=purple]^^ FORCEFIELD RATE UP ^^";
 	
@@ -625,7 +588,6 @@ func _powerup_timer_ended():
 	POWERUP_SPEED = 0;
 	DASH_COOLDOWN_PMODIFIER = 0;
 	BULLET_COOLDOWN_PMODIFIER = 0;
-	FORCEFIELD_COOLDOWN_PMODIFIER = 0;
 	LASER_WIDTH_PMODIFIER = 0;
 
 remotesync func create_ghost_trail(start, end):
