@@ -380,7 +380,12 @@ func _draw():
 		$CollisionTester.position = Vector2(0,0);
 		$CollisionTester.move_and_collide(laser_direction * 1000.0)
 		var length = $CollisionTester.position.distance_to(Vector2.ZERO) + 10;
-		draw_line(laser_position, laser_direction * length, Color(red, green, blue, 1 - ($Laser_Timer.time_left / $Laser_Timer.wait_time)), size);
+		var progress = 1 - ($Laser_Timer.time_left / $Laser_Timer.wait_time);
+		draw_line(laser_position, laser_direction * length, Color(red, green, blue, progress), size);
+		draw_circle(laser_position, size + 3, Color(red,green,blue,(sin((progress) * 2 * PI * 25 * (0.1 * (1.0+progress) ) )+1)/2.0));
+		draw_circle(laser_position, size + 0.5, Color(red + 0.1,green + 0.1,blue + 0.1,progress));
+		draw_circle(laser_direction * length, size + 3, Color(red,green,blue,(sin((progress) * 2 * PI * 25 * (0.1 * (1.0+progress) ) )+1)/2.0));
+		draw_circle(laser_direction * length, size + 0.5, Color(red + 0.1,green + 0.1,blue + 0.1,progress));
 	if last_grenade_position != Vector2.ZERO:
 		#draw_line(Vector2.ZERO, last_grenade_position,Color(0,0,0,1), 1.0, true);
 		draw_circle(last_grenade_position, get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("grenadeRadius"), Color(0,0,0,0.2));
