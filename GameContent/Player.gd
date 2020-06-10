@@ -232,9 +232,21 @@ func _process(delta):
 			pass;
 		if look_direction == 0:
 			$Sprite_Gun.position.y = 20 * $Shoot_Animation_Timer.time_left;
-		elif look_direction == 1 or look_direction == 2 or look_direction == 3:
+		elif look_direction == 1:
+			$Sprite_Gun.position.y = +10 * $Shoot_Animation_Timer.time_left;
+			$Sprite_Gun.position.x = -10 * $Shoot_Animation_Timer.time_left;
+		elif look_direction == 2 or look_direction == 3:
 			$Sprite_Gun.position.y = -10 * $Shoot_Animation_Timer.time_left;
 			$Sprite_Gun.position.x = -10 * $Shoot_Animation_Timer.time_left;
+		elif look_direction == 4:
+			$Sprite_Gun.position.y = -20 * $Shoot_Animation_Timer.time_left;
+		elif look_direction == 5 or look_direction == 6:
+			$Sprite_Gun.position.y = -10 * $Shoot_Animation_Timer.time_left;
+			$Sprite_Gun.position.x = 10 * $Shoot_Animation_Timer.time_left;
+		elif look_direction == 7:
+			$Sprite_Gun.position.y = +10 * $Shoot_Animation_Timer.time_left;
+			$Sprite_Gun.position.x = 10 * $Shoot_Animation_Timer.time_left;
+			
 		
 	# Name tag
 	var color = "blue";
