@@ -218,8 +218,8 @@ func _process(delta):
 		$Sprite_Legs.frame = look_direction + (int((1-($Leg_Animation_Timer.time_left / $Leg_Animation_Timer.wait_time)) * 4)%4) * $Sprite_Legs.hframes;
 	
 	
-	#$Sprite_Head.position.y = int(2 * sin((1 - $Top_Animation_Timer.time_left/$Top_Animation_Timer.wait_time)*(2 * PI)))/2.0;
-	#$Sprite_Gun.position.y = int(2 * sin((PI * 0.25) + (1 - $Top_Animation_Timer.time_left/$Top_Animation_Timer.wait_time)*(2 * PI)))/2.0;
+	$Sprite_Head.position.y = int(2 * sin((1 - $Top_Animation_Timer.time_left/$Top_Animation_Timer.wait_time)*(2 * PI)))/2.0;
+	$Sprite_Gun.position.y = int(2 * sin((PI * 0.25) + (1 - $Top_Animation_Timer.time_left/$Top_Animation_Timer.wait_time)*(2 * PI)))/2.0;
 	$Sprite_Gun.position.x = 0;
 	
 	# Shooting Animation (Overrides idleness)
