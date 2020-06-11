@@ -76,7 +76,7 @@ func activate_camo():
 	if Globals.testing:
 		__activate_camo();
 	else:
-		rpc("activate_camo");
+		rpc("__activate_camo");
 
 
 remotesync func __activate_camo():
