@@ -52,6 +52,7 @@ var just_teleported = false;
 var grenade_equipped = false;
 var laser_equipped = false;
 var bullet_equipped = false;
+
 enum Kits {Bullet, Laser, Grenade};
 
 

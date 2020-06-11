@@ -77,8 +77,8 @@ func _process(delta):
 			$Ability_GUIs/SPACE_GUI.modulate = Color(1,1,1,0.2 + 0.4 * ((teleport_wait_time - teleport_time_left) / teleport_wait_time) );
 			
 		# Forcefield button
-		var ff_time_left = local_player.get_node("Ability_Node/Forcefield_Timer").time_left;
-		var ff_wait_time = local_player.get_node("Ability_Node/Forcefield_Timer").wait_time;
+		var ff_time_left = local_player.get_node("Ability_Node/Cooldown_Timer").time_left;
+		var ff_wait_time = local_player.get_node("Ability_Node/Cooldown_Timer").wait_time;
 		
 		if ff_time_left == 0:
 			$Ability_GUIs/Forcefield_GUI_Text.text = "FORCEFIELD";

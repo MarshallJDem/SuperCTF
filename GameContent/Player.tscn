@@ -40,7 +40,10 @@ script = ExtResource( 1 )
 [node name="Ability_Node" type="Node2D" parent="."]
 script = ExtResource( 17 )
 
-[node name="Forcefield_Timer" type="Timer" parent="Ability_Node"]
+[node name="Cooldown_Timer" type="Timer" parent="Ability_Node"]
+one_shot = true
+
+[node name="Camo_Timer" type="Timer" parent="Ability_Node"]
 wait_time = 3.0
 one_shot = true
 
