@@ -27,7 +27,7 @@ radius = 1.61246
 height = 5.37553
 
 [sub_resource type="CircleShape2D" id=3]
-radius = 0.922888
+radius = 5.0
 
 [sub_resource type="Curve" id=4]
 max_value = 630.66

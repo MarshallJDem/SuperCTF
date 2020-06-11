@@ -28,6 +28,7 @@ var camera_ref = null;
 var laser_direction = Vector2(0,0);
 # The position the laser is firing from
 var laser_position = Vector2(0,0);
+var laser_target_position = null;
 # The number of bullets this player has shot. Used for naming bullets
 var bullets_shot = 0;
 # The time in millis the last position was received
@@ -259,24 +260,26 @@ func set_kit(kit):
 		grenade_equipped = true;
 
 
-remote func send_start_laser(direction, player_pos, look_direction):
+remote func send_start_laser(direction, start_pos, target_pos, look_direction):
 	if get_tree().is_network_server():# Only run if it's the server
 		var clients = get_tree().get_network_connected_peers();
 		for i in clients: # For each connected client
 			if i != get_tree().get_rpc_sender_id(): # Don't do it for the player who sent it
-				rpc_id(i, "receive_start_laser", direction, player_pos, look_direction);
-		start_laser(direction, player_pos, look_direction); # Also call it locally for the server
+				rpc_id(i, "receive_start_laser", direction, start_pos,target_pos, look_direction);
+		start_laser(direction, start_pos,target_pos, look_direction); # Also call it locally for the server
 
-remote func receive_start_laser(direction, player_pos, look_direction):
-	start_laser(direction, player_pos, look_direction);
+remote func receive_start_laser(direction, start_pos, target_pos, look_direction):
+	start_laser(direction, start_pos,target_pos, look_direction);
 
-func start_laser(direction, start_pos, look_direction):
+func start_laser(direction, start_pos, target_pos, look_direction):
 	$Sprite_Gun.frame = look_direction;
 	$Sprite_Head.frame = look_direction;
 	$Sprite_Body.frame = look_direction;
 	$Sprite_Legs.frame = look_direction;
+	#$CollisionTester.position = target_pos;
 	laser_direction = direction;
 	laser_position = start_pos;
+	laser_target_position = target_pos;
 	$Laser_Timer.start();
 	speed = AIMING_SPEED;
 	camera_ref.shake($Laser_Timer.wait_time, 0.5, true);
@@ -298,11 +301,17 @@ func _laser_timer_ended():
 	speed = BASE_SPEED;
 
 func start_laser_input():
+	laser_target_position = null;
 	$Laser_Input_Timer.start();
 func _laser_input_timer_ended():
 	var start_pos = get_node("Laser_Starts/" + String(look_direction)).position;
-	rpc_id(1, "send_start_laser", laser_direction, start_pos, look_direction);
-	start_laser(laser_direction, start_pos, look_direction);
+	$CollisionTester.position = Vector2(0,0);
+	$CollisionTester.move_and_collide(laser_direction * 1000.0)
+	var length = $CollisionTester.position.distance_to(Vector2.ZERO) + 10;
+	laser_target_position = laser_direction * length;
+	var target_pos = laser_target_position;
+	rpc_id(1, "send_start_laser", laser_direction, start_pos,target_pos, look_direction);
+	start_laser(laser_direction, start_pos,target_pos, look_direction);
 	sprintEnabled = false;
 	
 var current_weapon = 0;
@@ -314,16 +323,14 @@ func switch_weapons():
 func shoot_laser():
 	if is_network_master():
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE);
-	# Only run if we're the server
 	var laser = Laser.instance();
-	get_tree().get_root().get_node("MainScene").add_child(laser);
-	laser.position = position + laser_position;
-	laser.rotation = Vector2(0,0).angle_to_point(laser_direction) + PI/2;
-	laser.direction = laser_direction;
+	laser.position =  position + laser_position;
+	laser.target_pos = position + laser_target_position;
+	laser.WIDTH_PMODIFIER = LASER_WIDTH_PMODIFIER;
 	laser.player_id = player_id;
 	laser.team_id = team_id;
 	laser.z_index = z_index + 3;
-	laser.WIDTH_PMODIFIER = LASER_WIDTH_PMODIFIER;
+	get_tree().get_root().get_node("MainScene").add_child(laser);
 	$Laser_Fire_Audio.play();
 	$Laser_Cooldown_Timer.start();
 
@@ -342,15 +349,20 @@ func _draw():
 		red = red + lightener;
 		green = green + lightener;
 		blue = blue + lightener;
-		$CollisionTester.position = Vector2(0,0);
-		$CollisionTester.move_and_collide(laser_direction * 1000.0)
-		var length = $CollisionTester.position.distance_to(Vector2.ZERO) + 10;
+		var target_position = laser_target_position;
+		if laser_target_position == null:
+			$CollisionTester.position = Vector2(0,0);
+			$CollisionTester.move_and_collide(laser_direction * 1000.0)
+			var length = $CollisionTester.position.distance_to(Vector2.ZERO) + 10;
+			laser_target_position = laser_direction * length;
+			target_position = laser_direction * length;
+		print(target_position);
 		var progress = 1 - ($Laser_Timer.time_left / $Laser_Timer.wait_time);
-		draw_line(laser_position, laser_direction * length, Color(red, green, blue, progress), size);
+		draw_line(laser_position, target_position, Color(red, green, blue, progress), size);
 		draw_circle(laser_position, size + 3, Color(red,green,blue,(sin((progress) * 2 * PI * 25 * (0.1 * (1.0+progress) ) )+1)/2.0));
 		draw_circle(laser_position, size + 0.5, Color(red + 0.1,green + 0.1,blue + 0.1,progress));
-		draw_circle(laser_direction * length, size + 3, Color(red,green,blue,(sin((progress) * 2 * PI * 25 * (0.1 * (1.0+progress) ) )+1)/2.0));
-		draw_circle(laser_direction * length, size + 0.5, Color(red + 0.1,green + 0.1,blue + 0.1,progress));
+		draw_circle(target_position, size + 3, Color(red,green,blue,(sin((progress) * 2 * PI * 25 * (0.1 * (1.0+progress) ) )+1)/2.0));
+		draw_circle(target_position, size + 0.5, Color(red + 0.1,green + 0.1,blue + 0.1,progress));
 	if last_grenade_position != Vector2.ZERO:
 		#draw_line(Vector2.ZERO, last_grenade_position,Color(0,0,0,1), 1.0, true);
 		draw_circle(last_grenade_position, get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("grenadeRadius"), Color(0,0,0,0.2));
