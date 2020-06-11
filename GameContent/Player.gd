@@ -279,7 +279,7 @@ func start_laser(direction, start_pos, look_direction):
 	laser_position = start_pos;
 	$Laser_Timer.start();
 	speed = AIMING_SPEED;
-	camera_ref.shake($Laser_Timer.wait_time, 1, true);
+	camera_ref.shake($Laser_Timer.wait_time, 0.5, true);
 	$Laser_Charge_Audio.play();
 	var red = 1 if team_id == 1 else 0;
 	var green = 10.0/255.0 if team_id == 1 else 130.0/255.0;
