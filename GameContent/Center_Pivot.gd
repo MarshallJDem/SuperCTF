@@ -28,7 +28,7 @@ func update_camera_offset_from_mouse():
 	var modifier = 0.03;
 	$'..'.camera_ref.smoothing_speed = 10;
 	if Input.is_key_pressed(KEY_SHIFT):
-		$'..'.camera_ref.smoothing_speed = 1;
+		$'..'.camera_ref.smoothing_speed = 5;
 		modifier *= 8;
 	$'..'.camera_ref.position.x = distance * modifier;
 	
