@@ -89,7 +89,7 @@ func _process(delta):
 		
 		
 		# Grenade
-		var grenade_time_left = local_player.get_node("Grenade_Cooldown_Timer").time_left;
+		var grenade_time_left = local_player.get_node("Utility_Node/Cooldown_Timer").time_left;
 		if grenade_time_left == 0:
 			$Ability_GUIs/Grenade_GUI_Text.text = "GRENADE";
 		else:
