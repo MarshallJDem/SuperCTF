@@ -16,6 +16,8 @@ func _ready() -> void:
 	player = get_parent();
 
 func _process(delta):
+	if !player.control:
+		return;
 	if Input.is_action_just_pressed("clickR"):
 		if $Cooldown_Timer.time_left == 0:
 			if utility == Utilities.Grenade:
@@ -38,6 +40,8 @@ func _draw():
 		draw_circle(get_local_mouse_position(), get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("grenadeRadius")/10, Color(0,0,0,0.2));
 
 func _input(event):
+	if !player.control:
+		return;
 	if Globals.is_typing_in_chat:
 		return;
 
