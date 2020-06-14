@@ -40,15 +40,6 @@ enum Kits {Bullet, Laser, Demo};
 var current_kit = Kits.Bullet;
 
 
-var running_top_atlas_blue = preload("res://Assets/Player/running_top_B.png");
-var running_top_atlas_red = preload("res://Assets/Player/running_top_R.png");
-
-var shooting_top_atlas_blue = preload("res://Assets/Player/shooting_top_B.png");
-var shooting_top_atlas_red = preload("res://Assets/Player/shooting_top_R.png");
-
-var idle_top_atlas_blue = preload("res://Assets/Player/idle_top_B.png");
-var idle_top_atlas_red = preload("res://Assets/Player/idle_top_R.png");
-
 var Ghost_Trail = preload("res://GameContent/Ghost_Trail.tscn");
 var Player_Death = preload("res://GameContent/Player_Death.tscn");
 
@@ -163,7 +154,17 @@ func _process(delta):
 func set_kit(kit):
 	current_kit = kit;
 	$Weapon_Node.set_weapon_from_kit(kit);
+	var n = "gunner"
+	if current_kit == Kits.Bullet:
+		n = "gunner";
+	elif current_kit == Kits.Laser:
+		n = "laser";
+	elif current_kit == Kits.Demo:
+		n = "demo";
 
+	$Sprite_Head.set_texture(load("res://Assets/Player/" + str(n) + "_head_b.png"));
+	$Sprite_Body.set_texture(load("res://Assets/Player/" + str(n) + "_body_b.png"));
+	$Sprite_Gun.set_texture(load("res://Assets/Player/" + str(n) + "_gun_B.png"));
 
 
 func _draw():

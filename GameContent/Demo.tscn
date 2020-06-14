@@ -1,0 +1,56 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://GameContent/Demo.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Weapons/bullet_b.png" type="Texture" id=2]
+[ext_resource path="res://GameContent/Demo_Area2D.gd" type="Script" id=3]
+[ext_resource path="res://Assets/Sound/Bullet_Shot_1.wav" type="AudioStream" id=4]
+
+[sub_resource type="CapsuleShape2D" id=1]
+radius = 5.65601
+height = 0.671213
+
+[sub_resource type="CircleShape2D" id=2]
+radius = 5.97184
+
+[node name="Demo" type="KinematicBody2D" groups=[
+"Bullets",
+"Projectiles",
+]]
+script = ExtResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="."]
+scale = Vector2( 1.5, 1.5 )
+texture = ExtResource( 2 )
+hframes = 6
+
+[node name="Area2D" type="Area2D" parent="." groups=[
+"Bullet_Bodies",
+]]
+script = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2( -0.0421219, 0.12109 )
+rotation = 1.57079
+shape = SubResource( 1 )
+
+[node name="Death_Timer2" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+autostart = true
+
+[node name="Shot_Audio" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 4 )
+volume_db = -6.524
+autoplay = true
+attenuation = 0.287175
+
+[node name="Animation_Timer" type="Timer" parent="."]
+wait_time = 0.08
+autostart = true
+
+[node name="Lag_Comp_Timer" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 2 )

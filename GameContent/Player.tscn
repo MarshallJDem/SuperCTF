@@ -1,8 +1,8 @@
 [gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://GameContent/Player.gd" type="Script" id=1]
-[ext_resource path="res://Assets/Player/SuperCTF_Blue_Gunner_Body_2.png" type="Texture" id=2]
-[ext_resource path="res://Assets/Player/Universal_Legs_Resized_2.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Player/gunner_gun_B.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Player/legs.png" type="Texture" id=3]
 [ext_resource path="res://GameContent/Center_Pivot.gd" type="Script" id=4]
 [ext_resource path="res://GameContent/Camera.gd" type="Script" id=5]
 [ext_resource path="res://GameContent/Player_Area2D.gd" type="Script" id=6]
@@ -14,8 +14,8 @@
 [ext_resource path="res://Assets/Sound/Flag_Drop.wav" type="AudioStream" id=12]
 [ext_resource path="res://Assets/Sound/Teleport.wav" type="AudioStream" id=13]
 [ext_resource path="res://fonts/Pixel_Chat.tres" type="DynamicFont" id=14]
-[ext_resource path="res://Assets/Player/Blue_Gunner_Gun.png" type="Texture" id=15]
-[ext_resource path="res://Assets/Player/SuperCTF_Blue_Gunner_Head_Resized.png" type="Texture" id=16]
+[ext_resource path="res://Assets/Player/gunner_body_B.png" type="Texture" id=15]
+[ext_resource path="res://Assets/Player/gunner_head_B.png" type="Texture" id=16]
 [ext_resource path="res://GameContent/Ability_Node.gd" type="Script" id=17]
 [ext_resource path="res://GameContent/Utility_Node.gd" type="Script" id=18]
 [ext_resource path="res://GameContent/Weapon_Node.gd" type="Script" id=19]
@@ -164,12 +164,12 @@ hframes = 8
 frame = 1
 
 [node name="Sprite_Gun" type="Sprite" parent="."]
-texture = ExtResource( 15 )
+texture = ExtResource( 2 )
 hframes = 8
 frame = 1
 
 [node name="Sprite_Body" type="Sprite" parent="."]
-texture = ExtResource( 2 )
+texture = ExtResource( 15 )
 hframes = 8
 frame = 1
 
