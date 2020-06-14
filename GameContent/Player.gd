@@ -1,19 +1,15 @@
 extends KinematicBody2D
 
 var control = false;
-var IS_CONTROLLED_BY_MOUSE = true;
 # The ID of this player 0,1,2 etc. NOT the network unique ID
 var player_id = -1;
 var team_id = -1;
 var BASE_SPEED = 200;
-const AIMING_SPEED = 15;
 const SPRINT_SPEED = 50;
 const FLAG_SLOWDOWN_SPEED = -25;
 var TELEPORT_SPEED = 3000;
 var POWERUP_SPEED = 0;
-var BULLET_COOLDOWN_PMODIFIER = 0;
 var DASH_COOLDOWN_PMODIFIER = 0;
-var LASER_WIDTH_PMODIFIER = 0;
 var player_name = "Guest999";
 var speed = BASE_SPEED;
 # Where this player starts on the map and should respawn at
@@ -24,13 +20,6 @@ var alive = true;
 var invincible = false;
 # The camera that is associated with this player. A reference is used because it may switch parents
 var camera_ref = null;
-# The direction the laser is firing at
-var laser_direction = Vector2(0,0);
-# The position the laser is firing from
-var laser_position = Vector2(0,0);
-var laser_target_position = null;
-# The number of bullets this player has shot. Used for naming bullets
-var bullets_shot = 0;
 # The time in millis the last position was received
 var time_of_last_received_pos = 0;
 # The position to start lerping from
@@ -39,7 +28,6 @@ var lerp_start_pos = Vector2(0,0);
 var lerp_end_pos = Vector2(0,0);
 # Whether or not the player is sprinting
 var sprintEnabled = false;
-var remote_db_level = -10;
 # The position the player was in last frame
 var last_position = Vector2(0,0);
 # The frame of the all of the sprite on the top (Gun, Head, Body)
@@ -48,14 +36,9 @@ var look_direction = 0;
 var just_teleported = false;
 
 # Kits / Classes
-var laser_equipped = false;
-var bullet_equipped = false;
-
 enum Kits {Bullet, Laser, Demo};
+var current_kit = Kits.Bullet;
 
-
-var bullet_atlas_blue = preload("res://Assets/Weapons/bullet_b.png");
-var bullet_atlas_red = preload("res://Assets/Weapons/bullet_r.png");
 
 var running_top_atlas_blue = preload("res://Assets/Player/running_top_B.png");
 var running_top_atlas_red = preload("res://Assets/Player/running_top_R.png");
@@ -66,9 +49,6 @@ var shooting_top_atlas_red = preload("res://Assets/Player/shooting_top_R.png");
 var idle_top_atlas_blue = preload("res://Assets/Player/idle_top_B.png");
 var idle_top_atlas_red = preload("res://Assets/Player/idle_top_R.png");
 
-var Muzzle_Bullet = preload("res://GameContent/Muzzle_Bullet.tscn");
-var Bullet = preload("res://GameContent/Bullet.tscn");
-var Laser = preload("res://GameContent/Laser.tscn");
 var Ghost_Trail = preload("res://GameContent/Ghost_Trail.tscn");
 var Player_Death = preload("res://GameContent/Player_Death.tscn");
 
@@ -83,22 +63,9 @@ func _ready():
 		activate_camera();
 		control = true
 	
-	if Globals.testing or Globals.localPlayerID == player_id:
-		$Laser_Timer.wait_time += 0.1;
-		$Laser_Charge_Audio.set_pitch_scale(float(0.5)/$Laser_Timer.wait_time);
-	else:
-		$Laser_Charge_Audio.set_volume_db(remote_db_level);
-		$Laser_Fire_Audio.set_volume_db(remote_db_level);
-	
 	$Respawn_Timer.connect("timeout", self, "_respawn_timer_ended");
 	$Invincibility_Timer.connect("timeout", self, "_invincibility_timer_ended");
-	$Laser_Timer.connect("timeout", self, "_laser_timer_ended");
-	$Laser_Input_Timer.connect("timeout", self, "_laser_input_timer_ended");
 	$Powerup_Timer.connect("timeout", self, "_powerup_timer_ended");
-	#$Laser_Cooldown_Timer.connect("timeout", self, "_laser_cooldown_timer_ended");
-	#$Top_Animation_Timer.connect("timeout", self, "_animation_timer_ended");
-	#$Shoot_Animation_Timer.connect("timeout", self, "_shoot_animation_timer_ended");
-	#$Shoot_Animation_Timer.wait_time = $Animation_Timer.wait_time;
 	lerp_start_pos = position;
 	lerp_end_pos = position;
 
@@ -118,8 +85,6 @@ func _input(event):
 			if event.scancode == KEY_CONTROL:
 				if $Flag_Holder.get_child_count() == 0:
 					sprintEnabled = !sprintEnabled;
-			if event.scancode == KEY_SHIFT:
-				switch_weapons();
 			if event.scancode == KEY_SPACE:
 				#Attempt a teleport
 				# Re-enable line below to prevent telporting while you have flag
@@ -135,30 +100,26 @@ func _process(delta):
 		speed = new_speed;
 	BASE_SPEED = new_speed;
 	TELEPORT_SPEED = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("dashDistance");
-	$Shoot_Cooldown_Timer.wait_time = BULLET_COOLDOWN_PMODIFIER + float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("bulletCooldown"))/1000.0;
-	$Laser_Cooldown_Timer.wait_time = float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("laserCooldown"))/1000.0;
 	$Teleport_Timer.wait_time = DASH_COOLDOWN_PMODIFIER + float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("dashCooldown"))/1000.0;
-	$Laser_Timer.wait_time = float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("laserChargeTime"))/1000.0;
+	
 	if control:
 		activate_camera();
 		# Don't look around if we're shooting a laser
-		if $Laser_Timer.time_left == 0:
+		if !$Weapon_Node.current_weapon == $Weapon_Node.Weapons.Laser or $Weapon_Node/Cooldown_Timer.time_left == 0:
 			update_look_direction();
-		if $Laser_Timer.time_left + $Laser_Input_Timer.time_left > 0:
-			speed = AIMING_SPEED * ($Laser_Timer.time_left / $Laser_Timer.wait_time);
-		# Move & Shoot around as long as we aren't typing in chat
+		# Move around as long as we aren't typing in chat
 		if !Globals.is_typing_in_chat:
 			move_on_inputs();
-			shoot_on_inputs();
+	
 	update();
+	
 	if $Invincibility_Timer.time_left > 0:
 		var t = $Invincibility_Timer.time_left / $Invincibility_Timer.wait_time 
 		var x =  (t * 10);
 		var color = Color(1,1,1,(sin( (PI / 2) + (x * (1 + (t * ((2 * PI) - 1))))) + 1)/2);
 		modulate = color
+	
 	z_index = global_position.y + 15;
-	
-	
 	
 	# If we are a puppet and not the server, then lerp our position
 	if !Globals.testing and !is_network_master() and !get_tree().is_network_server():
@@ -191,34 +152,6 @@ func _process(delta):
 	
 	
 	$Sprite_Head.position.y = int(2 * sin((1 - $Top_Animation_Timer.time_left/$Top_Animation_Timer.wait_time)*(2 * PI)))/2.0;
-	$Sprite_Gun.position.y = int(2 * sin((PI * 0.25) + (1 - $Top_Animation_Timer.time_left/$Top_Animation_Timer.wait_time)*(2 * PI)))/2.0;
-	$Sprite_Gun.position.x = 0;
-	
-	# Shooting Animation (Overrides idleness)
-	if $Shoot_Animation_Timer.time_left > 0:
-		if team_id == 1:
-			#$Sprite_Top.set_texture(shooting_top_atlas_red);
-			pass;
-		else:
-			#$Sprite_Top.set_texture(shooting_top_atlas_blue);
-			pass;
-		if look_direction == 0:
-			$Sprite_Gun.position.y = 20 * $Shoot_Animation_Timer.time_left;
-		elif look_direction == 1:
-			$Sprite_Gun.position.y = +10 * $Shoot_Animation_Timer.time_left;
-			$Sprite_Gun.position.x = -10 * $Shoot_Animation_Timer.time_left;
-		elif look_direction == 2 or look_direction == 3:
-			$Sprite_Gun.position.y = -10 * $Shoot_Animation_Timer.time_left;
-			$Sprite_Gun.position.x = -10 * $Shoot_Animation_Timer.time_left;
-		elif look_direction == 4:
-			$Sprite_Gun.position.y = -20 * $Shoot_Animation_Timer.time_left;
-		elif look_direction == 5 or look_direction == 6:
-			$Sprite_Gun.position.y = -10 * $Shoot_Animation_Timer.time_left;
-			$Sprite_Gun.position.x = 10 * $Shoot_Animation_Timer.time_left;
-		elif look_direction == 7:
-			$Sprite_Gun.position.y = +10 * $Shoot_Animation_Timer.time_left;
-			$Sprite_Gun.position.x = 10 * $Shoot_Animation_Timer.time_left;
-			
 		
 	# Name tag
 	var color = "blue";
@@ -228,180 +161,22 @@ func _process(delta):
 	last_position = position;
 
 func set_kit(kit):
-	bullet_equipped = false;
-	laser_equipped = false;
-	if kit == Kits.Bullet:
-		bullet_equipped = true;
-		current_weapon = 0;
-	elif kit == Kits.Laser:
-		laser_equipped = true;
-		current_weapon = 1;
+	current_kit = kit;
+	$Weapon_Node.set_weapon_from_kit(kit);
 
-
-remote func send_start_laser(direction, start_pos, target_pos, look_direction):
-	if get_tree().is_network_server():# Only run if it's the server
-		var clients = get_tree().get_network_connected_peers();
-		for i in clients: # For each connected client
-			if i != get_tree().get_rpc_sender_id(): # Don't do it for the player who sent it
-				rpc_id(i, "receive_start_laser", direction, start_pos,target_pos, look_direction);
-		start_laser(direction, start_pos,target_pos, look_direction); # Also call it locally for the server
-
-remote func receive_start_laser(direction, start_pos, target_pos, look_direction):
-	start_laser(direction, start_pos,target_pos, look_direction);
-
-func start_laser(direction, start_pos, target_pos, look_direction):
-	$Sprite_Gun.frame = look_direction;
-	$Sprite_Head.frame = look_direction;
-	$Sprite_Body.frame = look_direction;
-	$Sprite_Legs.frame = look_direction;
-	#$CollisionTester.position = target_pos;
-	laser_direction = direction;
-	laser_position = start_pos;
-	laser_target_position = target_pos;
-	$Laser_Timer.start();
-	speed = AIMING_SPEED;
-	camera_ref.shake($Laser_Timer.wait_time, 0.5, true);
-	$Laser_Charge_Audio.play();
-	var red = 1 if team_id == 1 else 0;
-	var green = 10.0/255.0 if team_id == 1 else 130.0/255.0;
-	var blue = 1 if team_id == 0 else 0;
-	var lightener = 0.2;
-	red = red + lightener;
-	green = green + lightener;
-	blue = blue + lightener;
-	$Laser_Particles.color = Color(red, green, blue);
-	$Laser_Particles.restart();
-	#$Laser_Particles.emitting = true;
-	$Laser_Particles.position = start_pos;
-
-func _laser_timer_ended():
-	shoot_laser();
-	speed = BASE_SPEED;
-
-func start_laser_input():
-	laser_target_position = null;
-	$Laser_Input_Timer.start();
-func _laser_input_timer_ended():
-	var start_pos = get_node("Laser_Starts/" + String(look_direction)).position;
-	$CollisionTester.position = Vector2(0,0);
-	$CollisionTester.move_and_collide(laser_direction * 1000.0)
-	var length = $CollisionTester.position.distance_to(Vector2.ZERO) + 10;
-	laser_target_position = laser_direction * length;
-	var target_pos = laser_target_position;
-	rpc_id(1, "send_start_laser", laser_direction, start_pos,target_pos, look_direction);
-	start_laser(laser_direction, start_pos,target_pos, look_direction);
-	sprintEnabled = false;
-	
-var current_weapon = 0;
-func switch_weapons():
-	return;
-	#current_weapon = 1 if current_weapon == 0 else 0;
-
-# Shoots a laser shot
-func shoot_laser():
-	if is_network_master():
-		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE);
-	var laser = Laser.instance();
-	laser.position =  position + laser_position;
-	laser.target_pos = position + laser_target_position;
-	laser.WIDTH_PMODIFIER = LASER_WIDTH_PMODIFIER;
-	laser.player_id = player_id;
-	laser.team_id = team_id;
-	laser.z_index = z_index + 3;
-	get_tree().get_root().get_node("MainScene").add_child(laser);
-	$Laser_Fire_Audio.play();
-	$Laser_Cooldown_Timer.start();
 
 
 func _draw():
-	if $Laser_Timer.time_left > 0:
-		var size;
-		if $Laser_Input_Timer.time_left > 0:
-			size = 0;
-		else:
-			size = clamp(1 / ($Laser_Timer.time_left / $Laser_Timer.wait_time), 0 , 3);
-		var red = 1 if team_id == 1 else 0;
-		var green = 10.0/255.0 if team_id == 1 else 130.0/255.0;
-		var blue = 1 if team_id == 0 else 0;
-		var lightener = 0.2;
-		red = red + lightener;
-		green = green + lightener;
-		blue = blue + lightener;
-		var target_position = laser_target_position;
-		if laser_target_position == null:
-			$CollisionTester.position = Vector2(0,0);
-			$CollisionTester.move_and_collide(laser_direction * 1000.0)
-			var length = $CollisionTester.position.distance_to(Vector2.ZERO) + 10;
-			laser_target_position = laser_direction * length;
-			target_position = laser_direction * length;
-		print(target_position);
-		var progress = 1 - ($Laser_Timer.time_left / $Laser_Timer.wait_time);
-		draw_line(laser_position, target_position, Color(red, green, blue, progress), size);
-		draw_circle(laser_position, size + 3, Color(red,green,blue,(sin((progress) * 2 * PI * 25 * (0.1 * (1.0+progress) ) )+1)/2.0));
-		draw_circle(laser_position, size + 0.5, Color(red + 0.1,green + 0.1,blue + 0.1,progress));
-		draw_circle(target_position, size + 3, Color(red,green,blue,(sin((progress) * 2 * PI * 25 * (0.1 * (1.0+progress) ) )+1)/2.0));
-		draw_circle(target_position, size + 0.5, Color(red + 0.1,green + 0.1,blue + 0.1,progress));
+	pass;
 
-# Shoots a bullet shot
-func shoot_bullet(d):
-	$Shoot_Cooldown_Timer.start();
-	var direction = d.normalized();
-	bullets_shot = bullets_shot + 1;
-	# Re-enable the code below to have the bullet start out of the end of the gun
-	var bullet_start = position + get_node("Bullet_Starts/" + String(look_direction)).position;
-	# Offset bullet start by a bit because player frames are perfectly centered
-	if false and direction.y == 0:
-		bullet_start += Vector2(0, 10);
-	if false and direction.x != 0 and direction.y != 0:
-		bullet_start += Vector2(10 * direction.x/abs(direction.x),0);
-	var time = OS.get_system_time_msecs() - Globals.match_start_time;
-	var bullet = spawn_bullet(bullet_start, 0 if Globals.testing else player_id, direction,time, null);
-	#camera_ref.shake();
-	$Shoot_Animation_Timer.start();
-	if !Globals.testing:
-		rpc_id(1, "send_bullet", bullet_start,player_id, direction, time, bullet.name);
-
-# Spawns a bullet given various initializaiton parameters
-func spawn_bullet(pos, player_id, direction, time_shot, bullet_name = null):
-	
-	# Muzzle Flair
-	var particles = Muzzle_Bullet.instance();
-	particles.team_id = team_id;
-	#get_tree().get_root().get_node("MainScene").add_child(particles);
-	call_deferred("add_child", particles);
-	particles.position = get_node("Bullet_Starts/" + String(look_direction)).position;
-	particles.rotation = Vector2(0,0).angle_to_point(direction) + PI;
-	
-#	# If this was fired by another player, compensate for player lerp speed
-	if !Globals.testing and player_id != Globals.localPlayerID:
-		var t = Timer.new();
-		t.set_wait_time(float(Globals.player_lerp_time)/float(1000.0));
-		t.set_one_shot(true);
-		self.add_child(t);
-		t.start();
-		yield(t, "timeout");
-		t.queue_free();
-	
-	# Initialize Bullet
-	var bullet = Bullet.instance();
-	bullet.position = pos;
-	bullet.direction = direction;
-	bullet.player_id = player_id;
-	bullet.team_id = team_id;
-	bullet.initial_time_shot = time_shot
-	bullet.set_network_master(get_network_master());
-	if team_id == 0:
-		bullet.get_node("Sprite").set_texture(bullet_atlas_blue);
-	elif team_id == 1:
-		bullet.get_node("Sprite").set_texture(bullet_atlas_red);
-	get_tree().get_root().get_node("MainScene").call_deferred("add_child", bullet);
-	if bullet_name != null:
-		bullet.name = bullet_name;
-	else:
-		bullet.name = bullet.name + "-" + str(player_id) + "-" + str(bullets_shot);
-	
-	
-	return bullet;
+# Attempts to drop the flag the player is potentially holding. Returns true if there was a flag to drop false otherwise
+func attempt_drop_flag() -> bool:
+	if $Flag_Holder.get_child_count() == 0:
+		return false;
+	else: # Otherwise drop our flag
+		drop_current_flag($Flag_Holder.get_global_position());
+		rpc_id(1, "send_drop_flag", $Flag_Holder.get_global_position());
+		return true;
 
 # A vector 2D representing the last movement key directions pressed
 var last_movement_input = Vector2(0,0);
@@ -435,50 +210,6 @@ func move_on_inputs(teleport = false):
 		else:
 			rpc("create_ghost_trail", previous_pos, new_pos);
 
-func shoot_on_inputs():
-	var input = Vector2(0,0);
-	input.x = (1 if Input.is_key_pressed(KEY_RIGHT) else 0) - (1 if Input.is_key_pressed(KEY_LEFT) else 0)
-	input.y = (1 if Input.is_key_pressed(KEY_DOWN) else 0) - (1 if Input.is_key_pressed(KEY_UP) else 0)
-	input = input.normalized();
-	
-	if input != Vector2.ZERO:
-		
-		IS_CONTROLLED_BY_MOUSE = false;
-		if $Flag_Holder.get_child_count() != 0:
-			drop_current_flag($Flag_Holder.get_global_position());
-			if !Globals.testing:
-				rpc_id(1, "send_drop_flag", $Flag_Holder.get_global_position());
-		elif current_weapon == 0 and bullet_equipped and $Shoot_Cooldown_Timer.time_left == 0:
-			shoot_bullet(input);
-		elif current_weapon == 1 and laser_equipped and $Laser_Cooldown_Timer.time_left == 0:
-			# If we are still in input phase, update direction
-			if $Laser_Input_Timer.time_left != 0:
-				laser_direction = input;
-				laser_position = get_node("Laser_Starts/" + String(look_direction)).position * 20;
-			elif $Laser_Timer.time_left == 0:
-				start_laser_input();
-	else:
-		# Check for mouse input
-		if Input.is_action_pressed("clickL"):
-			IS_CONTROLLED_BY_MOUSE = true;
-			# Only accepts clicks if we're not aiming a laser
-			if $Laser_Timer.time_left == 0:
-				if $Flag_Holder.get_child_count() == 0:
-					if current_weapon == 0 and bullet_equipped:
-						if $Shoot_Cooldown_Timer.time_left == 0:
-							call_deferred("shoot_bullet", ((get_global_mouse_position() - global_position).normalized()));
-					elif current_weapon == 1 and laser_equipped:
-						var direction = (get_global_mouse_position() - global_position).normalized();
-						laser_direction = direction;
-						laser_position = get_node("Laser_Starts/" + String(look_direction)).position * 20;
-						# If we are still in input phase, update direction
-						if $Laser_Input_Timer.time_left == 0:
-							start_laser_input();
-					sprintEnabled = false;
-				else: # Otherwise drop our flag
-					drop_current_flag($Flag_Holder.get_global_position());
-					rpc_id(1, "send_drop_flag", $Flag_Holder.get_global_position());
-
 func enable_powerup(type):
 	var text = "";
 	if type == 1:
@@ -490,18 +221,16 @@ func enable_powerup(type):
 		$Powerup_Timer.wait_time = 6;
 		text = "[color=blue]˅˅˅˅˅˅^^ DASH RATE UP ^^";
 	elif type == 3:
-		BULLET_COOLDOWN_PMODIFIER = -0.1;
+		$Weapon_Node.BULLET_COOLDOWN_PMODIFIER = -0.1;
 		$Powerup_Timer.wait_time = 8;
 		text = "[color=red]^^ BULLET FIRE RATE UP ^^";
 	elif type == 4:
-		LASER_WIDTH_PMODIFIER = 15;
+		$Weapon_Node.LASER_WIDTH_PMODIFIER = 15;
 		$Powerup_Timer.wait_time = 6;
 		text = "[color=#FF8C00]^^ LASER WIDTH UP ^^";
 	elif type == 5:
 		$Powerup_Timer.wait_time = 10;
 		text = "[color=purple]^^ FORCEFIELD RATE UP ^^";
-	
-	
 	# Only display message if this is our local player
 	if Globals.testing or player_id == Globals.localPlayerID:
 		get_tree().get_root().get_node("MainScene/UI_Layer").set_alert_text("[center]" + text);
@@ -510,8 +239,8 @@ func enable_powerup(type):
 func _powerup_timer_ended():
 	POWERUP_SPEED = 0;
 	DASH_COOLDOWN_PMODIFIER = 0;
-	BULLET_COOLDOWN_PMODIFIER = 0;
-	LASER_WIDTH_PMODIFIER = 0;
+	$Weapon_Node.BULLET_COOLDOWN_PMODIFIER = 0;
+	$Weapon_Node.LASER_WIDTH_PMODIFIER = 0;
 
 remotesync func create_ghost_trail(start, end):
 	$Teleport_Audio.play();
@@ -541,22 +270,7 @@ remotesync func create_ghost_trail(start, end):
 # Changes the sprite's frame to make it "look" at the mouse
 var previous_look_input = Vector2(0,0);
 func update_look_direction():
-	var pos;
-	if IS_CONTROLLED_BY_MOUSE:
-		pos = get_global_mouse_position();
-	else:
-		var input = Vector2(0,0);
-		input.x = (1 if Input.is_key_pressed(KEY_RIGHT) else 0) - (1 if Input.is_key_pressed(KEY_LEFT) else 0)
-		input.y = (1 if Input.is_key_pressed(KEY_DOWN) else 0) - (1 if Input.is_key_pressed(KEY_UP) else 0)
-		input = input.normalized();
-		if input == Vector2(0,0):
-			input.x = (1 if Input.is_key_pressed(KEY_D) else 0) - (1 if Input.is_key_pressed(KEY_A) else 0)
-			input.y = (1 if Input.is_key_pressed(KEY_S) else 0) - (1 if Input.is_key_pressed(KEY_W) else 0)
-			input = input.normalized();
-			if input == Vector2(0,0):
-				input = previous_look_input;
-		previous_look_input = input;
-		pos = position + (input * 100) + Vector2(1,1); # Add 1,1 to prevent 0 edge cases
+	var pos = get_global_mouse_position();
 	var dist = pos - position;
 	var angle = get_vector_angle(dist);
 	var adjustedAngle = -1 * (angle + (PI/8));
@@ -754,19 +468,6 @@ remote func send_position(new_pos, player_id):
 # "Receives" the position of this player from the server
 remote func receive_position(new_pos):
 	update_position(new_pos);
-
-# Client tells the server that it just shot a bullet
-remote func send_bullet(pos, player_id, direction, time_shot, bullet_name):
-	if get_tree().is_network_server(): # Only run if it's the server
-		var clients = get_tree().get_network_connected_peers();
-		for i in clients: # For each connected client
-			if i != get_tree().get_rpc_sender_id(): # Don't do it for the player who sent it
-				rpc_id(i, "receive_bullet", pos, player_id, direction,time_shot, bullet_name);
-		spawn_bullet(pos, player_id, direction,time_shot, bullet_name); # Also call it locally for the server
-
-# "Receives" a bullet from the server that was shot by another client
-remote func receive_bullet(pos, player_id, direction,time_shot, bullet_name):
-	spawn_bullet(pos, player_id, direction,time_shot, bullet_name);
 
 # Client tells the server what direction frame it's looking at 
 remote func send_look_direction(frame, player_id):

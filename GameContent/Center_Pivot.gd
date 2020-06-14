@@ -1,13 +1,8 @@
 extends Position2D
 	
 func _process(delta):
-	if get_parent().IS_CONTROLLED_BY_MOUSE:
-		rotate_to_mouse();
-		update_camera_offset_from_mouse();
-	else:
-		rotate_to_arrow_keys();
-		update_camera_offset_from_arrow_keys();
-
+	rotate_to_mouse();
+	update_camera_offset_from_mouse();
 # Rotates this pivot point to look at the mouse position
 func rotate_to_mouse():
 	var mpos = get_global_mouse_position();
