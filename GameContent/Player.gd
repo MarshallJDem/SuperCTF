@@ -162,8 +162,8 @@ func set_kit(kit):
 	elif current_kit == Kits.Demo:
 		n = "demo";
 
-	$Sprite_Head.set_texture(load("res://Assets/Player/" + str(n) + "_head_b.png"));
-	$Sprite_Body.set_texture(load("res://Assets/Player/" + str(n) + "_body_b.png"));
+	$Sprite_Head.set_texture(load("res://Assets/Player/" + str(n) + "_head_B.png"));
+	$Sprite_Body.set_texture(load("res://Assets/Player/" + str(n) + "_body_B.png"));
 	$Sprite_Gun.set_texture(load("res://Assets/Player/" + str(n) + "_gun_B.png"));
 
 

@@ -20,18 +20,18 @@
 [ext_resource path="res://GameContent/Utility_Node.gd" type="Script" id=18]
 [ext_resource path="res://GameContent/Weapon_Node.gd" type="Script" id=19]
 
-[sub_resource type="CircleShape2D" id=3]
+[sub_resource type="CircleShape2D" id=1]
 radius = 5.0
 
-[sub_resource type="Curve" id=4]
+[sub_resource type="Curve" id=2]
 max_value = 630.66
 _data = [ Vector2( 0.791667, 4.71545 ), 0.0, 0.0, 0, 0, Vector2( 1, 334.25 ), 3776.08, 0.0, 0, 0 ]
 
-[sub_resource type="CapsuleShape2D" id=1]
+[sub_resource type="CapsuleShape2D" id=3]
 radius = 8.67661
 height = 13.2677
 
-[sub_resource type="CapsuleShape2D" id=2]
+[sub_resource type="CapsuleShape2D" id=4]
 radius = 1.61246
 height = 5.37553
 
@@ -46,7 +46,7 @@ script = ExtResource( 19 )
 collision_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Weapon_Node/CollisionTester"]
-shape = SubResource( 3 )
+shape = SubResource( 1 )
 
 [node name="Laser_Timer" type="Timer" parent="Weapon_Node"]
 wait_time = 0.4
@@ -138,7 +138,7 @@ gravity = Vector2( 0.368, 2.016 )
 radial_accel = -100.0
 radial_accel_random = 0.1
 damping = 2.96
-damping_curve = SubResource( 4 )
+damping_curve = SubResource( 2 )
 color = Color( 0.109804, 0.760784, 0.0745098, 1 )
 
 [node name="Utility_Node" type="Node2D" parent="."]
@@ -206,7 +206,7 @@ script = ExtResource( 6 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2( 0.0646133, 3.80024 )
-shape = SubResource( 1 )
+shape = SubResource( 3 )
 
 [node name="Flag_Holder" type="Node2D" parent="."]
 
@@ -236,7 +236,7 @@ one_shot = true
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0.0367583, 14.0096 )
 rotation = 1.5708
-shape = SubResource( 2 )
+shape = SubResource( 4 )
 
 [node name="Death_Audio" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 7 )
