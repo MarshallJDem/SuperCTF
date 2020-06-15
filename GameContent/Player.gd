@@ -96,7 +96,7 @@ func _process(delta):
 	if control:
 		activate_camera();
 		# Don't look around if we're shooting a laser
-		if !$Weapon_Node.current_weapon == $Weapon_Node.Weapons.Laser or $Weapon_Node/Cooldown_Timer.time_left == 0:
+		if $Weapon_Node.current_weapon != $Weapon_Node.Weapons.Laser or $Weapon_Node/Laser_Timer.time_left == 0:
 			update_look_direction();
 		# Move around as long as we aren't typing in chat
 		if !Globals.is_typing_in_chat:

@@ -271,7 +271,7 @@ func shoot_laser():
 	laser.WIDTH_PMODIFIER = LASER_WIDTH_PMODIFIER;
 	laser.player_id = player.player_id;
 	laser.team_id = player.team_id;
-	laser.z_index = z_index + 3;
+	laser.z_index = player.z_index + 4;
 	get_tree().get_root().get_node("MainScene").add_child(laser);
 	$Laser_Fire_Audio.play();
 	$Cooldown_Timer.start();
