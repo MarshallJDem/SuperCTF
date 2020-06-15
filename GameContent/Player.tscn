@@ -1,7 +1,7 @@
 [gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://GameContent/Player.gd" type="Script" id=1]
-[ext_resource path="res://Assets/Player/laser_gun_B.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Player/gunner_gun_B.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Player/legs.png" type="Texture" id=3]
 [ext_resource path="res://GameContent/Center_Pivot.gd" type="Script" id=4]
 [ext_resource path="res://GameContent/Camera.gd" type="Script" id=5]
@@ -75,28 +75,28 @@ stream = ExtResource( 10 )
 [node name="Bullet_Starts" type="Node" parent="Weapon_Node"]
 
 [node name="0" type="Node2D" parent="Weapon_Node/Bullet_Starts"]
-position = Vector2( -0.0738754, -9.20436 )
+position = Vector2( -0.7976, -11.8209 )
 
 [node name="1" type="Node2D" parent="Weapon_Node/Bullet_Starts"]
-position = Vector2( 8.13069, -4.00015 )
+position = Vector2( 11.471, -5.11357 )
 
 [node name="2" type="Node2D" parent="Weapon_Node/Bullet_Starts"]
-position = Vector2( 10.2276, 3.37638 )
+position = Vector2( 12.5101, 4.76815 )
 
 [node name="3" type="Node2D" parent="Weapon_Node/Bullet_Starts"]
-position = Vector2( 7.71334, 7.03914 )
+position = Vector2( 8.99377, 11.1588 )
 
 [node name="4" type="Node2D" parent="Weapon_Node/Bullet_Starts"]
-position = Vector2( 0.0255585, 11.8886 )
+position = Vector2( -0.64249, 15.8412 )
 
 [node name="5" type="Node2D" parent="Weapon_Node/Bullet_Starts"]
-position = Vector2( -7.98162, 7.59734 )
+position = Vector2( -9.87443, 11.4386 )
 
 [node name="6" type="Node2D" parent="Weapon_Node/Bullet_Starts"]
-position = Vector2( -11.8332, 3.68774 )
+position = Vector2( -14.2827, 4.68982 )
 
 [node name="7" type="Node2D" parent="Weapon_Node/Bullet_Starts"]
-position = Vector2( -8.81878, -4.44531 )
+position = Vector2( -12.8271, -5.55873 )
 
 [node name="Laser_Starts" type="Node" parent="Weapon_Node"]
 
@@ -163,11 +163,14 @@ texture = ExtResource( 3 )
 vframes = 4
 hframes = 8
 frame = 1
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="Sprite_Gun" type="Sprite" parent="."]
 texture = ExtResource( 2 )
 hframes = 8
-frame = 7
+frame = 5
 __meta__ = {
 "_edit_lock_": true
 }
@@ -211,6 +214,9 @@ script = ExtResource( 6 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2( 0.0646133, 3.80024 )
 shape = SubResource( 3 )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="Flag_Holder" type="Node2D" parent="."]
 
