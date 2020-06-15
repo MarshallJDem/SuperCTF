@@ -6,6 +6,8 @@ var start_time = OS.get_system_time_secs();
 func _ready():
 	var _err = $Leave_Match_Button.connect("pressed", self, "_leave_match_button_pressed");
 	_err = $Cancel_Button.connect("pressed", self, "_cancel_button_pressed");
+	get_tree().connect("screen_resized", self, "_screen_resized");
+	_screen_resized();
 
 func _process(delta):
 	if Globals.isServer:
@@ -102,6 +104,17 @@ func _process(delta):
 			$Ability_GUIs/LEFT_GUI.modulate = Color(1,1,1,0.4);
 			$Ability_GUIs/RIGHT_GUI.modulate = Color(1,1,1,0.4);
 			$Ability_GUIs/Q_GUI.modulate = Color(1,1,1,0.4);
+
+func _screen_resized():
+	var window_size = OS.get_window_size();
+	if window_size.x < 500 or window_size.y < 200:
+		$Ability_GUIs.rect_scale = Vector2(0.5,0.5);
+	else:
+		$Ability_GUIs.rect_scale = Vector2(1,1);
+	$Chat_Box.margin_bottom = window_size.y * (0.6);
+	var size = $LineEdit.rect_size.y;
+	$LineEdit.margin_top = $Chat_Box.margin_bottom;
+	$LineEdit.margin_bottom = $LineEdit.margin_top + size;
 
 # Color 0 = blue, 1 = red
 func set_big_label_text(text, color):

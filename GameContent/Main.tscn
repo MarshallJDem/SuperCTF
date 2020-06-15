@@ -64,10 +64,9 @@ position = Vector2( 15.6066, 14.9669 )
 script = ExtResource( 4 )
 
 [node name="LineEdit" type="LineEdit" parent="UI_Layer"]
-margin_top = 679.47
-margin_right = 294.0
-margin_bottom = 723.47
-rect_scale = Vector2( 2, 2 )
+margin_top = 347.562
+margin_right = 238.0
+margin_bottom = 373.562
 mouse_filter = 2
 custom_styles/focus = SubResource( 1 )
 custom_styles/normal = SubResource( 2 )
@@ -82,7 +81,6 @@ __meta__ = {
 [node name="Chat_Box" type="RichTextLabel" parent="UI_Layer"]
 margin_right = 292.0
 margin_bottom = 334.0
-rect_scale = Vector2( 2, 2 )
 custom_styles/normal = SubResource( 3 )
 custom_fonts/normal_font = ExtResource( 5 )
 bbcode_enabled = true
@@ -192,10 +190,7 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = -32.0
-margin_top = -99.767
-margin_right = 20.0001
-margin_bottom = -79.7671
+margin_top = -81.0
 rect_scale = Vector2( 1.5, 1.5 )
 __meta__ = {
 "_edit_use_anchors_": false
