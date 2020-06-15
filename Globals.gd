@@ -41,6 +41,9 @@ var result_team0_score = 0;
 var result_team1_score = 0;
 var result_match_id = -1;
 
+# NOTES
+# Layer mask 4 : Demo Bullet
+
 
 
 # ----- Constants -----

@@ -54,7 +54,6 @@ func _camo_timer_ended():
 	player.modulate = Color(1,1,1,1);
 
 func spawn_camo_flash():
-	print("spawning");
 	var node = Ghost_Trail.instance();
 	node.position = player.position;
 	node.look_direction = player.look_direction;

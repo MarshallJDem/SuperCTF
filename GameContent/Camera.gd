@@ -8,6 +8,7 @@ func _ready():
 	$Shake_Timer.connect("timeout", self, "_shake_timer_ended");
 	$Smooth_Timer.connect("timeout", self, "_smooth_timer_ended");
 	get_tree().connect("screen_resized", self, "_screen_resized");
+	_screen_resized();
 
 func _process(delta):
 	if $Shake_Timer.time_left > 0:
