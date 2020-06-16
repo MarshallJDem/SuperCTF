@@ -3,6 +3,6 @@
 [ext_resource path="res://fonts/pixel.TTF" type="DynamicFontData" id=1]
 
 [resource]
-size = 75
+size = 50
 outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 1 )

@@ -79,8 +79,10 @@ __meta__ = {
 }
 
 [node name="Chat_Box" type="RichTextLabel" parent="UI_Layer"]
+margin_top = 10.0
 margin_right = 292.0
 margin_bottom = 334.0
+rect_clip_content = false
 custom_styles/normal = SubResource( 3 )
 custom_fonts/normal_font = ExtResource( 5 )
 bbcode_enabled = true
@@ -92,8 +94,8 @@ __meta__ = {
 
 [node name="Score_Label" type="RichTextLabel" parent="UI_Layer"]
 anchor_right = 1.0
-margin_top = 20.0
-margin_bottom = 110.0
+margin_top = 30.0
+margin_bottom = 120.0
 rect_clip_content = false
 size_flags_stretch_ratio = 0.0
 custom_fonts/normal_font = ExtResource( 7 )
@@ -346,12 +348,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Skirmsh_Subtext" type="RichTextLabel" parent="UI_Layer"]
+[node name="Skirmish_Subtext" type="RichTextLabel" parent="UI_Layer"]
 anchor_right = 1.0
 margin_top = 115.462
-margin_right = 58.0
 margin_bottom = 215.462
-rect_scale = Vector2( 0.950764, 0.950764 )
 rect_clip_content = false
 custom_fonts/normal_font = ExtResource( 12 )
 bbcode_enabled = true

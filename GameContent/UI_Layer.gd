@@ -14,14 +14,14 @@ func _process(delta):
 		return;
 	if get_tree().get_root().get_node("MainScene/NetworkController").isSkirmish:
 		$Score_Label.bbcode_text = "[center][color=black]SEARCHING " + str(OS.get_system_time_secs() - start_time);
-		$Skirmsh_Subtext.visible = true;
+		$Skirmish_Subtext.visible = true;
 		$Cancel_Button.visible = true;
 	if Globals.experimental:
 		$Score_Label.bbcode_text = "";
-		$Skirmsh_Subtext.visible = false;
+		$Skirmish_Subtext.visible = false;
 		$Cancel_Button.visible = false;
 	else:
-		$Skirmsh_Subtext.visible = false;
+		$Skirmish_Subtext.visible = false;
 	if !Globals.is_typing_in_chat:
 		if Input.is_key_pressed(KEY_E):
 			$"Ability_GUIs/E_GUI".frame = 1;
