@@ -272,11 +272,10 @@ z_index = 10
 
 [node name="Label_Name" type="RichTextLabel" parent="Name_Parent"]
 anchor_right = 1.0
-margin_left = -100.0
-margin_top = -21.442
-margin_right = 300.0
-margin_bottom = 0.557999
-rect_scale = Vector2( 0.5, 0.5 )
+margin_left = -199.854
+margin_top = -26.8247
+margin_right = 200.146
+margin_bottom = -4.82474
 rect_clip_content = false
 custom_fonts/normal_font = ExtResource( 14 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
@@ -285,6 +284,5 @@ bbcode_text = "[center][color=blue]Guest7768"
 text = "Guest7768"
 scroll_active = false
 __meta__ = {
-"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
