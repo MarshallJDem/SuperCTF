@@ -17,10 +17,10 @@ func _ready():
 			puppet_state = Puppet_State.Server;
 		else:
 			puppet_state = Puppet_State.Puppet;
-			$Detonation_Timer.wait_time += (Globals.player_lerp_time * 2)/1000.0;
+			$Detonation_Timer.wait_time -= (Globals.player_lerp_time * 2)/1000.0;
 	if puppet_state == Puppet_State.Master:
 		$Lag_Comp_Timer.wait_time *= 3;
-		$Detonation_Timer.wait_time -= (Globals.player_lerp_time * 2)/1000.0;
+		$Detonation_Timer.wait_time += (Globals.player_lerp_time * 2)/1000.0;
 	
 	$Lag_Comp_Timer.start();
 	$Detonation_Timer.start();
