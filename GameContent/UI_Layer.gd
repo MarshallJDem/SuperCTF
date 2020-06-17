@@ -99,10 +99,6 @@ func _process(delta):
 		
 		# If player is holding a flag
 		if local_player.get_node("Flag_Holder").get_child_count() > 0:
-			$Ability_GUIs/UP_GUI.modulate = Color(1,1,1,0.4);
-			$Ability_GUIs/DOWN_GUI.modulate = Color(1,1,1,0.4);
-			$Ability_GUIs/LEFT_GUI.modulate = Color(1,1,1,0.4);
-			$Ability_GUIs/RIGHT_GUI.modulate = Color(1,1,1,0.4);
 			$Ability_GUIs/Q_GUI.modulate = Color(1,1,1,0.4);
 
 func _screen_resized():

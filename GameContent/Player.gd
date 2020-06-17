@@ -417,7 +417,7 @@ func take_flag(flag_id):
 		teamNoun = "BLUE TEAM";
 	if player_id == Globals.localPlayerID:
 		subject = "You";
-	if !get_tree().is_network_server():
+	if !Globals.testing and !get_tree().is_network_server():
 		if get_tree().get_root().get_node("MainScene/NetworkController").players[Globals.localPlayerID]["team_id"] == flag_team_id:
 			teamNoun = "YOUR TEAM";
 		get_tree().get_root().get_node("MainScene/UI_Layer").set_alert_text("[center][color=" + subjectColor + "]" + subject + "[color=black] took " + "[color=" + color + "]" + teamNoun + "'s[color=black] flag!");
@@ -436,8 +436,7 @@ func drop_current_flag(flag_position = $Flag_Holder.get_global_position()):
 		flag.get_node("Area2D").ignore_next_buffer_reset = true;
 		flag.re_parent(get_tree().get_root().get_node("MainScene"));
 		flag.position = flag_position;
-		$Shoot_Cooldown_Timer.start();
-		$Laser_Cooldown_Timer.start();
+		$Weapon_Node/Cooldown_Timer.start();
 
 # Starts the temporary Invincibility cooldown
 func start_temporary_invincibility():
