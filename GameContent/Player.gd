@@ -80,7 +80,7 @@ func _input(event):
 				#Attempt a teleport
 				# Re-enable line below to prevent telporting while you have flag
 				# if $Flag_Holder.get_child_count() == 0:
-				if $Teleport_Timer.time_left == 0:
+				if $Teleport_Timer.time_left == 0 and $Weapon_Node/Laser_Timer.time_left == 0:
 					move_on_inputs(true);
 					camera_ref.lag_smooth();
 					$Teleport_Timer.start();
