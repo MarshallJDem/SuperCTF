@@ -1,10 +1,11 @@
 extends Node2D
 
 var Grenade = preload("res://GameContent/Grenade.tscn");
+var Landmine = preload("res://GameContent/Utilities/Landmine.tscn");
 
 # Utilities
 enum Utilities {Grenade, Landmine};
-var utility = Utilities.Grenade;
+var utility = Utilities.Landmine;
 
 var player;
 
@@ -32,6 +33,8 @@ func _process(delta):
 					shoot_grenade(get_global_mouse_position(), OS.get_system_time_msecs());
 				else:
 					rpc("shoot_grenade",get_global_mouse_position(), OS.get_system_time_msecs() - Globals.match_start_time);
+		elif utility == Utilities.Landmine:
+			rpc("place_landmine");
 	update();
 
 func _draw():
@@ -45,6 +48,13 @@ func _input(event):
 	if Globals.is_typing_in_chat:
 		return;
 
+remotesync func place_landmine():
+	$Cooldown_Timer.start();
+	var mine = Landmine.instance();
+	mine.position = player.position;
+	mine.team_id = 1;
+	mine.player_id = 1;
+	get_tree().get_root().get_node("MainScene").call_deferred("add_child", mine);
 
 remotesync func shoot_grenade(target_pos, time_shot):
 	aiming_grenade = false;

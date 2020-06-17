@@ -9,7 +9,7 @@ func _ready():
 func _detonation_timer_ended():
 	if get_tree().is_network_server():
 		monitoring = true;
-		get_parent().get_node("Death_Timer").start();
+	get_parent().get_node("Death_Timer").start();
 
 func _death_timer_ended():
 	get_parent().call_deferred("queue_free");
