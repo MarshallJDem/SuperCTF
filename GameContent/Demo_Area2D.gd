@@ -15,5 +15,5 @@ func collided_with_player(player):
 	# If this bullet was shot by the same team, ignore it
 	if get_parent().team_id == player.team_id:
 		return;
-	if get_tree().is_network_server():
-		get_parent().rpc("detonate");
+	if get_tree().is_network_server() or get_parent().puppet_state == get_parent().Puppet_State.Puppet:
+		get_parent().rpc("detonate", true);

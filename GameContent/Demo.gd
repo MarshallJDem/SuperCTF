@@ -29,10 +29,20 @@ func _ready():
 func _detonation_timer_ended():
 	detonate();
 
-remotesync func detonate():
+remotesync func detonate(from_remote = false):
+	
 	# If we already detonated
 	if $Death_Timer.time_left > 0:
 		return;
+	if from_remote and puppet_state == Puppet_State.Master:
+		var t = Timer.new();
+		t.set_wait_time(float(Globals.player_lerp_time)/float(1000.0));
+		t.set_one_shot(true);
+		self.add_child(t);
+		t.start();
+		yield(t, "timeout");
+		t.queue_free();
+
 	$Detonation_Timer.stop();
 	$Death_Timer.start();
 	$Area2D.monitorable = true;
