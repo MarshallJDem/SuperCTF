@@ -18,4 +18,4 @@ func collided_with_player(player):
 	if get_tree().is_network_server():
 		get_parent().rpc("detonate", true);
 	elif get_parent().puppet_state == get_parent().Puppet_State.Puppet:
-		get_parent().detonate();
+		get_parent().call_deferred("detonate");
