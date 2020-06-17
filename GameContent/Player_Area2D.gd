@@ -25,6 +25,8 @@ func _area_entered(body):
 			collided_with_laser_body(body.get_parent());
 		if body.is_in_group("Grenade_Bodies"):
 			collided_with_grenade_body(body.get_parent());
+		if body.is_in_group("Demo_Bodies"):
+			collided_with_demo_body(body.get_parent());
 
 # Called when this player collides with a bullet
 func collided_with_bullet(bullet):
@@ -102,6 +104,22 @@ func collided_with_grenade_body(grenade_parent):
 		return;
 	# Otherwise receive a hit from the grenade
 	player.rpc("receive_hit", grenade_parent.player_id, 2);
+# Called when this player collides with a demo
+func collided_with_demo_body(demo_parent):
+	if get_tree().get_root().get_node("MainScene/NetworkController").round_is_ended: 
+		return;
+	var player = get_parent();
+	# If we just teleported, ignore it
+	if player.just_teleported:
+		return;
+	# If this is our team's demo, ignore it
+	if demo_parent.team_id == player.team_id:
+		return;
+	# If this player is invincible, dont get hit
+	if player.invincible:
+		return;
+	# Otherwise receive a hit from the grenade
+	player.rpc("receive_hit", demo_parent.player_id, 3);
 func collided_with_powerup_body(powerup_parent):
 	if get_tree().get_root().get_node("MainScene/NetworkController").round_is_ended: return;
 	var player = get_parent();

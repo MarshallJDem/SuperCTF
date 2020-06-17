@@ -1,111 +1,58 @@
 extends KinematicBody2D
 
-var direction = Vector2(0,0);
-var speed = 400;
-var player_id;
+enum Puppet_State{Master, Puppet, Server};
+var puppet_state = Puppet_State.Master;
+var direction = Vector2(0,-1);
+var speed = 300;
 var team_id = -1;
-var show_death_particles = true;
-var is_from_puppet = false;
-# The exact time the player who shot this actually shot this (used to sync up lag)
-var initial_time_shot;
-# The original position this bullet was shot from on the master's screen
-var initial_real_pos;
-# The first position the bullet started at as a puppet (slightly down trajectory)
-var initial_puppet_pos;
-# The time the puppet began its trajectory
-var puppet_time_shot;
-
+var player_id = -1;
 
 func _ready():
-	$Death_Timer2.connect("timeout", self, "_death_timer_ended");
-	$Animation_Timer.connect("timeout", self, "_animation_timer_ended");
-	#rotation = Vector2(0,0).angle_to_point(direction) + PI;
+	$Detonation_Timer.connect("timeout", self, "_detonation_timer_ended");
+	$Death_Timer.connect("timeout", self, "_death_timer_ended");
+	#$Animation_Timer.connect("timeout", self, "_animation_timer_ended");
 	# If the master of this bullet is not the local master player, then this is a puppet
 	if !Globals.testing and get_tree().get_network_unique_id() != get_network_master():
-		is_from_puppet = true;
-	
-	initial_real_pos = position;
-	
-	if is_from_puppet:
-		# Start the bullet slightly down directory to help with lag sync a bit
-		position = position + (direction * Globals.lag_comp_headstart_dist);
-		initial_puppet_pos = position;
-		puppet_time_shot = OS.get_system_time_msecs() - Globals.match_start_time;
-		if Globals.testing:
-			initial_time_shot = initial_time_shot - 100;
-		$Lag_Comp_Timer.start();
-	else:
-		puppet_time_shot = initial_time_shot;
-		#initial_time_shot += 50;
-		initial_puppet_pos = position;
-
-func _process(_delta):
-	speed = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("bulletSpeed");
-	pass;
-
-# stupid workaround neccessary to make particles not flash random colors upon spawning
-func _physics_process(_delta):
-	move();
-	self.z_index = self.position.y;
-	if should_die:
-		die();
-	
-# Given an amount of delta time, moves the bullet in its trajectory direction using its speed
-func move():
-	var time_elapsed = ((OS.get_system_time_msecs() - Globals.match_start_time) - initial_time_shot)/1000.0;
-	if time_elapsed < 0:
-		time_elapsed = 0;
-	var real_position = initial_real_pos + (direction * speed * time_elapsed);
-	var new_pos;
-	if $Lag_Comp_Timer.time_left > 0:
-		var puppet_time_elapsed = ((OS.get_system_time_msecs() - Globals.match_start_time) - puppet_time_shot)/1000.0;
-		var puppet_position = initial_puppet_pos + (direction * speed * puppet_time_elapsed);
-		new_pos = lerp(puppet_position, real_position, 1-($Lag_Comp_Timer.time_left/$Lag_Comp_Timer.wait_time))
-	else:
-		new_pos = real_position;
-	var collision = move_and_collide(new_pos - position);
-	if collision:
-		if abs(collision.normal.x) > abs(collision.normal.y):
-			direction.x *= -1;
-		else:
-			direction.y *= -1;
-
-# Called when the animation timer fires
-func _animation_timer_ended():
-	$Sprite.frame = ($Sprite.frame + 1) % $Sprite.hframes;
-# Called by server to terminate this bullet early
-remotesync func receive_death():
-	should_die = true;
-
-func die():
-	#Only show particles if we havn't already done so from a preliminary death
-	if show_death_particles:
-		spawn_death_particles();
+		puppet_state = Puppet_State.Puppet;
+		if get_tree().is_network_server():
+			puppet_state = Puppet_State.Server;
+	if puppet_state == Puppet_State.Master:
+		$Lag_Comp_Timer.wait_time *= 3;
+	$Lag_Comp_Timer.start();
+	$Area2D.monitorable = false;
+	print(puppet_state);
+func _detonation_timer_ended():
+	$Death_Timer.start();
+	$Area2D.monitorable = true;
+	speed = 0;
+func _death_timer_ended():
 	call_deferred("queue_free");
 
-var should_die = false;
-# Called when the death timer finishes
-# NOTE- we can trust each client to handle it's own bullet deaths because the server detects collisions anyways
-func _death_timer_ended():
-	should_die = true;
-	pass;
+func _process(delta):
+	update();
 
-# Called if the bullet dies locally on the machine. For now we handle it as just making it look like bullet death
-func preliminary_death():
-	visible = false
-	#Only show particles if we havn't already done so from a preliminary death
-	if show_death_particles:
-		spawn_death_particles();
-	# Don't show particles again when the server tells us to die
-	show_death_particles = false;
-	if Globals.testing:
-		should_die = true;
-
-
-func spawn_death_particles():
-	var particles = get_tree().get_root().get_node("MainScene").Bullet_Death_Particles.instance();
-	particles.position = position;
-	particles.rotation = rotation;
-	particles.z_index = z_index;
-	particles.team_id = team_id;
-	get_tree().get_root().get_node("MainScene").call_deferred("add_child", particles);
+func _draw():
+	if $Area2D.monitorable:
+		draw_circle(Vector2.ZERO,50,Color(0.0,1.0,0.0,0.5));
+# stupid workaround neccessary to make particles not flash random colors upon spawning
+func _physics_process(delta):
+	move(delta);
+var previous_compensation_progress = 0.0;
+# Given an amount of delta time, moves the bullet in its trajectory direction using its speed
+func move(d):
+	var compensation_progress = 1.0 - ($Lag_Comp_Timer.time_left/$Lag_Comp_Timer.wait_time);
+	var progress_delta = compensation_progress - previous_compensation_progress;
+	previous_compensation_progress = compensation_progress;
+	var additional_deltatime = (progress_delta * Globals.player_lerp_time * 2)/1000.0;
+	var deltatime = d;
+	
+	if puppet_state == Puppet_State.Master:
+		deltatime -= additional_deltatime;
+	elif puppet_state == Puppet_State.Puppet:
+		deltatime += additional_deltatime;
+	var collision = move_and_collide(direction * deltatime * speed);
+	if collision:
+		# Reflect bullet
+		var reflection_dir = (direction - (2 * direction.dot(collision.normal) * collision.normal)).normalized();
+		move_and_collide(reflection_dir * collision.remainder.distance_to(Vector2.ZERO));
+		direction = reflection_dir;

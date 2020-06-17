@@ -5,6 +5,7 @@ var bullet_atlas_red = preload("res://Assets/Weapons/bullet_r.png");
 
 var Muzzle_Bullet = preload("res://GameContent/Muzzle_Bullet.tscn");
 var Bullet = preload("res://GameContent/Bullet.tscn");
+var Demo = preload("res://GameContent/Demo.tscn");
 var Laser = preload("res://GameContent/Laser.tscn");
 
 var BULLET_COOLDOWN_PMODIFIER = 0;
@@ -24,6 +25,8 @@ var laser_position = Vector2(0,0);
 var laser_target_position = null;
 # The number of bullets this player has shot. Used for naming bullets
 var bullets_shot = 0;
+# The number of demos this player has shot. Used for naming demos
+var demos_shot = 0;
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -119,6 +122,8 @@ func set_weapon_from_kit(kit):
 		current_weapon = Weapons.Bullet;
 	elif kit == player.Kits.Laser:
 		current_weapon = Weapons.Laser;
+	elif kit == player.Kits.Demo:
+		current_weapon = Weapons.Demo;
 
 func shoot_on_inputs():
 	# Check for mouse input
@@ -136,7 +141,28 @@ func shoot_on_inputs():
 					# If we are still in input phase, update direction
 					if $Laser_Input_Timer.time_left == 0:
 						start_laser_input();
+				elif current_weapon == Weapons.Demo:
+					if $Cooldown_Timer.time_left == 0:
+						if !Globals.testing:
+							rpc("shoot_demo", ((get_global_mouse_position() - global_position).normalized()),demos_shot);
+						else:
+							shoot_demo(((get_global_mouse_position() - global_position).normalized()),demos_shot);
 
+remotesync func shoot_demo(d, shots):
+	$Cooldown_Timer.start();
+	var direction = d.normalized();
+	var start_pos = player.position + get_node("Bullet_Starts/" + String(player.look_direction)).position;
+	
+	# Initialize Bullet
+	var node = Demo.instance();
+	node.position = start_pos;
+	node.direction = direction;
+	node.team_id = player.team_id;
+	node.player_id = player.player_id;
+	node.name = node.name + "-" + str(player.player_id) + "-" + str(shots);
+	demos_shot = shots + 1;
+	node.set_network_master(player.get_network_master());
+	get_tree().get_root().get_node("MainScene").call_deferred("add_child", node);
 
 # Shoots a bullet shot
 func shoot_bullet(d):
