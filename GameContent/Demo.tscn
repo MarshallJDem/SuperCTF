@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://GameContent/Demo.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Weapons/bullet_b.png" type="Texture" id=2]
+[ext_resource path="res://GameContent/Demo_Area2D.gd" type="Script" id=3]
 [ext_resource path="res://Assets/Sound/Bullet_Shot_1.wav" type="AudioStream" id=4]
 
 [sub_resource type="CircleShape2D" id=1]
@@ -9,6 +10,9 @@ radius = 50.0
 
 [sub_resource type="CircleShape2D" id=2]
 radius = 4.70838
+
+[sub_resource type="CircleShape2D" id=3]
+radius = 6.0
 
 [node name="Demo" type="KinematicBody2D" groups=[
 "Bullets",
@@ -54,3 +58,11 @@ one_shot = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 2 )
+
+[node name="Area2D2" type="Area2D" parent="." groups=[
+"Demo_Bodies",
+]]
+script = ExtResource( 3 )
+
+[node name="CollisionPolygon2D" type="CollisionShape2D" parent="Area2D2"]
+shape = SubResource( 3 )

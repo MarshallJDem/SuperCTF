@@ -27,9 +27,17 @@ func _ready():
 	$Area2D.monitorable = false;
 	print(puppet_state);
 func _detonation_timer_ended():
+	detonate();
+
+remotesync func detonate():
+	# If we already detonated
+	if $Death_Timer.time_left > 0:
+		return;
+	$Detonation_Timer.stop();
 	$Death_Timer.start();
 	$Area2D.monitorable = true;
 	speed = 0;
+
 func _death_timer_ended():
 	call_deferred("queue_free");
 
