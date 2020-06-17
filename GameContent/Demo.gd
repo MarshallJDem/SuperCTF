@@ -13,12 +13,17 @@ func _ready():
 	#$Animation_Timer.connect("timeout", self, "_animation_timer_ended");
 	# If the master of this bullet is not the local master player, then this is a puppet
 	if !Globals.testing and get_tree().get_network_unique_id() != get_network_master():
-		puppet_state = Puppet_State.Puppet;
 		if get_tree().is_network_server():
 			puppet_state = Puppet_State.Server;
+		else:
+			puppet_state = Puppet_State.Puppet;
+			$Detonation_Timer.wait_time += (Globals.player_lerp_time * 2)/1000.0;
 	if puppet_state == Puppet_State.Master:
 		$Lag_Comp_Timer.wait_time *= 3;
+		$Detonation_Timer.wait_time -= (Globals.player_lerp_time * 2)/1000.0;
+	
 	$Lag_Comp_Timer.start();
+	$Detonation_Timer.start();
 	$Area2D.monitorable = false;
 	print(puppet_state);
 func _detonation_timer_ended():
