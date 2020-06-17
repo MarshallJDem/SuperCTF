@@ -28,7 +28,7 @@ func _activation_timer_ended():
 	$Sprite.frame = 1;
 	$Trigger_Area2D.monitoring = true;
 	if Globals.localPlayerTeamID != team_id:
-		modulate = Color(0.5,0.5,0.5,0.5);
+		modulate = Color(0.0,0.0,0.0,0.0);
 
 remotesync func start_detonation():
 	modulate = Color(1,1,1,1);

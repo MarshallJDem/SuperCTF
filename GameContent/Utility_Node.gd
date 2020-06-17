@@ -12,6 +12,9 @@ var player;
 # Whether the grenade weapon is currently being aimed
 var aiming_grenade = false;
 
+# The number of landmines this player has placed. Used for naming
+var landmines_placed = 0;
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	player = get_parent();
@@ -35,9 +38,9 @@ func _process(delta):
 					rpc("shoot_grenade",get_global_mouse_position(), OS.get_system_time_msecs() - Globals.match_start_time);
 		elif utility == Utilities.Landmine:
 			if Globals.testing:
-				place_landmine();
+				place_landmine(landmines_placed);
 			else:
-				rpc("place_landmine");
+				rpc("place_landmine",landmines_placed);
 			
 	update();
 
@@ -52,12 +55,14 @@ func _input(event):
 	if Globals.is_typing_in_chat:
 		return;
 
-remotesync func place_landmine():
+remotesync func place_landmine(mines_placed):
 	$Cooldown_Timer.start();
 	var mine = Landmine.instance();
 	mine.position = player.position;
 	mine.team_id = player.team_id;
 	mine.player_id = player.player_id;
+	mine.name = mine.name + "-" + str(player.player_id) + "-" + str(mines_placed);
+	landmines_placed += 1;
 	get_tree().get_root().get_node("MainScene").call_deferred("add_child", mine);
 
 remotesync func shoot_grenade(target_pos, time_shot):
