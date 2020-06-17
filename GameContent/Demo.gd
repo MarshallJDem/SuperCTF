@@ -42,6 +42,7 @@ remotesync func detonate(from_remote = false):
 		t.start();
 		yield(t, "timeout");
 		t.queue_free();
+		print("Waited for detonation");
 
 	$Detonation_Timer.stop();
 	$Death_Timer.start();
