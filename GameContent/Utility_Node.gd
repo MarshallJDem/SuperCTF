@@ -56,8 +56,8 @@ remotesync func place_landmine():
 	$Cooldown_Timer.start();
 	var mine = Landmine.instance();
 	mine.position = player.position;
-	mine.team_id = 1;
-	mine.player_id = 1;
+	mine.team_id = player.team_id;
+	mine.player_id = player.player_id;
 	get_tree().get_root().get_node("MainScene").call_deferred("add_child", mine);
 
 remotesync func shoot_grenade(target_pos, time_shot):
