@@ -17,4 +17,5 @@ func _activation_timer_ended():
 		$Sprite.visible = false;
 
 remotesync func start_detonation():
+	$Sprite.visible = true;
 	$Detonation_Timer.start();
