@@ -34,7 +34,11 @@ func _process(delta):
 				else:
 					rpc("shoot_grenade",get_global_mouse_position(), OS.get_system_time_msecs() - Globals.match_start_time);
 		elif utility == Utilities.Landmine:
-			rpc("place_landmine");
+			if Globals.testing:
+				place_landmine();
+			else:
+				rpc("place_landmine");
+			
 	update();
 
 func _draw():
