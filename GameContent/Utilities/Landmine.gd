@@ -31,7 +31,10 @@ func _activation_timer_ended():
 
 remotesync func start_detonation():
 	$Sprite.visible = true;
+	if get_tree().is_network_server():
+		$Detonation_Timer.wait_time += Globals.player_lerp_time * 2;
 	$Detonation_Timer.start();
+	
 
 func _detonation_timer_ended():
 	if Globals.testing or get_tree().is_network_server():
