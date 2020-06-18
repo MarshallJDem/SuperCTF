@@ -155,6 +155,7 @@ remotesync func shoot_demo(d, shots):
 	
 	# Initialize Bullet
 	var node = Demo.instance();
+	node.original_time_shot = OS.get_system_time_msecs() - Globals.match_start_time;
 	node.position = start_pos;
 	node.direction = direction;
 	node.team_id = player.team_id;
