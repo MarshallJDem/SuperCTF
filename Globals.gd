@@ -68,6 +68,7 @@ var game_var_limits = {"playerSpeed" : Vector2(50, 600), "playerLagTime" : Vecto
 
 # The amount of delay to lerp over for lag interpolation for players and various other things
 var player_lerp_time = 50; # In millis
+var ping = 50.0;
 # Whether or not lasers should destroy bullets
 var lasers_destroy_bullets = true;
 var lag_comp_headstart_dist = 15;

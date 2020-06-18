@@ -296,7 +296,7 @@ remotesync func update_players_data(players_data, round_is_running):
 # Resync the clocks between server and clients by using current server time elapsed 
 remotesync func update_timing_sync(time_elapsed):
 	if !get_tree().is_network_server():
-		var new_start_time = OS.get_system_time_msecs() - time_elapsed;
+		var new_start_time = OS.get_system_time_msecs() - (time_elapsed + Globals.ping/2.0);
 		# If this new start time shows the match having started earlier, then it is more accurate
 		if new_start_time < Globals.match_start_time:
 			Globals.match_start_time = new_start_time;
