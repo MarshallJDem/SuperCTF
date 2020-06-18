@@ -117,7 +117,7 @@ func _process(delta):
 		position = lerp(lerp_start_pos, lerp_end_pos, clamp(float(OS.get_ticks_msec() - time_of_last_received_pos)/float(Globals.player_lerp_time), 0.0, 1.0));
 	
 	if !Globals.testing and is_network_master() and !get_tree().is_network_server():
-		rpc_unreliable_id(1, "send_position", position, player_id);
+		rpc_unreliable("update_position", position);
 	
 	
 	# Animation
@@ -310,7 +310,9 @@ func set_look_direction(dir):
 	
 
 # Updates this player's position with the new given position. Only ever called remotely
-func update_position(new_pos):
+remotesync func update_position(new_pos):
+	if is_network_master():
+		return;
 	# Instantly update position for server
 	if get_tree().is_network_server():
 		position = new_pos;
@@ -452,22 +454,6 @@ func _invincibility_timer_ended():
 
 # -------- NETWORKING ------------------------------------------------------------>
 
-
-
-# Client tells Server to run this function so that it can send it's latest position
-# The Server then sends that position to all other clients
-remote func send_position(new_pos, player_id):
-	if get_tree().is_network_server(): # Only run if it's the server
-		get_tree().get_root().get_node("MainScene/NetworkController").players[player_id]["position"] = position;
-		var clients = get_tree().get_network_connected_peers();
-		for i in clients: # For each connected client
-			if i != get_tree().get_rpc_sender_id(): # Don't do it for the player who sent it
-				rpc_unreliable_id(i, "receive_position", new_pos);
-		update_position(new_pos); # Also call it locally for the server
-
-# "Receives" the position of this player from the server
-remote func receive_position(new_pos):
-	update_position(new_pos);
 
 # Client tells the server what direction frame it's looking at 
 remote func send_look_direction(frame, player_id):
