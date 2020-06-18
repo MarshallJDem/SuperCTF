@@ -6,6 +6,8 @@ var direction = Vector2(0,-1);
 var speed = 300;
 var team_id = -1;
 var player_id = -1;
+var original_time_shot = 0;
+var puppet_time_shot = 0;
 
 func _ready():
 	$Detonation_Timer.connect("timeout", self, "_detonation_timer_ended");
@@ -21,7 +23,7 @@ func _ready():
 	if puppet_state == Puppet_State.Master:
 		$Lag_Comp_Timer.wait_time *= 3;
 		$Detonation_Timer.wait_time += (Globals.player_lerp_time * 2)/1000.0;
-	
+	puppet_time_shot = OS.get_system_time_msecs() - Globals.match_start_time;
 	$Lag_Comp_Timer.start();
 	$Detonation_Timer.start();
 	$Area2D.monitorable = false;
@@ -67,13 +69,18 @@ func move(d):
 	var compensation_progress = 1.0 - ($Lag_Comp_Timer.time_left/$Lag_Comp_Timer.wait_time);
 	var progress_delta = compensation_progress - previous_compensation_progress;
 	previous_compensation_progress = compensation_progress;
-	var additional_deltatime = (progress_delta * Globals.player_lerp_time * 2)/1000.0;
+	var total_compensation = 0;
 	var deltatime = d;
 	
+	# Meat
 	if puppet_state == Puppet_State.Master:
-		deltatime -= additional_deltatime;
+		total_compensation = (-(Globals.ping/2.0)-Globals.player_lerp_time)/1000.0;
 	elif puppet_state == Puppet_State.Puppet:
-		deltatime += additional_deltatime;
+		total_compensation = (puppet_time_shot-original_time_shot)/1000.0;
+	elif puppet_state == Puppet_State.Server:
+		total_compensation = 0;
+		
+	deltatime += progress_delta * total_compensation;
 	var collision = move_and_collide(direction * deltatime * speed);
 	if collision:
 		# Reflect bullet
