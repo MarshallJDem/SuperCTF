@@ -48,7 +48,8 @@ func update_cooldown_lengths():
 		$Cooldown_Timer.wait_time = BULLET_COOLDOWN_PMODIFIER + float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("bulletCooldown"))/1000.0;
 	elif current_weapon == Weapons.Laser:
 		$Cooldown_Timer.wait_time = float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("laserCooldown"))/1000.0;
-	
+	elif current_weapon == Weapons.Demo:
+		$Cooldown_Timer.wait_time = 1000.0/1000.0;
 	$Laser_Timer.wait_time = float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("laserChargeTime"))/1000.0;
 
 func _process(delta):
