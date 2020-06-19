@@ -14,20 +14,19 @@ func _ready():
 	$Death_Timer.connect("timeout", self, "_death_timer_ended");
 	#$Animation_Timer.connect("timeout", self, "_animation_timer_ended");
 	# If the master of this bullet is not the local master player, then this is a puppet
+	puppet_time_shot = OS.get_system_time_msecs() - Globals.match_start_time;
 	if !Globals.testing and get_tree().get_network_unique_id() != get_network_master():
 		if get_tree().is_network_server():
 			puppet_state = Puppet_State.Server;
 		else:
 			puppet_state = Puppet_State.Puppet;
-			$Detonation_Timer.wait_time -= (Globals.player_lerp_time * 2)/1000.0;
+			$Detonation_Timer.wait_time += -(puppet_time_shot-original_time_shot)/1000.0;
 	if puppet_state == Puppet_State.Master:
 		$Lag_Comp_Timer.wait_time *= 3;
-		$Detonation_Timer.wait_time += (Globals.player_lerp_time * 2)/1000.0;
-	puppet_time_shot = OS.get_system_time_msecs() - Globals.match_start_time;
+		$Detonation_Timer.wait_time += ((Globals.ping/2.0)-Globals.player_lerp_time)/1000.0;
 	$Lag_Comp_Timer.start();
 	$Detonation_Timer.start();
 	$Area2D.monitorable = false;
-	print(puppet_state);
 func _detonation_timer_ended():
 	detonate();
 
@@ -60,7 +59,6 @@ func _process(delta):
 func _draw():
 	if $Area2D.monitorable:
 		draw_circle(Vector2.ZERO,50,Color(0.0,1.0,0.0,0.5));
-# stupid workaround neccessary to make particles not flash random colors upon spawning
 func _physics_process(delta):
 	move(delta);
 var previous_compensation_progress = 0.0;
