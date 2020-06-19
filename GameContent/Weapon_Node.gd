@@ -207,7 +207,7 @@ func spawn_bullet(pos, player_id, direction, time_shot, bullet_name = null):
 	bullet.direction = direction;
 	bullet.player_id = player_id;
 	bullet.team_id = player.team_id;
-	bullet.initial_time_shot = time_shot
+	bullet.original_time_shot = time_shot
 	bullet.set_network_master(get_network_master());
 	if player.team_id == 0:
 		bullet.get_node("Sprite").set_texture(bullet_atlas_blue);
@@ -218,8 +218,6 @@ func spawn_bullet(pos, player_id, direction, time_shot, bullet_name = null):
 		bullet.name = bullet_name;
 	else:
 		bullet.name = bullet.name + "-" + str(player_id) + "-" + str(bullets_shot);
-	
-	
 	return bullet;
 
 

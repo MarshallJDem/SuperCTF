@@ -1,69 +1,65 @@
 extends KinematicBody2D
 
+enum Puppet_State{Master, Puppet, Server};
+var puppet_state = Puppet_State.Master;
 var direction = Vector2(0,0);
 var speed = 400;
 var player_id;
 var team_id = -1;
 var show_death_particles = true;
-var is_from_puppet = false;
 # The exact time the player who shot this actually shot this (used to sync up lag)
-var initial_time_shot;
-# The original position this bullet was shot from on the master's screen
-var initial_real_pos;
-# The first position the bullet started at as a puppet (slightly down trajectory)
-var initial_puppet_pos;
-# The time the puppet began its trajectory
-var puppet_time_shot;
+var original_time_shot = 0;
+var puppet_time_shot = 0;
 
 
 func _ready():
-	$Death_Timer2.connect("timeout", self, "_death_timer_ended");
+	$Death_Timer.connect("timeout", self, "_death_timer_ended");
 	$Animation_Timer.connect("timeout", self, "_animation_timer_ended");
-	#rotation = Vector2(0,0).angle_to_point(direction) + PI;
 	# If the master of this bullet is not the local master player, then this is a puppet
+	puppet_time_shot = OS.get_system_time_msecs() - Globals.match_start_time;
 	if !Globals.testing and get_tree().get_network_unique_id() != get_network_master():
-		is_from_puppet = true;
-	
-	initial_real_pos = position;
-	
-	if is_from_puppet:
-		# Start the bullet slightly down directory to help with lag sync a bit
-		position = position + (direction * Globals.lag_comp_headstart_dist);
-		initial_puppet_pos = position;
-		puppet_time_shot = OS.get_system_time_msecs() - Globals.match_start_time;
-		if Globals.testing:
-			initial_time_shot = initial_time_shot - 100;
-		$Lag_Comp_Timer.start();
-	else:
-		puppet_time_shot = initial_time_shot;
-		#initial_time_shot += 50;
-		initial_puppet_pos = position;
+		if get_tree().is_network_server():
+			puppet_state = Puppet_State.Server;
+		else:
+			puppet_state = Puppet_State.Puppet;
+			$Death_Timer.wait_time += -(puppet_time_shot-original_time_shot)/1000.0;
+	if puppet_state == Puppet_State.Master:
+		$Lag_Comp_Timer.wait_time *= 4;
+		$Death_Timer.wait_time += ((Globals.ping/2.0)-Globals.player_lerp_time)/1000.0;
+	$Lag_Comp_Timer.start();
 
 func _process(_delta):
 	speed = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("bulletSpeed");
 	pass;
 
 # stupid workaround neccessary to make particles not flash random colors upon spawning
-func _physics_process(_delta):
-	move();
+func _physics_process(delta):
+	move(delta);
 	self.z_index = self.position.y;
 	if should_die:
 		die();
-	
+
+var previous_compensation_progress = 0.0;
+
 # Given an amount of delta time, moves the bullet in its trajectory direction using its speed
-func move():
-	var time_elapsed = ((OS.get_system_time_msecs() - Globals.match_start_time) - initial_time_shot)/1000.0;
-	if time_elapsed < 0:
-		time_elapsed = 0;
-	var real_position = initial_real_pos + (direction * speed * time_elapsed);
-	var new_pos;
-	if $Lag_Comp_Timer.time_left > 0:
-		var puppet_time_elapsed = ((OS.get_system_time_msecs() - Globals.match_start_time) - puppet_time_shot)/1000.0;
-		var puppet_position = initial_puppet_pos + (direction * speed * puppet_time_elapsed);
-		new_pos = lerp(puppet_position, real_position, 1-($Lag_Comp_Timer.time_left/$Lag_Comp_Timer.wait_time))
-	else:
-		new_pos = real_position;
-	var change = move_and_collide(new_pos - position);
+func move(d):
+	var compensation_progress = 1.0 - ($Lag_Comp_Timer.time_left/$Lag_Comp_Timer.wait_time);
+	var progress_delta = compensation_progress - previous_compensation_progress;
+	previous_compensation_progress = compensation_progress;
+	var total_compensation = 0;
+	var deltatime = d;
+	
+	# Meat
+	if puppet_state == Puppet_State.Master:
+		total_compensation = (-(Globals.ping/2.0)-Globals.player_lerp_time)/1000.0;
+	elif puppet_state == Puppet_State.Puppet:
+		total_compensation = (puppet_time_shot-original_time_shot)/1000.0;
+	elif puppet_state == Puppet_State.Server:
+		total_compensation = 0;
+		
+	deltatime += progress_delta * total_compensation;
+	var collision = move_and_collide(direction * deltatime * speed);
+
 
 # Called when the animation timer fires
 func _animation_timer_ended():
