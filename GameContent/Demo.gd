@@ -3,7 +3,7 @@ extends KinematicBody2D
 enum Puppet_State{Master, Puppet, Server};
 var puppet_state = Puppet_State.Master;
 var direction = Vector2(0,-1);
-var speed = 300;
+var speed = 400;
 var team_id = -1;
 var player_id = -1;
 var original_time_shot = 0;
@@ -57,8 +57,12 @@ func _process(delta):
 	update();
 
 func _draw():
+	var alpha = 0.25 + (sin(2 * PI * 5 *(1 - $Death_Timer.time_left/$Death_Timer.wait_time))+1)/4.0;
+	var color = Color(0,0.2,1,alpha);
+	if team_id == 1:
+		color = Color(1,0.2,0,alpha);
 	if $Area2D.monitorable:
-		draw_circle(Vector2.ZERO,50,Color(0.0,1.0,0.0,0.5));
+		draw_circle(Vector2.ZERO,50,color);
 func _physics_process(delta):
 	move(delta);
 var previous_compensation_progress = 0.0;

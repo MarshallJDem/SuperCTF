@@ -49,7 +49,7 @@ func update_cooldown_lengths():
 	elif current_weapon == Weapons.Laser:
 		$Cooldown_Timer.wait_time = float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("laserCooldown"))/1000.0;
 	elif current_weapon == Weapons.Demo:
-		$Cooldown_Timer.wait_time = 1000.0/1000.0;
+		$Cooldown_Timer.wait_time = 750.0/1000.0;
 	$Laser_Timer.wait_time = float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("laserChargeTime"))/1000.0;
 
 func _process(delta):
@@ -72,19 +72,19 @@ func _process(delta):
 		if player.look_direction == 0:
 			sprite_gun.position.y = 20 * $Shoot_Animation_Timer.time_left;
 		elif player.look_direction == 1:
-			sprite_gun.position.y = +10 * $Shoot_Animation_Timer.time_left;
-			sprite_gun.position.x = -10 * $Shoot_Animation_Timer.time_left;
+			sprite_gun.position.y = +20 * $Shoot_Animation_Timer.time_left;
+			sprite_gun.position.x = -20 * $Shoot_Animation_Timer.time_left;
 		elif player.look_direction == 2 or player.look_direction == 3:
-			sprite_gun.position.y = -10 * $Shoot_Animation_Timer.time_left;
-			sprite_gun.position.x = -10 * $Shoot_Animation_Timer.time_left;
+			sprite_gun.position.y = -20 * $Shoot_Animation_Timer.time_left;
+			sprite_gun.position.x = -20 * $Shoot_Animation_Timer.time_left;
 		elif player.look_direction == 4:
 			sprite_gun.position.y = -20 * $Shoot_Animation_Timer.time_left;
 		elif player.look_direction == 5 or player.look_direction == 6:
-			sprite_gun.position.y = -10 * $Shoot_Animation_Timer.time_left;
-			sprite_gun.position.x = 10 * $Shoot_Animation_Timer.time_left;
+			sprite_gun.position.y = -20 * $Shoot_Animation_Timer.time_left;
+			sprite_gun.position.x = 20 * $Shoot_Animation_Timer.time_left;
 		elif player.look_direction == 7:
-			sprite_gun.position.y = +10 * $Shoot_Animation_Timer.time_left;
-			sprite_gun.position.x = 10 * $Shoot_Animation_Timer.time_left;
+			sprite_gun.position.y = +20 * $Shoot_Animation_Timer.time_left;
+			sprite_gun.position.x = 20 * $Shoot_Animation_Timer.time_left;
 	
 	update();
 
@@ -151,6 +151,7 @@ func shoot_on_inputs():
 
 remotesync func shoot_demo(d, shots):
 	$Cooldown_Timer.start();
+	$Shoot_Animation_Timer.start();
 	var direction = d.normalized();
 	var start_pos = player.position + get_node("Bullet_Starts/" + String(player.look_direction)).position;
 	
@@ -289,6 +290,7 @@ func _laser_input_timer_ended():
 
 # Shoots a laser shot
 func shoot_laser():
+	$Shoot_Animation_Timer.start();
 	if is_network_master():
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE);
 	var laser = Laser.instance();
