@@ -199,6 +199,11 @@ func move_on_inputs(teleport = false):
 	if teleport:
 		move_speed = TELEPORT_SPEED;
 		just_teleported = true;
+	var areas = $Area2D.get_overlapping_areas();
+	for i in range(areas.size()):
+		if areas[i].is_in_group("Landmine_Bodies") and areas[i].monitorable:
+			move_speed = move_speed / 2.0;
+			break;
 	var vec = (input * move_speed);
 	
 	var previous_pos = position;

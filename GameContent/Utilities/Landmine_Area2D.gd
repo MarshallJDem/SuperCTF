@@ -17,5 +17,6 @@ func collided_with_player(player):
 	# If mine and player are on same team, ignore
 	if mine.team_id == player.team_id:
 		return;
+	return;
 	# Otherwise receive a hit from the grenade
 	player.rpc("receive_hit", mine.player_id, 3);

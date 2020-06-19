@@ -6,7 +6,7 @@
 [ext_resource path="res://GameContent/Utilities/Landmine.gd" type="Script" id=4]
 
 [sub_resource type="CircleShape2D" id=2]
-radius = 50.0
+radius = 100.0
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 25.0
@@ -14,7 +14,9 @@ radius = 25.0
 [node name="Landmine" type="Node2D"]
 script = ExtResource( 4 )
 
-[node name="Explosion_Area2D" type="Area2D" parent="."]
+[node name="Explosion_Area2D" type="Area2D" parent="." groups=[
+"Landmine_Bodies",
+]]
 monitoring = false
 script = ExtResource( 2 )
 
@@ -28,15 +30,16 @@ script = ExtResource( 3 )
 shape = SubResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
+scale = Vector2( 1.5, 1.5 )
 texture = ExtResource( 1 )
 hframes = 2
 
 [node name="Detonation_Timer" type="Timer" parent="."]
-wait_time = 0.5
+wait_time = 0.01
 one_shot = true
 
 [node name="Death_Timer" type="Timer" parent="."]
-wait_time = 0.1
+wait_time = 2.5
 one_shot = true
 
 [node name="Activation_Timer" type="Timer" parent="."]

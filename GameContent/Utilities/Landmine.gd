@@ -10,6 +10,10 @@ func _ready():
 	$Detonation_Timer.connect("timeout", self, "_detonation_timer_ended");
 	$Death_Timer.connect("timeout", self, "_death_timer_ended");
 	$Trigger_Area2D.monitoring = false;
+	$Explosion_Area2D.monitorable = false;
+	if Globals.testing:
+		team_id = 1;
+		player_id = 1;
 	#set_network_master(1);
 
 func _process(delta):
@@ -23,7 +27,7 @@ func _draw():
 		var red = 1 if team_id == 1 else 0;
 		var green = 10.0/255.0 if team_id == 1 else 130.0/255.0;
 		var blue = 1 if team_id == 0 else 0;
-		draw_circle(Vector2.ZERO,50,Color(red,green,blue,0.2 + (sin(progress * 2 * PI * 4)+1)/5));
+		draw_circle(Vector2.ZERO,100,Color(0.8,0.1,0.8,0.2 + (sin(progress * 2 * PI * 4)+1)/5));
 func _activation_timer_ended():
 	$Sprite.frame = 1;
 	$Trigger_Area2D.monitoring = true;
@@ -41,7 +45,7 @@ remotesync func start_detonation():
 func _detonation_timer_ended():
 	print("_detonation_timer_ended");
 	if Globals.testing or get_tree().is_network_server():
-		$Explosion_Area2D.monitoring = true;
+		$Explosion_Area2D.monitorable = true;
 	$Death_Timer.start();
 
 func _death_timer_ended():
