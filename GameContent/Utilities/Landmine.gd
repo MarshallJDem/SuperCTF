@@ -36,18 +36,12 @@ func _activation_timer_ended():
 
 remotesync func start_detonation():
 	modulate = Color(1,1,1,1);
-	print("Starting detonation");
-	if get_tree().is_network_server():
-		$Detonation_Timer.wait_time += (Globals.player_lerp_time * 2.0)/1000.0;
 	$Detonation_Timer.start();
 	
 
 func _detonation_timer_ended():
-	print("_detonation_timer_ended");
-	if Globals.testing or get_tree().is_network_server():
-		$Explosion_Area2D.monitorable = true;
+	$Explosion_Area2D.monitorable = true;
 	$Death_Timer.start();
 
 func _death_timer_ended():
-	print("_death_timer_ended");
 	call_deferred("queue_free");
