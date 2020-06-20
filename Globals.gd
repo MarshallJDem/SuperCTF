@@ -44,7 +44,7 @@ var result_match_id = -1;
 # NOTES
 # Layer mask 4 : Demo Bullet
 
-
+var options_menu_should_scale;
 
 # ----- Constants -----
 const game_var_defaults = {"playerSpeed" : 200, "playerLagTime" : 50,

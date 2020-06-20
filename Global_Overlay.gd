@@ -10,7 +10,7 @@ var song_ids = [0,1,2,3,4,5,6,7];
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	$CanvasLayer/Options_Button.connect("button_up", self, "_button_clicked");
+	#$CanvasLayer/Options_Button.connect("button_up", self, "_button_clicked");
 	$CanvasLayer/Music_Background/Skip_Text.connect("meta_clicked", self, "_skip_pressed");
 	$Music_Player.connect("finished", self, "play_next_song");
 
@@ -49,7 +49,7 @@ func rotate_music_title():
 	text = text.substr(1, len(text) - 1);
 	$CanvasLayer/Music_Background/Music_Title.text = text + first;
 
-func _button_clicked():
+func _options_button_clicked():
 	Globals.toggle_options_menu();
 	$CanvasLayer/Options_Button.release_focus();
 

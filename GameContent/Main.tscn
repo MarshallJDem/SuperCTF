@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=2]
+[gd_scene load_steps=30 format=2]
 
 [ext_resource path="res://GameContent/Main.gd" type="Script" id=1]
 [ext_resource path="res://GameContent/Player.tscn" type="PackedScene" id=2]
@@ -24,6 +24,7 @@
 [ext_resource path="res://Assets/Sound/score.wav" type="AudioStream" id=22]
 [ext_resource path="res://Assets/Sound/Countdown.wav" type="AudioStream" id=23]
 [ext_resource path="res://GameContent/Maps/TehoMap1.tscn" type="PackedScene" id=24]
+[ext_resource path="res://fonts/pixel.TTF" type="DynamicFontData" id=25]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0, 0, 0, 0.145098 )
@@ -36,6 +37,11 @@ bg_color = Color( 0, 0, 0, 0 )
 content_margin_left = 8.0
 content_margin_top = 8.0
 bg_color = Color( 1, 1, 1, 0 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 18
+outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
+font_data = ExtResource( 25 )
 
 [node name="MainScene" type="Node2D"]
 script = ExtResource( 1 )
@@ -80,7 +86,7 @@ __meta__ = {
 }
 
 [node name="Chat_Box" type="RichTextLabel" parent="UI_Layer"]
-margin_top = 10.0
+margin_top = 73.0
 margin_right = 292.0
 margin_bottom = 334.0
 rect_clip_content = false
@@ -157,10 +163,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -52.0042
-margin_top = 146.099
-margin_right = 73.9958
-margin_bottom = 213.099
+margin_left = -160.724
+margin_top = 154.465
+margin_right = 161.276
+margin_bottom = 221.465
 custom_styles/hover = ExtResource( 9 )
 custom_styles/pressed = ExtResource( 10 )
 custom_styles/normal = ExtResource( 11 )
@@ -170,20 +176,38 @@ text = "Leave Match"
 
 [node name="Cancel_Button" type="Button" parent="UI_Layer"]
 visible = false
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -898.45
-margin_top = 418.557
-margin_right = -772.45
-margin_bottom = 485.557
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 34.2733
+margin_top = -93.9291
+margin_right = 160.273
+margin_bottom = -26.9291
+rect_scale = Vector2( 0.5, 0.5 )
 custom_styles/hover = ExtResource( 9 )
 custom_styles/pressed = ExtResource( 10 )
 custom_styles/normal = ExtResource( 11 )
-custom_fonts/font = ExtResource( 12 )
+custom_fonts/font = SubResource( 4 )
 custom_colors/font_color = Color( 0.172549, 0.172549, 0.172549, 1 )
 text = "Cancel"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Options_Button" type="Button" parent="UI_Layer"]
+margin_left = 35.4974
+margin_top = 24.4809
+margin_right = 161.497
+margin_bottom = 91.4809
+grow_horizontal = 0
+grow_vertical = 0
+rect_scale = Vector2( 0.5, 0.5 )
+rect_pivot_offset = Vector2( 5.308, 0 )
+custom_styles/hover = ExtResource( 9 )
+custom_styles/pressed = ExtResource( 10 )
+custom_styles/normal = ExtResource( 11 )
+custom_fonts/font = SubResource( 4 )
+custom_colors/font_color = Color( 0.172549, 0.172549, 0.172549, 1 )
+text = "Options"
 __meta__ = {
 "_edit_use_anchors_": false
 }

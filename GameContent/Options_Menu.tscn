@@ -31,20 +31,38 @@ __meta__ = {
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 layer = 3
 
-[node name="Background" type="ColorRect" parent="CanvasLayer"]
+[node name="Control" type="Control" parent="CanvasLayer"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -20.0
+margin_top = -20.0
+margin_right = 9980.0
+margin_bottom = 9980.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Background" type="ColorRect" parent="CanvasLayer/Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = -5000.0
+margin_top = -5000.0
+margin_right = -5000.0
+margin_bottom = -5000.0
+rect_scale = Vector2( 2, 2 )
 color = Color( 0, 0, 0, 0.937255 )
 __meta__ = {
 "_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
-[node name="Close_Button" type="Button" parent="CanvasLayer"]
-margin_left = 1708.0
-margin_top = 25.0
-margin_right = 1893.0
-margin_bottom = 135.0
+[node name="Close_Button" type="Button" parent="CanvasLayer/Control"]
+margin_left = 768.0
+margin_top = -495.0
+margin_right = 953.0
+margin_bottom = -385.0
 custom_styles/hover = ExtResource( 1 )
 custom_styles/pressed = ExtResource( 3 )
 custom_styles/normal = ExtResource( 2 )
@@ -58,11 +76,11 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer"]
-margin_left = 26.3712
-margin_top = 49.2264
-margin_right = 1137.37
-margin_bottom = 377.226
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/Control"]
+margin_left = -913.629
+margin_top = -470.774
+margin_right = 197.37
+margin_bottom = -142.774
 rect_clip_content = false
 custom_fonts/normal_font = ExtResource( 6 )
 bbcode_enabled = true
@@ -73,11 +91,11 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="RichTextLabel2" type="RichTextLabel" parent="CanvasLayer"]
-margin_left = 1020.94
-margin_top = 138.79
-margin_right = 1265.94
-margin_bottom = 257.79
+[node name="RichTextLabel2" type="RichTextLabel" parent="CanvasLayer/Control"]
+margin_left = 80.94
+margin_top = -381.21
+margin_right = 325.94
+margin_bottom = -262.21
 custom_fonts/normal_font = ExtResource( 5 )
 bbcode_enabled = true
 bbcode_text = ".com
@@ -89,11 +107,11 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="RichTextLabel3" type="RichTextLabel" parent="CanvasLayer"]
-margin_left = 28.0
-margin_top = 241.0
-margin_right = 1311.0
-margin_bottom = 1075.0
+[node name="RichTextLabel3" type="RichTextLabel" parent="CanvasLayer/Control"]
+margin_left = -912.0
+margin_top = -279.0
+margin_right = 371.0
+margin_bottom = 555.0
 custom_fonts/normal_font = ExtResource( 4 )
 bbcode_enabled = true
 bbcode_text = "Created by Marshall Demirjian (carshalljd)
@@ -138,11 +156,11 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="RichTextLabel4" type="RichTextLabel" parent="CanvasLayer"]
-margin_left = 272.374
-margin_top = 627.779
-margin_right = 1555.37
-margin_bottom = 1461.78
+[node name="RichTextLabel4" type="RichTextLabel" parent="CanvasLayer/Control"]
+margin_left = -667.626
+margin_top = 107.779
+margin_right = 615.37
+margin_bottom = 941.78
 custom_fonts/normal_font = ExtResource( 4 )
 bbcode_enabled = true
 bbcode_text = "[color=gray]You, the player
@@ -167,11 +185,11 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="RichTextLabel5" type="RichTextLabel" parent="CanvasLayer"]
-margin_left = 1135.47
-margin_top = 339.169
-margin_right = 2418.47
-margin_bottom = 1173.17
+[node name="RichTextLabel5" type="RichTextLabel" parent="CanvasLayer/Control"]
+margin_left = 195.47
+margin_top = -180.831
+margin_right = 1478.47
+margin_bottom = 653.17
 custom_fonts/normal_font = ExtResource( 4 )
 bbcode_enabled = true
 bbcode_text = "[color=white]Master Volume
@@ -193,11 +211,11 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="RichTextLabel6" type="RichTextLabel" parent="CanvasLayer"]
-margin_left = 1669.31
-margin_top = 1030.2
-margin_right = 2106.31
-margin_bottom = 1106.2
+[node name="RichTextLabel6" type="RichTextLabel" parent="CanvasLayer/Control"]
+margin_left = 729.31
+margin_top = 510.2
+margin_right = 1166.31
+margin_bottom = 586.2
 custom_fonts/normal_font = ExtResource( 4 )
 custom_colors/default_color = Color( 0.658824, 0.658824, 0.658824, 1 )
 bbcode_enabled = true
@@ -212,11 +230,11 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="RichTextLabel7" type="RichTextLabel" parent="CanvasLayer"]
-margin_left = 1360.5
-margin_top = 279.273
-margin_right = 1797.5
-margin_bottom = 355.273
+[node name="RichTextLabel7" type="RichTextLabel" parent="CanvasLayer/Control"]
+margin_left = 420.5
+margin_top = -240.727
+margin_right = 857.5
+margin_bottom = -164.727
 custom_fonts/normal_font = ExtResource( 4 )
 custom_colors/default_color = Color( 0.658824, 0.658824, 0.658824, 1 )
 bbcode_enabled = true
@@ -231,11 +249,11 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MasterVolume_Slider" type="HSlider" parent="CanvasLayer"]
-margin_left = 1473.26
-margin_top = 382.201
-margin_right = 1830.26
-margin_bottom = 433.201
+[node name="MasterVolume_Slider" type="HSlider" parent="CanvasLayer/Control"]
+margin_left = 533.26
+margin_top = -137.799
+margin_right = 890.26
+margin_bottom = -86.799
 custom_styles/slider = SubResource( 1 )
 custom_styles/grabber_area = SubResource( 2 )
 value = 50.0
@@ -244,11 +262,11 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MusicVolume_Slider" type="HSlider" parent="CanvasLayer"]
-margin_left = 1473.26
-margin_top = 480.816
-margin_right = 1830.26
-margin_bottom = 531.816
+[node name="MusicVolume_Slider" type="HSlider" parent="CanvasLayer/Control"]
+margin_left = 533.26
+margin_top = -39.184
+margin_right = 890.26
+margin_bottom = 11.816
 custom_styles/slider = SubResource( 1 )
 custom_styles/grabber_area = SubResource( 2 )
 value = 50.0

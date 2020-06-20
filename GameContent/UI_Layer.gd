@@ -6,6 +6,7 @@ var start_time = OS.get_system_time_secs();
 func _ready():
 	var _err = $Leave_Match_Button.connect("pressed", self, "_leave_match_button_pressed");
 	_err = $Cancel_Button.connect("pressed", self, "_cancel_button_pressed");
+	_err = $Options_Button.connect("button_up", self, "_options_button_clicked");
 	get_tree().connect("screen_resized", self, "_screen_resized");
 	_screen_resized();
 
@@ -103,14 +104,35 @@ func _process(delta):
 
 func _screen_resized():
 	var window_size = OS.get_window_size();
-	if window_size.x < 500 or window_size.y < 200:
-		$Ability_GUIs.rect_scale = Vector2(0.5,0.5);
-	else:
-		$Ability_GUIs.rect_scale = Vector2(1,1);
+	$Chat_Box.rect_scale= Vector2(1,1);
+	$LineEdit.rect_scale= Vector2(1,1);
 	$Chat_Box.margin_bottom = window_size.y * (0.6);
+	$Chat_Box.margin_top = 73;
+	$Options_Button.rect_scale = Vector2(0.5,0.5);
+	$Cancel_Button.rect_scale = Vector2(0.5,0.5);
+	if window_size.x < 500 or window_size.y < 200:
+		print("HALF")
+		$Ability_GUIs.rect_scale = Vector2(0.5,0.5);
+	elif window_size.x <= 1920 or window_size.y <= 1080:
+		print("FULL")
+		$Ability_GUIs.rect_scale = Vector2(1,1);
+	else:
+		$Ability_GUIs.rect_scale = Vector2(2,2);
+		$Chat_Box.rect_scale = Vector2(2,2);
+		$LineEdit.rect_scale = Vector2(2,2);
+		$Options_Button.rect_scale = Vector2(1,1);
+		$Cancel_Button.rect_scale = Vector2(1,1);
+		$Chat_Box.margin_top = 160;
+		
 	var size = $LineEdit.rect_size.y;
 	$LineEdit.margin_top = $Chat_Box.margin_bottom;
 	$LineEdit.margin_bottom = $LineEdit.margin_top + size;
+	print("complete")
+
+
+func _options_button_clicked():
+	Globals.toggle_options_menu();
+	$Options_Button.release_focus();
 
 # Color 0 = blue, 1 = red
 func set_big_label_text(text, color):

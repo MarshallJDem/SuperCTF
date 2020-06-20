@@ -4,6 +4,7 @@ var LeaderboardCell = preload("res://LeaderboardCell.tscn");
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	Globals.options_menu_should_scale = false;
 	if Globals.testing:
 		get_tree().change_scene("res://GameContent/Main.tscn");
 	$HTTPRequest_FindMatch.connect("request_completed", self, "_HTTP_FindMatch_Completed");
@@ -24,8 +25,8 @@ func _ready():
 		print("Checking is server");
 		get_tree().change_scene("res://GameContent/Main.tscn");
 	$HTTPRequest_GetLeaderboard.request(Globals.mainServerIP + "getLeaderboardData", ["authorization: Bearer " + Globals.userToken]);
+	get_tree().set_screen_stretch(SceneTree.STRETCH_MODE_VIEWPORT, SceneTree.STRETCH_ASPECT_EXPAND,Vector2(1920,1080), 1);
 	
-	get_tree().set_screen_stretch(SceneTree.STRETCH_MODE_VIEWPORT, SceneTree.STRETCH_ASPECT_KEEP, Vector2(1920,1080));
 
 
 
@@ -70,7 +71,7 @@ func load_leaderboard(leaderboard_data):
 		leaderboard_parent.call_deferred("queue_free");
 	leaderboard_parent = Node2D.new();
 	leaderboard_parent.position = origin;
-	call_deferred("add_child", leaderboard_parent);
+	$UI_Layer/Leaderboard.call_deferred("add_child", leaderboard_parent);
 	var cell_size = Vector2(206, 33);
 	var rows = 10;
 	var columns = 8;
