@@ -34,6 +34,7 @@ var last_position = Vector2(0,0);
 var look_direction = 0;
 # Whether we teleported during this frame
 var just_teleported = false;
+var has_moved_after_respawn = false;
 
 
 var Ghost_Trail = preload("res://GameContent/Ghost_Trail.tscn");
@@ -82,6 +83,8 @@ func _process(delta):
 	TELEPORT_SPEED = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("dashDistance");
 	$Teleport_Timer.wait_time = DASH_COOLDOWN_PMODIFIER + float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("dashCooldown"))/1000.0;
 	
+	if is_network_master():
+		Globals.displaying_loadout = !alive or !has_moved_after_respawn;
 	if control:
 		activate_camera();
 		# Don't look around if we're shooting a laser
@@ -175,7 +178,8 @@ func move_on_inputs(teleport = false):
 	input.y = (1 if Input.is_key_pressed(KEY_S) else 0) - (1 if Input.is_key_pressed(KEY_W) else 0)
 	input = input.normalized();
 	last_movement_input = input;
-	
+	if teleport or (input.x != 0 or input.y != 0):
+		has_moved_after_respawn = true;
 	
 	var move_speed = speed + POWERUP_SPEED;
 	if($Flag_Holder.get_child_count() > 0):
@@ -375,6 +379,7 @@ func respawn():
 	visible = true;
 	alive = true;
 	position = start_pos;
+	has_moved_after_respawn = false;
 	if is_network_master() and get_tree().get_root().get_node("MainScene/NetworkController").round_is_running:
 		control = true;
 	start_temporary_invincibility();

@@ -27,7 +27,7 @@ func _process(delta):
 			spawn_camo_flash();
 
 func _input(event):
-	if Globals.is_typing_in_chat:
+	if Globals.is_typing_in_chat or Globals.displaying_loadout:
 		return;
 	if player.control:
 		if event is InputEventKey and event.pressed:

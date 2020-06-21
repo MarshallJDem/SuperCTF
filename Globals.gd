@@ -58,6 +58,7 @@ enum Utilities { Grenade, Landmine};
 var current_utility = Utilities.Grenade;
 
 var options_menu_should_scale;
+var displaying_loadout = false;
 
 # ----- Constants -----
 const game_var_defaults = {"playerSpeed" : 200, "playerLagTime" : 50,

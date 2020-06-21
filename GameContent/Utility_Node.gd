@@ -22,6 +22,9 @@ func _utility_changed():
 func _process(delta):
 	if !player.control:
 		return;
+	update();
+	if Globals.is_typing_in_chat or Globals.displaying_loadout:
+		return;
 	if Input.is_action_just_pressed("clickR"):
 		if $Cooldown_Timer.time_left == 0:
 			if Globals.current_utility == Globals.Utilities.Grenade:
@@ -42,7 +45,6 @@ func _process(delta):
 			else:
 				rpc("place_landmine",landmines_placed);
 			
-	update();
 
 func _draw():
 	if aiming_grenade:

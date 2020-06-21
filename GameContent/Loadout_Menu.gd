@@ -22,6 +22,10 @@ func _ready():
 	set_ability_selection(1);
 	set_utility_selection(1);
 
+func _process(delta):
+	$CanvasLayer/Control.visible = Globals.displaying_loadout or Globals.testing;
+	
+
 func set_weapon_selection(w):
 	for i in range(1,4):
 		var alpha = 1.0 if i == w else 0.0;
