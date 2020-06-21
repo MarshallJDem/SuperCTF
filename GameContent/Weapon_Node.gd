@@ -14,10 +14,6 @@ const AIMING_SPEED = 15;
 
 var player;
 
-# Kits / Classes
-enum Weapons {Bullet, Laser, Demo};
-var current_weapon = Weapons.Bullet;
-
 # The direction the laser is firing at
 var laser_direction = Vector2(0,0);
 # The position the laser is firing from
@@ -30,6 +26,7 @@ var demos_shot = 0;
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	Globals.connect("class_changed", self, "class_changed");
 	
 	player = get_parent();
 	
@@ -42,13 +39,16 @@ func _ready() -> void:
 	
 	$Laser_Timer.connect("timeout", self, "_laser_timer_ended");
 	$Laser_Input_Timer.connect("timeout", self, "_laser_input_timer_ended");
-	
+
+func class_changed():
+	pass;
+
 func update_cooldown_lengths():
-	if current_weapon == Weapons.Bullet:
+	if Globals.current_class == Globals.Classes.Bullet:
 		$Cooldown_Timer.wait_time = BULLET_COOLDOWN_PMODIFIER + float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("bulletCooldown"))/1000.0;
-	elif current_weapon == Weapons.Laser:
+	elif Globals.current_class == Globals.Classes.Laser:
 		$Cooldown_Timer.wait_time = float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("laserCooldown"))/1000.0;
-	elif current_weapon == Weapons.Demo:
+	elif Globals.current_class == Globals.Classes.Demo:
 		$Cooldown_Timer.wait_time = 750.0/1000.0;
 	$Laser_Timer.wait_time = float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("laserChargeTime"))/1000.0;
 
@@ -118,13 +118,6 @@ func _draw():
 		draw_circle(target_position, size + 3, Color(red,green,blue,(sin((progress) * 2 * PI * 25 * (0.1 * (1.0+progress) ) )+1)/2.0));
 		draw_circle(target_position, size + 0.5, Color(red + 0.1,green + 0.1,blue + 0.1,progress));
 
-func set_weapon_from_kit(kit):
-	if kit == player.Kits.Bullet:
-		current_weapon = Weapons.Bullet;
-	elif kit == player.Kits.Laser:
-		current_weapon = Weapons.Laser;
-	elif kit == player.Kits.Demo:
-		current_weapon = Weapons.Demo;
 
 func shoot_on_inputs():
 	# Check for mouse input
@@ -132,17 +125,17 @@ func shoot_on_inputs():
 		# Only accepts clicks if we're not aiming a laser
 		if $Laser_Timer.time_left == 0:
 			if !player.attempt_drop_flag():
-				if current_weapon == Weapons.Bullet:
+				if Globals.current_class == Globals.Classes.Bullet:
 					if $Cooldown_Timer.time_left == 0:
 						call_deferred("shoot_bullet", ((get_global_mouse_position() - global_position).normalized()));
-				elif current_weapon == Weapons.Laser:
+				elif Globals.current_class == Globals.Classes.Laser:
 					var direction = (get_global_mouse_position() - player.position).normalized();
 					laser_direction = direction;
 					laser_position = player.position + get_node("Laser_Starts/" + String(player.look_direction)).position * 20;
 					# If we are still in input phase, update direction
 					if $Laser_Input_Timer.time_left == 0:
 						start_laser_input();
-				elif current_weapon == Weapons.Demo:
+				elif Globals.current_class == Globals.Classes.Demo:
 					if $Cooldown_Timer.time_left == 0:
 						if !Globals.testing:
 							rpc("shoot_demo", ((get_global_mouse_position() - global_position).normalized()),demos_shot);

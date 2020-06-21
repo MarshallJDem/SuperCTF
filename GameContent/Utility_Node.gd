@@ -3,10 +3,6 @@ extends Node2D
 var Grenade = preload("res://GameContent/Grenade.tscn");
 var Landmine = preload("res://GameContent/Utilities/Landmine.tscn");
 
-# Utilities
-enum Utilities {Grenade, Landmine};
-var utility = Utilities.Landmine;
-
 var player;
 
 # Whether the grenade weapon is currently being aimed
@@ -18,25 +14,29 @@ var landmines_placed = 0;
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	player = get_parent();
+	Globals.connect("utility_changed", self, "_utility_changed");
+
+func _utility_changed():
+	pass;
 
 func _process(delta):
 	if !player.control:
 		return;
 	if Input.is_action_just_pressed("clickR"):
 		if $Cooldown_Timer.time_left == 0:
-			if utility == Utilities.Grenade:
+			if Globals.current_utility == Globals.Utilities.Grenade:
 				aiming_grenade = true;
 	if Input.is_action_pressed("clickR"):
 		pass;
 	if Input.is_action_just_released("clickR"):
-		if utility == Utilities.Grenade:
+		if Globals.current_utility == Globals.Utilities.Grenade:
 			if aiming_grenade:
 				# Fire grenade on right mouse up
 				if Globals.testing:
 					shoot_grenade(get_global_mouse_position(), OS.get_system_time_msecs());
 				else:
 					rpc("shoot_grenade",get_global_mouse_position(), OS.get_system_time_msecs() - Globals.match_start_time);
-		elif utility == Utilities.Landmine:
+		elif Globals.current_utility == Globals.Utilities.Landmine:
 			if Globals.testing:
 				place_landmine(landmines_placed);
 			else:

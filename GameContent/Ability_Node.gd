@@ -1,9 +1,5 @@
 extends Node2D
 
-# Abilities
-enum Abilities {Forcefield, Camo};
-var ability = Abilities.Camo;
-
 var Forcefield = preload("res://GameContent/Forcefield.tscn");
 var Ghost_Trail = preload("res://GameContent/Ghost_Trail.tscn");
 var player;
@@ -11,11 +7,11 @@ var player;
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	player = get_parent();
-	set_ability(Abilities.Camo);
+	set_ability(Globals.Abilities.Camo);
 	$Camo_Timer.connect("timeout", self, "_camo_timer_ended")
 
 func _process(delta):
-	if ability == Abilities.Forcefield:
+	if Globals.current_ability == Globals.Abilities.Forcefield:
 		$Cooldown_Timer.wait_time = float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("forcefieldCooldown"))/1000.0;
 	
 	if $Camo_Timer.time_left != 0:
@@ -37,17 +33,17 @@ func _input(event):
 		if event is InputEventKey and event.pressed:
 			if event.scancode == KEY_E:
 				if $Cooldown_Timer.time_left == 0:
-					if ability == Abilities.Forcefield:
+					if Globals.current_ability == Globals.Abilities.Forcefield:
 						place_forcefield();
-					elif ability == Abilities.Camo:
+					elif Globals.current_ability == Globals.Abilities.Camo:
 						activate_camo();
 
 func set_ability(a):
-	ability = a;
+	Globals.current_ability = a;
 	$Cooldown_Timer.stop();
-	if ability == Abilities.Forcefield:
+	if Globals.current_ability == Globals.Abilities.Forcefield:
 		$Cooldown_Timer.wait_time = float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("forcefieldCooldown"))/1000.0;
-	elif ability == Abilities.Camo:
+	elif Globals.current_ability == Globals.Abilities.Camo:
 		$Cooldown_Timer.wait_time = 6;
 
 func _camo_timer_ended():

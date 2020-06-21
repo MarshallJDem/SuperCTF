@@ -44,6 +44,19 @@ var result_match_id = -1;
 # NOTES
 # Layer mask 4 : Demo Bullet
 
+signal class_changed();
+signal ability_changed();
+signal utility_changed();
+
+enum Classes { Bullet, Laser, Demo};
+var current_class = Classes.Bullet;
+
+enum Abilities { Forcefield, Camo};
+var current_ability = Abilities.Forcefield;
+
+enum Utilities { Grenade, Landmine};
+var current_utility = Utilities.Grenade;
+
 var options_menu_should_scale;
 
 # ----- Constants -----

@@ -35,10 +35,6 @@ var look_direction = 0;
 # Whether we teleported during this frame
 var just_teleported = false;
 
-# Kits / Classes
-enum Kits {Bullet, Laser, Demo};
-var current_kit = Kits.Bullet;
-
 
 var Ghost_Trail = preload("res://GameContent/Ghost_Trail.tscn");
 var Player_Death = preload("res://GameContent/Player_Death.tscn");
@@ -46,14 +42,13 @@ var Player_Death = preload("res://GameContent/Player_Death.tscn");
 
 func _ready():
 	camera_ref = $Center_Pivot/Camera;
-	set_kit(Kits.Bullet);
 	
 	last_position = position;
 	
 	if Globals.testing:
 		activate_camera();
 		control = true
-	
+	Globals.connect("class_changed", self, "update_class");
 	$Respawn_Timer.connect("timeout", self, "_respawn_timer_ended");
 	$Invincibility_Timer.connect("timeout", self, "_invincibility_timer_ended");
 	$Powerup_Timer.connect("timeout", self, "_powerup_timer_ended");
@@ -65,12 +60,6 @@ func _input(event):
 		return;
 	if control:
 		if event is InputEventKey and event.pressed:
-			if event.scancode == KEY_1:
-				set_kit(Kits.Bullet);
-			if event.scancode == KEY_2:
-				set_kit(Kits.Laser);
-			if event.scancode == KEY_3:
-				set_kit(Kits.Demo);
 			if event.scancode == KEY_T:
 				get_tree().get_root().get_node("MainScene/NetworkController").rpc("test_ping");
 			if event.scancode == KEY_CONTROL:
@@ -96,7 +85,7 @@ func _process(delta):
 	if control:
 		activate_camera();
 		# Don't look around if we're shooting a laser
-		if $Weapon_Node.current_weapon != $Weapon_Node.Weapons.Laser or $Weapon_Node/Laser_Timer.time_left == 0:
+		if Globals.current_class != Globals.Classes.Laser or $Weapon_Node/Laser_Timer.time_left == 0:
 			update_look_direction();
 		# Move around as long as we aren't typing in chat
 		if !Globals.is_typing_in_chat:
@@ -151,17 +140,14 @@ func _process(delta):
 	$Name_Parent/Label_Name.bbcode_text = "[center][color=" + color + "]" + player_name;
 	last_position = position;
 
-func set_kit(kit):
-	current_kit = kit;
-	$Weapon_Node.set_weapon_from_kit(kit);
+func update_class():
 	var n = "gunner"
-	if current_kit == Kits.Bullet:
+	if Globals.current_class == Globals.Classes.Bullet:
 		n = "gunner";
-	elif current_kit == Kits.Laser:
+	elif Globals.current_class == Globals.Classes.Laser:
 		n = "laser";
-	elif current_kit == Kits.Demo:
+	elif Globals.current_class == Globals.Classes.Demo:
 		n = "demo";
-
 	$Sprite_Head.set_texture(load("res://Assets/Player/" + str(n) + "_head_B.png"));
 	$Sprite_Body.set_texture(load("res://Assets/Player/" + str(n) + "_body_B.png"));
 	$Sprite_Gun.set_texture(load("res://Assets/Player/" + str(n) + "_gun_B.png"));
