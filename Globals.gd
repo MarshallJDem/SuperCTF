@@ -127,7 +127,7 @@ func _ready():
 	HTTPRequest_CancelQueue.connect("request_completed", self, "_HTTP_CancelQueue_Completed");
 	PollPlayerStatus_Timer.one_shot = true;
 	PollPlayerStatus_Timer.autostart = false;
-	PollPlayerStatus_Timer.wait_time = 1;
+	PollPlayerStatus_Timer.wait_time = 3;
 	add_child(PollPlayerStatus_Timer);
 	
 
