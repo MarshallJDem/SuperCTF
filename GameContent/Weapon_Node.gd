@@ -170,14 +170,15 @@ func shoot_bullet(d):
 	# Re-enable the code below to have the bullet start out of the end of the gun
 	var bullet_start = player.position + get_node("Bullet_Starts/" + String(player.look_direction)).position;
 	var time = OS.get_system_time_msecs() - Globals.match_start_time;
-	var bullet = spawn_bullet(bullet_start, 0 if Globals.testing else player.player_id, direction,time, null);
+	var bullet_name = "Bullet"+ "-" + str(player.player_id) + "-" + str(bullets_shot);
 	#camera_ref.shake();
 	$Shoot_Animation_Timer.start();
 	if !Globals.testing:
-		rpc_id(1, "send_bullet", bullet_start,player.player_id, direction, time, bullet.name);
-
+		rpc("spawn_bullet", bullet_start, player.player_id, direction,time, bullet_name);
+	else:
+		spawn_bullet(bullet_start, 0, direction,time, bullet_name);
 # Spawns a bullet given various initializaiton parameters
-func spawn_bullet(pos, player_id, direction, time_shot, bullet_name = null):
+remotesync func spawn_bullet(pos, player_id, direction, time_shot, bullet_name):
 	
 	# Muzzle Flair
 	var particles = Muzzle_Bullet.instance();
@@ -188,7 +189,7 @@ func spawn_bullet(pos, player_id, direction, time_shot, bullet_name = null):
 	particles.rotation = Vector2(0,0).angle_to_point(direction) + PI;
 	
 #	# If this was fired by another player, compensate for player lerp speed
-	if !Globals.testing and player_id != Globals.localPlayerID:
+	if false and !Globals.testing and player_id != Globals.localPlayerID:
 		var t = Timer.new();
 		t.set_wait_time(float(Globals.player_lerp_time)/float(1000.0));
 		t.set_one_shot(true);
@@ -204,31 +205,14 @@ func spawn_bullet(pos, player_id, direction, time_shot, bullet_name = null):
 	bullet.player_id = player_id;
 	bullet.team_id = player.team_id;
 	bullet.original_time_shot = time_shot
+	bullet.name = bullet_name;
 	bullet.set_network_master(get_network_master());
 	if player.team_id == 0:
 		bullet.get_node("Sprite").set_texture(bullet_atlas_blue);
 	elif player.team_id == 1:
 		bullet.get_node("Sprite").set_texture(bullet_atlas_red);
 	get_tree().get_root().get_node("MainScene").call_deferred("add_child", bullet);
-	if bullet_name != null:
-		bullet.name = bullet_name;
-	else:
-		bullet.name = bullet.name + "-" + str(player_id) + "-" + str(bullets_shot);
 	return bullet;
-
-
-# Client tells the server that it just shot a bullet
-remote func send_bullet(pos, player_id, direction, time_shot, bullet_name):
-	if get_tree().is_network_server(): # Only run if it's the server
-		var clients = get_tree().get_network_connected_peers();
-		for i in clients: # For each connected client
-			if i != get_tree().get_rpc_sender_id(): # Don't do it for the player who sent it
-				rpc_id(i, "receive_bullet", pos, player_id, direction,time_shot, bullet_name);
-		spawn_bullet(pos, player_id, direction,time_shot, bullet_name); # Also call it locally for the server
-
-# "Receives" a bullet from the server that was shot by another client
-remote func receive_bullet(pos, player_id, direction,time_shot, bullet_name):
-	spawn_bullet(pos, player_id, direction,time_shot, bullet_name);
 
 remote func send_start_laser(direction, start_pos, target_pos, look_direction):
 	if get_tree().is_network_server():# Only run if it's the server

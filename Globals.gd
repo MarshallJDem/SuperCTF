@@ -206,7 +206,7 @@ func write_save_data():
 	file.store_string(str(AudioServer.get_bus_volume_db(1)) + "\n");
 	file.store_string(str(volume_sliders.x) + "\n");
 	file.store_string(str(volume_sliders.y) + "\n");
-	file.store_string(str(Global_Overlay.current_song));
+	#file.store_string(str(Global_Overlay.current_song));
 	file.close()
 
 func load_save_data():
