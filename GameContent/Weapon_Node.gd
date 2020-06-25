@@ -166,6 +166,11 @@ remotesync func shoot_demo(d, shots):
 func shoot_bullet(d):
 	$Cooldown_Timer.start();
 	var direction = d.normalized();
+	
+	$CollisionTester.position = Vector2(0,5.5);
+	$CollisionTester.move_and_collide(direction * 25.0)
+	var collision_tester_length = $CollisionTester.position.distance_to(Vector2(0,5.5));
+	
 	bullets_shot = bullets_shot + 1;
 	# Re-enable the code below to have the bullet start out of the end of the gun
 	var bullet_start = player.position + get_node("Bullet_Starts/" + String(player.look_direction)).position;
@@ -173,12 +178,17 @@ func shoot_bullet(d):
 	var bullet_name = "Bullet"+ "-" + str(player.player_id) + "-" + str(bullets_shot);
 	#camera_ref.shake();
 	$Shoot_Animation_Timer.start();
-	if !Globals.testing:
-		rpc("spawn_bullet", bullet_start, player.player_id, direction,time, bullet_name);
+	
+	# If we are too close to a wall shoot a blank
+	if(collision_tester_length < 10):
+		spawn_bullet(bullet_start, 0 if Globals.testing else player.player_id, direction, time, bullet_name, true);
 	else:
-		spawn_bullet(bullet_start, 0, direction,time, bullet_name);
+		if !Globals.testing:
+			rpc("spawn_bullet", bullet_start, player.player_id, direction,time, bullet_name);
+		else:
+			spawn_bullet(bullet_start, 0, direction,time, bullet_name);
 # Spawns a bullet given various initializaiton parameters
-remotesync func spawn_bullet(pos, player_id, direction, time_shot, bullet_name):
+remotesync func spawn_bullet(pos, player_id, direction, time_shot, bullet_name, is_blank = false):
 	
 	# Muzzle Flair
 	var particles = Muzzle_Bullet.instance();
@@ -206,6 +216,7 @@ remotesync func spawn_bullet(pos, player_id, direction, time_shot, bullet_name):
 	bullet.team_id = player.team_id;
 	bullet.original_time_shot = time_shot
 	bullet.name = bullet_name;
+	bullet.is_blank = is_blank;
 	bullet.set_network_master(get_network_master());
 	if player.team_id == 0:
 		bullet.get_node("Sprite").set_texture(bullet_atlas_blue);

@@ -10,6 +10,7 @@ var show_death_particles = true;
 # The exact time the player who shot this actually shot this (used to sync up lag)
 var original_time_shot = 0;
 var puppet_time_shot = 0;
+var is_blank = false;
 
 
 func _ready():
@@ -27,6 +28,8 @@ func _ready():
 		$Lag_Comp_Timer.wait_time *= 4;
 		$Death_Timer.wait_time += ((Globals.ping/2.0)-Globals.player_lerp_time)/1000.0;
 	$Lag_Comp_Timer.start();
+	if is_blank:
+		die();
 
 func _process(_delta):
 	speed = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("bulletSpeed");
