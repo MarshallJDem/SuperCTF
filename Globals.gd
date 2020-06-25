@@ -229,6 +229,7 @@ func load_save_data():
 		AudioServer.set_bus_volume_db(1,float(result["3"]));
 	if result.has("4") and result.has("5"):
 		volume_sliders = Vector2(int(result["4"]), int(result["5"]));
+	return;
 	if result.has("6"):
 		Global_Overlay.saved_song_loaded(int(result["6"]));
 	else:

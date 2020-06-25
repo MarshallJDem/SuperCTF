@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Marshall_Changes_1.png-f725f05290cfc78f0facdbe33f570d2b.stex"
+path="res://.import/wall_2_R.png-0f6ee01a321381cc57db3191511d40fa.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Environment/Marshall_Changes_1.png"
-dest_files=[ "res://.import/Marshall_Changes_1.png-f725f05290cfc78f0facdbe33f570d2b.stex" ]
+source_file="res://Assets/Environment/wall_2_R.png"
+dest_files=[ "res://.import/wall_2_R.png-0f6ee01a321381cc57db3191511d40fa.stex" ]
 
 [params]
 

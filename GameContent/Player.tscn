@@ -32,7 +32,7 @@ radius = 8.67661
 height = 13.2677
 
 [sub_resource type="CapsuleShape2D" id=4]
-radius = 1.61246
+radius = 2.37617
 height = 5.37553
 
 [node name="Player" type="KinematicBody2D"]
@@ -244,7 +244,7 @@ wait_time = 5.0
 one_shot = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 0.0367583, 14.0096 )
+position = Vector2( 0.0144213, 13.2055 )
 rotation = 1.5708
 shape = SubResource( 4 )
 

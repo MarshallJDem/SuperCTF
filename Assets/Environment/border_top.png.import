@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/teho_map_1.png-73ced593ff242f81262cf73fc533f9be.stex"
+path="res://.import/border_top.png-8c1ebcc369b68d8a75952aed356675fb.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Environment/teho_map_1.png"
-dest_files=[ "res://.import/teho_map_1.png-73ced593ff242f81262cf73fc533f9be.stex" ]
+source_file="res://Assets/Environment/border_top.png"
+dest_files=[ "res://.import/border_top.png-8c1ebcc369b68d8a75952aed356675fb.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=true
+flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2

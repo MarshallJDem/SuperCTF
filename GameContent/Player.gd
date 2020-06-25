@@ -102,7 +102,7 @@ func _process(delta):
 		var color = Color(1,1,1,(sin( (PI / 2) + (x * (1 + (t * ((2 * PI) - 1))))) + 1)/2);
 		modulate = color
 	
-	z_index = global_position.y + 15;
+	z_index = global_position.y + 5;
 	
 	# If we are a puppet and not the server, then lerp our position
 	if !Globals.testing and !is_network_master() and !get_tree().is_network_server():

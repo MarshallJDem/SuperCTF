@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Marshall_Changes.png-77d339808647d8c045fab0219d7987c3.stex"
+path="res://.import/background_tiles.png-1a39df3ca09fcc97439f5102e1f71a49.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Environment/Marshall_Changes.png"
-dest_files=[ "res://.import/Marshall_Changes.png-77d339808647d8c045fab0219d7987c3.stex" ]
+source_file="res://Assets/Environment/background_tiles.png"
+dest_files=[ "res://.import/background_tiles.png-1a39df3ca09fcc97439f5102e1f71a49.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=true
+flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2

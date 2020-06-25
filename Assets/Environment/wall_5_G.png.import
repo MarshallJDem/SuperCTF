@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Teho_Background_Original.png-5ac11859c083e2b101c2dc4860233662.stex"
+path="res://.import/wall_5_G.png-22fc1fc4f5e9ee0f42d0ee36919edbbe.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Environment/Teho_Background_Original.png"
-dest_files=[ "res://.import/Teho_Background_Original.png-5ac11859c083e2b101c2dc4860233662.stex" ]
+source_file="res://Assets/Environment/wall_5_G.png"
+dest_files=[ "res://.import/wall_5_G.png-22fc1fc4f5e9ee0f42d0ee36919edbbe.stex" ]
 
 [params]
 
