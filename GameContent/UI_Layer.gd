@@ -79,24 +79,37 @@ func _process(delta):
 			$Ability_GUIs/Teleport_GUI_Text.text = "%0.2f" % teleport_time_left;
 			$Ability_GUIs/SPACE_GUI.modulate = Color(1,1,1,0.2 + 0.4 * ((teleport_wait_time - teleport_time_left) / teleport_wait_time) );
 			
-		# Forcefield button
-		var ff_time_left = local_player.get_node("Ability_Node/Cooldown_Timer").time_left;
-		var ff_wait_time = local_player.get_node("Ability_Node/Cooldown_Timer").wait_time;
+		# Ability button
+		var ability_time_left = local_player.get_node("Ability_Node/Cooldown_Timer").time_left;
+		var ability_wait_time = local_player.get_node("Ability_Node/Cooldown_Timer").wait_time;
 		
-		if ff_time_left == 0:
-			$Ability_GUIs/Forcefield_GUI_Text.text = "FORCEFIELD";
+		if ability_time_left == 0:
+			var t = "";
+			if Globals.current_ability == Globals.Abilities.Forcefield:
+				t = "FORCEFIELD";
+			elif Globals.current_ability == Globals.Abilities.Camo:
+				t = "CAMO"
+			$Ability_GUIs/Ability_GUI_Text.text = t;
 			$Ability_GUIs/E_GUI.modulate = Color(1,1,1,1);
 		else:
-			$Ability_GUIs/Forcefield_GUI_Text.text = "%0.2f" % ff_time_left;
-			$Ability_GUIs/E_GUI.modulate = Color(1,1,1,0.2 + 0.4 * ((ff_wait_time - ff_time_left) / ff_wait_time) );
+			$Ability_GUIs/Ability_GUI_Text.text = "%0.2f" % ability_time_left;
+			$Ability_GUIs/E_GUI.modulate = Color(1,1,1,0.2 + 0.4 * ((ability_wait_time - ability_time_left) / ability_wait_time) );
 		
 		
-		# Grenade
-		var grenade_time_left = local_player.get_node("Utility_Node/Cooldown_Timer").time_left;
-		if grenade_time_left == 0:
-			$Ability_GUIs/Grenade_GUI_Text.text = "GRENADE";
+		# Utility
+		var utility_time_left = local_player.get_node("Utility_Node/Cooldown_Timer").time_left;
+		var utility_wait_time = local_player.get_node("Utility_Node/Cooldown_Timer").wait_time;
+		if utility_time_left == 0:
+			var t = "";
+			if Globals.current_utility == Globals.Utilities.Grenade:
+				t = "GRENADE";
+			elif Globals.current_utility == Globals.Utilities.Landmine:
+				t = "LANDMINE"
+			$Ability_GUIs/Utility_GUI_Text.text = t;
+			$Ability_GUIs/Utility_GUI_Text.modulate = Color(1,1,1,1);
 		else:
-			$Ability_GUIs/Grenade_GUI_Text.text = "%0.2f" % grenade_time_left;
+			$Ability_GUIs/Utility_GUI_Text.text = "%0.2f" % utility_time_left;
+			$Ability_GUIs/Utility_GUI_Text.modulate = Color(1,1,1,0.2 + 0.4 * ((utility_wait_time - utility_time_left) / utility_wait_time) );
 		
 		# If player is holding a flag
 		if local_player.get_node("Flag_Holder").get_child_count() > 0:

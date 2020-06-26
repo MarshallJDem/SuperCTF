@@ -296,7 +296,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Forcefield_GUI_Text" type="Label" parent="UI_Layer/Ability_GUIs"]
+[node name="Ability_GUI_Text" type="Label" parent="UI_Layer/Ability_GUIs"]
 margin_left = -11.2255
 margin_top = 20.0
 margin_right = 122.774
@@ -311,7 +311,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Grenade_GUI_Text" type="Label" parent="UI_Layer/Ability_GUIs"]
+[node name="Utility_GUI_Text" type="Label" parent="UI_Layer/Ability_GUIs"]
 margin_left = -81.7208
 margin_top = 20.0
 margin_right = 52.2792
@@ -334,8 +334,8 @@ margin_bottom = 44.0
 rect_pivot_offset = Vector2( -533.113, 40.108 )
 custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "SWITCH
-WEAPON"
+text = "EXTEND
+CAMERA"
 align = 1
 valign = 1
 __meta__ = {
