@@ -26,6 +26,7 @@ func _process(delta):
 	elif $Move_GUI_Fade_Timer.time_left > 0:
 		var progress = 1 - ($Move_GUI_Fade_Timer.time_left / $Move_GUI_Fade_Timer.wait_time);
 		$Input_GUIs/Move_GUIs.modulate = Color(1,1,1,1-progress);
+		$Input_GUIs/Ability_GUIs.modulate = Color(1,1,1,progress);
 	else:
 		$Input_GUIs/Move_GUIs.modulate = Color(0,0,0,0);
 		$Input_GUIs/Ability_GUIs.modulate = Color(1,1,1,1);
