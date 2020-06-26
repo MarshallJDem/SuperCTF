@@ -41,9 +41,9 @@ func _process(delta):
 					rpc("shoot_grenade",get_global_mouse_position(), OS.get_system_time_msecs() - Globals.match_start_time);
 		elif Globals.current_utility == Globals.Utilities.Landmine:
 			if Globals.testing:
-				place_landmine(landmines_placed);
+				place_landmine(player.position,landmines_placed);
 			else:
-				rpc("place_landmine",landmines_placed);
+				rpc("place_landmine",player.position,landmines_placed);
 			
 
 func _draw():
@@ -57,10 +57,10 @@ func _input(event):
 	if Globals.is_typing_in_chat:
 		return;
 
-remotesync func place_landmine(mines_placed):
+remotesync func place_landmine(pos, mines_placed):
 	$Cooldown_Timer.start();
 	var mine = Landmine.instance();
-	mine.position = player.position;
+	mine.position = pos;
 	mine.team_id = player.team_id;
 	mine.player_id = player.player_id;
 	mine.name = mine.name + "-" + str(player.player_id) + "-" + str(mines_placed);
