@@ -57,6 +57,8 @@ var current_ability = Abilities.Forcefield;
 enum Utilities { Grenade, Landmine};
 var current_utility = Utilities.Grenade;
 
+var active_landmines = 0;
+
 var options_menu_should_scale;
 var displaying_loadout = false;
 

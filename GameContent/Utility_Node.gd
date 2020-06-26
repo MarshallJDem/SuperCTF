@@ -41,10 +41,13 @@ func _process(delta):
 					rpc("shoot_grenade",get_global_mouse_position(), OS.get_system_time_msecs() - Globals.match_start_time);
 		elif Globals.current_utility == Globals.Utilities.Landmine:
 			if $Cooldown_Timer.time_left == 0:
-				if Globals.testing:
-					place_landmine(player.position,landmines_placed);
+				if Globals.active_landmines < 3:
+					if Globals.testing:
+						place_landmine(player.position,landmines_placed);
+					else:
+						rpc("place_landmine",player.position,landmines_placed);
 				else:
-					rpc("place_landmine",player.position,landmines_placed);
+					get_tree().get_root().get_node("MainScene/UI_Layer").set_alert_text("[center][color=red]Active landmine limit reached!");
 				
 
 func _draw():
@@ -66,6 +69,8 @@ remotesync func place_landmine(pos, mines_placed):
 	mine.player_id = player.player_id;
 	mine.name = mine.name + "-" + str(player.player_id) + "-" + str(mines_placed);
 	landmines_placed += 1;
+	if Globals.testing or player.player_id == Globals.localPlayerID:
+		Globals.active_landmines += 1;
 	get_tree().get_root().get_node("MainScene").call_deferred("add_child", mine);
 
 remotesync func shoot_grenade(target_pos, time_shot):

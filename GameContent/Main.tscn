@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=2]
+[gd_scene load_steps=32 format=2]
 
 [ext_resource path="res://GameContent/Main.gd" type="Script" id=1]
 [ext_resource path="res://GameContent/Player.tscn" type="PackedScene" id=2]
@@ -44,6 +44,11 @@ outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
 font_data = ExtResource( 25 )
 
 [sub_resource type="DynamicFont" id=5]
+outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
+font_data = ExtResource( 25 )
+
+[sub_resource type="DynamicFont" id=6]
+size = 12
 outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
 font_data = ExtResource( 25 )
 
@@ -369,13 +374,12 @@ __meta__ = {
 }
 
 [node name="Alert_Text" type="RichTextLabel" parent="UI_Layer"]
+anchor_top = 1.0
 anchor_right = 1.0
-margin_left = -1.58667
-margin_top = 851.323
-margin_right = -1.58667
-margin_bottom = 881.323
+anchor_bottom = 1.0
+margin_top = -181.0
 rect_clip_content = false
-custom_fonts/normal_font = ExtResource( 12 )
+custom_fonts/normal_font = SubResource( 6 )
 bbcode_enabled = true
 bbcode_text = "[center][color=black] KILLED"
 text = " KILLED"

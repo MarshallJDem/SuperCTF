@@ -42,6 +42,8 @@ remotesync func start_detonation():
 func _detonation_timer_ended():
 	$Explosion_Area2D.monitorable = true;
 	$Death_Timer.start();
-
-func _death_timer_ended():
+func die():
+	Globals.active_landmines -= 1;
 	call_deferred("queue_free");
+func _death_timer_ended():
+	die();

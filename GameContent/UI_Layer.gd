@@ -81,7 +81,6 @@ func _process(delta):
 			
 	
 	$Alert_Text.modulate = Color(1,1,1, ($Alert_Fade_Timer.time_left/$Alert_Fade_Timer.wait_time));
-	
 	var local_player;
 	if Globals.testing:
 		local_player = get_tree().get_root().get_node("MainScene/Test_Player");
@@ -143,13 +142,19 @@ func _screen_resized():
 	$Options_Button.rect_scale = Vector2(0.5,0.5);
 	$Cancel_Button.rect_scale = Vector2(0.5,0.5);
 	if window_size.x < 500 or window_size.y < 200:
-		print("HALF")
 		$Input_GUIs.rect_scale = Vector2(0.5,0.5);
+		$Input_GUIs.margin_top = -40;
+		$Alert_Text.get_font("normal_font").size =6;
+		$Alert_Text.margin_top = $Input_GUIs.margin_top - 50;
 	elif window_size.x <= 1920 or window_size.y <= 1080:
-		print("FULL")
 		$Input_GUIs.rect_scale = Vector2(1,1);
+		$Alert_Text.get_font("normal_font").size =12;
+		$Input_GUIs.margin_top = -80;
+		$Alert_Text.margin_top = $Input_GUIs.margin_top - 100;
 	else:
 		$Input_GUIs.rect_scale = Vector2(2,2);
+		$Alert_Text.get_font("normal_font").size =24;
+		$Alert_Text.margin_top = $Input_GUIs.margin_top - 200;
 		$Chat_Box.rect_scale = Vector2(2,2);
 		$LineEdit.rect_scale = Vector2(2,2);
 		$Options_Button.rect_scale = Vector2(1,1);
@@ -159,7 +164,6 @@ func _screen_resized():
 	var size = $LineEdit.rect_size.y;
 	$LineEdit.margin_top = $Chat_Box.margin_bottom;
 	$LineEdit.margin_bottom = $LineEdit.margin_top + size;
-	print("complete")
 
 
 func _options_button_clicked():
