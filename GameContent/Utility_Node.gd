@@ -40,11 +40,12 @@ func _process(delta):
 				else:
 					rpc("shoot_grenade",get_global_mouse_position(), OS.get_system_time_msecs() - Globals.match_start_time);
 		elif Globals.current_utility == Globals.Utilities.Landmine:
-			if Globals.testing:
-				place_landmine(player.position,landmines_placed);
-			else:
-				rpc("place_landmine",player.position,landmines_placed);
-			
+			if $Cooldown_Timer.time_left == 0:
+				if Globals.testing:
+					place_landmine(player.position,landmines_placed);
+				else:
+					rpc("place_landmine",player.position,landmines_placed);
+				
 
 func _draw():
 	if aiming_grenade:
