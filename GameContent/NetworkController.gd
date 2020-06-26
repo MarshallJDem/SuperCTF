@@ -504,6 +504,10 @@ func reset_game_objects(kill_players = false):
 	for forcefield in get_tree().get_nodes_in_group("Forcefields"):
 		forcefield.set_name(forcefield.name + "DELETING");
 		forcefield.queue_free();
+	# Remove any old landmines
+	for mine in get_tree().get_nodes_in_group("Landmines"):
+		mine.set_name(mine.name + "DELETING");
+		mine.queue_free();
 
 # Loads up a new round but does not start it yet
 # WARNING - you will likely need to make these edits in "load_mid_round" too
