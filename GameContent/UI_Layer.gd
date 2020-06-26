@@ -1,6 +1,7 @@
 extends CanvasLayer
 
 var start_time = OS.get_system_time_secs();
+var show_move_gui = true;
 
 
 func _ready():
@@ -13,6 +14,22 @@ func _ready():
 func _process(delta):
 	if Globals.isServer:
 		return;
+	# Show / Hide move gui depending on whether loadout is visible
+	if Globals.displaying_loadout:
+		show_move_gui = true;
+	elif show_move_gui == true:
+		show_move_gui = false;
+		$Move_GUI_Fade_Timer.start();
+	if show_move_gui:
+		$Input_GUIs/Move_GUIs.modulate = Color(1,1,1,1);
+		$Input_GUIs/Ability_GUIs.modulate = Color(0,0,0,0);
+	elif $Move_GUI_Fade_Timer.time_left > 0:
+		var progress = 1 - ($Move_GUI_Fade_Timer.time_left / $Move_GUI_Fade_Timer.wait_time);
+		$Input_GUIs/Move_GUIs.modulate = Color(1,1,1,1-progress);
+	else:
+		$Input_GUIs/Move_GUIs.modulate = Color(0,0,0,0);
+		$Input_GUIs/Ability_GUIs.modulate = Color(1,1,1,1);
+	
 	if get_tree().get_root().get_node("MainScene/NetworkController").isSkirmish:
 		$Score_Label.bbcode_text = "[center][color=black]SEARCHING " + str(OS.get_system_time_secs() - start_time);
 		$Skirmish_Subtext.visible = true;
@@ -25,41 +42,42 @@ func _process(delta):
 		$Skirmish_Subtext.visible = false;
 	if !Globals.is_typing_in_chat:
 		if Input.is_key_pressed(KEY_E):
-			$"Ability_GUIs/E_GUI".frame = 1;
+			$"Input_GUIs/Ability_GUIs/E_GUI".frame = 1;
 		else:
-			$"Ability_GUIs/E_GUI".frame = 0;
+			$"Input_GUIs/Ability_GUIs/E_GUI".frame = 0;
 		if Input.is_key_pressed(KEY_SPACE):
-			$"Ability_GUIs/SPACE_GUI".frame = 1;
+			$"Input_GUIs/Ability_GUIs/SPACE_GUI".frame = 1;
 		else:
-			$"Ability_GUIs/SPACE_GUI".frame = 0;
+			$"Input_GUIs/Ability_GUIs/SPACE_GUI".frame = 0;
 		if Input.is_key_pressed(KEY_W):
-			$"Ability_GUIs/W_GUI".frame = 1;
+			$"Input_GUIs/Move_GUIs/W_GUI".frame = 1;
 		else:
-			$"Ability_GUIs/W_GUI".frame = 0;
+			$"Input_GUIs/Move_GUIs/W_GUI".frame = 0;
 		if Input.is_key_pressed(KEY_A):
-			$"Ability_GUIs/A_GUI".frame = 1;
+			$"Input_GUIs/Move_GUIs/A_GUI".frame = 1;
 		else:
-			$"Ability_GUIs/A_GUI".frame = 0;
+			$"Input_GUIs/Move_GUIs/A_GUI".frame = 0;
 		if Input.is_key_pressed(KEY_S):
-			$"Ability_GUIs/S_GUI".frame = 1;
+			$"Input_GUIs/Move_GUIs/S_GUI".frame = 1;
 		else:
-			$"Ability_GUIs/S_GUI".frame = 0;
+			$"Input_GUIs/Move_GUIs/S_GUI".frame = 0;
 		if Input.is_key_pressed(KEY_D):
-			$"Ability_GUIs/D_GUI".frame = 1;
+			$"Input_GUIs/Move_GUIs/D_GUI".frame = 1;
 		else:
-			$"Ability_GUIs/D_GUI".frame = 0;
+			$"Input_GUIs/Move_GUIs/D_GUI".frame = 0;
 		if Input.is_key_pressed(KEY_E):
-			$"Ability_GUIs/E_GUI".frame = 1;
+			$"Input_GUIs/Ability_GUIs/E_GUI".frame = 1;
 		else:
-			$"Ability_GUIs/E_GUI".frame = 0;
-		if Input.is_key_pressed(KEY_Q):
-			$"Ability_GUIs/Q_GUI".frame = 1;
-		else:
-			$"Ability_GUIs/Q_GUI".frame = 0;
+			$"Input_GUIs/Ability_GUIs/E_GUI".frame = 0;
 		if Input.is_key_pressed(KEY_SHIFT):
-			$"Ability_GUIs/SHIFT_GUI".frame = 1;
+			$"Input_GUIs/Ability_GUIs/SHIFT_GUI".frame = 1;
 		else:
-			$"Ability_GUIs/SHIFT_GUI".frame = 0;
+			$"Input_GUIs/Ability_GUIs/SHIFT_GUI".frame = 0;
+		if Input.is_action_pressed("clickR"):
+			$Input_GUIs/Ability_GUIs/Q_GUI.frame = 1;
+		else:
+			$Input_GUIs/Ability_GUIs/Q_GUI.frame = 0;
+			
 	
 	$Alert_Text.modulate = Color(1,1,1, ($Alert_Fade_Timer.time_left/$Alert_Fade_Timer.wait_time));
 	
@@ -73,11 +91,11 @@ func _process(delta):
 		var teleport_time_left = local_player.get_node("Teleport_Timer").time_left;
 		var teleport_wait_time = local_player.get_node("Teleport_Timer").wait_time;
 		if teleport_time_left == 0:
-			$Ability_GUIs/Teleport_GUI_Text.text = "DASH";
-			$Ability_GUIs/SPACE_GUI.modulate = Color(1,1,1,1);
+			$Input_GUIs/Ability_GUIs/Teleport_GUI_Text.text = "DASH";
+			$Input_GUIs/Ability_GUIs/SPACE_GUI.modulate = Color(1,1,1,1);
 		else:
-			$Ability_GUIs/Teleport_GUI_Text.text = "%0.2f" % teleport_time_left;
-			$Ability_GUIs/SPACE_GUI.modulate = Color(1,1,1,0.2 + 0.4 * ((teleport_wait_time - teleport_time_left) / teleport_wait_time) );
+			$Input_GUIs/Ability_GUIs/Teleport_GUI_Text.text = "%0.2f" % teleport_time_left;
+			$Input_GUIs/Ability_GUIs/SPACE_GUI.modulate = Color(1,1,1,0.2 + 0.4 * ((teleport_wait_time - teleport_time_left) / teleport_wait_time) );
 			
 		# Ability button
 		var ability_time_left = local_player.get_node("Ability_Node/Cooldown_Timer").time_left;
@@ -89,11 +107,11 @@ func _process(delta):
 				t = "FORCEFIELD";
 			elif Globals.current_ability == Globals.Abilities.Camo:
 				t = "CAMO"
-			$Ability_GUIs/Ability_GUI_Text.text = t;
-			$Ability_GUIs/E_GUI.modulate = Color(1,1,1,1);
+			$Input_GUIs/Ability_GUIs/Ability_GUI_Text.text = t;
+			$Input_GUIs/Ability_GUIs/E_GUI.modulate = Color(1,1,1,1);
 		else:
-			$Ability_GUIs/Ability_GUI_Text.text = "%0.2f" % ability_time_left;
-			$Ability_GUIs/E_GUI.modulate = Color(1,1,1,0.2 + 0.4 * ((ability_wait_time - ability_time_left) / ability_wait_time) );
+			$Input_GUIs/Ability_GUIs/Ability_GUI_Text.text = "%0.2f" % ability_time_left;
+			$Input_GUIs/Ability_GUIs/E_GUI.modulate = Color(1,1,1,0.2 + 0.4 * ((ability_wait_time - ability_time_left) / ability_wait_time) );
 		
 		
 		# Utility
@@ -105,11 +123,11 @@ func _process(delta):
 				t = "GRENADE";
 			elif Globals.current_utility == Globals.Utilities.Landmine:
 				t = "LANDMINE"
-			$Ability_GUIs/Utility_GUI_Text.text = t;
-			$Ability_GUIs/Utility_GUI_Text.modulate = Color(1,1,1,1);
+			$Input_GUIs/Ability_GUIs/Utility_GUI_Text.text = t;
+			$Input_GUIs/Ability_GUIs/Utility_GUI_Text.modulate = Color(1,1,1,1);
 		else:
-			$Ability_GUIs/Utility_GUI_Text.text = "%0.2f" % utility_time_left;
-			$Ability_GUIs/Utility_GUI_Text.modulate = Color(1,1,1,0.2 + 0.4 * ((utility_wait_time - utility_time_left) / utility_wait_time) );
+			$Input_GUIs/Ability_GUIs/Utility_GUI_Text.text = "%0.2f" % utility_time_left;
+			$Input_GUIs/Ability_GUIs/Utility_GUI_Text.modulate = Color(1,1,1,0.2 + 0.4 * ((utility_wait_time - utility_time_left) / utility_wait_time) );
 		
 		# If player is holding a flag
 		if local_player.get_node("Flag_Holder").get_child_count() > 0:
@@ -125,12 +143,12 @@ func _screen_resized():
 	$Cancel_Button.rect_scale = Vector2(0.5,0.5);
 	if window_size.x < 500 or window_size.y < 200:
 		print("HALF")
-		$Ability_GUIs.rect_scale = Vector2(0.5,0.5);
+		$Input_GUIs.rect_scale = Vector2(0.5,0.5);
 	elif window_size.x <= 1920 or window_size.y <= 1080:
 		print("FULL")
-		$Ability_GUIs.rect_scale = Vector2(1,1);
+		$Input_GUIs.rect_scale = Vector2(1,1);
 	else:
-		$Ability_GUIs.rect_scale = Vector2(2,2);
+		$Input_GUIs.rect_scale = Vector2(2,2);
 		$Chat_Box.rect_scale = Vector2(2,2);
 		$LineEdit.rect_scale = Vector2(2,2);
 		$Options_Button.rect_scale = Vector2(1,1);

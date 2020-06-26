@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=2]
+[gd_scene load_steps=31 format=2]
 
 [ext_resource path="res://GameContent/Main.gd" type="Script" id=1]
 [ext_resource path="res://GameContent/Player.tscn" type="PackedScene" id=2]
@@ -17,7 +17,7 @@
 [ext_resource path="res://Assets/GUI/S-Key-GUI.png" type="Texture" id=15]
 [ext_resource path="res://Assets/GUI/D-Key-GUI.png" type="Texture" id=16]
 [ext_resource path="res://Assets/GUI/E-Key-GUI.png" type="Texture" id=17]
-[ext_resource path="res://Assets/GUI/Q-Key-GUI.png" type="Texture" id=18]
+[ext_resource path="res://Assets/GUI/Mouse-GUI.png" type="Texture" id=18]
 [ext_resource path="res://Assets/GUI/Shift-Key-GUI.png" type="Texture" id=20]
 [ext_resource path="res://Assets/GUI/Space-Key-GUI.png" type="Texture" id=21]
 [ext_resource path="res://Assets/Sound/score.wav" type="AudioStream" id=22]
@@ -40,6 +40,10 @@ bg_color = Color( 1, 1, 1, 0 )
 
 [sub_resource type="DynamicFont" id=4]
 size = 18
+outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
+font_data = ExtResource( 25 )
+
+[sub_resource type="DynamicFont" id=5]
 outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
 font_data = ExtResource( 25 )
 
@@ -214,7 +218,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Ability_GUIs" type="Control" parent="UI_Layer"]
+[node name="Input_GUIs" type="Control" parent="UI_Layer"]
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
@@ -225,66 +229,88 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="W_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
-position = Vector2( -224.49, -59 )
-scale = Vector2( 2, 2 )
+[node name="Move_GUIs" type="Node2D" parent="UI_Layer/Input_GUIs"]
+position = Vector2( 6.10352e-05, 95.4761 )
+
+[node name="Move_GUI_Text" type="Label" parent="UI_Layer/Input_GUIs/Move_GUIs"]
+anchor_top = 0.00432434
+anchor_bottom = 0.00432434
+margin_left = -66.8367
+margin_top = -78.1522
+margin_right = 67.1633
+margin_bottom = -56.1522
+rect_pivot_offset = Vector2( -533.113, 40.108 )
+custom_fonts/font = SubResource( 5 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "MOVE"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="W_GUI" type="Sprite" parent="UI_Layer/Input_GUIs/Move_GUIs"]
+position = Vector2( -30.9009, -236.068 )
+scale = Vector2( 4, 4 )
 texture = ExtResource( 13 )
 centered = false
 hframes = 2
 
-[node name="A_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
-position = Vector2( -257.577, -26 )
-scale = Vector2( 2, 2 )
+[node name="A_GUI" type="Sprite" parent="UI_Layer/Input_GUIs/Move_GUIs"]
+position = Vector2( -107.911, -158.522 )
+scale = Vector2( 4, 4 )
 texture = ExtResource( 14 )
 centered = false
 hframes = 2
 
-[node name="S_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
-position = Vector2( -224.577, -26 )
-scale = Vector2( 2, 2 )
+[node name="S_GUI" type="Sprite" parent="UI_Layer/Input_GUIs/Move_GUIs"]
+position = Vector2( -30.9879, -158.522 )
+scale = Vector2( 4, 4 )
 texture = ExtResource( 15 )
 centered = false
 hframes = 2
 
-[node name="D_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
-position = Vector2( -191.577, -26 )
-scale = Vector2( 2, 2 )
+[node name="D_GUI" type="Sprite" parent="UI_Layer/Input_GUIs/Move_GUIs"]
+position = Vector2( 46.2469, -158.522 )
+scale = Vector2( 4, 4 )
 texture = ExtResource( 16 )
 centered = false
 hframes = 2
 
-[node name="E_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
-position = Vector2( 39.7944, -26.4901 )
+[node name="Ability_GUIs" type="Node2D" parent="UI_Layer/Input_GUIs"]
+
+[node name="E_GUI" type="Sprite" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
+position = Vector2( 19.9311, -26.4901 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 17 )
 centered = false
 hframes = 2
 
-[node name="Q_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
-position = Vector2( -30.7009, -26.4901 )
+[node name="Q_GUI" type="Sprite" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
+position = Vector2( -50.5642, -26.4901 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 18 )
 centered = false
 hframes = 2
 
-[node name="SHIFT_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
-position = Vector2( 104.364, -26 )
+[node name="SHIFT_GUI" type="Sprite" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
+position = Vector2( 84.5007, -26 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 20 )
 centered = false
 hframes = 2
 
-[node name="SPACE_GUI" type="Sprite" parent="UI_Layer/Ability_GUIs"]
-position = Vector2( -124.313, -26 )
+[node name="SPACE_GUI" type="Sprite" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
+position = Vector2( -144.176, -26 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 21 )
 centered = false
 hframes = 2
 
-[node name="Teleport_GUI_Text" type="Label" parent="UI_Layer/Ability_GUIs"]
-margin_left = -162.313
+[node name="Teleport_GUI_Text" type="Label" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
+margin_left = -182.176
 margin_top = 20.0
-margin_right = -28.313
+margin_right = -48.1763
 margin_bottom = 35.0
 rect_pivot_offset = Vector2( -533.113, 40.108 )
 custom_fonts/font = ExtResource( 5 )
@@ -296,10 +322,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Ability_GUI_Text" type="Label" parent="UI_Layer/Ability_GUIs"]
-margin_left = -11.2255
+[node name="Ability_GUI_Text" type="Label" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
+margin_left = -31.0888
 margin_top = 20.0
-margin_right = 122.774
+margin_right = 102.911
 margin_bottom = 35.0
 rect_pivot_offset = Vector2( -533.113, 40.108 )
 custom_fonts/font = ExtResource( 5 )
@@ -311,10 +337,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Utility_GUI_Text" type="Label" parent="UI_Layer/Ability_GUIs"]
-margin_left = -81.7208
+[node name="Utility_GUI_Text" type="Label" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
+margin_left = -101.584
 margin_top = 20.0
-margin_right = 52.2792
+margin_right = 32.4159
 margin_bottom = 35.0
 rect_pivot_offset = Vector2( -533.113, 40.108 )
 custom_fonts/font = ExtResource( 5 )
@@ -326,33 +352,16 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ToggleWeapon_GUI_Text2" type="Label" parent="UI_Layer/Ability_GUIs"]
-margin_left = 66.255
+[node name="ToggleWeapon_GUI_Text2" type="Label" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
+margin_left = 46.3917
 margin_top = 11.0
-margin_right = 200.255
+margin_right = 180.392
 margin_bottom = 44.0
 rect_pivot_offset = Vector2( -533.113, 40.108 )
 custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "EXTEND
 CAMERA"
-align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Move_GUI_Text" type="Label" parent="UI_Layer/Ability_GUIs"]
-anchor_top = 0.00432434
-anchor_bottom = 0.00432434
-margin_left = -276.313
-margin_top = 20.0
-margin_right = -142.313
-margin_bottom = 35.0
-rect_pivot_offset = Vector2( -533.113, 40.108 )
-custom_fonts/font = ExtResource( 5 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "MOVE"
 align = 1
 valign = 1
 __meta__ = {
@@ -391,6 +400,9 @@ __meta__ = {
 
 [node name="Alert_Fade_Timer" type="Timer" parent="UI_Layer"]
 wait_time = 3.0
+one_shot = true
+
+[node name="Move_GUI_Fade_Timer" type="Timer" parent="UI_Layer"]
 one_shot = true
 
 [node name="Score_Audio" type="AudioStreamPlayer" parent="."]
