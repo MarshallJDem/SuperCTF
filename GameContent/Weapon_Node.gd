@@ -150,6 +150,19 @@ remotesync func shoot_demo(d, shots):
 	var direction = d.normalized();
 	var start_pos = player.position + get_node("Bullet_Starts/" + String(player.look_direction)).position;
 	
+	$CollisionTester.position = Vector2(0,8.5);
+	var collision = $CollisionTester.move_and_collide(direction * 25.0)
+	var collision_tester_length = $CollisionTester.position.distance_to(Vector2(0,8.5));
+	
+	# If we are too close to a wall shoot a pre reflected shot
+	if(collision_tester_length < 10 and collision):
+		# Reflect Demo
+		var reflection_dir = (direction - (2 * direction.dot(collision.normal) * collision.normal)).normalized();
+		$CollisionTester.move_and_collide(reflection_dir * 2.0)
+		direction = reflection_dir.normalized();
+		start_pos = player.position + $CollisionTester.position;
+	
+	
 	# Initialize Bullet
 	var node = Demo.instance();
 	node.original_time_shot = OS.get_system_time_msecs() - Globals.match_start_time;
@@ -179,7 +192,7 @@ func shoot_bullet(d):
 	#camera_ref.shake();
 	$Shoot_Animation_Timer.start();
 	
-	# If we are too close to a wall shoot a blank
+	# If we are too close to a wall, shoot a blank
 	if(collision_tester_length < 10):
 		spawn_bullet(bullet_start, 0 if Globals.testing else player.player_id, direction, time, bullet_name, true);
 	else:
