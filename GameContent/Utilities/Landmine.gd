@@ -2,7 +2,8 @@ extends Node2D
 var team_id = 1;
 var player_id = 1;
 
-
+var atlas_blue = preload("res://Assets/Utilities/landmine_B.png");
+var atlas_red = preload("res://Assets/Utilities/landmine_R.png");
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -14,6 +15,10 @@ func _ready():
 	if Globals.testing:
 		team_id = 1;
 		player_id = 1;
+	if team_id == 0:
+		$Sprite.set_texture(atlas_blue);
+	else:
+		$Sprite.set_texture(atlas_red);
 	#set_network_master(1);
 
 func _process(delta):

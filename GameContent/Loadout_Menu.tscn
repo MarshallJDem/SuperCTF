@@ -5,8 +5,8 @@
 [ext_resource path="res://Assets/Player/gunner_gun_B.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Player/demo_gun_B.png" type="Texture" id=4]
 [ext_resource path="res://Assets/Player/laser_gun_B.png" type="Texture" id=5]
-[ext_resource path="res://Assets/Utilities/landmine.png" type="Texture" id=6]
-[ext_resource path="res://Assets/Weapons/grenade_b.png" type="Texture" id=7]
+[ext_resource path="res://Assets/Utilities/landmine_B.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Utilities/grenade_B.png" type="Texture" id=7]
 [ext_resource path="res://Assets/GUI/camo_GUI.png" type="Texture" id=8]
 [ext_resource path="res://Assets/GUI/forcefield.png" type="Texture" id=9]
 
@@ -31,7 +31,7 @@ font_data = ExtResource( 2 )
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_horizontal_guides_": [ 389.749 ],
-"_edit_vertical_guides_": [ 1474.44 ]
+"_edit_vertical_guides_": [ 1474.44, 1708.57 ]
 }
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
@@ -175,11 +175,9 @@ scale = Vector2( 7, 7 )
 texture = ExtResource( 8 )
 
 [node name="Utility1" type="Sprite" parent="CanvasLayer/Control/ColorRect"]
-position = Vector2( 183.009, 845.956 )
-scale = Vector2( 8, 8 )
+position = Vector2( 181.252, 851.958 )
+scale = Vector2( 4, 4 )
 texture = ExtResource( 7 )
-hframes = 4
-frame = 3
 
 [node name="Utility2" type="Sprite" parent="CanvasLayer/Control/ColorRect"]
 position = Vector2( 179.29, 947.959 )

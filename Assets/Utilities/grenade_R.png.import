@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/landmine.png-8bdb5aa3beb616e422eed6793abe22a9.stex"
+path="res://.import/grenade_R.png-6e7052448487676b57aeecc0794a4a72.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Utilities/landmine.png"
-dest_files=[ "res://.import/landmine.png-8bdb5aa3beb616e422eed6793abe22a9.stex" ]
+source_file="res://Assets/Utilities/grenade_R.png"
+dest_files=[ "res://.import/grenade_R.png-6e7052448487676b57aeecc0794a4a72.stex" ]
 
 [params]
 
