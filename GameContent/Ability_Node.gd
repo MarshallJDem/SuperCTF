@@ -11,8 +11,6 @@ func _ready() -> void:
 	$Camo_Timer.connect("timeout", self, "_camo_timer_ended")
 
 func _process(delta):
-	if Globals.current_ability == Globals.Abilities.Forcefield:
-		$Cooldown_Timer.wait_time = float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("forcefieldCooldown"))/1000.0;
 	
 	if $Camo_Timer.time_left != 0:
 		if player.control:
@@ -67,6 +65,7 @@ func spawn_camo_flash():
 
 var camo_flashes_completed = 0;
 func activate_camo():
+	$Cooldown_Timer.wait_time = float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("camoCooldown"))/1000.0;
 	$Cooldown_Timer.start();
 	if Globals.testing:
 		__activate_camo();
@@ -86,6 +85,7 @@ remotesync func __activate_camo():
 # This function will either place it in the appropriate spot or deny it (bad location or something)
 func place_forcefield():
 	rpc("spawn_forcefield", player.position, player.team_id);
+	$Cooldown_Timer.wait_time = float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("forcefieldCooldown"))/1000.0;
 	$Cooldown_Timer.start();
 	if Globals.testing:
 		var forcefield = Forcefield.instance();

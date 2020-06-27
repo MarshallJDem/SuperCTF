@@ -70,7 +70,8 @@ const game_var_defaults = {"playerSpeed" : 200, "playerLagTime" : 50,
 	"dashDistance" : 3000, "dashCooldown" : 3000, 
 	"forcefieldCooldown" : 8000,
 	"scoreLimit" : 2,
-	"grenadeRadius" : 50};
+	"grenadeRadius" : 50,"grenadeCooldown":5000,
+	"camoCooldown" : 13000, "landmineCooldown" : 500};
 
 var game_var_limits = {"playerSpeed" : Vector2(50, 600), "playerLagTime" : Vector2(0, 250),
 "bulletSpeed" : Vector2(100, 1000), "bulletCooldown" : Vector2(100, 2000), 

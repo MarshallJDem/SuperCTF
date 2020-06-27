@@ -62,6 +62,7 @@ func _input(event):
 		return;
 
 remotesync func place_landmine(pos, mines_placed):
+	$Cooldown_Timer.wait_time = float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("landmineCooldown"))/1000.0;
 	$Cooldown_Timer.start();
 	var mine = Landmine.instance();
 	mine.position = pos;
@@ -75,6 +76,7 @@ remotesync func place_landmine(pos, mines_placed):
 
 remotesync func shoot_grenade(target_pos, time_shot):
 	aiming_grenade = false;
+	$Cooldown_Timer.wait_time = float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("grenadeCooldown"))/1000.0;
 	$Cooldown_Timer.start();
 	var node = Grenade.instance();
 	node.initial_real_pos = player.position;
