@@ -32,8 +32,6 @@ var sprintEnabled = false;
 var last_position = Vector2(0,0);
 # The frame of the all of the sprite on the top (Gun, Head, Body)
 var look_direction = 0;
-# Whether we teleported during this frame
-var just_teleported = false;
 var has_moved_after_respawn = false;
 
 
@@ -53,6 +51,7 @@ func _ready():
 	$Respawn_Timer.connect("timeout", self, "_respawn_timer_ended");
 	$Invincibility_Timer.connect("timeout", self, "_invincibility_timer_ended");
 	$Powerup_Timer.connect("timeout", self, "_powerup_timer_ended");
+	$Teleport_Invincibility_Timer.connect("timeout", self, "_teleport_invincibility_timer_ended");
 	lerp_start_pos = position;
 	lerp_end_pos = position;
 
@@ -75,7 +74,6 @@ func _input(event):
 					camera_ref.lag_smooth();
 					$Teleport_Timer.start();
 func _process(delta):
-	just_teleported = false;
 	var new_speed = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("playerSpeed");
 	if speed == BASE_SPEED:
 		speed = new_speed;
@@ -170,6 +168,34 @@ func attempt_drop_flag() -> bool:
 
 # A vector 2D representing the last movement key directions pressed
 var last_movement_input = Vector2(0,0);
+func _teleport_invincibility_timer_ended():
+	invincible = false;
+remotesync func teleport(start, end):
+	$Teleport_Audio.play();
+	$Teleport_Invincibility_Timer.start();
+	invincible = true;
+	for i in range(6):
+		var node = Ghost_Trail.instance();
+		node.position = start;
+		node.position.x = node.position.x + ((i) * (end.x - start.x)/4)
+		node.position.y = node.position.y + ((i) * (end.y - start.y)/4)
+		node.look_direction = look_direction;
+		node.scale = $Sprite_Body.scale
+		node.get_node("Sprite_Gun").texture = $Sprite_Gun.texture
+		node.get_node("Sprite_Gun").z_index = $Sprite_Gun.z_index
+		node.get_node("Sprite_Head").texture = $Sprite_Head.texture
+		node.get_node("Sprite_Head").z_index = $Sprite_Head.z_index
+		node.get_node("Sprite_Body").texture = $Sprite_Body.texture
+		node.get_node("Sprite_Body").z_index = $Sprite_Body.z_index
+		node.get_node("Sprite_Legs").texture = $Sprite_Legs.texture
+		node.get_node("Sprite_Legs").frame = $Sprite_Legs.frame
+		get_tree().get_root().get_node("MainScene").add_child(node);  
+		node.get_node("Death_Timer").start((i) * 0.05 + 0.0001);
+	# If this is a puppet, use this ghost trail as an oppurtunity to also update its position
+	if !is_network_master():
+		lerp_start_pos = end;
+		lerp_end_pos = end;
+		position = end;
 
 # Checks the current pressed keys and calculates a new player position using the KinematicBody2D
 func move_on_inputs(teleport = false):
@@ -188,7 +214,6 @@ func move_on_inputs(teleport = false):
 		move_speed += SPRINT_SPEED;
 	if teleport:
 		move_speed = TELEPORT_SPEED;
-		just_teleported = true;
 	var areas = $Area2D.get_overlapping_areas();
 	for i in range(areas.size()):
 		if areas[i].is_in_group("Landmine_Bodies") and areas[i].monitorable:
@@ -202,9 +227,9 @@ func move_on_inputs(teleport = false):
 	
 	if teleport:
 		if Globals.testing:
-			$Teleport_Audio.play();
+			teleport(previous_pos, new_pos);
 		else:
-			rpc("create_ghost_trail", previous_pos, new_pos);
+			rpc("teleport", previous_pos, new_pos);
 
 func enable_powerup(type):
 	var text = "";
@@ -238,30 +263,6 @@ func _powerup_timer_ended():
 	$Weapon_Node.BULLET_COOLDOWN_PMODIFIER = 0;
 	$Weapon_Node.LASER_WIDTH_PMODIFIER = 0;
 
-remotesync func create_ghost_trail(start, end):
-	$Teleport_Audio.play();
-	for i in range(6):
-		var node = Ghost_Trail.instance();
-		node.position = start;
-		node.position.x = node.position.x + ((i) * (end.x - start.x)/4)
-		node.position.y = node.position.y + ((i) * (end.y - start.y)/4)
-		node.look_direction = look_direction;
-		node.scale = $Sprite_Body.scale
-		node.get_node("Sprite_Gun").texture = $Sprite_Gun.texture
-		node.get_node("Sprite_Gun").z_index = $Sprite_Gun.z_index
-		node.get_node("Sprite_Head").texture = $Sprite_Head.texture
-		node.get_node("Sprite_Head").z_index = $Sprite_Head.z_index
-		node.get_node("Sprite_Body").texture = $Sprite_Body.texture
-		node.get_node("Sprite_Body").z_index = $Sprite_Body.z_index
-		node.get_node("Sprite_Legs").texture = $Sprite_Legs.texture
-		node.get_node("Sprite_Legs").frame = $Sprite_Legs.frame
-		get_tree().get_root().get_node("MainScene").add_child(node);  
-		node.get_node("Death_Timer").start((i) * 0.05 + 0.0001);
-	# If this is a puppet, use this ghost trail as an oppurtunity to also update its position
-	if !is_network_master():
-		lerp_start_pos = end;
-		lerp_end_pos = end;
-		position = end;
 	
 # Changes the sprite's frame to make it "look" at the mouse
 var previous_look_input = Vector2(0,0);

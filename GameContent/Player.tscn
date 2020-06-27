@@ -286,3 +286,7 @@ scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Teleport_Invincibility_Timer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true

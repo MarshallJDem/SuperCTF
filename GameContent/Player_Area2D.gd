@@ -37,9 +37,6 @@ func collided_with_bullet(bullet):
 	# If we're invincible, ignore it
 	if player.invincible:
 		return;
-	# If we just teleported, ignore it
-	if player.just_teleported:
-		return;
 	# If our team shot this, ignore it
 	if get_tree().get_root().get_node("MainScene/NetworkController").players[bullet.player_id]['team_id'] == player.team_id:
 		return;
