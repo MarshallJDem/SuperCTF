@@ -18,67 +18,42 @@ __meta__ = {
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="Text_Result" type="RichTextLabel" parent="CanvasLayer"]
-anchor_right = 1.0
-margin_left = 387.277
-margin_top = 15.8424
-margin_right = -385.723
-margin_bottom = 244.843
-rect_scale = Vector2( 1, 0.964805 )
-custom_fonts/mono_font = ExtResource( 2 )
-custom_fonts/normal_font = ExtResource( 2 )
-custom_colors/default_color = Color( 0, 0, 0, 1 )
-bbcode_enabled = true
-bbcode_text = "[center]LOSS[/center]"
-text = "LOSS"
+[node name="Control" type="Control" parent="CanvasLayer"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -20.0
+margin_top = -20.0
+margin_right = 20.0
+margin_bottom = 20.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Text_Score" type="RichTextLabel" parent="CanvasLayer"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 655.481
-margin_top = 118.862
-margin_right = -185.519
-margin_bottom = -280.138
-rect_scale = Vector2( 0.563012, 0.563012 )
-custom_fonts/mono_font = ExtResource( 2 )
-custom_fonts/normal_font = ExtResource( 2 )
-custom_colors/default_color = Color( 0, 0, 0, 1 )
-bbcode_enabled = true
-bbcode_text = "[center]3-2[/center]"
-text = "3-2"
-scroll_active = false
+[node name="Button_Titlescreen" type="Button" parent="CanvasLayer/Control"]
+margin_left = -199.773
+margin_top = 277.902
+margin_right = 243.23
+margin_bottom = 349.902
+custom_styles/hover = ExtResource( 6 )
+custom_styles/pressed = ExtResource( 7 )
+custom_styles/normal = ExtResource( 5 )
+custom_fonts/font = ExtResource( 4 )
+custom_colors/font_color_disabled = Color( 0, 0, 0, 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
+custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
+text = "TITLESCREEN"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Text_MMR" type="RichTextLabel" parent="CanvasLayer"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_top = 385.621
-margin_right = -1.0
-margin_bottom = 148.621
-custom_fonts/mono_font = ExtResource( 1 )
-custom_fonts/bold_italics_font = ExtResource( 2 )
-custom_fonts/italics_font = ExtResource( 2 )
-custom_fonts/bold_font = ExtResource( 2 )
-custom_fonts/normal_font = ExtResource( 1 )
-custom_colors/default_color = Color( 0, 0, 0, 1 )
-bbcode_enabled = true
-bbcode_text = "[center]2000[/center]"
-text = "2000"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Text_MMR_Sub" type="RichTextLabel" parent="CanvasLayer"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_top = 591.299
-margin_right = -1.0
-margin_bottom = 170.299
+[node name="Text_MMR_Sub" type="RichTextLabel" parent="CanvasLayer/Control"]
+margin_left = -941.079
+margin_top = 151.268
+margin_right = 978.921
+margin_bottom = 1231.27
 rect_scale = Vector2( 1, 0.983539 )
 custom_fonts/mono_font = ExtResource( 3 )
 custom_fonts/bold_italics_font = ExtResource( 2 )
@@ -93,20 +68,56 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Button_Titlescreen" type="Button" parent="CanvasLayer"]
-margin_left = 740.227
-margin_top = 797.902
-margin_right = 1183.23
-margin_bottom = 869.902
-custom_styles/hover = ExtResource( 6 )
-custom_styles/pressed = ExtResource( 7 )
-custom_styles/normal = ExtResource( 5 )
-custom_fonts/font = ExtResource( 4 )
-custom_colors/font_color_disabled = Color( 0, 0, 0, 1 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
-custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
-text = "TITLESCREEN"
+[node name="Text_MMR" type="RichTextLabel" parent="CanvasLayer/Control"]
+margin_left = -934.0
+margin_top = -80.0
+margin_right = 985.0
+margin_bottom = 143.0
+rect_clip_content = false
+custom_fonts/mono_font = ExtResource( 1 )
+custom_fonts/bold_italics_font = ExtResource( 2 )
+custom_fonts/italics_font = ExtResource( 2 )
+custom_fonts/bold_font = ExtResource( 2 )
+custom_fonts/normal_font = ExtResource( 1 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]2000[/center]"
+text = "2000"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Text_Score" type="RichTextLabel" parent="CanvasLayer/Control"]
+margin_left = -505.0
+margin_top = -406.0
+margin_right = 1365.0
+margin_bottom = -64.0
+rect_scale = Vector2( 0.563012, 0.563012 )
+rect_clip_content = false
+custom_fonts/mono_font = ExtResource( 2 )
+custom_fonts/normal_font = ExtResource( 2 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]3-2[/center]"
+text = "3-2"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Text_Result" type="RichTextLabel" parent="CanvasLayer/Control"]
+margin_left = -919.495
+margin_top = -317.109
+margin_right = 960.505
+margin_bottom = -88.1082
+rect_scale = Vector2( 1, 0.964805 )
+rect_clip_content = false
+custom_fonts/mono_font = ExtResource( 2 )
+custom_fonts/normal_font = ExtResource( 2 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]LOSS[/center]"
+text = "LOSS"
 __meta__ = {
 "_edit_use_anchors_": false
 }
