@@ -5,7 +5,7 @@
 [ext_resource path="res://GameContent/Utilities/Landmine_Trigger_Area2D.gd" type="Script" id=3]
 [ext_resource path="res://GameContent/Utilities/Landmine.gd" type="Script" id=4]
 
-[sub_resource type="CircleShape2D" id=3]
+[sub_resource type="CircleShape2D" id=1]
 radius = 100.0
 
 [sub_resource type="CircleShape2D" id=2]
@@ -23,7 +23,7 @@ monitoring = false
 script = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Explosion_Area2D"]
-shape = SubResource( 3 )
+shape = SubResource( 1 )
 
 [node name="Trigger_Area2D" type="Area2D" parent="."]
 script = ExtResource( 3 )

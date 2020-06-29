@@ -29,10 +29,7 @@ func _draw():
 		var frame = clamp(int(sin(progress * 2 * PI * 4) + 1),0,1);
 		$Sprite.frame = frame;
 		
-		var red = 1 if team_id == 1 else 0;
-		var green = 10.0/255.0 if team_id == 1 else 130.0/255.0;
-		var blue = 1 if team_id == 0 else 0;
-		draw_circle(Vector2.ZERO,100,Color(0.8,0.1,0.8,0.2 + (sin(progress * 2 * PI * 4)+1)/5));
+		draw_circle(Vector2.ZERO,100,Color(0.0,0.1,0.0,0.4 + (sin(progress * 2 * PI * 4)+1)/5));
 func _activation_timer_ended():
 	$Sprite.frame = 1;
 	$Trigger_Area2D.monitoring = true;
