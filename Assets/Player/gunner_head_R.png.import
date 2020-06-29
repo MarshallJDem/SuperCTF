@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Laser-GUI.png-33c5395c3b02a5c3f65393ae9f86129f.stex"
+path="res://.import/gunner_head_R.png-f0f2392bb771146077716dbd9586f93a.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/GUI/Laser-GUI.png"
-dest_files=[ "res://.import/Laser-GUI.png-33c5395c3b02a5c3f65393ae9f86129f.stex" ]
+source_file="res://Assets/Player/gunner_head_R.png"
+dest_files=[ "res://.import/gunner_head_R.png-f0f2392bb771146077716dbd9586f93a.stex" ]
 
 [params]
 

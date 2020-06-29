@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/grenade_r.png-6cbf9c5c1d083bb4cea018b14257db8b.stex"
+path="res://.import/laser_gun_R.png-03a4f3e6c60bd40abcdc2090a51689f3.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Weapons/grenade_r.png"
-dest_files=[ "res://.import/grenade_r.png-6cbf9c5c1d083bb4cea018b14257db8b.stex" ]
+source_file="res://Assets/Player/laser_gun_R.png"
+dest_files=[ "res://.import/laser_gun_R.png-03a4f3e6c60bd40abcdc2090a51689f3.stex" ]
 
 [params]
 

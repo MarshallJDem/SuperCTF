@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Bullet-GUI.png-8d614b0e7f0d31650252427b58f6bc3e.stex"
+path="res://.import/laser_head_R.png-e5c6f199d8cb48e172f44d8dbb7106be.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/GUI/Bullet-GUI.png"
-dest_files=[ "res://.import/Bullet-GUI.png-8d614b0e7f0d31650252427b58f6bc3e.stex" ]
+source_file="res://Assets/Player/laser_head_R.png"
+dest_files=[ "res://.import/laser_head_R.png-e5c6f199d8cb48e172f44d8dbb7106be.stex" ]
 
 [params]
 

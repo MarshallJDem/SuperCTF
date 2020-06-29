@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Teleport-GUI.png-fb74606bf8e0e24c958217a31f9f170c.stex"
+path="res://.import/demo_gun_R.png-61241f6c8843ef68448efa52258abacf.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/GUI/Teleport-GUI.png"
-dest_files=[ "res://.import/Teleport-GUI.png-fb74606bf8e0e24c958217a31f9f170c.stex" ]
+source_file="res://Assets/Player/demo_gun_R.png"
+dest_files=[ "res://.import/demo_gun_R.png-61241f6c8843ef68448efa52258abacf.stex" ]
 
 [params]
 

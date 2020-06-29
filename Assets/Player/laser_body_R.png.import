@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/player_death_R.png-bd61991cf6d4765559145e8f59657d75.stex"
+path="res://.import/laser_body_R.png-faf590551a8abc5f07d23ff3f925701c.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Player/player_death_R.png"
-dest_files=[ "res://.import/player_death_R.png-bd61991cf6d4765559145e8f59657d75.stex" ]
+source_file="res://Assets/Player/laser_body_R.png"
+dest_files=[ "res://.import/laser_body_R.png-faf590551a8abc5f07d23ff3f925701c.stex" ]
 
 [params]
 

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Untitled-2.png-cfde30bfda8ba851b762c0fad8bf58bb.stex"
+path="res://.import/gunner_body_R.png-1b13064e94ab47b82c59e6a7302c43c1.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/GUI/Untitled-2.png"
-dest_files=[ "res://.import/Untitled-2.png-cfde30bfda8ba851b762c0fad8bf58bb.stex" ]
+source_file="res://Assets/Player/gunner_body_R.png"
+dest_files=[ "res://.import/gunner_body_R.png-1b13064e94ab47b82c59e6a7302c43c1.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=true
+flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Q-Key-GUI.png-1e41578e497a024531b81bf76274e6c4.stex"
+path="res://.import/camo_GUI_R.png-5f770faf0c18c8c7b2935fd7565b4e36.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/GUI/Q-Key-GUI.png"
-dest_files=[ "res://.import/Q-Key-GUI.png-1e41578e497a024531b81bf76274e6c4.stex" ]
+source_file="res://Assets/GUI/camo_GUI_R.png"
+dest_files=[ "res://.import/camo_GUI_R.png-5f770faf0c18c8c7b2935fd7565b4e36.stex" ]
 
 [params]
 

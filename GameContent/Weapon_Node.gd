@@ -3,6 +3,9 @@ extends Node2D
 var bullet_atlas_blue = preload("res://Assets/Weapons/bullet_b.png");
 var bullet_atlas_red = preload("res://Assets/Weapons/bullet_r.png");
 
+var demo_atlas_blue = preload("res://Assets/Weapons/bullet_b.png");
+var demo_atlas_red = preload("res://Assets/Weapons/bullet_r.png");
+
 var Muzzle_Bullet = preload("res://GameContent/Muzzle_Bullet.tscn");
 var Bullet = preload("res://GameContent/Bullet.tscn");
 var Demo = preload("res://GameContent/Demo.tscn");
@@ -171,6 +174,7 @@ remotesync func shoot_demo(d, shots):
 	node.team_id = player.team_id;
 	node.player_id = player.player_id;
 	node.name = node.name + "-" + str(player.player_id) + "-" + str(shots);
+	node.get_node("Sprite").set_texture(demo_atlas_red if player.team_id == 1 else demo_atlas_blue);
 	demos_shot = shots + 1;
 	node.set_network_master(player.get_network_master());
 	get_tree().get_root().get_node("MainScene").call_deferred("add_child", node);

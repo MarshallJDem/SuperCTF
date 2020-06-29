@@ -54,6 +54,7 @@ func _ready():
 	$Teleport_Invincibility_Timer.connect("timeout", self, "_teleport_invincibility_timer_ended");
 	lerp_start_pos = position;
 	lerp_end_pos = position;
+	update_class();
 
 func _input(event):
 	if Globals.is_typing_in_chat:
@@ -149,10 +150,18 @@ func update_class():
 		n = "laser";
 	elif Globals.current_class == Globals.Classes.Demo:
 		n = "demo";
-	$Sprite_Head.set_texture(load("res://Assets/Player/" + str(n) + "_head_B.png"));
-	$Sprite_Body.set_texture(load("res://Assets/Player/" + str(n) + "_body_B.png"));
-	$Sprite_Gun.set_texture(load("res://Assets/Player/" + str(n) + "_gun_B.png"));
+	if Globals.testing:
+		update_class_rpc(n);
+	else:
+		rpc("update_class_rpc", n);
 
+remotesync func update_class_rpc(n):
+	var t = "B";
+	if team_id == 1:
+		t = "R";
+	$Sprite_Head.set_texture(load("res://Assets/Player/" + str(n) + "_head_" +t+ ".png"));
+	$Sprite_Body.set_texture(load("res://Assets/Player/" + str(n) + "_body_" +t+ ".png"));
+	$Sprite_Gun.set_texture(load("res://Assets/Player/" + str(n) + "_gun_" +t+ ".png"));
 
 func _draw():
 	pass;

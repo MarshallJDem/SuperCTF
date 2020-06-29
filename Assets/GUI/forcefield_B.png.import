@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Arrow-Key-GUI.png-e4fc7f86d0bc73cecb524794cbe271fb.stex"
+path="res://.import/forcefield_B.png-a8f59085d21cc175c3708aa0d9b75c51.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/GUI/Arrow-Key-GUI.png"
-dest_files=[ "res://.import/Arrow-Key-GUI.png-e4fc7f86d0bc73cecb524794cbe271fb.stex" ]
+source_file="res://Assets/GUI/forcefield_B.png"
+dest_files=[ "res://.import/forcefield_B.png-a8f59085d21cc175c3708aa0d9b75c51.stex" ]
 
 [params]
 

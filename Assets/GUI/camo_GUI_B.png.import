@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Forcefield-GUI.png-7d1f16413e764faa9d5986e7d534e265.stex"
+path="res://.import/camo_GUI_B.png-fe9b16e340a43f58493b50c396c6e541.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/GUI/Forcefield-GUI.png"
-dest_files=[ "res://.import/Forcefield-GUI.png-7d1f16413e764faa9d5986e7d534e265.stex" ]
+source_file="res://Assets/GUI/camo_GUI_B.png"
+dest_files=[ "res://.import/camo_GUI_B.png-fe9b16e340a43f58493b50c396c6e541.stex" ]
 
 [params]
 

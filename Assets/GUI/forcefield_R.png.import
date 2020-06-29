@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/grenade_b.png-e44bcfe081e0a2dc7f32d1f240818346.stex"
+path="res://.import/forcefield_R.png-1c0a5359d18d2432f871439ff7f89441.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Weapons/grenade_b.png"
-dest_files=[ "res://.import/grenade_b.png-e44bcfe081e0a2dc7f32d1f240818346.stex" ]
+source_file="res://Assets/GUI/forcefield_R.png"
+dest_files=[ "res://.import/forcefield_R.png-1c0a5359d18d2432f871439ff7f89441.stex" ]
 
 [params]
 

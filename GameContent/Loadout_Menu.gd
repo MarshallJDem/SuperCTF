@@ -1,9 +1,25 @@
 extends Node2D
 
+var camo_R = preload("res://Assets/GUI/camo_GUI_R.png");
+var camo_B = preload("res://Assets/GUI/camo_GUI_B.png");
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+var grenade_B = preload("res://Assets/Utilities/grenade_B.png");
+var grenade_R = preload("res://Assets/Utilities/grenade_R.png");
+
+var landmine_B = preload("res://Assets/Utilities/landmine_B.png");
+var landmine_R = preload("res://Assets/Utilities/landmine_R.png");
+
+var forcefield_B = preload("res://Assets/GUI/forcefield_B.png");
+var forcefield_R = preload("res://Assets/GUI/forcefield_R.png");
+
+var bullet_gun_B = preload("res://Assets/Player/gunner_gun_B.png");
+var bullet_gun_R = preload("res://Assets/Player/gunner_gun_R.png");
+
+var demo_gun_B = preload("res://Assets/Player/demo_gun_B.png");
+var demo_gun_R = preload("res://Assets/Player/demo_gun_R.png");
+
+var laser_gun_B = preload("res://Assets/Player/laser_gun_B.png");
+var laser_gun_R = preload("res://Assets/Player/laser_gun_R.png");
 
 onready var Menu = $CanvasLayer/Control/ColorRect;
 
@@ -23,6 +39,23 @@ func _ready():
 	set_utility_selection(1);
 
 func _process(delta):
+	if Globals.localPlayerTeamID == 0:
+		Menu.get_node("Weapon1").set_texture(bullet_gun_B);
+		Menu.get_node("Weapon2").set_texture(laser_gun_B);
+		Menu.get_node("Weapon3").set_texture(demo_gun_B);
+		Menu.get_node("Ability1").set_texture(forcefield_B);
+		Menu.get_node("Ability2").set_texture(camo_B);
+		Menu.get_node("Utility1").set_texture(grenade_B);
+		Menu.get_node("Utility2").set_texture(landmine_B);
+	else:
+		Menu.get_node("Weapon1").set_texture(bullet_gun_R);
+		Menu.get_node("Weapon2").set_texture(laser_gun_R);
+		Menu.get_node("Weapon3").set_texture(demo_gun_R);
+		Menu.get_node("Ability1").set_texture(forcefield_R);
+		Menu.get_node("Ability2").set_texture(camo_R);
+		Menu.get_node("Utility1").set_texture(grenade_R);
+		Menu.get_node("Utility2").set_texture(landmine_R);
+	
 	$CanvasLayer/Control.visible = Globals.displaying_loadout or Globals.testing;
 	
 
