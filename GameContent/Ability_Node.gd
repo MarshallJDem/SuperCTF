@@ -7,7 +7,7 @@ var player;
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	player = get_parent();
-	set_ability(Globals.Abilities.Camo);
+	set_ability(Globals.current_ability);
 	$Camo_Timer.connect("timeout", self, "_camo_timer_ended")
 
 func _process(delta):
