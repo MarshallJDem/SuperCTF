@@ -247,20 +247,17 @@ func enable_powerup(type):
 		$Powerup_Timer.wait_time = 10;
 		text = "[color=green]^^ SPEED UP ^^";
 	elif type == 2:
-		DASH_COOLDOWN_PMODIFIER = -0.5;
-		$Powerup_Timer.wait_time = 6;
+		DASH_COOLDOWN_PMODIFIER = -1.5;
+		$Powerup_Timer.wait_time = 10;
 		text = "[color=blue]˅˅˅˅˅˅^^ DASH RATE UP ^^";
 	elif type == 3:
-		$Weapon_Node.BULLET_COOLDOWN_PMODIFIER = -0.1;
-		$Powerup_Timer.wait_time = 8;
-		text = "[color=red]^^ BULLET FIRE RATE UP ^^";
-	elif type == 4:
-		$Weapon_Node.LASER_WIDTH_PMODIFIER = 15;
-		$Powerup_Timer.wait_time = 6;
-		text = "[color=#FF8C00]^^ LASER WIDTH UP ^^";
-	elif type == 5:
+		$Weapon_Node.reduced_cooldown_enabled = true;
 		$Powerup_Timer.wait_time = 10;
-		text = "[color=purple]^^ FORCEFIELD RATE UP ^^";
+		text = "[color=red]^^ FIRE RATE UP ^^";
+	elif type == 4:
+		$Ability_Node.reduced_cooldown_enabled = true;
+		$Powerup_Timer.wait_time = 15;
+		text = "[color=#FF8C00]^^ ABILITY RATE UP ^^";
 	# Only display message if this is our local player
 	if Globals.testing or player_id == Globals.localPlayerID:
 		get_tree().get_root().get_node("MainScene/UI_Layer").set_alert_text("[center]" + text);
@@ -269,8 +266,8 @@ func enable_powerup(type):
 func _powerup_timer_ended():
 	POWERUP_SPEED = 0;
 	DASH_COOLDOWN_PMODIFIER = 0;
-	$Weapon_Node.BULLET_COOLDOWN_PMODIFIER = 0;
-	$Weapon_Node.LASER_WIDTH_PMODIFIER = 0;
+	$Weapon_Node.reduced_cooldown_enabled = false;
+	$Ability_Node.reduced_cooldown_enabled = false;
 
 	
 # Changes the sprite's frame to make it "look" at the mouse

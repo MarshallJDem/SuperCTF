@@ -11,8 +11,7 @@ var Bullet = preload("res://GameContent/Bullet.tscn");
 var Demo = preload("res://GameContent/Demo.tscn");
 var Laser = preload("res://GameContent/Laser.tscn");
 
-var BULLET_COOLDOWN_PMODIFIER = 0;
-var LASER_WIDTH_PMODIFIER = 0;
+var reduced_cooldown_enabled = false;
 const AIMING_SPEED = 15;
 
 var player;
@@ -48,11 +47,13 @@ func class_changed():
 
 func update_cooldown_lengths():
 	if Globals.current_class == Globals.Classes.Bullet:
-		$Cooldown_Timer.wait_time = BULLET_COOLDOWN_PMODIFIER + float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("bulletCooldown"))/1000.0;
+		$Cooldown_Timer.wait_time = float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("bulletCooldown"))/1000.0;
 	elif Globals.current_class == Globals.Classes.Laser:
 		$Cooldown_Timer.wait_time = float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("laserCooldown"))/1000.0;
 	elif Globals.current_class == Globals.Classes.Demo:
 		$Cooldown_Timer.wait_time = 750.0/1000.0;
+	if reduced_cooldown_enabled:
+		$Cooldown_Timer.wait_time = $Cooldown_Timer.wait_time / 2.0;
 	$Laser_Timer.wait_time = float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("laserChargeTime"))/1000.0;
 
 func _process(delta):
@@ -303,7 +304,6 @@ func shoot_laser():
 	var laser = Laser.instance();
 	laser.position =  player.position + laser_position;
 	laser.target_pos = player.position + laser_target_position;
-	laser.WIDTH_PMODIFIER = LASER_WIDTH_PMODIFIER;
 	laser.player_id = player.player_id;
 	laser.team_id = player.team_id;
 	laser.z_index = player.z_index + 4;

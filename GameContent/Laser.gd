@@ -4,14 +4,13 @@ extends Node2D
 var player_id = -1;
 # The team id this laser belongs to
 var team_id = -1;
-var WIDTH_PMODIFIER = 0;
 var target_pos;
 var direction;
 var size;
 
 func _ready():
 	$Death_Timer.connect("timeout", self, "_death_timer_ended");
-	size = WIDTH_PMODIFIER + get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("laserWidth");
+	size = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("laserWidth");
 	target_pos -= position;
 	
 	

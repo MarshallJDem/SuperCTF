@@ -3,6 +3,7 @@ extends Node2D
 var Forcefield = preload("res://GameContent/Forcefield.tscn");
 var Ghost_Trail = preload("res://GameContent/Ghost_Trail.tscn");
 var player;
+var reduced_cooldown_enabled = false;
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -66,6 +67,8 @@ func spawn_camo_flash():
 var camo_flashes_completed = 0;
 func activate_camo():
 	$Cooldown_Timer.wait_time = float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("camoCooldown"))/1000.0;
+	if reduced_cooldown_enabled:
+		$Cooldown_Timer.wait_time = $Cooldown_Timer.wait_time / 2.0;
 	$Cooldown_Timer.start();
 	if Globals.testing:
 		__activate_camo();
@@ -86,6 +89,8 @@ remotesync func __activate_camo():
 func place_forcefield():
 	rpc("spawn_forcefield", player.position, player.team_id);
 	$Cooldown_Timer.wait_time = float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("forcefieldCooldown"))/1000.0;
+	if reduced_cooldown_enabled:
+		$Cooldown_Timer.wait_time = $Cooldown_Timer.wait_time / 2.0;
 	$Cooldown_Timer.start();
 	if Globals.testing:
 		var forcefield = Forcefield.instance();
