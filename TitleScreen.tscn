@@ -219,7 +219,7 @@ We are looking for people to get involved and make suggestions or help build the
 - Carshalljd (add me on discord [color=green]carshalljd#4808[color=black] or email me at [color=green]marshalljdem@gmail.com[color=black])"
 text = "NEWS:
 
-Super CTF is undergoing some big gameplay changes to make combat more interesting! Come join the discord to be part of the game design discussion.  Experimental version can be played at  https://superctf.com/test
+A massive update has just been released! There are now classes with new weapons, abilities, and utilities. The map has been changed along with a bunch of balancing and lag compensation improvements.
 
 Discord Link: https://discord.gg/D3Ban34
 Twitter: https://twitter.com/SuperCTFGame
@@ -458,7 +458,6 @@ script = ExtResource( 3 )
 position = Vector2( 10, -14 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 3 )
-frame = 2
 playing = true
 
 [node name="Area2D" type="Area2D" parent="UI_Layer/Flags/Flag2" groups=[
