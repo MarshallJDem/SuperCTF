@@ -23,7 +23,7 @@ func _ready():
 	old_mmr = Globals.player_MMR;
 	
 	var query = "matchID=" + String(match_ID);
-	#$HTTPRequest_Get_Match_Data.request(Globals.mainServerIP + "getMatchData?" + query, ["authorization: Bearer " + Globals.userToken], false, HTTPClient.METHOD_GET);
+	$HTTPRequest_Get_Match_Data.request(Globals.mainServerIP + "getMatchData?" + query, ["authorization: Bearer " + Globals.userToken], false, HTTPClient.METHOD_GET);
 	
 	get_tree().connect("screen_resized", self, "_screen_resized");
 	_screen_resized();
