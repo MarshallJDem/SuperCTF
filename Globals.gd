@@ -9,7 +9,7 @@ var serverIP = "";
 var serverPublicToken;
 var skirmishIPPrefix = "superctf.com:";
 var port = 42402;
-var serverPrivateToken = "privatetoken" + str(port);
+var serverPrivateToken;
 var isServer = false;
 var allowedPlayers = [];
 var matchID;
@@ -113,6 +113,7 @@ func _enter_tree():
 	
 	if arguments.has("port"):
 		port = int(arguments["port"]);
+		serverPrivateToken = "privatetoken" + str(port);
 	if arguments.has("isServer"):
 		isServer = true if arguments["isServer"] == "true" else false;
 	if OS.has_feature("editor"):
