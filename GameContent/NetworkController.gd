@@ -198,13 +198,14 @@ func updateGameServerStatus(status = null):
 		$HTTPRequest_GameServerUpdateStatus.request(Globals.mainServerIP + "updateGameServerStatus?status=" + String(Globals.gameserverStatus), ["authorization: Bearer " + (Globals.serverPrivateToken)], false);
 # Joins a server
 func join_server():
-	print("Attempting to join server");
 	client = WebSocketClient.new();
 	
 	var url = "ws://" + Globals.serverIP;
 	if Globals.useSecure:
 		url = "wss://" + Globals.serverIP;
+	print("Attempting to connect to server with url : " +str(url));
 	var error = client.connect_to_url(url, PoolStringArray(), true);
+	
 	
 	if error == 0:
 		get_tree().set_network_peer(client);
