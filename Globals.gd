@@ -117,7 +117,7 @@ func _enter_tree():
 		isServer = true if arguments["isServer"] == "true" else false;
 	if OS.has_feature("editor"):
 		testing = true;
-	experimental = OS.has_feature("debug") and !OS.has_feature("editor");
+	experimental = false and OS.has_feature("debug") and !OS.has_feature("editor");
 	if experimental:
 		get_tree().change_scene("res://GameContent/Main.tscn");
 
