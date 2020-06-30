@@ -2,12 +2,13 @@ extends Node
 
 # Whether to run in testing mode (for development uses)
 var testing = false;
+var experimental = false;
 
 #Game Servers (Both clients and servers use these vars, but in different ways. overlapping would not work)
 var serverIP = "";
 var serverPublicToken;
-var skirmishIP = "superctf.com:42402";
-var port = 42403;
+var skirmishIPPrefix = "superctf.com:";
+var port = 42402;
 var serverPrivateToken = "privatetoken" + str(port);
 var isServer = false;
 var allowedPlayers = [];
@@ -33,23 +34,44 @@ var mainServerIP = "https://www.superctf.com" + ":42401/";
 var game_just_started = true;
 var is_typing_in_chat = false;
 
+
 # Result Screen Values
 var result_winning_team_id = -1;
 var result_team0_score = 0;
 var result_team1_score = 0;
 var result_match_id = -1;
 
+# NOTES
+# Layer mask 4 : Demo Bullet
 
+signal class_changed();
+signal ability_changed();
+signal utility_changed();
+
+enum Classes { Bullet, Laser, Demo};
+var current_class = Classes.Bullet;
+
+enum Abilities { Forcefield, Camo};
+var current_ability = Abilities.Forcefield;
+
+enum Utilities { Grenade, Landmine};
+var current_utility = Utilities.Grenade;
+
+var active_landmines = 0;
+
+var options_menu_should_scale;
+var displaying_loadout = false;
 
 # ----- Constants -----
-const game_var_defaults = {"playerSpeed" : 250, "playerLagTime" : 50,
-	"bulletSpeed" : 400, "bulletCooldown" : 350, 
+const game_var_defaults = {"playerSpeed" : 200, "playerLagTime" : 50,
+	"bulletSpeed" : 350, "bulletCooldown" : 400, 
 	"laserChargeTime" : 650, "laserCooldown" : 500, 
 	"laserWidth" :15, "laserLength" : 1300,
-	"dashDistance" : 2000, "dashCooldown" : 1000, 
-	"forcefieldCooldown" : 3000,
+	"dashDistance" : 3000, "dashCooldown" : 3000, 
+	"forcefieldCooldown" : 8000,
 	"scoreLimit" : 2,
-	"grenadeRadius" : 50};
+	"grenadeRadius" : 50,"grenadeCooldown":5000,
+	"camoCooldown" : 13000, "landmineCooldown" : 500};
 
 var game_var_limits = {"playerSpeed" : Vector2(50, 600), "playerLagTime" : Vector2(0, 250),
 "bulletSpeed" : Vector2(100, 1000), "bulletCooldown" : Vector2(100, 2000), 
@@ -63,6 +85,7 @@ var game_var_limits = {"playerSpeed" : Vector2(50, 600), "playerLagTime" : Vecto
 
 # The amount of delay to lerp over for lag interpolation for players and various other things
 var player_lerp_time = 50; # In millis
+var ping = 50.0;
 # Whether or not lasers should destroy bullets
 var lasers_destroy_bullets = true;
 var lag_comp_headstart_dist = 15;
@@ -77,6 +100,8 @@ var HTTPRequest_GetMatchData = HTTPRequest.new();
 var HTTPRequest_CancelQueue = HTTPRequest.new();
 var PollPlayerStatus_Timer = Timer.new();
 
+onready var viewport = get_viewport()
+
 func _enter_tree():
 	var arguments = {}
 	for argument in OS.get_cmdline_args():
@@ -90,8 +115,11 @@ func _enter_tree():
 		port = int(arguments["port"]);
 	if arguments.has("isServer"):
 		isServer = true if arguments["isServer"] == "true" else false;
-	if arguments.has("testing"):
-		testing = true if arguments["testing"] == "true" else false;
+	if OS.has_feature("editor"):
+		testing = true;
+	experimental = OS.has_feature("debug") and !OS.has_feature("editor");
+	if experimental:
+		get_tree().change_scene("res://GameContent/Main.tscn");
 
 func _ready():
 	add_child(HTTPRequest_PollPlayerStatus);
@@ -102,7 +130,7 @@ func _ready():
 	HTTPRequest_CancelQueue.connect("request_completed", self, "_HTTP_CancelQueue_Completed");
 	PollPlayerStatus_Timer.one_shot = true;
 	PollPlayerStatus_Timer.autostart = false;
-	PollPlayerStatus_Timer.wait_time = 1;
+	PollPlayerStatus_Timer.wait_time = 3;
 	add_child(PollPlayerStatus_Timer);
 	
 
@@ -181,7 +209,7 @@ func write_save_data():
 	file.store_string(str(AudioServer.get_bus_volume_db(1)) + "\n");
 	file.store_string(str(volume_sliders.x) + "\n");
 	file.store_string(str(volume_sliders.y) + "\n");
-	file.store_string(str(Global_Overlay.current_song));
+	#file.store_string(str(Global_Overlay.current_song));
 	file.close()
 
 func load_save_data():
@@ -204,11 +232,11 @@ func load_save_data():
 		AudioServer.set_bus_volume_db(1,float(result["3"]));
 	if result.has("4") and result.has("5"):
 		volume_sliders = Vector2(int(result["4"]), int(result["5"]));
+	return;
 	if result.has("6"):
 		Global_Overlay.saved_song_loaded(int(result["6"]));
 	else:
 		Global_Overlay.saved_song_loaded(-1);
-		
 
 func _input(event):
 	if event is InputEventKey and event.pressed:

@@ -7,12 +7,11 @@ func _ready():
 	$FindMatchButton.connect("pressed", self, "_find_match_pressed");
 	$CancelQueueButton.connect("pressed", self, "_cancel_queue_pressed");
 	$PlayAsGuestButton.connect("pressed", self, "_play_as_guest_pressed");
-	$SignInButton.connect("pressed", self, "_sign_in_pressed");
-	$CreateAccountButton.connect("pressed", self, "_create_account_pressed");
 	$LogoutButton.connect("pressed", self, "_logout_pressed");
 	$SplashStartButton.connect("pressed", self, "_splash_start_pressed");
 	$Searching_Text_Timer.connect("timeout", self, "_searching_text_timer_ended");
 	$MOTDText.connect("meta_clicked", self, "_MOTD_meta_clicked");
+	$Options_Button.connect("button_up", self, "_options_button_clicked");
 	disable_buttons();
 
 func _MOTD_meta_clicked(meta):
@@ -27,6 +26,10 @@ func _searching_text_timer_ended():
 	$Searching_Text.text = "Searching";
 	for i in current_search_dot_count:
 		$Searching_Text.text += ".";
+
+func _options_button_clicked():
+	Globals.toggle_options_menu();
+	$Options_Button.release_focus();
 
 var current_color = 0;
 # Called every frame by Titlescreen with the latest playback position
@@ -48,8 +51,6 @@ func disable_buttons():
 	$CancelQueueButton.visible = false;
 	$FindMatchButton.visible = false;
 	$PlayAsGuestButton.visible = false;
-	$SignInButton.visible = false;
-	$CreateAccountButton.visible = false;
 	$SplashStartButton.visible = false;
 	$Searching_Text.visible = false;
 	$PlayerRank.visible = false;
@@ -86,10 +87,6 @@ func set_view(state):
 		VIEW_SPLASH:
 			$LogoutButton.visible = false;
 			$SplashStartButton.visible = true;
-	
-	# temporary while these buttons are useless
-	$SignInButton.visible = false;
-	$CreateAccountButton.visible = false;
 
 func _play_as_guest_pressed():
 	get_parent().create_guest();

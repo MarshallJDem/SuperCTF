@@ -1,7 +1,16 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://fonts/Pixel_Chat.tres" type="DynamicFont" id=1]
 [ext_resource path="res://LeaderboardCell.gd" type="Script" id=2]
+[ext_resource path="res://fonts/pixel.TTF" type="DynamicFontData" id=3]
+
+[sub_resource type="DynamicFont" id=2]
+outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
+use_filter = true
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=1]
+outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
+font_data = ExtResource( 3 )
 
 [node name="LeaderboardCell" type="Node2D"]
 script = ExtResource( 2 )
@@ -28,7 +37,7 @@ margin_right = 34.8036
 margin_bottom = 38.1714
 rect_scale = Vector2( 0.75, 0.75 )
 rect_clip_content = false
-custom_fonts/normal_font = ExtResource( 1 )
+custom_fonts/normal_font = SubResource( 2 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
 bbcode_text = "[center]1"
@@ -88,7 +97,7 @@ margin_top = -8.0
 margin_right = 240.0
 margin_bottom = 59.0
 rect_scale = Vector2( 0.813164, 0.813164 )
-custom_fonts/font = ExtResource( 1 )
+custom_fonts/font = SubResource( 1 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "123456789012345"
 valign = 1

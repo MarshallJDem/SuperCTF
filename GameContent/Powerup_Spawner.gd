@@ -11,7 +11,8 @@ func _ready():
 		$Spawner_Timer.wait_time = 5;
 		$Spawner_Timer.start();
 	else:
-		spawn_powerup();
+		var n = randi()%4+1; #%11+1 means random number 1-10
+		spawn_powerup(n);
 
 func _process(delta):
 	if $Spawner_Timer.time_left == 0:
@@ -19,11 +20,10 @@ func _process(delta):
 	else:
 		$Text.bbcode_text = "[center][color=black]POWERUP IN\n" + str(int($Spawner_Timer.time_left) + 1);
 
-remotesync func spawn_powerup():
+remotesync func spawn_powerup(n):
 	var powerup = Powerup.instance();
 	powerup.position = position + Vector2(0, -15);
-	powerup.type = randi()%5+1; #%11+1 means random number 1-10
-	print(powerup.type);
+	powerup.type = n;
 	powerup.spawner = self;
 	get_tree().get_root().get_node("MainScene").call_deferred("add_child", powerup);
 	
@@ -31,8 +31,9 @@ remotesync func _powerup_taken():
 	$Spawner_Timer.start();
 
 func _spawner_timer_ended():
+	var n = randi()%4+1; #%11+1 means random number 1-10
 	if Globals.testing:
-		spawn_powerup();
+		spawn_powerup(n);
 	if get_tree().is_network_server():
-		rpc("spawn_powerup");
+		rpc("spawn_powerup",n);
 	

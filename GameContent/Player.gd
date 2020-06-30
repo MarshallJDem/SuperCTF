@@ -1,20 +1,15 @@
 extends KinematicBody2D
 
 var control = false;
-var IS_CONTROLLED_BY_MOUSE = true;
 # The ID of this player 0,1,2 etc. NOT the network unique ID
 var player_id = -1;
 var team_id = -1;
 var BASE_SPEED = 200;
-const AIMING_SPEED = 15;
 const SPRINT_SPEED = 50;
-const FLAG_SLOWDOWN_SPEED = -50;
-var TELEPORT_SPEED = 2000;
+const FLAG_SLOWDOWN_SPEED = -25;
+var TELEPORT_SPEED = 3000;
 var POWERUP_SPEED = 0;
-var BULLET_COOLDOWN_PMODIFIER = 0;
 var DASH_COOLDOWN_PMODIFIER = 0;
-var FORCEFIELD_COOLDOWN_PMODIFIER = 0;
-var LASER_WIDTH_PMODIFIER = 0;
 var player_name = "Guest999";
 var speed = BASE_SPEED;
 # Where this player starts on the map and should respawn at
@@ -25,12 +20,6 @@ var alive = true;
 var invincible = false;
 # The camera that is associated with this player. A reference is used because it may switch parents
 var camera_ref = null;
-# The direction the laser is firing at
-var laser_direction = Vector2(0,0);
-# The position the laser is firing from
-var laser_position = Vector2(0,0);
-# The number of bullets this player has shot. Used for naming bullets
-var bullets_shot = 0;
 # The time in millis the last position was received
 var time_of_last_received_pos = 0;
 # The position to start lerping from
@@ -39,31 +28,13 @@ var lerp_start_pos = Vector2(0,0);
 var lerp_end_pos = Vector2(0,0);
 # Whether or not the player is sprinting
 var sprintEnabled = false;
-var max_forcefield_distance = 5000;
-var remote_db_level = -10;
 # The position the player was in last frame
 var last_position = Vector2(0,0);
-# Whether the grenade weapon is currently enabled
-var grenade_enabled = false;
+# The frame of the all of the sprite on the top (Gun, Head, Body)
+var look_direction = 0;
+var has_moved_after_respawn = false;
 
 
-var bullet_atlas_blue = preload("res://Assets/Weapons/bullet_b.png");
-var bullet_atlas_red = preload("res://Assets/Weapons/bullet_r.png");
-
-var running_top_atlas_blue = preload("res://Assets/Player/running_top_B.png");
-var running_top_atlas_red = preload("res://Assets/Player/running_top_R.png");
-
-var shooting_top_atlas_blue = preload("res://Assets/Player/shooting_top_B.png");
-var shooting_top_atlas_red = preload("res://Assets/Player/shooting_top_R.png");
-
-var idle_top_atlas_blue = preload("res://Assets/Player/idle_top_B.png");
-var idle_top_atlas_red = preload("res://Assets/Player/idle_top_R.png");
-
-var Muzzle_Bullet = preload("res://GameContent/Muzzle_Bullet.tscn");
-var Bullet = preload("res://GameContent/Bullet.tscn");
-var Forcefield = preload("res://GameContent/Forcefield.tscn");
-var Laser = preload("res://GameContent/Laser.tscn");
-var Grenade = preload("res://GameContent/Grenade.tscn");
 var Ghost_Trail = preload("res://GameContent/Ghost_Trail.tscn");
 var Player_Death = preload("res://GameContent/Player_Death.tscn");
 
@@ -76,26 +47,14 @@ func _ready():
 	if Globals.testing:
 		activate_camera();
 		control = true
-	
-	if Globals.testing or Globals.localPlayerID == player_id:
-		$Laser_Timer.wait_time += 0.1;
-		$Laser_Charge_Audio.set_pitch_scale(float(0.5)/$Laser_Timer.wait_time);
-	else:
-		$Laser_Charge_Audio.set_volume_db(remote_db_level);
-		$Laser_Fire_Audio.set_volume_db(remote_db_level);
-	
+	Globals.connect("class_changed", self, "update_class");
 	$Respawn_Timer.connect("timeout", self, "_respawn_timer_ended");
 	$Invincibility_Timer.connect("timeout", self, "_invincibility_timer_ended");
-	$Laser_Timer.connect("timeout", self, "_laser_timer_ended");
-	$Laser_Input_Timer.connect("timeout", self, "_laser_input_timer_ended");
 	$Powerup_Timer.connect("timeout", self, "_powerup_timer_ended");
-	#$Laser_Cooldown_Timer.connect("timeout", self, "_laser_cooldown_timer_ended");
-	$Forcefield_Timer.connect("timeout", self, "_forcefield_timer_ended");
-	$Animation_Timer.connect("timeout", self, "_animation_timer_ended");
-	$Shoot_Animation_Timer.connect("timeout", self, "_shoot_animation_timer_ended");
-	$Shoot_Animation_Timer.wait_time = $Animation_Timer.wait_time * $Sprite_Top.vframes;
+	$Teleport_Invincibility_Timer.connect("timeout", self, "_teleport_invincibility_timer_ended");
 	lerp_start_pos = position;
 	lerp_end_pos = position;
+	update_class();
 
 func _input(event):
 	if Globals.is_typing_in_chat:
@@ -107,268 +66,145 @@ func _input(event):
 			if event.scancode == KEY_CONTROL:
 				if $Flag_Holder.get_child_count() == 0:
 					sprintEnabled = !sprintEnabled;
-			if event.scancode == KEY_SHIFT:
-				switch_weapons();
 			if event.scancode == KEY_SPACE:
 				#Attempt a teleport
 				# Re-enable line below to prevent telporting while you have flag
 				# if $Flag_Holder.get_child_count() == 0:
-				if $Teleport_Timer.time_left == 0:
+				if $Teleport_Timer.time_left == 0 and $Weapon_Node/Laser_Timer.time_left == 0:
 					move_on_inputs(true);
 					camera_ref.lag_smooth();
 					$Teleport_Timer.start();
-			if event.scancode == KEY_E:
-				# If were not holding a flag, create forcefield
-				# This is now disabled. You can place forcefield whenever you please kiddo
-				if true || $Flag_Holder.get_child_count() == 0:
-					if $Forcefield_Timer.time_left == 0:
-						forcefield_placed();
-			if event.scancode == KEY_Q:
-				# If the grenade cooldown is over
-				if $Grenade_Cooldown_Timer.time_left == 0:
-					toggle_grenade();
-		elif event is InputEventMouseButton:
-			if !event.is_pressed():
-				if grenade_enabled:
-					# Fire grenade on right mouse up
-					if Globals.testing:
-						shoot_grenade(self.global_position, self.global_position + last_grenade_position, OS.get_system_time_msecs());
-					else:
-						rpc("shoot_grenade",self.global_position, self.global_position + last_grenade_position, OS.get_system_time_msecs() - Globals.match_start_time);
-		elif event is InputEventMouseMotion:
-			if IS_CONTROLLED_BY_MOUSE and grenade_enabled:
-				aim_grenade(get_local_mouse_position().normalized());
 func _process(delta):
 	var new_speed = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("playerSpeed");
 	if speed == BASE_SPEED:
 		speed = new_speed;
 	BASE_SPEED = new_speed;
 	TELEPORT_SPEED = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("dashDistance");
-	$Shoot_Cooldown_Timer.wait_time = BULLET_COOLDOWN_PMODIFIER + float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("bulletCooldown"))/1000.0;
-	$Laser_Cooldown_Timer.wait_time = float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("laserCooldown"))/1000.0;
-	$Forcefield_Timer.wait_time = FORCEFIELD_COOLDOWN_PMODIFIER + float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("forcefieldCooldown"))/1000.0;
 	$Teleport_Timer.wait_time = DASH_COOLDOWN_PMODIFIER + float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("dashCooldown"))/1000.0;
-	$Laser_Timer.wait_time = float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("laserChargeTime"))/1000.0;
+	
+	if is_network_master():
+		Globals.displaying_loadout = !alive or !has_moved_after_respawn;
 	if control:
 		activate_camera();
 		# Don't look around if we're shooting a laser
-		if $Laser_Timer.time_left == 0:
+		if Globals.current_class != Globals.Classes.Laser or $Weapon_Node/Laser_Timer.time_left == 0:
 			update_look_direction();
-		if $Laser_Timer.time_left + $Laser_Input_Timer.time_left > 0:
-			speed = AIMING_SPEED * ($Laser_Timer.time_left / $Laser_Timer.wait_time);
-		# Move & Shoot around as long as we aren't typing in chat
+		# Move around as long as we aren't typing in chat
 		if !Globals.is_typing_in_chat:
 			move_on_inputs();
-			shoot_on_inputs();
+	
 	update();
+	
 	if $Invincibility_Timer.time_left > 0:
 		var t = $Invincibility_Timer.time_left / $Invincibility_Timer.wait_time 
 		var x =  (t * 10);
-		$Sprite_Top.modulate = Color(1,1,1,(sin( (PI / 2) + (x * (1 + (t * ((2 * PI) - 1))))) + 1)/2)
-		$Sprite_Bottom.modulate = Color(1,1,1,(sin( (PI / 2) + (x * (1 + (t * ((2 * PI) - 1))))) + 1)/2)
-	z_index = global_position.y + 15;
+		var color = Color(1,1,1,(sin( (PI / 2) + (x * (1 + (t * ((2 * PI) - 1))))) + 1)/2);
+		modulate = color
 	
-	
+	z_index = global_position.y + 5;
 	
 	# If we are a puppet and not the server, then lerp our position
 	if !Globals.testing and !is_network_master() and !get_tree().is_network_server():
 		position = lerp(lerp_start_pos, lerp_end_pos, clamp(float(OS.get_ticks_msec() - time_of_last_received_pos)/float(Globals.player_lerp_time), 0.0, 1.0));
 	
 	if !Globals.testing and is_network_master() and !get_tree().is_network_server():
-		rpc_unreliable_id(1, "send_position", position, player_id);
+		rpc_unreliable("update_position", position);
 	
 	
-	# Idle Animation
+	# Animation
 	var diff = last_position - position;
 	if sqrt(pow(diff.x, 2) + pow(diff.y, 2)) < 1:
+		# Idle
 		if team_id == 1:
-			$Sprite_Top.set_texture(idle_top_atlas_red);
+			#$Sprite_Top.set_texture(idle_top_atlas_red);
+			pass;
 		else:
-			$Sprite_Top.set_texture(idle_top_atlas_blue);
-		$Sprite_Bottom.frame = $Sprite_Top.frame % $Sprite_Top.hframes;
+			#$Sprite_Top.set_texture(idle_top_atlas_blue);
+			pass;
+		$Sprite_Legs.frame = look_direction;
 	else:
+		# Moving
 		if team_id == 1:
-			$Sprite_Top.set_texture(running_top_atlas_red);
+			#$Sprite_Top.set_texture(running_top_atlas_red);
+			pass;
 		else:
-			$Sprite_Top.set_texture(running_top_atlas_blue);
-		$Sprite_Bottom.frame = $Sprite_Top.frame;
-		
-	# Shooting Animation (Overrides idleness)
-	if $Shoot_Animation_Timer.time_left > 0:
-		if team_id == 1:
-			$Sprite_Top.set_texture(shooting_top_atlas_red);
-		else:
-			$Sprite_Top.set_texture(shooting_top_atlas_blue);
+			#$Sprite_Top.set_texture(running_top_atlas_blue);
+			pass;
+		$Sprite_Legs.frame = look_direction + (int((1-($Leg_Animation_Timer.time_left / $Leg_Animation_Timer.wait_time)) * 4)%4) * $Sprite_Legs.hframes;
+	
+	
+	$Sprite_Head.position.y = int(2 * sin((1 - $Top_Animation_Timer.time_left/$Top_Animation_Timer.wait_time)*(2 * PI)))/2.0;
 		
 	# Name tag
 	var color = "blue";
 	if team_id == 1:
 		color = "red";
-	$Label_Name.bbcode_text = "[center][color=" + color + "]" + player_name;
+	$Name_Parent/Label_Name.bbcode_text = "[center][color=" + color + "]" + player_name;
 	last_position = position;
-	
-remote func send_start_laser(direction, player_pos, frame):
-	if get_tree().is_network_server():# Only run if it's the server
-		var clients = get_tree().get_network_connected_peers();
-		for i in clients: # For each connected client
-			if i != get_tree().get_rpc_sender_id(): # Don't do it for the player who sent it
-				rpc_id(i, "receive_start_laser", direction, player_pos, frame);
-		start_laser(direction, player_pos, frame); # Also call it locally for the server
 
-remote func receive_start_laser(direction, player_pos, frame):
-	start_laser(direction, player_pos, frame);
-
-func start_laser(direction, start_pos, frame):
-	$Sprite_Top.frame = frame;
-	$Sprite_Bottom.frame = frame;
-	laser_direction = direction;
-	laser_position = start_pos;
-	$Laser_Timer.start();
-	speed = AIMING_SPEED;
-	camera_ref.shake($Laser_Timer.wait_time, 1, true);
-	$Laser_Charge_Audio.play();
-
-func _laser_timer_ended():
-	shoot_laser();
-	speed = BASE_SPEED;
-
-func start_laser_input():
-	$Laser_Input_Timer.start();
-func _laser_input_timer_ended():
-	var start_pos = get_node("Bullet_Starts/" + String($Sprite_Top.frame % $Sprite_Top.hframes)).position;
-	rpc_id(1, "send_start_laser", laser_direction, start_pos, $Sprite_Top.frame);
-	start_laser(laser_direction, start_pos, $Sprite_Top.frame);
-	sprintEnabled = false;
-	
-var current_weapon = 0;
-func switch_weapons():
-	current_weapon = 1 if current_weapon == 0 else 0;
-
-# Called when the player attempts to place a forcefield
-# This function will either place it in the appropriate spot or deny it (bad location or something)
-func forcefield_placed():
-	rpc("spawn_forcefield", position, team_id);
-	$Forcefield_Timer.start();
+func update_class():
+	var n = "gunner"
+	if Globals.current_class == Globals.Classes.Bullet:
+		n = "gunner";
+	elif Globals.current_class == Globals.Classes.Laser:
+		n = "laser";
+	elif Globals.current_class == Globals.Classes.Demo:
+		n = "demo";
 	if Globals.testing:
-		var forcefield = Forcefield.instance();
-		forcefield.position = position;
-		forcefield.team_id = team_id;
-		get_tree().get_root().get_node("MainScene").add_child(forcefield);
-		
-# Called when the forcefield cooldown timer ends
-func _forcefield_timer_ended():
-	pass;
+		update_class_rpc(n);
+	else:
+		rpc("update_class_rpc", n);
 
-# Called by client telling everyone to spawn a forcefield in a spot
-# TODO - in future this should be handled by servers - not the client.
-remotesync func spawn_forcefield(pos, team_id):
-	var forcefield = Forcefield.instance();
-	forcefield.position = pos;
-	forcefield.player_id = player_id;
-	forcefield.team_id = team_id;
-	get_tree().get_root().get_node("MainScene").add_child(forcefield);
-
-
-# Shoots a laser shot
-func shoot_laser():
-	if is_network_master():
-		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE);
-	# Only run if we're the server
-	var laser = Laser.instance();
-	get_tree().get_root().get_node("MainScene").add_child(laser);
-	laser.position = position + laser_position;
-	laser.rotation = Vector2(0,0).angle_to_point(laser_direction) + PI/2;
-	laser.player_id = player_id;
-	laser.team_id = team_id;
-	laser.WIDTH_PMODIFIER = LASER_WIDTH_PMODIFIER;
-	$Laser_Fire_Audio.play();
-	$Laser_Cooldown_Timer.start();
-
+remotesync func update_class_rpc(n):
+	var t = "B";
+	if team_id == 1:
+		t = "R";
+	$Sprite_Head.set_texture(load("res://Assets/Player/" + str(n) + "_head_" +t+ ".png"));
+	$Sprite_Body.set_texture(load("res://Assets/Player/" + str(n) + "_body_" +t+ ".png"));
+	$Sprite_Gun.set_texture(load("res://Assets/Player/" + str(n) + "_gun_" +t+ ".png"));
 
 func _draw():
-	if $Laser_Timer.time_left > 0:
-		var size;
-		if $Laser_Input_Timer.time_left > 0:
-			size = 0;
-		else:
-			size = clamp(1 / ($Laser_Timer.time_left / $Laser_Timer.wait_time), 0 , 5);
-		var red = 1 if team_id == 1 else 0;
-		var green = 10.0/255.0 if team_id == 1 else 130.0/255.0;
-		var blue = 1 if team_id == 0 else 0;
-		var lightener = 0.2;
-		red = red + lightener;
-		green = green + lightener;
-		blue = blue + lightener;
-		draw_line(laser_position, laser_direction * 1000, Color(red, green, blue, 1 - ($Laser_Timer.time_left / $Laser_Timer.wait_time)), size);
-	if last_grenade_position != Vector2.ZERO:
-		#draw_line(Vector2.ZERO, last_grenade_position,Color(0,0,0,1), 1.0, true);
-		draw_circle(last_grenade_position, get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("grenadeRadius"), Color(0,0,0,0.2));
-		draw_circle(last_grenade_position, get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("grenadeRadius")/10, Color(0,0,0,0.2));
+	pass;
 
-# Shoots a bullet shot
-func shoot_bullet(d):
-	$Shoot_Cooldown_Timer.start();
-	var direction = d.normalized();
-	bullets_shot = bullets_shot + 1;
-	# Re-enable the code below to have the bullet start out of the end of the gun
-	var bullet_start = position + get_node("Bullet_Starts/" + String($Sprite_Top.frame % $Sprite_Top.hframes)).position;
-	# Offset bullet start by a bit because player frames are perfectly centered
-	if false and direction.y == 0:
-		bullet_start += Vector2(0, 10);
-	if false and direction.x != 0 and direction.y != 0:
-		bullet_start += Vector2(10 * direction.x/abs(direction.x),0);
-	var time = OS.get_system_time_msecs() - Globals.match_start_time;
-	var bullet = spawn_bullet(bullet_start, 0 if Globals.testing else player_id, direction,time, null);
-	#camera_ref.shake();
-	$Shoot_Animation_Timer.start();
-	animation_set_frame = 0;
-	if !Globals.testing:
-		rpc_id(1, "send_bullet", bullet_start,player_id, direction, time, bullet.name);
-
-# Spawns a bullet given various initializaiton parameters
-func spawn_bullet(pos, player_id, direction, time_shot, bullet_name = null):
-	
-	# Muzzle Flair
-	var particles = Muzzle_Bullet.instance();
-	particles.team_id = team_id;
-	#get_tree().get_root().get_node("MainScene").add_child(particles);
-	call_deferred("add_child", particles);
-	particles.position = get_node("Bullet_Starts/" + String($Sprite_Top.frame % $Sprite_Top.hframes)).position;
-	particles.rotation = Vector2(0,0).angle_to_point(direction) + PI;
-	
-#	# If this was fired by another player, compensate for player lerp speed
-	if !Globals.testing and player_id != Globals.localPlayerID:
-		var t = Timer.new();
-		t.set_wait_time(float(Globals.player_lerp_time)/float(1000.0));
-		t.set_one_shot(true);
-		self.add_child(t);
-		t.start();
-		yield(t, "timeout");
-		t.queue_free();
-	
-	# Initialize Bullet
-	var bullet = Bullet.instance();
-	bullet.position = pos;
-	bullet.direction = direction;
-	bullet.player_id = player_id;
-	bullet.team_id = team_id;
-	bullet.initial_time_shot = time_shot
-	bullet.set_network_master(get_network_master());
-	if team_id == 0:
-		bullet.get_node("Sprite").set_texture(bullet_atlas_blue);
-	elif team_id == 1:
-		bullet.get_node("Sprite").set_texture(bullet_atlas_red);
-	get_tree().get_root().get_node("MainScene").call_deferred("add_child", bullet);
-	if bullet_name != null:
-		bullet.name = bullet_name;
-	else:
-		bullet.name = bullet.name + "-" + str(player_id) + "-" + str(bullets_shot);
-	
-	
-	return bullet;
+# Attempts to drop the flag the player is potentially holding. Returns true if there was a flag to drop false otherwise
+func attempt_drop_flag() -> bool:
+	if $Flag_Holder.get_child_count() == 0:
+		return false;
+	else: # Otherwise drop our flag
+		drop_current_flag($Flag_Holder.get_global_position());
+		rpc_id(1, "send_drop_flag", $Flag_Holder.get_global_position());
+		return true;
 
 # A vector 2D representing the last movement key directions pressed
 var last_movement_input = Vector2(0,0);
+func _teleport_invincibility_timer_ended():
+	invincible = false;
+remotesync func teleport(start, end):
+	$Teleport_Audio.play();
+	$Teleport_Invincibility_Timer.start();
+	invincible = true;
+	for i in range(6):
+		var node = Ghost_Trail.instance();
+		node.position = start;
+		node.position.x = node.position.x + ((i) * (end.x - start.x)/4)
+		node.position.y = node.position.y + ((i) * (end.y - start.y)/4)
+		node.look_direction = look_direction;
+		node.scale = $Sprite_Body.scale
+		node.get_node("Sprite_Gun").texture = $Sprite_Gun.texture
+		node.get_node("Sprite_Gun").z_index = $Sprite_Gun.z_index
+		node.get_node("Sprite_Head").texture = $Sprite_Head.texture
+		node.get_node("Sprite_Head").z_index = $Sprite_Head.z_index
+		node.get_node("Sprite_Body").texture = $Sprite_Body.texture
+		node.get_node("Sprite_Body").z_index = $Sprite_Body.z_index
+		node.get_node("Sprite_Legs").texture = $Sprite_Legs.texture
+		node.get_node("Sprite_Legs").frame = $Sprite_Legs.frame
+		get_tree().get_root().get_node("MainScene").add_child(node);  
+		node.get_node("Death_Timer").start((i) * 0.05 + 0.0001);
+	# If this is a puppet, use this ghost trail as an oppurtunity to also update its position
+	if !is_network_master():
+		lerp_start_pos = end;
+		lerp_end_pos = end;
+		position = end;
 
 # Checks the current pressed keys and calculates a new player position using the KinematicBody2D
 func move_on_inputs(teleport = false):
@@ -377,7 +213,8 @@ func move_on_inputs(teleport = false):
 	input.y = (1 if Input.is_key_pressed(KEY_S) else 0) - (1 if Input.is_key_pressed(KEY_W) else 0)
 	input = input.normalized();
 	last_movement_input = input;
-	
+	if teleport or (input.x != 0 or input.y != 0):
+		has_moved_after_respawn = true;
 	
 	var move_speed = speed + POWERUP_SPEED;
 	if($Flag_Holder.get_child_count() > 0):
@@ -386,6 +223,11 @@ func move_on_inputs(teleport = false):
 		move_speed += SPRINT_SPEED;
 	if teleport:
 		move_speed = TELEPORT_SPEED;
+	var areas = $Area2D.get_overlapping_areas();
+	for i in range(areas.size()):
+		if areas[i].is_in_group("Landmine_Bodies") and areas[i].monitorable:
+			move_speed = move_speed / 2.0;
+			break;
 	var vec = (input * move_speed);
 	
 	var previous_pos = position;
@@ -394,113 +236,9 @@ func move_on_inputs(teleport = false):
 	
 	if teleport:
 		if Globals.testing:
-			$Teleport_Audio.play();
+			teleport(previous_pos, new_pos);
 		else:
-			rpc("create_ghost_trail", previous_pos, new_pos);
-
-func shoot_on_inputs():
-	var input = Vector2(0,0);
-	input.x = (1 if Input.is_key_pressed(KEY_RIGHT) else 0) - (1 if Input.is_key_pressed(KEY_LEFT) else 0)
-	input.y = (1 if Input.is_key_pressed(KEY_DOWN) else 0) - (1 if Input.is_key_pressed(KEY_UP) else 0)
-	input = input.normalized();
-	
-	if input != Vector2.ZERO:
-		
-		IS_CONTROLLED_BY_MOUSE = false;
-		if $Flag_Holder.get_child_count() != 0:
-			drop_current_flag($Flag_Holder.get_global_position());
-			if !Globals.testing:
-				rpc_id(1, "send_drop_flag", $Flag_Holder.get_global_position());
-		elif grenade_enabled and $Grenade_Cooldown_Timer.time_left == 0:
-			aim_grenade(input);
-		elif current_weapon == 0 and $Shoot_Cooldown_Timer.time_left == 0:
-			shoot_bullet(input);
-		elif current_weapon == 1 and $Laser_Cooldown_Timer.time_left == 0:
-			# If we are still in input phase, update direction
-			if $Laser_Input_Timer.time_left != 0:
-				laser_direction = input;
-				laser_position = get_node("Bullet_Starts/" + String($Sprite_Top.frame % $Sprite_Top.hframes)).position;
-			elif $Laser_Timer.time_left == 0:
-				start_laser_input();
-	else:
-		# Check for mouse input
-		if Input.is_action_pressed("clickL"):
-			IS_CONTROLLED_BY_MOUSE = true;
-			# Only accepts clicks if we're not aiming a laser
-			if $Laser_Timer.time_left == 0:
-				if $Flag_Holder.get_child_count() == 0:
-					if current_weapon == 0:
-						if $Shoot_Cooldown_Timer.time_left == 0:
-							call_deferred("shoot_bullet", ((get_global_mouse_position() - global_position).normalized()));
-					else:
-						var direction = (get_global_mouse_position() - global_position).normalized();
-						laser_direction = direction;
-						laser_position = get_node("Bullet_Starts/" + String($Sprite_Top.frame % $Sprite_Top.hframes)).position;
-						# If we are still in input phase, update direction
-						if $Laser_Input_Timer.time_left == 0:
-							start_laser_input();
-					sprintEnabled = false;
-				else: # Otherwise drop our flag
-					drop_current_flag($Flag_Holder.get_global_position());
-					rpc_id(1, "send_drop_flag", $Flag_Holder.get_global_position());
-		if Input.is_action_pressed("clickR"):
-			# If were not holding a flag
-			if $Flag_Holder.get_child_count() == 0:
-				if $Grenade_Cooldown_Timer.time_left == 0:
-					grenade_enabled = true;
-					aim_grenade(get_local_mouse_position().normalized());
-				sprintEnabled = false;
-			else: # Otherwise drop our flag
-				drop_current_flag($Flag_Holder.get_global_position());
-				rpc_id(1, "send_drop_flag", $Flag_Holder.get_global_position());
-		if started_aiming_grenade and !IS_CONTROLLED_BY_MOUSE:
-			if Globals.testing:
-				shoot_grenade(self.global_position, self.global_position + last_grenade_position, OS.get_system_time_msecs());
-			else:
-				rpc("shoot_grenade",self.global_position, self.global_position + last_grenade_position, OS.get_system_time_msecs() - Globals.match_start_time);
-var started_aiming_grenade = false;
-var last_grenade_position = Vector2(0,0);
-var last_grenade_direction = Vector2(0,0);
-var grenade_input_change_buffer = 0;
-func aim_grenade(direction):
-	if !started_aiming_grenade:
-		started_aiming_grenade = true;
-		$Grenade_Aiming_Timer.start();
-	if !IS_CONTROLLED_BY_MOUSE:
-		var x =  ($Grenade_Aiming_Timer.wait_time - $Grenade_Aiming_Timer.time_left)/$Grenade_Aiming_Timer.wait_time;
-		x = clamp(x, 0.01, 1.0);
-		if last_grenade_direction != direction:
-			if grenade_input_change_buffer < 3:
-				grenade_input_change_buffer += 1;
-				return;
-		last_grenade_position = direction * x * 500;
-	else:
-		print(get_global_mouse_position().distance_to(position));
-		if get_local_mouse_position().length() <= 500:
-			last_grenade_position = get_local_mouse_position();
-		else:
-			last_grenade_position = direction * 500;
-	last_grenade_direction = direction;
-	grenade_input_change_buffer = 0;
-	
-
-remotesync func shoot_grenade(from_pos, to_pos, time_shot):
-	started_aiming_grenade = false;
-	grenade_enabled = false;
-	$Grenade_Cooldown_Timer.start();
-	var node = Grenade.instance();
-	node.initial_real_pos = from_pos;
-	node.target_pos = to_pos;
-	node.initial_time_shot = time_shot;
-	node.player_id = player_id;
-	node.team_id = team_id;
-	get_tree().get_root().get_node("MainScene").call_deferred("add_child", node);
-	last_grenade_position = Vector2(0,0);
-	
-func toggle_grenade():
-	started_aiming_grenade = false;
-	grenade_enabled = !grenade_enabled;
-	last_grenade_position = Vector2(0,0);
+			rpc("teleport", previous_pos, new_pos);
 
 func enable_powerup(type):
 	var text = "";
@@ -509,23 +247,17 @@ func enable_powerup(type):
 		$Powerup_Timer.wait_time = 10;
 		text = "[color=green]^^ SPEED UP ^^";
 	elif type == 2:
-		DASH_COOLDOWN_PMODIFIER = -0.5;
-		$Powerup_Timer.wait_time = 6;
+		DASH_COOLDOWN_PMODIFIER = -1.5;
+		$Powerup_Timer.wait_time = 10;
 		text = "[color=blue]˅˅˅˅˅˅^^ DASH RATE UP ^^";
 	elif type == 3:
-		BULLET_COOLDOWN_PMODIFIER = -0.1;
-		$Powerup_Timer.wait_time = 8;
-		text = "[color=red]^^ BULLET FIRE RATE UP ^^";
-	elif type == 4:
-		LASER_WIDTH_PMODIFIER = 15;
-		$Powerup_Timer.wait_time = 6;
-		text = "[color=#FF8C00]^^ LASER WIDTH UP ^^";
-	elif type == 5:
-		FORCEFIELD_COOLDOWN_PMODIFIER = -1.5;
+		$Weapon_Node.reduced_cooldown_enabled = true;
 		$Powerup_Timer.wait_time = 10;
-		text = "[color=purple]^^ FORCEFIELD RATE UP ^^";
-	
-	
+		text = "[color=red]^^ FIRE RATE UP ^^";
+	elif type == 4:
+		$Ability_Node.reduced_cooldown_enabled = true;
+		$Powerup_Timer.wait_time = 15;
+		text = "[color=#FF8C00]^^ ABILITY RATE UP ^^";
 	# Only display message if this is our local player
 	if Globals.testing or player_id == Globals.localPlayerID:
 		get_tree().get_root().get_node("MainScene/UI_Layer").set_alert_text("[center]" + text);
@@ -534,75 +266,24 @@ func enable_powerup(type):
 func _powerup_timer_ended():
 	POWERUP_SPEED = 0;
 	DASH_COOLDOWN_PMODIFIER = 0;
-	BULLET_COOLDOWN_PMODIFIER = 0;
-	FORCEFIELD_COOLDOWN_PMODIFIER = 0;
-	LASER_WIDTH_PMODIFIER = 0;
+	$Weapon_Node.reduced_cooldown_enabled = false;
+	$Ability_Node.reduced_cooldown_enabled = false;
 
-remotesync func create_ghost_trail(start, end):
-	$Teleport_Audio.play();
-	for i in range(6):
-		var node = Ghost_Trail.instance();
-		get_tree().get_root().get_node("MainScene").add_child(node);
-		node.position = start;
-		node.position.x = node.position.x + ((i) * (end.x - start.x)/4)
-		node.position.y = node.position.y + ((i) * (end.y - start.y)/4)
-		node.get_node("Death_Timer").start((i) * 0.05 + 0.0001);
-		node.get_node("Sprite_Top").texture = $Sprite_Top.texture
-		node.get_node("Sprite_Top").hframes = $Sprite_Top.hframes
-		node.get_node("Sprite_Top").vframes = $Sprite_Top.vframes
-		node.get_node("Sprite_Top").frame = $Sprite_Top.frame
-		node.get_node("Sprite_Top").scale = $Sprite_Top.scale
-		node.get_node("Sprite_Bottom").texture = $Sprite_Bottom.texture
-		node.get_node("Sprite_Bottom").hframes = $Sprite_Bottom.hframes
-		node.get_node("Sprite_Bottom").vframes = $Sprite_Bottom.vframes
-		node.get_node("Sprite_Bottom").frame = $Sprite_Bottom.frame
-		node.get_node("Sprite_Bottom").scale = $Sprite_Bottom.scale
-	# If this is a puppet, use this ghost trail as an oppurtunity to also update its position
-	if !is_network_master():
-		lerp_start_pos = end;
-		lerp_end_pos = end;
-		position = end;
 	
 # Changes the sprite's frame to make it "look" at the mouse
 var previous_look_input = Vector2(0,0);
 func update_look_direction():
-	var pos;
-	if IS_CONTROLLED_BY_MOUSE:
-		pos = get_global_mouse_position();
-	else:
-		var input = Vector2(0,0);
-		input.x = (1 if Input.is_key_pressed(KEY_RIGHT) else 0) - (1 if Input.is_key_pressed(KEY_LEFT) else 0)
-		input.y = (1 if Input.is_key_pressed(KEY_DOWN) else 0) - (1 if Input.is_key_pressed(KEY_UP) else 0)
-		input = input.normalized();
-		if input == Vector2(0,0):
-			input.x = (1 if Input.is_key_pressed(KEY_D) else 0) - (1 if Input.is_key_pressed(KEY_A) else 0)
-			input.y = (1 if Input.is_key_pressed(KEY_S) else 0) - (1 if Input.is_key_pressed(KEY_W) else 0)
-			input = input.normalized();
-			if input == Vector2(0,0):
-				input = previous_look_input;
-		previous_look_input = input;
-		pos = position + (input * 100) + Vector2(1,1); # Add 1,1 to prevent 0 edge cases
+	var pos = get_global_mouse_position();
 	var dist = pos - position;
 	var angle = get_vector_angle(dist);
 	var adjustedAngle = -1 * (angle + (PI/8));
 	var octant = (adjustedAngle / (2 * PI)) * 8
-	var frame = int((octant + 9) + 4) % 8;
-	frame += animation_set_frame * $Sprite_Top.hframes;
-	if frame != $Sprite_Top.frame: # If it changed since last time
-		set_look_direction(frame);
+	var dir = int((octant + 9) + 4) % 8;
+	if dir != look_direction: # If it changed since last time
+		set_look_direction(dir);
 		if !Globals.testing:
-			rpc_unreliable_id(1, "send_look_direction", frame, player_id);
-var animation_set_frame = 0;
-# Called when the animation timer fires
-func _animation_timer_ended():
-	animation_set_frame += 1;
-	animation_set_frame = animation_set_frame % $Sprite_Top.vframes;
+			rpc_unreliable_id(1, "send_look_direction", dir, player_id);
 
-func _shoot_animation_timer_ended():
-	if team_id == 1:
-		$Sprite_Top.set_texture(running_top_atlas_red);
-	else:
-		$Sprite_Top.set_texture(running_top_atlas_blue);
 
 # Gets the angle that a vector is making
 func get_vector_angle(dist):
@@ -614,13 +295,26 @@ func get_vector_angle(dist):
 	return angle;
 
 # Set the direction that the player is "looking" at by changing sprite frame
-func set_look_direction(frame):
-	$Sprite_Top.frame = frame;
-	$Sprite_Bottom.frame = frame;
+func set_look_direction(dir):
+	look_direction = dir;
+	$Sprite_Head.frame = dir;
+	$Sprite_Gun.frame = dir;
+	$Sprite_Body.frame = dir;
+	$Sprite_Legs.frame = look_direction + (int((1-($Leg_Animation_Timer.time_left / $Leg_Animation_Timer.wait_time)) * 4)%4) * $Sprite_Legs.hframes;
+	if dir == 2 or dir == 3:
+		$Sprite_Head.z_index =1;
+		$Sprite_Body.z_index =0;
+		$Sprite_Gun.z_index =2;
+	else:
+		$Sprite_Head.z_index =2;
+		$Sprite_Body.z_index =0;
+		$Sprite_Gun.z_index =1;
 	
 
 # Updates this player's position with the new given position. Only ever called remotely
-func update_position(new_pos):
+remotesync func update_position(new_pos):
+	if is_network_master():
+		return;
 	# Instantly update position for server
 	if get_tree().is_network_server():
 		position = new_pos;
@@ -644,7 +338,7 @@ func deactivate_camera():
 
 # Called when this player is hit by a projectile
 func hit_by_projectile(attacker_id, projectile_type):
-	if projectile_type == 0 || projectile_type == 1 || projectile_type == 2: # Bullet or Laser
+	if projectile_type == 0 || projectile_type == 1 || projectile_type == 2 || projectile_type == 3: # Bullet or Laser or Landmine
 		die();
 		var attacker_team_id = get_tree().get_root().get_node("MainScene/NetworkController").players[attacker_id]["team_id"]
 		var attacker_name = get_tree().get_root().get_node("MainScene/NetworkController").players[attacker_id]["name"]
@@ -679,7 +373,7 @@ func die():
 func spawn_death_particles():
 	var node = Player_Death.instance();
 	node.position = position;
-	node.xFrame = $Sprite_Top.frame_coords.x;
+	node.xFrame = look_direction;
 	node.z_index = z_index;
 	get_tree().get_root().get_node("MainScene").add_child(node);
 
@@ -692,6 +386,7 @@ func respawn():
 	visible = true;
 	alive = true;
 	position = start_pos;
+	has_moved_after_respawn = false;
 	if is_network_master() and get_tree().get_root().get_node("MainScene/NetworkController").round_is_running:
 		control = true;
 	start_temporary_invincibility();
@@ -727,7 +422,7 @@ func take_flag(flag_id):
 		teamNoun = "BLUE TEAM";
 	if player_id == Globals.localPlayerID:
 		subject = "You";
-	if !get_tree().is_network_server():
+	if !Globals.testing and !get_tree().is_network_server():
 		if get_tree().get_root().get_node("MainScene/NetworkController").players[Globals.localPlayerID]["team_id"] == flag_team_id:
 			teamNoun = "YOUR TEAM";
 		get_tree().get_root().get_node("MainScene/UI_Layer").set_alert_text("[center][color=" + subjectColor + "]" + subject + "[color=black] took " + "[color=" + color + "]" + teamNoun + "'s[color=black] flag!");
@@ -746,8 +441,7 @@ func drop_current_flag(flag_position = $Flag_Holder.get_global_position()):
 		flag.get_node("Area2D").ignore_next_buffer_reset = true;
 		flag.re_parent(get_tree().get_root().get_node("MainScene"));
 		flag.position = flag_position;
-		$Shoot_Cooldown_Timer.start();
-		$Laser_Cooldown_Timer.start();
+		$Weapon_Node/Cooldown_Timer.start();
 
 # Starts the temporary Invincibility cooldown
 func start_temporary_invincibility():
@@ -763,35 +457,6 @@ func _invincibility_timer_ended():
 
 # -------- NETWORKING ------------------------------------------------------------>
 
-
-
-# Client tells Server to run this function so that it can send it's latest position
-# The Server then sends that position to all other clients
-remote func send_position(new_pos, player_id):
-	if get_tree().is_network_server(): # Only run if it's the server
-		get_tree().get_root().get_node("MainScene/NetworkController").players[player_id]["position"] = position;
-		var clients = get_tree().get_network_connected_peers();
-		for i in clients: # For each connected client
-			if i != get_tree().get_rpc_sender_id(): # Don't do it for the player who sent it
-				rpc_unreliable_id(i, "receive_position", new_pos);
-		update_position(new_pos); # Also call it locally for the server
-
-# "Receives" the position of this player from the server
-remote func receive_position(new_pos):
-	update_position(new_pos);
-
-# Client tells the server that it just shot a bullet
-remote func send_bullet(pos, player_id, direction, time_shot, bullet_name):
-	if get_tree().is_network_server(): # Only run if it's the server
-		var clients = get_tree().get_network_connected_peers();
-		for i in clients: # For each connected client
-			if i != get_tree().get_rpc_sender_id(): # Don't do it for the player who sent it
-				rpc_id(i, "receive_bullet", pos, player_id, direction,time_shot, bullet_name);
-		spawn_bullet(pos, player_id, direction,time_shot, bullet_name); # Also call it locally for the server
-
-# "Receives" a bullet from the server that was shot by another client
-remote func receive_bullet(pos, player_id, direction,time_shot, bullet_name):
-	spawn_bullet(pos, player_id, direction,time_shot, bullet_name);
 
 # Client tells the server what direction frame it's looking at 
 remote func send_look_direction(frame, player_id):
@@ -835,5 +500,4 @@ remotesync func receive_respawn():
 remotesync func receive_end_invinciblity():
 	invincible = false;
 	$Invincibility_Timer.stop();
-	$Sprite_Top.modulate = Color(1,1,1,1);
-	$Sprite_Bottom.modulate = Color(1,1,1,1);
+	modulate = Color(1,1,1,1);

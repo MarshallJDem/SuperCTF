@@ -30,7 +30,7 @@ position = Vector2( -0.0421219, 0.12109 )
 rotation = 1.57079
 shape = SubResource( 1 )
 
-[node name="Death_Timer2" type="Timer" parent="."]
+[node name="Death_Timer" type="Timer" parent="."]
 wait_time = 2.0
 one_shot = true
 autostart = true
@@ -46,5 +46,5 @@ wait_time = 0.08
 autostart = true
 
 [node name="Lag_Comp_Timer" type="Timer" parent="."]
-wait_time = 0.1
+wait_time = 0.2
 one_shot = true

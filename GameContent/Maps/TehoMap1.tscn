@@ -1,0 +1,210 @@
+[gd_scene load_steps=15 format=2]
+
+[ext_resource path="res://Assets/Environment/border_top.png" type="Texture" id=1]
+[ext_resource path="res://GameContent/Wall.tscn" type="PackedScene" id=2]
+[ext_resource path="res://GameContent/Powerup_Spawner.tscn" type="PackedScene" id=3]
+[ext_resource path="res://GameContent/Flag_Home.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Assets/Environment/wall_2_B.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Environment/wall_3_B.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Environment/wall_4_G.png" type="Texture" id=7]
+[ext_resource path="res://Assets/Environment/wall_5_G.png" type="Texture" id=8]
+[ext_resource path="res://GameContent/Wall_Sprite.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Assets/Environment/wall_2_R.png" type="Texture" id=10]
+[ext_resource path="res://Assets/Environment/wall_3_R.png" type="Texture" id=11]
+[ext_resource path="res://Assets/Environment/wall_1_R.png" type="Texture" id=12]
+[ext_resource path="res://Assets/Environment/border_bottom.png" type="Texture" id=13]
+[ext_resource path="res://Assets/Environment/background_tiles.png" type="Texture" id=14]
+
+[node name="Environment" type="Node"]
+__meta__ = {
+"_edit_horizontal_guides_": [  ],
+"_edit_vertical_guides_": [  ]
+}
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 0, 9 )
+z_index = -4096
+texture = ExtResource( 14 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="YSort" type="YSort" parent="."]
+
+[node name="Powerup_Spawner" parent="YSort" instance=ExtResource( 3 )]
+position = Vector2( -0.23691, 299.311 )
+
+[node name="Powerup_Spawner2" parent="YSort" instance=ExtResource( 3 )]
+position = Vector2( 0.812893, -298.902 )
+
+[node name="Flag_Home-0" parent="YSort" instance=ExtResource( 4 )]
+position = Vector2( -942.622, 2.25647 )
+scale = Vector2( 2, 2 )
+z_index = -4016
+team_id = 0
+flag_id = 0
+
+[node name="Flag_Home-1" parent="YSort" instance=ExtResource( 4 )]
+position = Vector2( 943.361, -0.382878 )
+scale = Vector2( 2, 2 )
+z_index = -4016
+team_id = 1
+
+[node name="Wall_Sprite" parent="YSort" instance=ExtResource( 9 )]
+position = Vector2( -941, -137 )
+
+[node name="Wall_Sprite2" parent="YSort" instance=ExtResource( 9 )]
+position = Vector2( -941.017, 139.048 )
+
+[node name="Wall_Sprite11" parent="YSort" instance=ExtResource( 9 )]
+position = Vector2( 941.039, 139.011 )
+scale = Vector2( -1, 1 )
+texture = ExtResource( 12 )
+
+[node name="Wall_Sprite12" parent="YSort" instance=ExtResource( 9 )]
+position = Vector2( 940.979, -137.021 )
+scale = Vector2( -1, 1 )
+texture = ExtResource( 12 )
+
+[node name="Wall_Sprite3" parent="YSort" instance=ExtResource( 9 )]
+position = Vector2( -1127.01, 1.04515 )
+texture = ExtResource( 5 )
+
+[node name="Wall_Sprite13" parent="YSort" instance=ExtResource( 9 )]
+position = Vector2( 1126.96, 1.01036 )
+scale = Vector2( -1, 1 )
+texture = ExtResource( 10 )
+
+[node name="Wall_Sprite4" parent="YSort" instance=ExtResource( 9 )]
+position = Vector2( -529.014, -238.012 )
+texture = ExtResource( 6 )
+
+[node name="Wall_Sprite5" parent="YSort" instance=ExtResource( 9 )]
+position = Vector2( -529.048, 231.972 )
+texture = ExtResource( 6 )
+
+[node name="Wall_Sprite9" parent="YSort" instance=ExtResource( 9 )]
+position = Vector2( 528.97, 232.003 )
+texture = ExtResource( 11 )
+
+[node name="Wall_Sprite10" parent="YSort" instance=ExtResource( 9 )]
+position = Vector2( 528.998, -237.999 )
+texture = ExtResource( 11 )
+
+[node name="Wall_Sprite6" parent="YSort" instance=ExtResource( 9 )]
+position = Vector2( -0.0209045, 231.031 )
+texture = ExtResource( 7 )
+
+[node name="Wall_Sprite7" parent="YSort" instance=ExtResource( 9 )]
+position = Vector2( -0.0142822, -229.042 )
+texture = ExtResource( 7 )
+
+[node name="Wall_Sprite8" parent="YSort" instance=ExtResource( 9 )]
+position = Vector2( 0.0113211, 8.99793 )
+texture = ExtResource( 8 )
+
+[node name="Wall_Sprite14" parent="YSort" instance=ExtResource( 9 )]
+position = Vector2( 0.0309753, 9.00525 )
+z_index = 4000
+texture = ExtResource( 13 )
+script = null
+
+[node name="Wall_Sprite15" parent="YSort" instance=ExtResource( 9 )]
+position = Vector2( 0.0309753, 9.00525 )
+z_index = -4000
+texture = ExtResource( 1 )
+script = null
+
+[node name="Wall" parent="YSort" instance=ExtResource( 2 )]
+position = Vector2( -945.098, -129.731 )
+scale = Vector2( 185.106, 4.866 )
+
+[node name="Wall7" parent="YSort" instance=ExtResource( 2 )]
+position = Vector2( 0, -221.434 )
+scale = Vector2( 303, 4.866 )
+
+[node name="Wall8" parent="YSort" instance=ExtResource( 2 )]
+position = Vector2( 0, 238.711 )
+scale = Vector2( 303, 4.866 )
+
+[node name="Wall2" parent="YSort" instance=ExtResource( 2 )]
+position = Vector2( -944.888, 146.144 )
+scale = Vector2( 185.106, 4.866 )
+
+[node name="Wall11" parent="YSort" instance=ExtResource( 2 )]
+position = Vector2( 944.914, 146.199 )
+scale = Vector2( 185.106, 4.866 )
+
+[node name="Wall12" parent="YSort" instance=ExtResource( 2 )]
+position = Vector2( 945.016, -129.967 )
+scale = Vector2( 185.106, 4.866 )
+
+[node name="Wall3" parent="YSort" instance=ExtResource( 2 )]
+position = Vector2( -1126.74, 7.61993 )
+scale = Vector2( 3, 142.266 )
+
+[node name="Wall13" parent="YSort" instance=ExtResource( 2 )]
+position = Vector2( 1126.71, 7.14973 )
+scale = Vector2( 3, 142.266 )
+
+[node name="Wall4" parent="YSort" instance=ExtResource( 2 )]
+position = Vector2( -529.025, -229.006 )
+scale = Vector2( 3, 109.156 )
+
+[node name="Wall9" parent="YSort" instance=ExtResource( 2 )]
+position = Vector2( 529.064, -228.089 )
+scale = Vector2( 3, 109.156 )
+
+[node name="Wall10" parent="YSort" instance=ExtResource( 2 )]
+position = Vector2( 528.946, 241.925 )
+scale = Vector2( 3, 109.156 )
+
+[node name="Wall5" parent="YSort" instance=ExtResource( 2 )]
+position = Vector2( -528.616, 241.601 )
+scale = Vector2( 3, 109.156 )
+
+[node name="Wall6" parent="YSort" instance=ExtResource( 2 )]
+position = Vector2( -0.13533, 23.1212 )
+scale = Vector2( 3, 97.684 )
+
+[node name="Wall14" parent="YSort" instance=ExtResource( 2 )]
+position = Vector2( 0, 555.763 )
+scale = Vector2( 1200, -95.847 )
+
+[node name="Wall16" parent="YSort" instance=ExtResource( 2 )]
+position = Vector2( 0, 468.011 )
+scale = Vector2( 300, -95.847 )
+
+[node name="Wall17" parent="YSort" instance=ExtResource( 2 )]
+position = Vector2( 0, -451.695 )
+scale = Vector2( 300, -95.847 )
+
+[node name="Wall18" parent="YSort" instance=ExtResource( 2 )]
+position = Vector2( -1423.98, -408.063 )
+scale = Vector2( 300, -95.847 )
+
+[node name="Wall19" parent="YSort" instance=ExtResource( 2 )]
+position = Vector2( -1423.98, 405 )
+scale = Vector2( 300, -95.847 )
+
+[node name="Wall20" parent="YSort" instance=ExtResource( 2 )]
+position = Vector2( -1449.13, 0 )
+scale = Vector2( 100, 500 )
+
+[node name="Wall23" parent="YSort" instance=ExtResource( 2 )]
+position = Vector2( 1425.45, -405.566 )
+scale = Vector2( 300, -95.847 )
+
+[node name="Wall22" parent="YSort" instance=ExtResource( 2 )]
+position = Vector2( 1428.72, 416.333 )
+scale = Vector2( 300, -95.847 )
+
+[node name="Wall21" parent="YSort" instance=ExtResource( 2 )]
+position = Vector2( 1451.36, 4.78745 )
+scale = Vector2( 100, 500 )
+
+[node name="Wall15" parent="YSort" instance=ExtResource( 2 )]
+position = Vector2( 0, -543.238 )
+scale = Vector2( 1200, -95.847 )
+
+[node name="Sprite" type="Sprite" parent="YSort"]

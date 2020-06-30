@@ -10,8 +10,8 @@ var initial_time_shot;
 var initial_real_pos;
 
 
-var grenade_atlas_blue = preload("res://Assets/Weapons/grenade_b.png");
-var grenade_atlas_red = preload("res://Assets/Weapons/grenade_r.png");
+var grenade_atlas_blue = preload("res://Assets/Utilities/grenade_B.png");
+var grenade_atlas_red = preload("res://Assets/Utilities/grenade_R.png");
 
 var Grenade_Explosion = preload("res://GameContent/Grenade_Explosion.tscn");
 

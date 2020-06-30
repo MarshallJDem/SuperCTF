@@ -1,8 +1,8 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://GameContent/Player.gd" type="Script" id=1]
-[ext_resource path="res://Assets/Player/running_top_B.png" type="Texture" id=2]
-[ext_resource path="res://Assets/Player/universal_bottom_B.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Player/gunner_gun_B.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Player/legs.png" type="Texture" id=3]
 [ext_resource path="res://GameContent/Center_Pivot.gd" type="Script" id=4]
 [ext_resource path="res://GameContent/Camera.gd" type="Script" id=5]
 [ext_resource path="res://GameContent/Player_Area2D.gd" type="Script" id=6]
@@ -14,36 +14,182 @@
 [ext_resource path="res://Assets/Sound/Flag_Drop.wav" type="AudioStream" id=12]
 [ext_resource path="res://Assets/Sound/Teleport.wav" type="AudioStream" id=13]
 [ext_resource path="res://fonts/Pixel_Chat.tres" type="DynamicFont" id=14]
+[ext_resource path="res://Assets/Player/gunner_body_B.png" type="Texture" id=15]
+[ext_resource path="res://Assets/Player/gunner_head_B.png" type="Texture" id=16]
+[ext_resource path="res://GameContent/Ability_Node.gd" type="Script" id=17]
+[ext_resource path="res://GameContent/Utility_Node.gd" type="Script" id=18]
+[ext_resource path="res://GameContent/Weapon_Node.gd" type="Script" id=19]
 
-[sub_resource type="CapsuleShape2D" id=1]
-radius = 5.49852
-height = 5.43134
+[sub_resource type="CircleShape2D" id=1]
+radius = 5.0
 
-[sub_resource type="CapsuleShape2D" id=2]
-radius = 1.61246
+[sub_resource type="Curve" id=2]
+max_value = 630.66
+_data = [ Vector2( 0.791667, 4.71545 ), 0.0, 0.0, 0, 0, Vector2( 1, 334.25 ), 3776.08, 0.0, 0, 0 ]
+
+[sub_resource type="CapsuleShape2D" id=3]
+radius = 8.67661
+height = 13.2677
+
+[sub_resource type="CapsuleShape2D" id=4]
+radius = 2.37617
 height = 5.37553
 
 [node name="Player" type="KinematicBody2D"]
-collision_layer = 2
+collision_mask = 2
 script = ExtResource( 1 )
 
-[node name="Sprite_Bottom" type="Sprite" parent="."]
-position = Vector2( 0, -0.3 )
+[node name="Weapon_Node" type="Node2D" parent="."]
+z_index = 4
+script = ExtResource( 19 )
+
+[node name="CollisionTester" type="KinematicBody2D" parent="Weapon_Node"]
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Weapon_Node/CollisionTester"]
+shape = SubResource( 1 )
+
+[node name="Laser_Timer" type="Timer" parent="Weapon_Node"]
+wait_time = 0.4
+one_shot = true
+
+[node name="Laser_Input_Timer" type="Timer" parent="Weapon_Node"]
+wait_time = 0.08
+one_shot = true
+
+[node name="Cooldown_Timer" type="Timer" parent="Weapon_Node"]
+wait_time = 0.5
+one_shot = true
+
+[node name="Shoot_Animation_Timer" type="Timer" parent="Weapon_Node"]
+wait_time = 0.2
+one_shot = true
+
+[node name="Laser_Charge_Audio" type="AudioStreamPlayer" parent="Weapon_Node"]
+stream = ExtResource( 9 )
+pitch_scale = 1.25
+
+[node name="Laser_Fire_Audio" type="AudioStreamPlayer" parent="Weapon_Node"]
+stream = ExtResource( 10 )
+
+[node name="Bullet_Starts" type="Node" parent="Weapon_Node"]
+
+[node name="0" type="Node2D" parent="Weapon_Node/Bullet_Starts"]
+position = Vector2( -0.7976, -11.8209 )
+
+[node name="1" type="Node2D" parent="Weapon_Node/Bullet_Starts"]
+position = Vector2( 11.471, -5.11357 )
+
+[node name="2" type="Node2D" parent="Weapon_Node/Bullet_Starts"]
+position = Vector2( 12.5101, 4.76815 )
+
+[node name="3" type="Node2D" parent="Weapon_Node/Bullet_Starts"]
+position = Vector2( 8.99377, 11.1588 )
+
+[node name="4" type="Node2D" parent="Weapon_Node/Bullet_Starts"]
+position = Vector2( -0.64249, 15.8412 )
+
+[node name="5" type="Node2D" parent="Weapon_Node/Bullet_Starts"]
+position = Vector2( -9.87443, 11.4386 )
+
+[node name="6" type="Node2D" parent="Weapon_Node/Bullet_Starts"]
+position = Vector2( -14.2827, 4.68982 )
+
+[node name="7" type="Node2D" parent="Weapon_Node/Bullet_Starts"]
+position = Vector2( -12.8271, -5.55873 )
+
+[node name="Laser_Starts" type="Node" parent="Weapon_Node"]
+
+[node name="0" type="Node2D" parent="Weapon_Node/Laser_Starts"]
+position = Vector2( -0.074, -15.546 )
+
+[node name="1" type="Node2D" parent="Weapon_Node/Laser_Starts"]
+position = Vector2( 16.9402, -10.0641 )
+
+[node name="2" type="Node2D" parent="Weapon_Node/Laser_Starts"]
+position = Vector2( 18.684, 5.59578 )
+
+[node name="3" type="Node2D" parent="Weapon_Node/Laser_Starts"]
+position = Vector2( 13.0276, 18.1864 )
+
+[node name="4" type="Node2D" parent="Weapon_Node/Laser_Starts"]
+position = Vector2( -0.481946, 22.4571 )
+
+[node name="5" type="Node2D" parent="Weapon_Node/Laser_Starts"]
+position = Vector2( -14.0888, 18.4933 )
+
+[node name="6" type="Node2D" parent="Weapon_Node/Laser_Starts"]
+position = Vector2( -19.8163, 5.90677 )
+
+[node name="7" type="Node2D" parent="Weapon_Node/Laser_Starts"]
+position = Vector2( -17.6768, -9.34735 )
+
+[node name="Laser_Particles" type="CPUParticles2D" parent="Weapon_Node"]
+modulate = Color( 1, 1, 1, 0.509804 )
+position = Vector2( 18.2876, 5.24351 )
+scale = Vector2( 2, 2 )
+z_index = -1
+emitting = false
+amount = 20
+lifetime = 0.4
+one_shot = true
+emission_shape = 1
+emission_sphere_radius = 8.67
+gravity = Vector2( 0.368, 2.016 )
+radial_accel = -100.0
+radial_accel_random = 0.1
+damping = 2.96
+damping_curve = SubResource( 2 )
+color = Color( 0.109804, 0.760784, 0.0745098, 1 )
+
+[node name="Utility_Node" type="Node2D" parent="."]
+script = ExtResource( 18 )
+
+[node name="Cooldown_Timer" type="Timer" parent="Utility_Node"]
+one_shot = true
+
+[node name="Ability_Node" type="Node2D" parent="."]
+script = ExtResource( 17 )
+
+[node name="Cooldown_Timer" type="Timer" parent="Ability_Node"]
+one_shot = true
+
+[node name="Camo_Timer" type="Timer" parent="Ability_Node"]
+wait_time = 3.0
+one_shot = true
+
+[node name="Sprite_Legs" type="Sprite" parent="."]
 texture = ExtResource( 3 )
 vframes = 4
 hframes = 8
+frame = 1
+__meta__ = {
+"_edit_lock_": true
+}
 
-[node name="Sprite_Top" type="Sprite" parent="."]
+[node name="Sprite_Gun" type="Sprite" parent="."]
 texture = ExtResource( 2 )
-vframes = 4
 hframes = 8
-frame = 7
+frame = 5
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Sprite_Body" type="Sprite" parent="."]
+texture = ExtResource( 15 )
+hframes = 8
+frame = 1
+
+[node name="Sprite_Head" type="Sprite" parent="."]
+texture = ExtResource( 16 )
+hframes = 8
+frame = 1
 
 [node name="Center_Pivot" type="Position2D" parent="."]
 script = ExtResource( 4 )
 
 [node name="Camera" type="Camera2D" parent="Center_Pivot"]
-position = Vector2( 100.105, 0 )
+zoom = Vector2( 0.5, 0.5 )
 smoothing_enabled = true
 smoothing_speed = 10.0
 drag_margin_left = 0.0
@@ -66,36 +212,13 @@ one_shot = true
 script = ExtResource( 6 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2( 0, 1.855 )
-shape = SubResource( 1 )
+position = Vector2( 0.0646133, 3.80024 )
+shape = SubResource( 3 )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="Flag_Holder" type="Node2D" parent="."]
-
-[node name="Bullet_Starts" type="Node" parent="."]
-
-[node name="0" type="Node2D" parent="Bullet_Starts"]
-position = Vector2( -0.0738754, -9.20436 )
-
-[node name="1" type="Node2D" parent="Bullet_Starts"]
-position = Vector2( 8.13069, -4.00015 )
-
-[node name="2" type="Node2D" parent="Bullet_Starts"]
-position = Vector2( 10.2276, 3.37638 )
-
-[node name="3" type="Node2D" parent="Bullet_Starts"]
-position = Vector2( 7.71334, 7.03914 )
-
-[node name="4" type="Node2D" parent="Bullet_Starts"]
-position = Vector2( 0.0255585, 11.8886 )
-
-[node name="5" type="Node2D" parent="Bullet_Starts"]
-position = Vector2( -7.98162, 7.59734 )
-
-[node name="6" type="Node2D" parent="Bullet_Starts"]
-position = Vector2( -11.8332, 3.68774 )
-
-[node name="7" type="Node2D" parent="Bullet_Starts"]
-position = Vector2( -8.81878, -4.44531 )
 
 [node name="Respawn_Timer" type="Timer" parent="."]
 wait_time = 3.0
@@ -105,51 +228,25 @@ one_shot = true
 wait_time = 2.0
 one_shot = true
 
-[node name="Laser_Timer" type="Timer" parent="."]
-wait_time = 0.4
-one_shot = true
-
-[node name="Laser_Input_Timer" type="Timer" parent="."]
-wait_time = 0.08
-one_shot = true
-
-[node name="Laser_Cooldown_Timer" type="Timer" parent="."]
-wait_time = 0.5
-one_shot = true
-
 [node name="Teleport_Timer" type="Timer" parent="."]
 one_shot = true
 
-[node name="Forcefield_Timer" type="Timer" parent="."]
-wait_time = 3.0
-one_shot = true
-
-[node name="Animation_Timer" type="Timer" parent="."]
-wait_time = 0.08
+[node name="Top_Animation_Timer" type="Timer" parent="."]
+wait_time = 0.35
 autostart = true
 
-[node name="Shoot_Animation_Timer" type="Timer" parent="."]
-one_shot = true
-
-[node name="Shoot_Cooldown_Timer" type="Timer" parent="."]
-wait_time = 0.4
-one_shot = true
-
-[node name="Grenade_Cooldown_Timer" type="Timer" parent="."]
-one_shot = true
-
-[node name="Grenade_Aiming_Timer" type="Timer" parent="."]
-wait_time = 0.5
-one_shot = true
+[node name="Leg_Animation_Timer" type="Timer" parent="."]
+wait_time = 0.271
+autostart = true
 
 [node name="Powerup_Timer" type="Timer" parent="."]
 wait_time = 5.0
 one_shot = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 0.0194966, 9.97446 )
+position = Vector2( 0.0144213, 13.2055 )
 rotation = 1.5708
-shape = SubResource( 2 )
+shape = SubResource( 4 )
 
 [node name="Death_Audio" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 7 )
@@ -158,13 +255,6 @@ volume_db = 5.0
 [node name="Killed_Audio" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 8 )
 volume_db = 10.0
-
-[node name="Laser_Charge_Audio" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 9 )
-pitch_scale = 1.25
-
-[node name="Laser_Fire_Audio" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 10 )
 
 [node name="Flag_Pickup_Audio" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 11 )
@@ -177,13 +267,15 @@ stream = ExtResource( 13 )
 pitch_scale = 0.5
 attenuation = 0.233258
 
-[node name="Label_Name" type="RichTextLabel" parent="."]
+[node name="Name_Parent" type="Node2D" parent="."]
+z_index = 10
+
+[node name="Label_Name" type="RichTextLabel" parent="Name_Parent"]
 anchor_right = 1.0
-margin_left = -100.0
-margin_top = -21.442
-margin_right = 300.0
-margin_bottom = 0.557999
-rect_scale = Vector2( 0.5, 0.5 )
+margin_left = -199.854
+margin_top = -26.8247
+margin_right = 200.146
+margin_bottom = -4.82474
 rect_clip_content = false
 custom_fonts/normal_font = ExtResource( 14 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
@@ -194,3 +286,7 @@ scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Teleport_Invincibility_Timer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true

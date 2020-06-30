@@ -1,12 +1,16 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Global_Overlay.gd" type="Script" id=1]
 [ext_resource path="res://Hover_Button_Style.tres" type="StyleBox" id=2]
 [ext_resource path="res://Normal_Button_Style.tres" type="StyleBox" id=3]
 [ext_resource path="res://Pressed_Button_Style.tres" type="StyleBox" id=4]
-[ext_resource path="res://fonts/Pixel_Chat.tres" type="DynamicFont" id=5]
+[ext_resource path="res://fonts/pixel.TTF" type="DynamicFontData" id=5]
 [ext_resource path="res://fonts/Pixel_Chat_Corrected.tres" type="DynamicFont" id=6]
 [ext_resource path="res://Assets/Environment/background.png" type="Texture" id=7]
+
+[sub_resource type="DynamicFont" id=1]
+outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
+font_data = ExtResource( 5 )
 
 [node name="Global_Overlay" type="Node2D"]
 script = ExtResource( 1 )
@@ -18,14 +22,17 @@ __meta__ = {
 layer = 2
 
 [node name="Options_Button" type="Button" parent="CanvasLayer"]
-margin_left = 1759.65
-margin_top = 22.2246
-margin_right = 1894.65
-margin_bottom = 87.2246
+visible = false
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -154.33
+margin_top = 121.667
+margin_right = -24.3298
+margin_bottom = 181.667
 custom_styles/hover = ExtResource( 2 )
 custom_styles/pressed = ExtResource( 4 )
 custom_styles/normal = ExtResource( 3 )
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = SubResource( 1 )
 custom_colors/font_color_disabled = Color( 0, 0, 0, 1 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_hover = Color( 0, 0, 0, 1 )

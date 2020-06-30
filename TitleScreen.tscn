@@ -1,48 +1,48 @@
 [gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://TitleScreen.gd" type="Script" id=1]
-[ext_resource path="res://UI_Layer.gd" type="Script" id=2]
-[ext_resource path="res://fonts/Pixel_Title.tres" type="DynamicFont" id=3]
-[ext_resource path="res://GameContent/Flag.tscn" type="PackedScene" id=4]
-[ext_resource path="res://GameContent/Flag.gd" type="Script" id=5]
-[ext_resource path="res://flag_frames/flagBlue1.png" type="Texture" id=6]
-[ext_resource path="res://flag_frames/flagBlue2.png" type="Texture" id=7]
-[ext_resource path="res://flag_frames/flagBlue3.png" type="Texture" id=8]
-[ext_resource path="res://flag_frames/flagBlue4.png" type="Texture" id=9]
-[ext_resource path="res://fonts/Pixel_Chat.tres" type="DynamicFont" id=10]
-[ext_resource path="res://fonts/Pixel_SubTitle.tres" type="DynamicFont" id=11]
-[ext_resource path="res://fonts/pixel.TTF" type="DynamicFontData" id=12]
-[ext_resource path="res://GameContent/Flag_Area2D.gd" type="Script" id=14]
-[ext_resource path="res://Hover_Button_Style.tres" type="StyleBox" id=15]
-[ext_resource path="res://Pressed_Button_Style.tres" type="StyleBox" id=16]
-[ext_resource path="res://Normal_Button_Style.tres" type="StyleBox" id=17]
-[ext_resource path="res://fonts/Pixel_Button.tres" type="DynamicFont" id=18]
-[ext_resource path="res://fonts/Pixel_Button_Title.tres" type="DynamicFont" id=19]
-[ext_resource path="res://Assets/Sound/CTFTitlescreen.ogg" type="AudioStream" id=20]
+[ext_resource path="res://GameContent/Flag.tscn" type="PackedScene" id=2]
+[ext_resource path="res://GameContent/Flag.gd" type="Script" id=3]
+[ext_resource path="res://flag_frames/flagBlue1.png" type="Texture" id=4]
+[ext_resource path="res://flag_frames/flagBlue2.png" type="Texture" id=5]
+[ext_resource path="res://flag_frames/flagBlue3.png" type="Texture" id=6]
+[ext_resource path="res://flag_frames/flagBlue4.png" type="Texture" id=7]
+[ext_resource path="res://GameContent/Flag_Area2D.gd" type="Script" id=8]
+[ext_resource path="res://UI_Layer.gd" type="Script" id=9]
+[ext_resource path="res://fonts/Pixel_Title.tres" type="DynamicFont" id=10]
+[ext_resource path="res://fonts/Pixel_Chat.tres" type="DynamicFont" id=11]
+[ext_resource path="res://fonts/Pixel_Button.tres" type="DynamicFont" id=12]
+[ext_resource path="res://fonts/Pixel_SubTitle.tres" type="DynamicFont" id=13]
+[ext_resource path="res://Hover_Button_Style.tres" type="StyleBox" id=14]
+[ext_resource path="res://Pressed_Button_Style.tres" type="StyleBox" id=15]
+[ext_resource path="res://Normal_Button_Style.tres" type="StyleBox" id=16]
+[ext_resource path="res://fonts/Pixel_Button_Title.tres" type="DynamicFont" id=17]
+[ext_resource path="res://fonts/pixel.TTF" type="DynamicFontData" id=18]
+[ext_resource path="res://Assets/Sound/CTFTitlescreen.ogg" type="AudioStream" id=19]
 
-[sub_resource type="SpriteFrames" id=1]
-animations = [ {
-"frames": [ ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ) ],
-"loop": true,
-"name": "default",
-"speed": 7.0
-} ]
-
-[sub_resource type="ConvexPolygonShape2D" id=2]
-points = PoolVector2Array( 0, 0, 18.693, 3.609, 18.937, 14.698, 0, 28.805 )
-
-[sub_resource type="DynamicFont" id=3]
+[sub_resource type="DynamicFont" id=1]
 size = 10
 outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
-font_data = ExtResource( 12 )
+font_data = ExtResource( 18 )
 
-[sub_resource type="StyleBoxFlat" id=4]
+[sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 1, 1, 1, 1 )
 border_width_left = 4
 border_width_top = 4
 border_width_right = 4
 border_width_bottom = 4
 border_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="SpriteFrames" id=3]
+animations = [ {
+"frames": [ ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ) ],
+"loop": true,
+"name": "default",
+"speed": 7.0
+} ]
+
+[sub_resource type="ConvexPolygonShape2D" id=4]
+points = PoolVector2Array( 0, 0, 18.693, 3.609, 18.937, 14.698, 0, 28.805 )
 
 [node name="TitleScreen" type="Node2D"]
 script = ExtResource( 1 )
@@ -59,53 +59,25 @@ __meta__ = {
 
 [node name="HTTPRequest_GetLeaderboard" type="HTTPRequest" parent="."]
 
-[node name="Flag" parent="." instance=ExtResource( 4 )]
-position = Vector2( 1581.88, 123 )
-scale = Vector2( 4, 3.04 )
-
-[node name="Flag2" type="Node2D" parent="." groups=[
-"Flags",
-]]
-position = Vector2( 292.86, 123 )
-scale = Vector2( 4, 3.04 )
-z_as_relative = false
-script = ExtResource( 5 )
-
-[node name="Blue_Sprite" type="AnimatedSprite" parent="Flag2"]
-position = Vector2( 10, -14 )
-scale = Vector2( 2, 2 )
-frames = SubResource( 1 )
-frame = 1
-playing = true
-
-[node name="Area2D" type="Area2D" parent="Flag2" groups=[
-"Flag_Bodies",
-]]
-position = Vector2( 20.7922, -30.4714 )
-script = ExtResource( 14 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Flag2/Area2D"]
-position = Vector2( -20.7247, 2.43704 )
-shape = SubResource( 2 )
-
 [node name="UI_Layer" type="CanvasLayer" parent="."]
-script = ExtResource( 2 )
+script = ExtResource( 9 )
 
 [node name="Title" type="RichTextLabel" parent="UI_Layer"]
-anchor_top = 0.0331589
-anchor_right = 1.667
-anchor_bottom = 1.00016
-margin_left = 0.330383
-margin_top = -1.95057
-margin_right = 0.330322
-margin_bottom = -1.95062
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -578.372
+margin_top = -513.94
+margin_right = 1341.63
+margin_bottom = 530.249
 rect_scale = Vector2( 0.6, 0.6 )
 rect_clip_content = false
-custom_fonts/mono_font = ExtResource( 3 )
-custom_fonts/bold_italics_font = ExtResource( 3 )
-custom_fonts/italics_font = ExtResource( 3 )
-custom_fonts/bold_font = ExtResource( 3 )
-custom_fonts/normal_font = ExtResource( 3 )
+custom_fonts/mono_font = ExtResource( 10 )
+custom_fonts/bold_italics_font = ExtResource( 10 )
+custom_fonts/italics_font = ExtResource( 10 )
+custom_fonts/bold_font = ExtResource( 10 )
+custom_fonts/normal_font = ExtResource( 10 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
 bbcode_text = "[center]SUPERCTF.COM"
@@ -116,15 +88,17 @@ __meta__ = {
 }
 
 [node name="Subtitle" type="RichTextLabel" parent="UI_Layer"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 501.957
-margin_top = 143.738
-margin_right = 13.9568
-margin_bottom = -414.262
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -456.689
+margin_top = -394.733
+margin_right = 975.311
+margin_bottom = 127.267
 rect_scale = Vector2( 0.639761, 0.639761 )
-custom_fonts/mono_font = ExtResource( 10 )
-custom_fonts/normal_font = ExtResource( 18 )
+custom_fonts/mono_font = ExtResource( 11 )
+custom_fonts/normal_font = ExtResource( 12 )
 custom_colors/default_color = Color( 0.368627, 0.368627, 0.368627, 1 )
 bbcode_enabled = true
 bbcode_text = "[center]RANKED MULTIPLAYER CAPTURE THE FLAG"
@@ -135,12 +109,17 @@ __meta__ = {
 }
 
 [node name="PlayerRank" type="RichTextLabel" parent="UI_Layer"]
-margin_left = 266.95
-margin_top = 951.632
-margin_right = 514.95
-margin_bottom = 1044.63
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -439.062
+margin_top = 419.531
+margin_right = -191.062
+margin_bottom = 512.529
 rect_scale = Vector2( 0.576526, 0.576526 )
-custom_fonts/normal_font = ExtResource( 11 )
+rect_clip_content = false
+custom_fonts/normal_font = ExtResource( 13 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
 bbcode_text = "[center][color=green]-"
@@ -151,12 +130,17 @@ __meta__ = {
 }
 
 [node name="PlayerMMR" type="RichTextLabel" parent="UI_Layer"]
-margin_left = 495.74
-margin_top = 953.263
-margin_right = 805.74
-margin_bottom = 1046.26
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -710.297
+margin_top = 419.531
+margin_right = -400.297
+margin_bottom = 512.528
 rect_scale = Vector2( 0.576526, 0.576526 )
-custom_fonts/normal_font = ExtResource( 11 )
+rect_clip_content = false
+custom_fonts/normal_font = ExtResource( 13 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
 bbcode_text = "[center][color=green]-"
@@ -167,15 +151,17 @@ __meta__ = {
 }
 
 [node name="PlayerRankSubtitle" type="RichTextLabel" parent="UI_Layer"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 27.0597
-margin_top = 1030.07
-margin_right = -915.939
-margin_bottom = 465.068
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -929.588
+margin_top = 489.461
+margin_right = 47.4133
+margin_bottom = 1004.46
 rect_scale = Vector2( 0.639761, 0.639761 )
-custom_fonts/mono_font = ExtResource( 10 )
-custom_fonts/normal_font = ExtResource( 18 )
+custom_fonts/mono_font = ExtResource( 11 )
+custom_fonts/normal_font = ExtResource( 12 )
 custom_colors/default_color = Color( 0.368627, 0.368627, 0.368627, 1 )
 bbcode_enabled = true
 bbcode_text = "[center]RANK"
@@ -186,15 +172,17 @@ __meta__ = {
 }
 
 [node name="PlayerMMRSubtitle" type="RichTextLabel" parent="UI_Layer"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 253.876
-margin_top = 1031.29
-margin_right = -625.127
-margin_bottom = 473.29
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -699.395
+margin_top = 490.526
+margin_right = 341.602
+margin_bottom = 1012.53
 rect_scale = Vector2( 0.639761, 0.639761 )
-custom_fonts/mono_font = ExtResource( 10 )
-custom_fonts/normal_font = ExtResource( 18 )
+custom_fonts/mono_font = ExtResource( 11 )
+custom_fonts/normal_font = ExtResource( 12 )
 custom_colors/default_color = Color( 0.368627, 0.368627, 0.368627, 1 )
 bbcode_enabled = true
 bbcode_text = "[center]MMR"
@@ -205,16 +193,18 @@ __meta__ = {
 }
 
 [node name="MOTDText" type="RichTextLabel" parent="UI_Layer"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 145.0
-margin_top = 590.622
-margin_right = 798.0
-margin_bottom = 32.6221
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -824.0
+margin_top = 12.0
+margin_right = 1750.0
+margin_bottom = 534.0
 rect_scale = Vector2( 0.639761, 0.639761 )
 focus_mode = 2
-custom_fonts/mono_font = ExtResource( 10 )
-custom_fonts/normal_font = ExtResource( 18 )
+custom_fonts/mono_font = ExtResource( 11 )
+custom_fonts/normal_font = ExtResource( 12 )
 custom_colors/default_color = Color( 0.368627, 0.368627, 0.368627, 1 )
 bbcode_enabled = true
 bbcode_text = "[color=black]NEWS:
@@ -245,15 +235,17 @@ __meta__ = {
 
 [node name="CancelQueueButton" type="Button" parent="UI_Layer"]
 anchor_left = 0.5
+anchor_top = 0.5
 anchor_right = 0.5
-margin_left = -81.9747
-margin_top = 969.231
-margin_right = 86.0253
-margin_bottom = 1039.23
-custom_styles/hover = ExtResource( 15 )
-custom_styles/pressed = ExtResource( 16 )
-custom_styles/normal = ExtResource( 17 )
-custom_fonts/font = ExtResource( 18 )
+anchor_bottom = 0.5
+margin_left = -90.5637
+margin_top = 428.405
+margin_right = 77.4363
+margin_bottom = 498.404
+custom_styles/hover = ExtResource( 14 )
+custom_styles/pressed = ExtResource( 15 )
+custom_styles/normal = ExtResource( 16 )
+custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color = Color( 0.113725, 0.113725, 0.113725, 1 )
 text = "Cancel"
 __meta__ = {
@@ -262,79 +254,92 @@ __meta__ = {
 
 [node name="FindMatchButton" type="Button" parent="UI_Layer"]
 anchor_left = 0.5
+anchor_top = 0.5
 anchor_right = 0.5
-margin_left = -160.829
-margin_top = 962.537
-margin_right = 157.171
-margin_bottom = 1044.54
-custom_styles/hover = ExtResource( 15 )
-custom_styles/pressed = ExtResource( 16 )
-custom_styles/normal = ExtResource( 17 )
-custom_fonts/font = ExtResource( 18 )
+anchor_bottom = 0.5
+margin_left = -165.564
+margin_top = 422.403
+margin_right = 152.436
+margin_bottom = 504.406
+custom_styles/hover = ExtResource( 14 )
+custom_styles/pressed = ExtResource( 15 )
+custom_styles/normal = ExtResource( 16 )
+custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color = Color( 0.137255, 0.137255, 0.137255, 1 )
 text = "Find Match"
 
 [node name="PlayAsGuestButton" type="Button" parent="UI_Layer"]
 anchor_left = 0.5
+anchor_top = 0.5
 anchor_right = 0.5
-margin_left = 182.753
-margin_top = 960.374
-margin_right = 347.229
-margin_bottom = 1043.37
-custom_styles/hover = ExtResource( 15 )
-custom_styles/pressed = ExtResource( 16 )
-custom_styles/normal = ExtResource( 17 )
-custom_fonts/font = ExtResource( 18 )
+anchor_bottom = 0.5
+margin_left = 209.195
+margin_top = 423.219
+margin_right = 373.671
+margin_bottom = 506.215
+custom_styles/hover = ExtResource( 14 )
+custom_styles/pressed = ExtResource( 15 )
+custom_styles/normal = ExtResource( 16 )
+custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color = Color( 0.109804, 0.109804, 0.109804, 1 )
 text = "Play"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="SignInButton" type="Button" parent="UI_Layer"]
-visible = false
-margin_left = 289.07
-margin_top = 221.078
-margin_right = 584.07
-margin_bottom = 286.078
-text = "Sign In"
-
 [node name="LogoutButton" type="Button" parent="UI_Layer"]
-margin_left = 40.3733
-margin_top = 976.091
-margin_right = 214.373
-margin_bottom = 1058.09
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -931.104
+margin_top = 447.347
+margin_right = -757.104
+margin_bottom = 529.346
 rect_scale = Vector2( 0.742863, 0.742863 )
-custom_styles/hover = ExtResource( 15 )
-custom_styles/pressed = ExtResource( 16 )
-custom_styles/normal = ExtResource( 17 )
-custom_fonts/font = ExtResource( 18 )
+custom_styles/hover = ExtResource( 14 )
+custom_styles/pressed = ExtResource( 15 )
+custom_styles/normal = ExtResource( 16 )
+custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "LOGOUT"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CreateAccountButton" type="Button" parent="UI_Layer"]
-visible = false
-margin_left = 334.369
-margin_top = 290.723
-margin_right = 538.369
-margin_bottom = 343.723
-custom_colors/font_color = Color( 0.431373, 0.74902, 1, 1 )
-text = "Create Account"
+[node name="Options_Button" type="Button" parent="UI_Layer"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -934.823
+margin_top = -519.552
+margin_right = -760.824
+margin_bottom = -437.553
+rect_scale = Vector2( 0.742863, 0.742863 )
+custom_styles/hover = ExtResource( 14 )
+custom_styles/pressed = ExtResource( 15 )
+custom_styles/normal = ExtResource( 16 )
+custom_fonts/font = ExtResource( 12 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Options"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="SplashStartButton" type="Button" parent="UI_Layer"]
 anchor_left = 0.5
+anchor_top = 0.5
 anchor_right = 0.5
-margin_left = -206.175
-margin_top = 968.907
-margin_right = 202.825
-margin_bottom = 1038.91
-custom_styles/hover = ExtResource( 15 )
-custom_styles/pressed = ExtResource( 16 )
-custom_styles/normal = ExtResource( 17 )
-custom_fonts/font = ExtResource( 19 )
+anchor_bottom = 0.5
+margin_left = -205.813
+margin_top = 428.403
+margin_right = 203.187
+margin_bottom = 498.406
+custom_styles/hover = ExtResource( 14 )
+custom_styles/pressed = ExtResource( 15 )
+custom_styles/normal = ExtResource( 16 )
+custom_fonts/font = ExtResource( 17 )
 custom_colors/font_color = Color( 0.137255, 0.137255, 0.137255, 1 )
 text = "START"
 __meta__ = {
@@ -343,12 +348,14 @@ __meta__ = {
 
 [node name="Searching_Text" type="Label" parent="UI_Layer"]
 anchor_left = 0.5
+anchor_top = 0.5
 anchor_right = 0.5
-margin_left = 185.221
-margin_top = 981.996
-margin_right = 386.221
-margin_bottom = 1029.0
-custom_fonts/font = ExtResource( 18 )
+anchor_bottom = 0.5
+margin_left = 207.999
+margin_top = 441.215
+margin_right = 408.999
+margin_bottom = 488.219
+custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Searching"
 __meta__ = {
@@ -360,13 +367,14 @@ wait_time = 0.3
 autostart = true
 
 [node name="Headline_Rect" type="ColorRect" parent="UI_Layer"]
-anchor_top = -0.00072185
-anchor_right = 1.0
-anchor_bottom = -0.00072185
-margin_left = 136.0
-margin_top = 185.0
-margin_right = -136.0
-margin_bottom = 215.0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -824.0
+margin_top = -355.0
+margin_right = 824.0
+margin_bottom = -325.0
 color = Color( 0, 0, 0, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -378,7 +386,7 @@ margin_top = 10.0
 margin_right = 1644.0
 margin_bottom = 45.0
 rect_clip_content = false
-custom_fonts/normal_font = SubResource( 3 )
+custom_fonts/normal_font = SubResource( 1 )
 bbcode_enabled = true
 bbcode_text = "---GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD---"
 text = "---GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD---"
@@ -392,15 +400,14 @@ margin_left = 800.455
 margin_top = 973.237
 margin_right = 1118.45
 margin_bottom = 1035.6
-custom_styles/normal = SubResource( 4 )
-custom_fonts/font = ExtResource( 10 )
+custom_styles/normal = SubResource( 2 )
+custom_fonts/font = ExtResource( 11 )
 custom_colors/selection_color = Color( 0, 0, 0, 1 )
 custom_colors/cursor_color = Color( 0, 0, 0, 1 )
 custom_colors/clear_button_color_pressed = Color( 0, 0, 0, 1 )
 custom_colors/font_color_selected = Color( 0, 0, 0, 1 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/clear_button_color = Color( 0, 0, 0, 1 )
-custom_colors/font_color_uneditable = Color( 0, 0, 0, 1 )
 align = 1
 max_length = 15
 placeholder_text = "Enter Username"
@@ -409,8 +416,63 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Leaderboard" type="Control" parent="UI_Layer"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -960.0
+margin_top = -540.0
+margin_right = -920.0
+margin_bottom = -500.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Flags" type="Control" parent="UI_Layer"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -960.0
+margin_top = -540.0
+margin_right = -920.0
+margin_bottom = -500.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Flag" parent="UI_Layer/Flags" instance=ExtResource( 2 )]
+position = Vector2( 1581.88, 123 )
+scale = Vector2( 4, 3.04 )
+
+[node name="Flag2" type="Node2D" parent="UI_Layer/Flags" groups=[
+"Flags",
+]]
+position = Vector2( 292.86, 123 )
+scale = Vector2( 4, 3.04 )
+z_as_relative = false
+script = ExtResource( 3 )
+
+[node name="Blue_Sprite" type="AnimatedSprite" parent="UI_Layer/Flags/Flag2"]
+position = Vector2( 10, -14 )
+scale = Vector2( 2, 2 )
+frames = SubResource( 3 )
+frame = 2
+playing = true
+
+[node name="Area2D" type="Area2D" parent="UI_Layer/Flags/Flag2" groups=[
+"Flag_Bodies",
+]]
+position = Vector2( 20.7922, -30.4714 )
+script = ExtResource( 8 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="UI_Layer/Flags/Flag2/Area2D"]
+position = Vector2( -20.7247, 2.43704 )
+shape = SubResource( 4 )
+
 [node name="Titlemusic_Audio" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 20 )
+stream = ExtResource( 19 )
 bus = "MusicBus"
 
 [node name="Leaderboard_Refresh_Timer" type="Timer" parent="."]

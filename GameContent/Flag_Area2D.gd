@@ -1,7 +1,7 @@
 extends Area2D
 
 # The id of the player who dropped it last, used so that it doesn't pick back up right after dropping
-var player_id_drop_buffer = -1;
+var player_id_drop_buffer = -2;
 
 # If true, ignores the next buffer reset
 var ignore_next_buffer_reset = false;
@@ -27,7 +27,7 @@ func _area_exited(body):
 				if ignore_next_buffer_reset:
 					ignore_next_buffer_reset = false;
 					return;
-				player_id_drop_buffer = -1;
+				player_id_drop_buffer = -2;
 
 # Called when this flag collides with a player
 func collided_with_player(player):
@@ -45,7 +45,7 @@ func collided_with_player(player):
 	if flag.is_at_home and flag.team_id == player.team_id:
 		return
 	# If the player is currently firing a laser. ignore it
-	if player.get_node("Laser_Timer").time_left != 0:
+	if player.get_node("Weapon_Node/Laser_Timer").time_left != 0:
 		return;
 	# Else If this is this player's flag and it's away from home, return it home
 	elif !flag.is_at_home and flag.team_id == player.team_id:
