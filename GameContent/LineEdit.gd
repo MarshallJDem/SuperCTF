@@ -40,10 +40,11 @@ remote func send_message(message, sender_id):
 remotesync func receive_message(message, sender_id):
 	if Globals.localPlayerID == sender_id:
 		return;
-	add_message(message, sender_id);
 	if Globals.allowCommands and get_tree().is_network_server():
 		if message.left(1) == "/":
 			process_command(message);
+			return;
+	add_message(message, sender_id);
 func process_command(command):
 	if command == "/endmatch 0":
 		get_tree().get_root().get_node("MainScene/NetworkController").rpc("end_match",0);
