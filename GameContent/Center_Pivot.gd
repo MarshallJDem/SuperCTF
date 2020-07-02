@@ -22,7 +22,7 @@ func update_camera_offset_from_mouse():
 	var distance = sqrt(pow(mpos2.x - get_viewport_rect().size.x/2,2) + pow(mpos2.y - get_viewport_rect().size.y/2,2));
 	var modifier = 0.03;
 	$'..'.camera_ref.smoothing_speed = 10;
-	if Input.is_key_pressed(KEY_SHIFT):
+	if !Globals.is_typing_in_chat and Input.is_key_pressed(KEY_SHIFT):
 		$'..'.camera_ref.smoothing_speed = 5;
 		modifier *= 8;
 	$'..'.camera_ref.position.x = distance * modifier;
