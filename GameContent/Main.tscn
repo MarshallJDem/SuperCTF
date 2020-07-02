@@ -185,25 +185,6 @@ custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color = Color( 0.172549, 0.172549, 0.172549, 1 )
 text = "Leave Match"
 
-[node name="Cancel_Button" type="Button" parent="UI_Layer"]
-visible = false
-anchor_top = 1.0
-anchor_bottom = 1.0
-margin_left = 34.2733
-margin_top = -93.9291
-margin_right = 160.273
-margin_bottom = -26.9291
-rect_scale = Vector2( 0.5, 0.5 )
-custom_styles/hover = ExtResource( 9 )
-custom_styles/pressed = ExtResource( 10 )
-custom_styles/normal = ExtResource( 11 )
-custom_fonts/font = SubResource( 4 )
-custom_colors/font_color = Color( 0.172549, 0.172549, 0.172549, 1 )
-text = "Cancel"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="Options_Button" type="Button" parent="UI_Layer"]
 margin_left = 35.4974
 margin_top = 24.4809
@@ -409,6 +390,25 @@ one_shot = true
 [node name="Move_GUI_Fade_Timer" type="Timer" parent="UI_Layer"]
 wait_time = 0.5
 one_shot = true
+
+[node name="Cancel_Button" type="Button" parent="UI_Layer"]
+visible = false
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 34.2733
+margin_top = -93.9291
+margin_right = 160.273
+margin_bottom = -26.9291
+rect_scale = Vector2( 0.5, 0.5 )
+custom_styles/hover = ExtResource( 9 )
+custom_styles/pressed = ExtResource( 10 )
+custom_styles/normal = ExtResource( 11 )
+custom_fonts/font = SubResource( 4 )
+custom_colors/font_color = Color( 0.172549, 0.172549, 0.172549, 1 )
+text = "Cancel"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Score_Audio" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 22 )
