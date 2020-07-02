@@ -521,10 +521,12 @@ func reset_game_objects(kill_players = false):
 	for mine in get_tree().get_nodes_in_group("Landmines"):
 		mine.set_name(mine.name + "DELETING");
 		mine.die();
+	Globals.active_landmines = 0;
 
 # Loads up a new round but does not start it yet
 # WARNING - you will likely need to make these edits in "load_mid_round" too
 remotesync func load_new_round():
+	
 	print("Loading New Round" + str(round_num + 1));
 	if round_num == 0:
 		# Start syncing time with server. Game time elapse at this point would be 0
