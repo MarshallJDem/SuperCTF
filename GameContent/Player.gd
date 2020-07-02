@@ -47,14 +47,15 @@ func _ready():
 	if Globals.testing:
 		activate_camera();
 		control = true
-	Globals.connect("class_changed", self, "update_class");
+	if is_network_master():
+		Globals.connect("class_changed", self, "update_class");
+		update_class();
 	$Respawn_Timer.connect("timeout", self, "_respawn_timer_ended");
 	$Invincibility_Timer.connect("timeout", self, "_invincibility_timer_ended");
 	$Powerup_Timer.connect("timeout", self, "_powerup_timer_ended");
 	$Teleport_Invincibility_Timer.connect("timeout", self, "_teleport_invincibility_timer_ended");
 	lerp_start_pos = position;
 	lerp_end_pos = position;
-	update_class();
 
 func _input(event):
 	if Globals.is_typing_in_chat:
