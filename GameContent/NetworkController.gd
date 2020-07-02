@@ -428,7 +428,7 @@ func _client_connected(id):
 func _client_disconnected(id):
 	print("Client " + str(id) + " disconnected from the Server");
 	var player_id = -1;
-	for i in range(players.size()):
+	for i in players:
 		if players[i]["network_id"] == id:
 			player_id = i;
 	if player_id == -1:
@@ -438,8 +438,8 @@ func _client_disconnected(id):
 		var message = players[player_id]["name"];
 		message += " disconnected from the server";
 		get_tree().get_root().get_node("MainScene/UI_Layer/LineEdit").rpc("receive_message", "[color=red]" + message +  "[/color]", -1);
-		players.erase(player_id);
 		if isSkirmish:
+			players.erase(player_id);
 			if players.size() == 0:
 				game_vars = Globals.game_var_defaults.duplicate();
 		
