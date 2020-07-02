@@ -17,7 +17,7 @@ func _input(event):
 			# Send message / cancel
 			if Globals.is_typing_in_chat:
 				if self.text != "":
-					rpc_id(1, "send_message", self.text, Globals.localPlayerID);
+					rpc("receive_message", self.text, Globals.localPlayerID);
 					add_message(self.text, Globals.localPlayerID);
 				self.text = "";
 				self.release_focus();
@@ -33,18 +33,15 @@ func _input(event):
 			Globals.is_typing_in_chat = false;
 			self.mouse_filter = Control.MOUSE_FILTER_IGNORE;
 
-remote func send_message(message, sender_id):
-	if get_tree().is_network_server():
-		rpc("receive_message", message, sender_id);
-
 remotesync func receive_message(message, sender_id):
 	if Globals.localPlayerID == sender_id:
 		return;
-	if Globals.allowCommands and get_tree().is_network_server():
-		if message.left(1) == "/":
+	if message.left(1) == "/":
+		if Globals.allowCommands and get_tree().is_network_server():
 			process_command(message);
-			return;
-	add_message(message, sender_id);
+			add_message(message, sender_id);
+	else:
+		add_message(message, sender_id);
 func process_command(command):
 	if command == "/endmatch 0":
 		get_tree().get_root().get_node("MainScene/NetworkController").rpc("end_match",0);
