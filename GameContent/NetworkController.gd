@@ -427,10 +427,13 @@ func _client_connected(id):
 # Called on when a client disconnects
 func _client_disconnected(id):
 	print("Client " + str(id) + " disconnected from the Server");
-	var player_id;
+	var player_id = -1;
 	for i in range(players.size()):
 		if players[i]["network_id"] == id:
 			player_id = i;
+	if player_id == -1:
+		print("ERROR - CLIENT DISCONNECTED HAD AN UNHANDLED PLAYER ID");
+		return;
 	if get_tree().is_network_server():
 		var message = players[player_id]["name"];
 		message += " disconnected from the server";
