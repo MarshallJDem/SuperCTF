@@ -83,9 +83,10 @@ func _process(delta):
 	BASE_SPEED = new_speed;
 	TELEPORT_SPEED = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("dashDistance");
 	$Teleport_Timer.wait_time = DASH_COOLDOWN_PMODIFIER + float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("dashCooldown"))/1000.0;
-	
+	if !get_tree().get_root().get_node("MainScene/NetworkController").round_is_running:
+		has_moved_after_respawn = false;
 	if is_network_master():
-		Globals.displaying_loadout = !alive or !has_moved_after_respawn or !get_tree().get_root().get_node("MainScene/NetworkController").round_is_running;
+		Globals.displaying_loadout = !alive or !has_moved_after_respawn;
 	if control:
 		activate_camera();
 		# Don't look around if we're shooting a laser
