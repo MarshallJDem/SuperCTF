@@ -36,6 +36,7 @@ position = Vector2( -0.23691, 299.311 )
 
 [node name="Powerup_Spawner2" parent="YSort" instance=ExtResource( 3 )]
 position = Vector2( 0.812893, -298.902 )
+z_index = -1000
 
 [node name="Flag_Home-0" parent="YSort" instance=ExtResource( 4 )]
 position = Vector2( -942.622, 2.25647 )
