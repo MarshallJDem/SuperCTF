@@ -68,8 +68,6 @@ func set_view(state):
 		VIEW_START:
 			$LogoutButton.visible = false;
 			$PlayAsGuestButton.visible = true;
-			$SignInButton.visible = true;
-			$CreateAccountButton.visible = true;
 			$UsernameLineEdit.visible = true;
 		VIEW_MAIN:
 			$FindMatchButton.visible = true;

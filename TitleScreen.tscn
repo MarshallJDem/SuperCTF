@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://TitleScreen.gd" type="Script" id=1]
 [ext_resource path="res://GameContent/Flag.tscn" type="PackedScene" id=2]
@@ -32,6 +32,10 @@ border_width_top = 4
 border_width_right = 4
 border_width_bottom = 4
 border_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="DynamicFont" id=5]
+outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
+font_data = ExtResource( 18 )
 
 [sub_resource type="SpriteFrames" id=3]
 animations = [ {
@@ -219,7 +223,7 @@ We are looking for people to get involved and make suggestions or help build the
 - Carshalljd (add me on discord [color=green]carshalljd#4808[color=black] or email me at [color=green]marshalljdem@gmail.com[color=black])"
 text = "NEWS:
 
-A massive update has just been released! There are now classes with new weapons, abilities, and utilities. The map has been changed along with a bunch of balancing and lag compensation improvements.
+Super CTF is undergoing some big gameplay changes to make combat more interesting! Come join the discord to be part of the game design discussion.  Experimental version can be played at  https://superctf.com/test
 
 Discord Link: https://discord.gg/D3Ban34
 Twitter: https://twitter.com/SuperCTFGame
@@ -396,12 +400,16 @@ __meta__ = {
 }
 
 [node name="UsernameLineEdit" type="LineEdit" parent="UI_Layer"]
-margin_left = 800.455
-margin_top = 973.237
-margin_right = 1118.45
-margin_bottom = 1035.6
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -158.997
+margin_top = 433.358
+margin_right = 158.997
+margin_bottom = 495.721
 custom_styles/normal = SubResource( 2 )
-custom_fonts/font = ExtResource( 11 )
+custom_fonts/font = SubResource( 5 )
 custom_colors/selection_color = Color( 0, 0, 0, 1 )
 custom_colors/cursor_color = Color( 0, 0, 0, 1 )
 custom_colors/clear_button_color_pressed = Color( 0, 0, 0, 1 )
@@ -458,6 +466,7 @@ script = ExtResource( 3 )
 position = Vector2( 10, -14 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 3 )
+frame = 3
 playing = true
 
 [node name="Area2D" type="Area2D" parent="UI_Layer/Flags/Flag2" groups=[
