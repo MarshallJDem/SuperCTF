@@ -323,6 +323,8 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 			print(user_id);
 			# If the user is one of the players in the current match or this is a skirmish
 			if(Globals.allowedPlayers.has(user_id) || isSkirmish):
+				var message = player_name + " connected to the server";
+				get_tree().get_root().get_node("MainScene/UI_Layer/LineEdit").rpc("receive_message", "[color=green]" + message +  "[/color]", -1);
 				if isSkirmish:
 					var team_id = 0;
 					var b=0; var r=0;
