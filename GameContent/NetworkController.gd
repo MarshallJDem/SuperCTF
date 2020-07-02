@@ -429,8 +429,8 @@ func _client_disconnected(id):
 	print("Client " + str(id) + " disconnected from the Server");
 	if get_tree().is_network_server():
 		var message = "Client " + str(id);
-		if players[str(id)]["name"]:
-			message = players[str(id)]["name"];
+		if players[id]["name"]:
+			message = players[id]["name"];
 		message += " disconnected from the server";
 		get_tree().get_root().get_node("MainScene/UI_Layer/LineEdit").rpc("receive_message", "[color=red]" + message +  "[/color]", -1);
 		players.erase(id);
