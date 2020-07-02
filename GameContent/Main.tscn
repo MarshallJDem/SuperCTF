@@ -216,7 +216,6 @@ __meta__ = {
 }
 
 [node name="Move_GUIs" type="Node2D" parent="UI_Layer/Input_GUIs"]
-position = Vector2( 6.10352e-05, 95.4761 )
 
 [node name="Move_GUI_Text" type="Label" parent="UI_Layer/Input_GUIs/Move_GUIs"]
 anchor_top = 0.00432434
