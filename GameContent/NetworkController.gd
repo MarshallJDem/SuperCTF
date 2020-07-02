@@ -427,6 +427,8 @@ func _client_connected(id):
 # Called on when a client disconnects
 func _client_disconnected(id):
 	print("Client " + str(id) + " disconnected from the Server");
+	print(players);
+	print(players.has(id));
 	if get_tree().is_network_server():
 		var message = "Client " + str(id);
 		if players.has(id):
