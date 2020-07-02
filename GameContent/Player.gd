@@ -47,6 +47,7 @@ func _ready():
 	if Globals.testing:
 		activate_camera();
 		control = true
+	print("ISNETWORKMASTER : " + str(is_network_master()));
 	if is_network_master():
 		Globals.connect("class_changed", self, "update_class");
 		update_class();
