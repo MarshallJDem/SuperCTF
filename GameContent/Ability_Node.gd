@@ -14,7 +14,7 @@ func _ready() -> void:
 func _process(delta):
 	
 	if $Camo_Timer.time_left != 0:
-		if player.control:
+		if player.control and player.alive:
 			var m = (sin($Camo_Timer.time_left * 2 * PI * 6) + 1.0)/12.0;
 			m += 0.1;
 			player.modulate = Color(1,1,1,m);
