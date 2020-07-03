@@ -53,10 +53,6 @@ shape = SubResource( 1 )
 wait_time = 0.4
 one_shot = true
 
-[node name="Laser_Input_Timer" type="Timer" parent="Weapon_Node"]
-wait_time = 0.08
-one_shot = true
-
 [node name="Cooldown_Timer" type="Timer" parent="Weapon_Node"]
 wait_time = 0.5
 one_shot = true

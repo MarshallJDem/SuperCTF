@@ -40,7 +40,6 @@ func _ready() -> void:
 		$Laser_Fire_Audio.set_volume_db(-10);
 	
 	$Laser_Timer.connect("timeout", self, "_laser_timer_ended");
-	$Laser_Input_Timer.connect("timeout", self, "_laser_input_timer_ended");
 
 func class_changed():
 	pass;
@@ -62,13 +61,12 @@ func _process(delta):
 		$Cooldown_Timer.stop();
 		$Laser_Timer.stop();
 		$Shoot_Animation_Timer.stop();
-		$Laser_Input_Timer.stop();
 		
 	update_cooldown_lengths();
 	
 	# Shooting on inputs
 	if player.control:
-		if $Laser_Timer.time_left + $Laser_Input_Timer.time_left > 0:
+		if $Laser_Timer.time_left > 0:
 			player.speed = AIMING_SPEED * ($Laser_Timer.time_left / $Laser_Timer.wait_time);
 		# Move & Shoot around as long as we aren't typing in chat
 		if !Globals.is_typing_in_chat:
@@ -104,10 +102,7 @@ func _process(delta):
 func _draw():
 	if $Laser_Timer.time_left > 0:
 		var size;
-		if $Laser_Input_Timer.time_left > 0:
-			size = 0;
-		else:
-			size = clamp(1 / ($Laser_Timer.time_left / $Laser_Timer.wait_time), 0 , 3);
+		size = clamp(1 / ($Laser_Timer.time_left / $Laser_Timer.wait_time), 0 , 3);
 		var red = 1 if player.team_id == 1 else 0;
 		var green = 10.0/255.0 if player.team_id == 1 else 130.0/255.0;
 		var blue = 1 if player.team_id == 0 else 0;
@@ -142,12 +137,9 @@ func shoot_on_inputs():
 					if $Cooldown_Timer.time_left == 0:
 						call_deferred("shoot_bullet", ((get_global_mouse_position() - global_position).normalized()));
 				elif Globals.current_class == Globals.Classes.Laser:
-					var direction = (get_global_mouse_position() - player.position).normalized();
-					laser_direction = direction;
-					laser_position = player.position + get_node("Laser_Starts/" + String(player.look_direction)).position * 20;
-					# If we are still in input phase, update direction
-					if $Laser_Input_Timer.time_left == 0:
-						start_laser_input();
+					if $Cooldown_Timer.time_left == 0:
+						var direction = (get_global_mouse_position() - player.position).normalized();
+						shoot_laser(direction);
 				elif Globals.current_class == Globals.Classes.Demo:
 					if $Cooldown_Timer.time_left == 0:
 						if !Globals.testing:
@@ -250,18 +242,7 @@ remotesync func spawn_bullet(pos, player_id, direction, time_shot, bullet_name, 
 	get_tree().get_root().get_node("MainScene").call_deferred("add_child", bullet);
 	return bullet;
 
-remote func send_start_laser(direction, start_pos, target_pos, look_direction):
-	if get_tree().is_network_server():# Only run if it's the server
-		var clients = get_tree().get_network_connected_peers();
-		for i in clients: # For each connected client
-			if i != get_tree().get_rpc_sender_id(): # Don't do it for the player who sent it
-				rpc_id(i, "receive_start_laser", direction, start_pos,target_pos, look_direction);
-		start_laser(direction, start_pos,target_pos, look_direction); # Also call it locally for the server
-
-remote func receive_start_laser(direction, start_pos, target_pos, look_direction):
-	start_laser(direction, start_pos,target_pos, look_direction);
-
-func start_laser(direction, start_pos, target_pos, look_direction):
+remotesync func start_laser(direction, start_pos, target_pos, look_direction,time_shot):
 	player.get_node("Sprite_Gun").frame = look_direction;
 	player.get_node("Sprite_Head").frame = look_direction;
 	player.get_node("Sprite_Body").frame = look_direction;
@@ -270,6 +251,16 @@ func start_laser(direction, start_pos, target_pos, look_direction):
 	laser_direction = direction;
 	laser_position = start_pos;
 	laser_target_position = target_pos;
+	var wait_time = 0.4;
+	# Compensate for master (Make time to shoot longer)
+	if Globals.testing or player.is_network_master():
+		wait_time = wait_time + (Globals.player_lerp_time + (Globals.ping/2.0))/1000.0;
+	# Compensate for puppet (Make time to shoot shorter)
+	elif !get_tree().is_network_server():
+		wait_time = wait_time - ((OS.get_system_time_msecs() - Globals.match_start_time) - time_shot )/1000.0;
+	if wait_time <= 0:
+		wait_time = 0.05;
+	$Laser_Timer.wait_time = wait_time;
 	$Laser_Timer.start();
 	player.speed = AIMING_SPEED;
 	player.camera_ref.shake($Laser_Timer.wait_time, 0.5, true);
@@ -287,24 +278,12 @@ func start_laser(direction, start_pos, target_pos, look_direction):
 	$Laser_Particles.position = start_pos;
 
 func _laser_timer_ended():
-	shoot_laser();
+	spawn_laser();
 	player.speed = player.BASE_SPEED;
 
-func start_laser_input():
-	laser_target_position = null;
-	$Laser_Input_Timer.start();
-func _laser_input_timer_ended():
-	var start_pos = get_node("Laser_Starts/" + String(player.look_direction)).position;
-	$CollisionTester.position = Vector2(0,0);
-	$CollisionTester.move_and_collide(laser_direction * 1000.0)
-	var length = $CollisionTester.position.distance_to(Vector2.ZERO) + 10;
-	laser_target_position = laser_direction * length;
-	var target_pos = laser_target_position;
-	rpc_id(1, "send_start_laser", laser_direction, start_pos,target_pos, player.look_direction);
-	start_laser(laser_direction, start_pos,target_pos, player.look_direction);
 
 # Shoots a laser shot
-func shoot_laser():
+func spawn_laser():
 	$Shoot_Animation_Timer.start();
 	if is_network_master():
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE);
@@ -317,3 +296,19 @@ func shoot_laser():
 	get_tree().get_root().get_node("MainScene").add_child(laser);
 	$Laser_Fire_Audio.play();
 	$Cooldown_Timer.start();
+
+func shoot_laser(d):
+	
+	laser_direction = d;
+	laser_position = player.position + get_node("Laser_Starts/" + String(player.look_direction)).position * 20;
+	var start_pos = get_node("Laser_Starts/" + String(player.look_direction)).position;
+	$CollisionTester.position = Vector2(0,0);
+	$CollisionTester.move_and_collide(laser_direction * 1000.0)
+	var length = $CollisionTester.position.distance_to(Vector2.ZERO) + 10;
+	laser_target_position = laser_direction * length;
+	var target_pos = laser_target_position;
+	var time_shot = OS.get_system_time_msecs() - Globals.match_start_time;
+	if Globals.testing:
+		start_laser( laser_direction, start_pos,target_pos, player.look_direction,time_shot);
+	else:
+		rpc("start_laser", laser_direction, start_pos,target_pos, player.look_direction,time_shot);
