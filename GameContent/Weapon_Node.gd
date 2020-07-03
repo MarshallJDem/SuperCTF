@@ -57,6 +57,13 @@ func update_cooldown_lengths():
 	$Laser_Timer.wait_time = float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("laserChargeTime"))/1000.0;
 
 func _process(delta):
+	
+	if !player.alive:
+		$Cooldown_Timer.stop();
+		$Laser_Timer.stop();
+		$Shoot_Animation_Timer.stop();
+		$Laser_Input_Timer.stop();
+		
 	update_cooldown_lengths();
 	
 	# Shooting on inputs

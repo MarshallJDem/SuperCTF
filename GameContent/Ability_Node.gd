@@ -12,21 +12,21 @@ func _ready() -> void:
 	$Camo_Timer.connect("timeout", self, "_camo_timer_ended")
 
 func _process(delta):
+	if !player.alive:
+		$Camo_Timer.stop();
+		$Cooldown_Timer.stop();
 	
 	if $Camo_Timer.time_left != 0:
-		if !player.alive:
-			$Camo_Timer.stop();
-		else:
-			if player.control:
-				var m = (sin($Camo_Timer.time_left * 2 * PI * 6) + 1.0)/12.0;
-				m += 0.1;
-				player.modulate = Color(1,1,1,m);
-			var count = 4;
-			var spacing = $Camo_Timer.wait_time/count;
-			var start = spacing/2.0;
-			if int((($Camo_Timer.wait_time - $Camo_Timer.time_left) + start ) / spacing) > camo_flashes_completed:
-				camo_flashes_completed += 1;
-				spawn_camo_flash();
+		if player.control:
+			var m = (sin($Camo_Timer.time_left * 2 * PI * 6) + 1.0)/12.0;
+			m += 0.1;
+			player.modulate = Color(1,1,1,m);
+		var count = 4;
+		var spacing = $Camo_Timer.wait_time/count;
+		var start = spacing/2.0;
+		if int((($Camo_Timer.wait_time - $Camo_Timer.time_left) + start ) / spacing) > camo_flashes_completed:
+			camo_flashes_completed += 1;
+			spawn_camo_flash();
 
 func _input(event):
 	if Globals.is_typing_in_chat or Globals.displaying_loadout:

@@ -20,6 +20,9 @@ func _utility_changed():
 	pass;
 
 func _process(delta):
+	
+	if !player.alive:
+		$Cooldown_Timer.stop();
 	if !player.control:
 		return;
 	update();
