@@ -292,7 +292,7 @@ func spawn_laser():
 	laser.target_pos = player.position + laser_target_position;
 	laser.player_id = player.player_id;
 	laser.team_id = player.team_id;
-	laser.z_index = player.z_index + 4;
+	laser.z_index = (player.position.y + laser_target_position.y) - 2;
 	get_tree().get_root().get_node("MainScene").add_child(laser);
 	$Laser_Fire_Audio.play();
 	$Cooldown_Timer.start();
