@@ -149,24 +149,24 @@ position = Vector2( 1126.71, 7.14973 )
 scale = Vector2( 3, 142.266 )
 
 [node name="Wall4" parent="YSort" instance=ExtResource( 2 )]
-position = Vector2( -529.025, -229.006 )
-scale = Vector2( 3, 109.156 )
+position = Vector2( -529.342, -232.176 )
+scale = Vector2( 3, 112.84 )
 
 [node name="Wall9" parent="YSort" instance=ExtResource( 2 )]
-position = Vector2( 529.064, -228.089 )
-scale = Vector2( 3, 109.156 )
+position = Vector2( 529.064, -232.527 )
+scale = Vector2( 3, 113 )
 
 [node name="Wall10" parent="YSort" instance=ExtResource( 2 )]
-position = Vector2( 528.946, 241.925 )
-scale = Vector2( 3, 109.156 )
+position = Vector2( 528.946, 237.487 )
+scale = Vector2( 3, 113 )
 
 [node name="Wall5" parent="YSort" instance=ExtResource( 2 )]
-position = Vector2( -528.616, 241.601 )
-scale = Vector2( 3, 109.156 )
+position = Vector2( -528.933, 239.065 )
+scale = Vector2( 3, 112 )
 
 [node name="Wall6" parent="YSort" instance=ExtResource( 2 )]
-position = Vector2( -0.13533, 23.1212 )
-scale = Vector2( 3, 97.684 )
+position = Vector2( -0.452316, 17.7323 )
+scale = Vector2( 3, 103.404 )
 
 [node name="Wall14" parent="YSort" instance=ExtResource( 2 )]
 position = Vector2( 0, 555.763 )
