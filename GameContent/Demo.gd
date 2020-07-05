@@ -85,7 +85,21 @@ func move(d):
 	deltatime += progress_delta * total_compensation;
 	var collision = move_and_collide(direction * deltatime * speed);
 	if collision:
+		if check_for_explosion(collision):
+			return;
 		# Reflect bullet
 		var reflection_dir = (direction - (2 * direction.dot(collision.normal) * collision.normal)).normalized();
-		move_and_collide(reflection_dir * collision.remainder.distance_to(Vector2.ZERO));
+		collision = move_and_collide(reflection_dir * collision.remainder.distance_to(Vector2.ZERO));
+		if collision:
+			check_for_explosion(collision);
 		direction = reflection_dir;
+func check_for_explosion(collision) -> bool:
+	if !Globals.testing and !get_tree().is_network_server():
+		return false;
+	if collision.collider.is_in_group("Forcefield_Bodies"):
+		if Globals.testing:
+			detonate(false);
+		else:
+			rpc("detonate", true);
+		return true;
+	return false;

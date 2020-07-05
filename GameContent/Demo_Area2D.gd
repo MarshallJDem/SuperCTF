@@ -9,6 +9,9 @@ func _ready():
 func _area_entered(body):
 	if body.is_in_group("Player_Bodies"):
 		collided_with_player(body.get_parent());
+	if body.is_in_group("Forcefield_Bodies"):
+		return;
+		#collided_with_forcefield(body.get_parent());
 
 # Called when this node collides with a player
 func collided_with_player(player):
@@ -20,3 +23,10 @@ func collided_with_player(player):
 	else:
 		pass;
 		#get_parent().call_deferred("detonate");
+
+# Called when this node collides with a forcefield
+func collided_with_forcefield(forcefield):
+	if Globals.testing:
+		get_parent().detonate(true);
+	if get_tree().is_network_server():
+		get_parent().rpc("detonate", true);

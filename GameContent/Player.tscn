@@ -44,7 +44,7 @@ z_index = 4
 script = ExtResource( 19 )
 
 [node name="CollisionTester" type="KinematicBody2D" parent="Weapon_Node"]
-collision_mask = 2
+collision_mask = 6
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Weapon_Node/CollisionTester"]
 shape = SubResource( 1 )

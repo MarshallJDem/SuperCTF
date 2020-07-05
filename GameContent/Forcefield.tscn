@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://GameContent/Forcefield.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Abilities/forcefield_top_R.png" type="Texture" id=2]
@@ -7,6 +7,10 @@
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 37.9608
 height = 24.3483
+
+[sub_resource type="CapsuleShape2D" id=2]
+radius = 36.9279
+height = 25.3449
 
 [node name="Forcefield" type="Node2D" groups=[
 "Forcefields",
@@ -29,6 +33,7 @@ hframes = 4
 "Forcefield_Bodies",
 "Wall_Bodies",
 ]]
+collision_layer = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2( -0.0852737, 10.4591 )
@@ -46,3 +51,14 @@ wait_time = 0.2
 [node name="Animation_Timer" type="Timer" parent="."]
 wait_time = 0.15
 autostart = true
+
+[node name="KinematicBody2D" type="KinematicBody2D" parent="." groups=[
+"Forcefield_Bodies",
+]]
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="KinematicBody2D"]
+position = Vector2( -0.415222, 10.3811 )
+rotation = 1.5708
+shape = SubResource( 2 )
