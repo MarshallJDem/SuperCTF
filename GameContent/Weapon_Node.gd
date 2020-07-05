@@ -52,7 +52,10 @@ func update_cooldown_lengths():
 	elif Globals.current_class == Globals.Classes.Demo:
 		$Cooldown_Timer.wait_time = 750.0/1000.0;
 	if reduced_cooldown_enabled:
-		$Cooldown_Timer.wait_time = $Cooldown_Timer.wait_time / 2.0;
+		if Globals.current_class == Globals.Classes.Laser:
+			$Cooldown_Timer.wait_time = $Cooldown_Timer.wait_time / 4.0;
+		else:
+			$Cooldown_Timer.wait_time = $Cooldown_Timer.wait_time / 2.0;
 	$Laser_Timer.wait_time = float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("laserChargeTime"))/1000.0;
 
 func _process(delta):
