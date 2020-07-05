@@ -91,6 +91,7 @@ custom_styles/focus = SubResource( 1 )
 custom_styles/normal = SubResource( 2 )
 custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color = Color( 0.243137, 0.243137, 0.243137, 1 )
+max_length = 250
 placeholder_text = "Press ENTER to chat"
 script = ExtResource( 6 )
 __meta__ = {
