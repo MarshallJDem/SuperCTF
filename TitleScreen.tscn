@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://TitleScreen.gd" type="Script" id=1]
 [ext_resource path="res://GameContent/Flag.tscn" type="PackedScene" id=2]
@@ -19,6 +19,7 @@
 [ext_resource path="res://fonts/Pixel_Button_Title.tres" type="DynamicFont" id=17]
 [ext_resource path="res://fonts/pixel.TTF" type="DynamicFontData" id=18]
 [ext_resource path="res://Assets/Sound/CTFTitlescreen.ogg" type="AudioStream" id=19]
+[ext_resource path="res://Chat_Text.tres" type="RichTextEffect" id=20]
 
 [sub_resource type="DynamicFont" id=1]
 size = 10
@@ -233,6 +234,7 @@ We are looking for people to get involved and make suggestions or help build the
 - Carshalljd (add me on discord carshalljd#4808 or email me at marshalljdem@gmail.com)"
 scroll_active = false
 selection_enabled = true
+custom_effects = [ ExtResource( 20 ) ]
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -466,7 +468,6 @@ script = ExtResource( 3 )
 position = Vector2( 10, -14 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 3 )
-frame = 2
 playing = true
 
 [node name="Area2D" type="Area2D" parent="UI_Layer/Flags/Flag2" groups=[
