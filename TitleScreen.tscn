@@ -214,7 +214,7 @@ custom_colors/default_color = Color( 0.368627, 0.368627, 0.368627, 1 )
 bbcode_enabled = true
 bbcode_text = "[color=black]NEWS:
 
-Super CTF is undergoing some big gameplay changes to make combat more interesting! Come join the discord to be part of the game design discussion.  Experimental version can be played at [color=blue] [url]https://superctf.com/test[/url][color=black]
+[rainbow]THE NEW VERSION IS OUT![/rainbow] There are now additional weapons, classes, abilities, and a new map. Along with this also comes tons of gameplay and balance changes that have made mechanics more interesting.
 
 Discord Link:[color=blue] [url]https://discord.gg/D3Ban34[/url][color=black]
 Twitter:[color=blue] [url]https://twitter.com/SuperCTFGame[/url][color=black]
@@ -224,7 +224,7 @@ We are looking for people to get involved and make suggestions or help build the
 - Carshalljd (add me on discord [color=green]carshalljd#4808[color=black] or email me at [color=green]marshalljdem@gmail.com[color=black])"
 text = "NEWS:
 
-Super CTF is undergoing some big gameplay changes to make combat more interesting! Come join the discord to be part of the game design discussion.  Experimental version can be played at  https://superctf.com/test
+THE NEW VERSION IS OUT! There are now additional weapons, classes, abilities, and a new map. Along with this also comes tons of gameplay and balance changes that have made mechanics more interesting.
 
 Discord Link: https://discord.gg/D3Ban34
 Twitter: https://twitter.com/SuperCTFGame
@@ -468,6 +468,7 @@ script = ExtResource( 3 )
 position = Vector2( 10, -14 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 3 )
+frame = 3
 playing = true
 
 [node name="Area2D" type="Area2D" parent="UI_Layer/Flags/Flag2" groups=[
