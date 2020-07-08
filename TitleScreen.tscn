@@ -34,11 +34,11 @@ border_width_right = 4
 border_width_bottom = 4
 border_color = Color( 0, 0, 0, 1 )
 
-[sub_resource type="DynamicFont" id=5]
+[sub_resource type="DynamicFont" id=3]
 outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
 font_data = ExtResource( 18 )
 
-[sub_resource type="SpriteFrames" id=3]
+[sub_resource type="SpriteFrames" id=4]
 animations = [ {
 "frames": [ ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ) ],
 "loop": true,
@@ -46,7 +46,7 @@ animations = [ {
 "speed": 7.0
 } ]
 
-[sub_resource type="ConvexPolygonShape2D" id=4]
+[sub_resource type="ConvexPolygonShape2D" id=5]
 points = PoolVector2Array( 0, 0, 18.693, 3.609, 18.937, 14.698, 0, 28.805 )
 
 [node name="TitleScreen" type="Node2D"]
@@ -411,7 +411,7 @@ margin_top = 433.358
 margin_right = 158.997
 margin_bottom = 495.721
 custom_styles/normal = SubResource( 2 )
-custom_fonts/font = SubResource( 5 )
+custom_fonts/font = SubResource( 3 )
 custom_colors/selection_color = Color( 0, 0, 0, 1 )
 custom_colors/cursor_color = Color( 0, 0, 0, 1 )
 custom_colors/clear_button_color_pressed = Color( 0, 0, 0, 1 )
@@ -467,8 +467,8 @@ script = ExtResource( 3 )
 [node name="Blue_Sprite" type="AnimatedSprite" parent="UI_Layer/Flags/Flag2"]
 position = Vector2( 10, -14 )
 scale = Vector2( 2, 2 )
-frames = SubResource( 3 )
-frame = 3
+frames = SubResource( 4 )
+frame = 1
 playing = true
 
 [node name="Area2D" type="Area2D" parent="UI_Layer/Flags/Flag2" groups=[
@@ -479,7 +479,7 @@ script = ExtResource( 8 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="UI_Layer/Flags/Flag2/Area2D"]
 position = Vector2( -20.7247, 2.43704 )
-shape = SubResource( 4 )
+shape = SubResource( 5 )
 
 [node name="Titlemusic_Audio" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 19 )

@@ -48,9 +48,8 @@ func _ready():
 		activate_camera();
 		control = true
 	print("ISNETWORKMASTER : " + str(is_network_master()));
-	if is_network_master():
-		Globals.connect("class_changed", self, "update_class");
-		update_class();
+	Globals.connect("class_changed", self, "update_class");
+	update_class();
 	$Respawn_Timer.connect("timeout", self, "_respawn_timer_ended");
 	$Invincibility_Timer.connect("timeout", self, "_invincibility_timer_ended");
 	$Powerup_Timer.connect("timeout", self, "_powerup_timer_ended");
@@ -146,6 +145,8 @@ func _process(delta):
 	last_position = position;
 
 func update_class():
+	if !Globals.testing and Globals.localPlayerID != player_id:
+		return;
 	var n = "gunner"
 	if Globals.current_class == Globals.Classes.Bullet:
 		n = "gunner";
