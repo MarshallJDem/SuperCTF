@@ -142,8 +142,6 @@ func _process(delta):
 	last_position = position;
 
 func update_class():
-	if !Globals.testing and Globals.localPlayerID != player_id:
-		return;
 	var n = "gunner"
 	if Globals.current_class == Globals.Classes.Bullet:
 		n = "gunner";
@@ -155,12 +153,10 @@ func update_class():
 	var t = "B";
 	if team_id == 1:
 		t = "R";
-	print("HERE WE GO");
-	print(team_id);
-	print(t);
-	if Globals.testing:
+	
+	if Globals.testing or Globals.localPlayerID != player_id:
 		update_class_rpc(n,t);
-	else:
+	elif Globals.localPlayerID == player_id:
 		rpc("update_class_rpc", n, t);
 
 remotesync func update_class_rpc(n, t):
