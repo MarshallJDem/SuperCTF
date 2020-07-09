@@ -69,8 +69,6 @@ func _process(delta):
 	
 	# Shooting on inputs
 	if player.control:
-		if $Laser_Timer.time_left > 0:
-			player.speed = AIMING_SPEED * ($Laser_Timer.time_left / $Laser_Timer.wait_time);
 		# Move & Shoot around as long as we aren't typing in chat
 		if !Globals.is_typing_in_chat:
 			shoot_on_inputs();
@@ -265,7 +263,6 @@ remotesync func start_laser(direction, start_pos, target_pos, look_direction,tim
 		wait_time = 0.05;
 	$Laser_Timer.wait_time = wait_time;
 	$Laser_Timer.start();
-	player.speed = AIMING_SPEED;
 	player.camera_ref.shake($Laser_Timer.wait_time, 0.5, true);
 	$Laser_Charge_Audio.play();
 	var red = 1 if player.team_id == 1 else 0;
@@ -282,7 +279,6 @@ remotesync func start_laser(direction, start_pos, target_pos, look_direction,tim
 
 func _laser_timer_ended():
 	spawn_laser();
-	player.speed = player.BASE_SPEED;
 
 
 # Shoots a laser shot

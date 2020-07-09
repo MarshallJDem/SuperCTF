@@ -11,7 +11,6 @@ var TELEPORT_SPEED = 3000;
 var POWERUP_SPEED = 0;
 var DASH_COOLDOWN_PMODIFIER = 0;
 var player_name = "Guest999";
-var speed = BASE_SPEED;
 # Where this player starts on the map and should respawn at
 var start_pos = Vector2(0,0);
 # Whether or not this player is alive
@@ -76,10 +75,8 @@ func _input(event):
 					camera_ref.lag_smooth();
 					$Teleport_Timer.start();
 func _process(delta):
-	var new_speed = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("playerSpeed");
-	if speed == BASE_SPEED:
-		speed = new_speed;
-	BASE_SPEED = new_speed;
+	BASE_SPEED = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("playerSpeed");
+	
 	TELEPORT_SPEED = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("dashDistance");
 	$Teleport_Timer.wait_time = DASH_COOLDOWN_PMODIFIER + float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("dashCooldown"))/1000.0;
 	if !get_tree().get_root().get_node("MainScene/NetworkController").round_is_running:
@@ -220,19 +217,22 @@ func move_on_inputs(teleport = false):
 	if teleport or (input.x != 0 or input.y != 0):
 		has_moved_after_respawn = true;
 	
-	var move_speed = speed + POWERUP_SPEED;
+	var speed = BASE_SPEED + POWERUP_SPEED;
+	if $Weapon_Node/Laser_Timer.time_left > 0:
+		speed = POWERUP_SPEED + $Weapon_Node.AIMING_SPEED * ($Weapon_Node/Laser_Timer.time_left / $Weapon_Node/Laser_Timer.wait_time);
+	
 	if($Flag_Holder.get_child_count() > 0):
-		move_speed += FLAG_SLOWDOWN_SPEED;
+		speed += FLAG_SLOWDOWN_SPEED;
 	if sprintEnabled:
-		move_speed += SPRINT_SPEED;
+		speed += SPRINT_SPEED;
 	if teleport:
-		move_speed = TELEPORT_SPEED;
+		speed = TELEPORT_SPEED;
 	var areas = $Area2D.get_overlapping_areas();
 	for i in range(areas.size()):
 		if areas[i].is_in_group("Landmine_Bodies") and areas[i].monitorable:
-			move_speed = move_speed / 2.0;
+			speed = speed / 2.0;
 			break;
-	var vec = (input * move_speed);
+	var vec = (input * speed);
 	
 	var previous_pos = position;
 	var change = move_and_slide(vec);
