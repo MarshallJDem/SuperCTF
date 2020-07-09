@@ -151,15 +151,16 @@ func update_class():
 		n = "laser";
 	elif Globals.current_class == Globals.Classes.Demo:
 		n = "demo";
-	if Globals.testing:
-		update_class_rpc(n);
-	else:
-		rpc("update_class_rpc", n);
-
-remotesync func update_class_rpc(n):
+	
 	var t = "B";
 	if team_id == 1:
 		t = "R";
+	if Globals.testing:
+		update_class_rpc(n,t);
+	else:
+		rpc("update_class_rpc", n, t);
+
+remotesync func update_class_rpc(n, t):
 	$Sprite_Head.set_texture(load("res://Assets/Player/" + str(n) + "_head_" +t+ ".png"));
 	$Sprite_Body.set_texture(load("res://Assets/Player/" + str(n) + "_body_" +t+ ".png"));
 	$Sprite_Gun.set_texture(load("res://Assets/Player/" + str(n) + "_gun_" +t+ ".png"));
