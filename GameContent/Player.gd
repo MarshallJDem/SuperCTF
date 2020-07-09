@@ -155,6 +155,9 @@ func update_class():
 	var t = "B";
 	if team_id == 1:
 		t = "R";
+	print("HERE WE GO");
+	print(team_id);
+	print(t);
 	if Globals.testing:
 		update_class_rpc(n,t);
 	else:
