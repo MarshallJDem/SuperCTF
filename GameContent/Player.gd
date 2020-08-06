@@ -445,7 +445,7 @@ func drop_current_flag(flag_position = $Flag_Holder.get_global_position()):
 		flag.get_node("Area2D").ignore_next_buffer_reset = true;
 		flag.re_parent(get_tree().get_root().get_node("MainScene"));
 		flag.position = flag_position;
-		$Weapon_Node/Cooldown_Timer.start();
+		#$Weapon_Node/Cooldown_Timer.start();
 
 # Starts the temporary Invincibility cooldown
 func start_temporary_invincibility():
