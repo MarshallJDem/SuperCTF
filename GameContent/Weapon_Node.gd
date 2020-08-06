@@ -3,8 +3,8 @@ extends Node2D
 var bullet_atlas_blue = preload("res://Assets/Weapons/bullet_b.png");
 var bullet_atlas_red = preload("res://Assets/Weapons/bullet_r.png");
 
-var demo_atlas_blue = preload("res://Assets/Weapons/bullet_b.png");
-var demo_atlas_red = preload("res://Assets/Weapons/bullet_r.png");
+var demo_atlas_blue = preload("res://Assets/Weapons/bullet_death_B.png");
+var demo_atlas_red = preload("res://Assets/Weapons/bullet_death_R.png");
 
 var Muzzle_Bullet = preload("res://GameContent/Muzzle_Bullet.tscn");
 var Bullet = preload("res://GameContent/Bullet.tscn");
@@ -143,29 +143,40 @@ func shoot_on_inputs():
 						shoot_laser(direction);
 				elif Globals.current_class == Globals.Classes.Demo:
 					if $Cooldown_Timer.time_left == 0:
-						if !Globals.testing:
-							rpc("shoot_demo", ((get_global_mouse_position() - global_position).normalized()),demos_shot);
-						else:
-							shoot_demo(((get_global_mouse_position() - global_position).normalized()),demos_shot);
+						var direction = (get_global_mouse_position() - global_position).normalized();
+						
+						# Test to see if demo is spawning inside of forcefield
+						$CollisionTester.position = get_node("Bullet_Starts/" + String(player.look_direction)).position;
+						var forcefield_test = $CollisionTester.move_and_collide(direction * 0.0);
+						
+						# If it was inside a forcefield, fire a local blank
+						if forcefield_test and forcefield_test.collider.is_in_group("Forcefield_Bodies"):
+							shoot_demo(direction, demos_shot, true);
+						else: #Otherwise fire a real shot
+							if !Globals.testing:
+								rpc("shoot_demo", direction,demos_shot);
+							else:
+								shoot_demo(direction,demos_shot);
 
-remotesync func shoot_demo(d, shots):
+remotesync func shoot_demo(d, shots, is_blank = false):
 	$Cooldown_Timer.start();
 	$Shoot_Animation_Timer.start();
+	
 	var direction = d.normalized();
 	var start_pos = player.position + get_node("Bullet_Starts/" + String(player.look_direction)).position;
 	
-	$CollisionTester.position = Vector2(0,8.5);
-	var collision = $CollisionTester.move_and_collide(direction * 25.0)
-	var collision_tester_length = $CollisionTester.position.distance_to(Vector2(0,8.5));
-	
-	# If we are too close to a wall shoot a pre reflected shot
-	if(collision_tester_length < 10 and collision):
-		# Reflect Demo
-		var reflection_dir = (direction - (2 * direction.dot(collision.normal) * collision.normal)).normalized();
-		$CollisionTester.move_and_collide(reflection_dir * 2.0)
-		direction = reflection_dir.normalized();
-		start_pos = player.position + $CollisionTester.position;
-	
+	if !is_blank:
+		$CollisionTester.position = Vector2(0,8.5);
+		var collision = $CollisionTester.move_and_collide(direction * 25.0)
+		var collision_tester_length = $CollisionTester.position.distance_to(Vector2(0,8.5));
+		
+		# If we are too close to a wall shoot a pre reflected shot
+		if(collision_tester_length < 10 and collision):
+			# Reflect Demo
+			var reflection_dir = (direction - (2 * direction.dot(collision.normal) * collision.normal)).normalized();
+			$CollisionTester.move_and_collide(reflection_dir * 2.0)
+			direction = reflection_dir.normalized();
+			start_pos = player.position + $CollisionTester.position;
 	
 	# Initialize Bullet
 	var node = Demo.instance();
@@ -175,6 +186,7 @@ remotesync func shoot_demo(d, shots):
 	node.team_id = player.team_id;
 	node.player_id = player.player_id;
 	node.name = node.name + "-" + str(player.player_id) + "-" + str(shots);
+	node.is_blank = is_blank;
 	node.get_node("Sprite").set_texture(demo_atlas_red if player.team_id == 1 else demo_atlas_blue);
 	demos_shot = shots + 1;
 	node.set_network_master(player.get_network_master());

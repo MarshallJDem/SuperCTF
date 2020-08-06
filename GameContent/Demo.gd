@@ -8,10 +8,14 @@ var team_id = -1;
 var player_id = -1;
 var original_time_shot = 0;
 var puppet_time_shot = 0;
+var is_blank = false;
 
 func _ready():
 	$Detonation_Timer.connect("timeout", self, "_detonation_timer_ended");
 	$Death_Timer.connect("timeout", self, "_death_timer_ended");
+	if is_blank:
+		detonate();
+		return;
 	#$Animation_Timer.connect("timeout", self, "_animation_timer_ended");
 	# If the master of this bullet is not the local master player, then this is a puppet
 	puppet_time_shot = OS.get_system_time_msecs() - Globals.match_start_time;
@@ -54,6 +58,14 @@ func _death_timer_ended():
 	call_deferred("queue_free");
 
 func _process(delta):
+	if $Death_Timer.time_left > 0:
+		var progress = 1.0 - $Death_Timer.time_left/$Death_Timer.wait_time;
+		var frame = int(progress * ($Sprite.hframes + 1)) - 1;
+		if frame >= $Sprite.hframes:
+			frame = $Sprite.hframes - 1;
+		if frame < 0:
+			frame = 0;
+		$Sprite.frame = frame;
 	update();
 
 func _draw():
@@ -61,10 +73,11 @@ func _draw():
 	var color = Color(0,0.2,1,alpha);
 	if team_id == 1:
 		color = Color(1,0.2,0,alpha);
-	if $Area2D.monitorable:
+	if $Area2D.monitorable and !is_blank:
 		draw_circle(Vector2.ZERO,50,color);
 func _physics_process(delta):
-	move(delta);
+	if !is_blank:
+		move(delta);
 var previous_compensation_progress = 0.0;
 # Given an amount of delta time, moves the bullet in its trajectory direction using its speed
 func move(d):
