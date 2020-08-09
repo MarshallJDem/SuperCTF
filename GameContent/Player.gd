@@ -154,7 +154,7 @@ func update_class():
 	if team_id == 1:
 		t = "R";
 	
-	if Globals.testing or Globals.localPlayerID != player_id:
+	if Globals.testing:
 		update_class_rpc(n,t);
 	elif Globals.localPlayerID == player_id:
 		rpc("update_class_rpc", n, t);
