@@ -189,6 +189,7 @@ remotesync func teleport(start, end):
 		node.position = start;
 		node.position.x = node.position.x + ((i) * (end.x - start.x)/4)
 		node.position.y = node.position.y + ((i) * (end.y - start.y)/4)
+		node.z_index = z_index;
 		node.look_direction = look_direction;
 		node.scale = $Sprite_Body.scale
 		node.get_node("Sprite_Gun").texture = $Sprite_Gun.texture
