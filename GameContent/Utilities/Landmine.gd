@@ -19,6 +19,7 @@ func _ready():
 		$Sprite.set_texture(atlas_blue);
 	else:
 		$Sprite.set_texture(atlas_red);
+	z_index = position.y - 3;
 	#set_network_master(1);
 
 func _process(delta):

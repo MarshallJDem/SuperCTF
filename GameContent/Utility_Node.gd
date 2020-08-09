@@ -69,6 +69,7 @@ remotesync func place_landmine(pos, mines_placed):
 	$Cooldown_Timer.start();
 	var mine = Landmine.instance();
 	mine.position = pos;
+	mine.position.y += 13;
 	mine.team_id = player.team_id;
 	mine.player_id = player.player_id;
 	mine.name = mine.name + "-" + str(player.player_id) + "-" + str(mines_placed);
