@@ -198,15 +198,18 @@ func shoot_bullet(d):
 	var direction = d.normalized();
 	
 	$CollisionTester.position = Vector2(0,5.5);
+	#If were shooting downward start collision test further out to compensate for wall hitboxes
+	if direction.y > 0:
+		$CollisionTester.position.y += 10;
 	$CollisionTester.move_and_collide(direction * 25.0)
 	var collision_tester_length = $CollisionTester.position.distance_to(Vector2(0,5.5));
 	
 	bullets_shot = bullets_shot + 1;
-	# Re-enable the code below to have the bullet start out of the end of the gun
+	# Bullet starts out of the end of the gun
 	var bullet_start = player.position + get_node("Bullet_Starts/" + String(player.look_direction)).position;
 	var time = OS.get_system_time_msecs() - Globals.match_start_time;
 	var bullet_name = "Bullet"+ "-" + str(player.player_id) + "-" + str(bullets_shot);
-	#camera_ref.shake();
+	#player.camera_ref.shake();
 	$Shoot_Animation_Timer.start();
 	
 	# If we are too close to a wall, shoot a blank

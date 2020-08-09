@@ -264,7 +264,8 @@ pitch_scale = 0.5
 attenuation = 0.233258
 
 [node name="Name_Parent" type="Node2D" parent="."]
-z_index = 10
+z_index = 2000
+z_as_relative = false
 
 [node name="Label_Name" type="RichTextLabel" parent="Name_Parent"]
 anchor_right = 1.0
