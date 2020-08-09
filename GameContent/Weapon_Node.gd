@@ -317,6 +317,9 @@ func shoot_laser(d):
 	laser_position = player.position + get_node("Laser_Starts/" + String(player.look_direction)).position * 20;
 	var start_pos = get_node("Laser_Starts/" + String(player.look_direction)).position;
 	$CollisionTester.position = Vector2(0,0);
+	#If were shooting downward start collision test further out to compensate for wall hitboxes
+	if d.y > 0:
+		$CollisionTester.position.y += 18;
 	$CollisionTester.move_and_collide(laser_direction * 1000.0)
 	var length = $CollisionTester.position.distance_to(Vector2.ZERO) + 10;
 	laser_target_position = laser_direction * length;
