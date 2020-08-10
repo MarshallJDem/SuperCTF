@@ -56,7 +56,7 @@ func _animation_timer_ended():
 func explode():
 	var explosion = Grenade_Explosion.instance();
 	explosion.position = position;
-	explosion.z_index = z_index;
+	#explosion.z_index = z_index;
 	explosion.team_id = team_id;
 	explosion.player_id = player_id;
 	get_tree().get_root().get_node("MainScene").call_deferred("add_child", explosion);

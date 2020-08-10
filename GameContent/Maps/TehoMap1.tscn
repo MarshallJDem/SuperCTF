@@ -110,7 +110,7 @@ texture = ExtResource( 8 )
 
 [node name="Wall_Sprite14" parent="YSort" instance=ExtResource( 9 )]
 position = Vector2( 0.0309753, 9.00525 )
-z_index = 4000
+z_index = 500
 texture = ExtResource( 13 )
 script = null
 

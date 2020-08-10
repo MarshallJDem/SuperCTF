@@ -1,12 +1,76 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://Grenade_Explosion.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Abilities/grenade_explosion_B.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Abilities/forcefield_bottom_B.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Abilities/forcefield_bottom_R.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Abilities/grenade_explosion_R.png" type="Texture" id=5]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 1.0
 
+[sub_resource type="AtlasTexture" id=7]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 0, 50, 50 )
+
+[sub_resource type="AtlasTexture" id=8]
+atlas = ExtResource( 2 )
+region = Rect2( 50, 0, 50, 50 )
+
+[sub_resource type="AtlasTexture" id=9]
+atlas = ExtResource( 2 )
+region = Rect2( 100, 0, 50, 50 )
+
+[sub_resource type="AtlasTexture" id=10]
+atlas = ExtResource( 2 )
+region = Rect2( 150, 0, 50, 50 )
+
+[sub_resource type="SpriteFrames" id=11]
+animations = [ {
+"frames": [ SubResource( 7 ), SubResource( 8 ), SubResource( 9 ), SubResource( 10 ) ],
+"loop": true,
+"name": "default",
+"speed": 15.0
+} ]
+
+[sub_resource type="AtlasTexture" id=12]
+atlas = ExtResource( 5 )
+region = Rect2( 0, 0, 50, 50 )
+
+[sub_resource type="AtlasTexture" id=13]
+atlas = ExtResource( 5 )
+region = Rect2( 50, 0, 50, 50 )
+
+[sub_resource type="AtlasTexture" id=14]
+atlas = ExtResource( 5 )
+region = Rect2( 100, 0, 50, 50 )
+
+[sub_resource type="AtlasTexture" id=15]
+atlas = ExtResource( 5 )
+region = Rect2( 150, 0, 50, 50 )
+
+[sub_resource type="SpriteFrames" id=6]
+animations = [ {
+"frames": [ SubResource( 12 ), SubResource( 13 ), SubResource( 14 ), SubResource( 15 ) ],
+"loop": true,
+"name": "default",
+"speed": 15.0
+} ]
+
 [node name="Grenade_Explosion" type="Node2D"]
+z_index = 3000
+z_as_relative = false
 script = ExtResource( 1 )
+
+[node name="BottomBlue" type="Sprite" parent="."]
+visible = false
+scale = Vector2( 2, 2 )
+texture = ExtResource( 3 )
+
+[node name="BottomRed" type="Sprite" parent="."]
+visible = false
+scale = Vector2( 2, 2 )
+texture = ExtResource( 4 )
 
 [node name="Area2D" type="Area2D" parent="." groups=[
 "Grenade_Bodies",
@@ -20,6 +84,19 @@ wait_time = 0.05
 autostart = true
 
 [node name="Death_Timer" type="Timer" parent="."]
-wait_time = 0.2
+wait_time = 0.3
 one_shot = true
 autostart = true
+
+[node name="MainBlue" type="AnimatedSprite" parent="."]
+visible = false
+scale = Vector2( 2, 2 )
+frames = SubResource( 11 )
+frame = 3
+playing = true
+
+[node name="MainRed" type="AnimatedSprite" parent="."]
+visible = false
+scale = Vector2( 2, 2 )
+frames = SubResource( 6 )
+playing = true
