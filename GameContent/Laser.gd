@@ -7,17 +7,24 @@ var team_id = -1;
 var target_pos;
 var direction;
 var size;
+var is_blank = false;
 
 func _ready():
 	$Death_Timer.connect("timeout", self, "_death_timer_ended");
 	size = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("laserWidth");
 	target_pos -= position;
 	
+	if is_blank:
+		$Area2D.monitorable = false;
+		$Area2D.monitoring = false;
+	else:
+		$Area2D.monitorable = true;
+		$Area2D.monitoring = true;
 	
 	$Area2D.rotation = Vector2(0,0).angle_to_point(target_pos) + PI/2;
 	$Area2D/CollisionShape2D.shape.set_b(Vector2(0,Vector2(0,0).distance_to(target_pos)));
-	
 	$Area2D.scale = Vector2(size/3, 1);
+	print(is_blank);
 	
 func _physics_process(delta):
 	update();

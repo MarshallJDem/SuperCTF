@@ -138,6 +138,7 @@ func shoot_on_inputs():
 					if $Cooldown_Timer.time_left == 0:
 						call_deferred("shoot_bullet", ((get_global_mouse_position() - global_position).normalized()));
 				elif Globals.current_class == Globals.Classes.Laser:
+					
 					if $Cooldown_Timer.time_left == 0:
 						var direction = (get_global_mouse_position() - player.position).normalized();
 						shoot_laser(direction);
@@ -257,8 +258,9 @@ remotesync func spawn_bullet(pos, player_id, direction, time_shot, bullet_name, 
 		bullet.get_node("Sprite").set_texture(bullet_atlas_red);
 	get_tree().get_root().get_node("MainScene").call_deferred("add_child", bullet);
 	return bullet;
-
-remotesync func start_laser(direction, start_pos, target_pos, look_direction,time_shot):
+var laser_is_blank = false;
+remotesync func start_laser(direction, start_pos, target_pos, look_direction,time_shot, is_blank):
+	laser_is_blank = is_blank;
 	player.get_node("Sprite_Gun").frame = look_direction;
 	player.get_node("Sprite_Head").frame = look_direction;
 	player.get_node("Sprite_Body").frame = look_direction;
@@ -307,12 +309,21 @@ func spawn_laser():
 	laser.player_id = player.player_id;
 	laser.team_id = player.team_id;
 	laser.z_index = (player.position.y + laser_target_position.y) - 2;
+	laser.is_blank = laser_is_blank;
 	get_tree().get_root().get_node("MainScene").add_child(laser);
 	$Laser_Fire_Audio.play();
 	$Cooldown_Timer.start();
+	laser_is_blank = false;
 
 func shoot_laser(d):
+	# Test to see if demo is spawning inside of forcefield
+	$CollisionTester.position = get_node("Laser_Starts/" + String(player.look_direction)).position ;
+	var forcefield_test = $CollisionTester.move_and_collide(d * 0.0);
 	
+	var is_blank = false;
+	# If it was inside a forcefield, fire a local blank
+	if forcefield_test and forcefield_test.collider.is_in_group("Forcefield_Bodies"):
+		is_blank = true;
 	laser_direction = d;
 	laser_position = player.position + get_node("Laser_Starts/" + String(player.look_direction)).position * 20;
 	var start_pos = get_node("Laser_Starts/" + String(player.look_direction)).position;
@@ -325,7 +336,10 @@ func shoot_laser(d):
 	laser_target_position = laser_direction * length;
 	var target_pos = laser_target_position;
 	var time_shot = OS.get_system_time_msecs() - Globals.match_start_time;
+	if is_blank:
+		target_pos = start_pos;
+		length = 0;
 	if Globals.testing:
-		start_laser( laser_direction, start_pos,target_pos, player.look_direction,time_shot);
+		start_laser( laser_direction, start_pos,target_pos, player.look_direction,time_shot, is_blank);
 	else:
-		rpc("start_laser", laser_direction, start_pos,target_pos, player.look_direction,time_shot);
+		rpc("start_laser", laser_direction, start_pos,target_pos, player.look_direction,time_shot, is_blank);
