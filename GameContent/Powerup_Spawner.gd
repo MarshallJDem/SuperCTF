@@ -34,6 +34,6 @@ func _spawner_timer_ended():
 	var n = randi()%4+1; #%11+1 means random number 1-10
 	if Globals.testing:
 		spawn_powerup(n);
-	if get_tree().is_network_server():
+	elif get_tree().is_network_server():
 		rpc("spawn_powerup",n);
 	

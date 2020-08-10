@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Global_Overlay.gd" type="Script" id=1]
 [ext_resource path="res://Hover_Button_Style.tres" type="StyleBox" id=2]
@@ -6,7 +6,6 @@
 [ext_resource path="res://Pressed_Button_Style.tres" type="StyleBox" id=4]
 [ext_resource path="res://fonts/pixel.TTF" type="DynamicFontData" id=5]
 [ext_resource path="res://fonts/Pixel_Chat_Corrected.tres" type="DynamicFont" id=6]
-[ext_resource path="res://Assets/Environment/background.png" type="Texture" id=7]
 
 [sub_resource type="DynamicFont" id=1]
 outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
@@ -69,7 +68,6 @@ __meta__ = {
 [node name="Music_Image" type="TextureRect" parent="CanvasLayer/Music_Background"]
 margin_right = 48.0
 margin_bottom = 48.0
-texture = ExtResource( 7 )
 expand = true
 __meta__ = {
 "_edit_use_anchors_": false

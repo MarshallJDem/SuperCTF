@@ -46,7 +46,8 @@ func _ready():
 	if Globals.testing:
 		activate_camera();
 		control = true
-	print("ISNETWORKMASTER : " + str(is_network_master()));
+	else:
+		print("ISNETWORKMASTER : " + str(is_network_master()));
 	Globals.connect("class_changed", self, "update_class");
 	update_class();
 	$Respawn_Timer.connect("timeout", self, "_respawn_timer_ended");
@@ -81,7 +82,7 @@ func _process(delta):
 	$Teleport_Timer.wait_time = DASH_COOLDOWN_PMODIFIER + float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("dashCooldown"))/1000.0;
 	if !get_tree().get_root().get_node("MainScene/NetworkController").round_is_running:
 		has_moved_after_respawn = false;
-	if is_network_master():
+	if !Globals.testing and is_network_master():
 		Globals.displaying_loadout = !alive or !has_moved_after_respawn;
 	if control:
 		activate_camera();

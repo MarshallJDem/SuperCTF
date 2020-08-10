@@ -92,11 +92,12 @@ autostart = true
 visible = false
 scale = Vector2( 2, 2 )
 frames = SubResource( 11 )
-frame = 3
+frame = 2
 playing = true
 
 [node name="MainRed" type="AnimatedSprite" parent="."]
 visible = false
 scale = Vector2( 2, 2 )
 frames = SubResource( 6 )
+frame = 3
 playing = true

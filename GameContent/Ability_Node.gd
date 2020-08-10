@@ -90,7 +90,8 @@ remotesync func __activate_camo():
 # Called when the player attempts to place a forcefield
 # This function will either place it in the appropriate spot or deny it (bad location or something)
 func place_forcefield():
-	rpc("spawn_forcefield", player.position, player.team_id);
+	if !Globals.testing:
+		rpc("spawn_forcefield", player.position, player.team_id);
 	$Cooldown_Timer.wait_time = float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("forcefieldCooldown"))/1000.0;
 	if reduced_cooldown_enabled:
 		$Cooldown_Timer.wait_time = $Cooldown_Timer.wait_time / 2.0;
