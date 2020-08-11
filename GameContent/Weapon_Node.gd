@@ -328,10 +328,30 @@ func shoot_laser(d):
 	laser_position = player.position + get_node("Laser_Starts/" + String(player.look_direction)).position * 20;
 	var start_pos = get_node("Laser_Starts/" + String(player.look_direction)).position;
 	$CollisionTester.position = Vector2(0,0);
+	
 	#If were shooting downward start collision test further out to compensate for wall hitboxes
+	#Then if we don't hit anything, try shooting from center. If that yields a wall collision,
+	#temporarily disable its collision so we can ignore it for this laser shot.
+	var wall;
+	var wall_layers;
 	if d.y > 0:
-		$CollisionTester.position.y += 18;
+		$CollisionTester.position = Vector2(0,18);
+		var c = $CollisionTester.move_and_collide(laser_direction * 20.0)
+		if !c:
+			$CollisionTester.position = Vector2(0,0);
+			c = $CollisionTester.move_and_collide(laser_direction * 20.0)
+			#print(c.collider.layers);
+			if c and c.collider.is_in_group("Walls"):
+				wall = instance_from_id(c.collider_id);
+				wall_layers = wall.layers;
+				wall.layers = 0;
+				
+	$CollisionTester.position = Vector2(0,0);
+	
 	$CollisionTester.move_and_collide(laser_direction * 1300.0)
+	# Re-enable the walls collisions
+	if wall:
+		wall.layers = wall_layers;
 	var length = $CollisionTester.position.distance_to(Vector2.ZERO) + 10;
 	laser_target_position = laser_direction * length;
 	var target_pos = laser_target_position;
