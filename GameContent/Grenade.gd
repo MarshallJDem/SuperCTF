@@ -44,10 +44,17 @@ func move():
 		t = time_elapsed
 	else:
 		t = time_elapsed * (speed_distance / target_distance);
+	t = clamp(t, 0.0, 1.0);
 	position = lerp(initial_real_pos, target_pos, clamp(t, 0.0, 1.0));
-	if t >= 1 and $Detonation_Timer.time_left == 0:
+	
+	# Throwing animation
+	var height = (target_distance / 600.0) * 75;
+	var scale_max = (target_distance / 600.0) * 1.0;
+	position.y -= height * (-pow((2 *t) - 1,2) +1);
+	var sca = 0.75 +  scale_max * (-pow((2 *t) - 1,2) +1)
+	scale = Vector2(sca,sca);
+	if t >= 1.0 and $Detonation_Timer.time_left == 0:
 		$Detonation_Timer.start();
-		
 
 # Called when the animation timer fires
 func _animation_timer_ended():
