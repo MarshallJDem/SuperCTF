@@ -51,7 +51,8 @@ func move():
 	var height = (target_distance / 600.0) * 75;
 	var scale_max = (target_distance / 600.0) * 1.0;
 	position.y -= height * (-pow((2 *t) - 1,2) +1);
-	var sca = 1 +  scale_max * (-pow((2 *t) - 1,2) +1)
+	rotation = -2 * PI * t;
+	var sca = (1 +  scale_max * (-pow((2 *t) - 1,2) +1))
 	scale = Vector2(sca,sca);
 	if t >= 1.0 and $Detonation_Timer.time_left == 0:
 		$Detonation_Timer.start();

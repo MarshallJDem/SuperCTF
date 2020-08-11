@@ -176,7 +176,7 @@ texture = ExtResource( 8 )
 
 [node name="Utility1" type="Sprite" parent="CanvasLayer/Control/ColorRect"]
 position = Vector2( 181.252, 851.958 )
-scale = Vector2( 4, 4 )
+scale = Vector2( 5.62752, 5.62752 )
 texture = ExtResource( 7 )
 
 [node name="Utility2" type="Sprite" parent="CanvasLayer/Control/ColorRect"]
