@@ -9,16 +9,14 @@ func _ready():
 	$Spawner_Timer.connect("timeout", self, "_spawner_timer_ended");
 	if Globals.testing:
 		$Spawner_Timer.wait_time = 5;
-		$Spawner_Timer.start();
-	else:
-		var n = randi()%4+1; #%11+1 means random number 1-10
-		spawn_powerup(n);
+	var n = randi()%4+1; #%11+1 means random number 1-10
+	spawn_powerup(n);
 
 func _process(delta):
 	if $Spawner_Timer.time_left == 0:
 		$Text.bbcode_text = "";
 	else:
-		$Text.bbcode_text = "[center][color=black]POWERUP IN\n" + str(int($Spawner_Timer.time_left) + 1);
+		$Text.bbcode_text = "[center][color=black]" + str(int($Spawner_Timer.time_left) + 1);
 
 remotesync func spawn_powerup(n):
 	var powerup = Powerup.instance();

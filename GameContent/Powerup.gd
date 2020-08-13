@@ -3,8 +3,13 @@ extends Node2D
 var spawner;
 var used = false;
 var type = 1;
-# 1 = Speed Boost
-var colors = ["black", "g","b","r","y","p"];
+
+# 1 = Firerate Up
+# 2 = Ability Cooldown Down
+# 3 = Move speed up
+# 4 = Dash rateup
+
+var colors = ["black", "g","b","r","p","y"];
 
 func _ready():
 	$Animation_Timer.connect("timeout",self,"_animation_timer_ended");
