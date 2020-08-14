@@ -5,8 +5,8 @@ var used = false;
 var type = 1;
 
 # 1 = Firerate Up
-# 2 = Ability Cooldown Down
-# 3 = Move speed up
+# 2 = Move speed up
+# 3 = Ability Cooldown Down
 # 4 = Dash rateup
 
 var colors = ["black", "g","b","r","p","y"];

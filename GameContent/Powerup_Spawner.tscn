@@ -15,9 +15,9 @@ script = ExtResource( 3 )
 
 [node name="Text" type="RichTextLabel" parent="."]
 margin_left = -87.4022
-margin_top = 22.517
+margin_top = 27.7474
 margin_right = 90.5974
-margin_bottom = 94.5175
+margin_bottom = 99.7479
 rect_clip_content = false
 custom_fonts/normal_font = SubResource( 1 )
 bbcode_enabled = true
@@ -28,6 +28,7 @@ __meta__ = {
 }
 
 [node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 0, 5.96014 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 2 )
 

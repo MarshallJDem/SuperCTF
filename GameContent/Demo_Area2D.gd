@@ -11,7 +11,8 @@ func _area_entered(body):
 		collided_with_player(body.get_parent());
 	if body.is_in_group("Forcefield_Bodies"):
 		return;
-		#collided_with_forcefield(body.get_parent());
+	if body.is_in_group("Pit_Bodies"):
+		collided_with_pit(body.get_parent());
 
 # Called when this node collides with a player
 func collided_with_player(player):
@@ -24,9 +25,9 @@ func collided_with_player(player):
 		pass;
 		#get_parent().call_deferred("detonate");
 
-# Called when this node collides with a forcefield
-func collided_with_forcefield(forcefield):
+# Called when this node collides with a pit
+func collided_with_pit(pit):
 	if Globals.testing:
-		get_parent().detonate(true);
+		get_parent().fizout();
 	if get_tree().is_network_server():
-		get_parent().rpc("detonate", true);
+		get_parent().rpc("fizout", true);

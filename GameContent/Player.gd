@@ -249,21 +249,22 @@ func move_on_inputs(teleport = false):
 func enable_powerup(type):
 	var text = "";
 	if type == 1:
-		POWERUP_SPEED = 50;
-		$Powerup_Timer.wait_time = 10;
-		text = "[color=green]^^ SPEED UP ^^";
-	elif type == 2:
-		DASH_COOLDOWN_PMODIFIER = -1.5;
-		$Powerup_Timer.wait_time = 10;
-		text = "[color=blue]˅˅˅˅˅˅^^ DASH RATE UP ^^";
-	elif type == 3:
 		$Weapon_Node.reduced_cooldown_enabled = true;
 		$Powerup_Timer.wait_time = 10;
-		text = "[color=red]^^ FIRE RATE UP ^^";
-	elif type == 4:
+		text = "[wave amp=50 freq=12][color=green]^^ FIRE RATE UP ^^";
+	elif type == 2:
+		POWERUP_SPEED = 50;
+		$Powerup_Timer.wait_time = 10;
+		text = "[wave amp=50 freq=12][color=blue]^^ SPEED UP ^^";
+	elif type == 3:
 		$Ability_Node.reduced_cooldown_enabled = true;
 		$Powerup_Timer.wait_time = 15;
-		text = "[color=#FF8C00]^^ ABILITY RATE UP ^^";
+		text = "[wave amp=50 freq=12][color=red]^^ ABILITY RATE UP ^^";
+	elif type == 4:
+		DASH_COOLDOWN_PMODIFIER = -1.5;
+		$Powerup_Timer.wait_time = 10;
+		text = "[wave amp=50 freq=12][color=purple]˅˅˅˅˅˅^^ DASH RATE UP ^^";
+	get_tree().get_root().get_node("MainScene/UI_Layer/Input_GUIs/PowerupParticles").start(type);
 	# Only display message if this is our local player
 	if Globals.testing or player_id == Globals.localPlayerID:
 		get_tree().get_root().get_node("MainScene/UI_Layer").set_alert_text("[center]" + text);
@@ -274,6 +275,7 @@ func _powerup_timer_ended():
 	DASH_COOLDOWN_PMODIFIER = 0;
 	$Weapon_Node.reduced_cooldown_enabled = false;
 	$Ability_Node.reduced_cooldown_enabled = false;
+	get_tree().get_root().get_node("MainScene/UI_Layer/Input_GUIs/PowerupParticles").stop();
 
 	
 # Changes the sprite's frame to make it "look" at the mouse

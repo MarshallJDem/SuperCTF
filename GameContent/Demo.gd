@@ -81,6 +81,8 @@ func _physics_process(delta):
 var previous_compensation_progress = 0.0;
 # Given an amount of delta time, moves the bullet in its trajectory direction using its speed
 func move(d):
+	if $Death_Timer.time_left > 0:
+		return;
 	var compensation_progress = 1.0 - ($Lag_Comp_Timer.time_left/$Lag_Comp_Timer.wait_time);
 	var progress_delta = compensation_progress - previous_compensation_progress;
 	previous_compensation_progress = compensation_progress;
@@ -116,3 +118,6 @@ func check_for_explosion(collision) -> bool:
 			rpc("detonate", true);
 		return true;
 	return false;
+func fizout():
+	$Death_Timer.start();
+	is_blank = true;

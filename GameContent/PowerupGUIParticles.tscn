@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Assets/GUI/arrow_B.png" type="Texture" id=1]
+[ext_resource path="res://GameContent/PowerupGUIParticles.gd" type="Script" id=2]
+
+[sub_resource type="Gradient" id=1]
+offsets = PoolRealArray( 0.523148, 0.972222 )
+colors = PoolColorArray( 1, 1, 1, 0.670588, 1, 1, 1, 0 )
+
+[node name="PowerupParticles" type="CPUParticles2D"]
+amount = 20
+texture = ExtResource( 1 )
+emission_shape = 2
+emission_rect_extents = Vector2( 250, 1 )
+direction = Vector2( 0, -1 )
+spread = 0.0
+gravity = Vector2( 0, -98 )
+initial_velocity = 87.39
+initial_velocity_random = 0.56
+scale_amount = 1.5
+scale_amount_random = 1.0
+color_ramp = SubResource( 1 )
+script = ExtResource( 2 )

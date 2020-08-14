@@ -63,6 +63,7 @@ shape = SubResource( 2 )
 [node name="Area2D2" type="Area2D" parent="." groups=[
 "Demo_Bodies",
 ]]
+collision_mask = 17
 script = ExtResource( 3 )
 
 [node name="CollisionPolygon2D" type="CollisionShape2D" parent="Area2D2"]
