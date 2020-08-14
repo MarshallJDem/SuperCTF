@@ -118,13 +118,13 @@ bbcode_text = "Created by Marshall Demirjian (carshalljd)
 Based on rtschutter's PureCTF
 
 With help from
-[color=gray]Teho
-Grigoreen
+[color=gray]Teho				JamJar
+Grigoreen	
 
 [color=white]Special thanks to
 [color=gray]Ammut
 jpcogan
-phomohobe
+notjosh
 rtschutter
 Casty
 Valance
@@ -136,13 +136,13 @@ text = "Created by Marshall Demirjian (carshalljd)
 Based on rtschutter's PureCTF
 
 With help from
-Teho
-Grigoreen
+Teho				JamJar
+Grigoreen	
 
 Special thanks to
 Ammut
 jpcogan
-phomohobe
+notjosh
 rtschutter
 Casty
 Valance
@@ -170,7 +170,7 @@ r/starcraft
 Godot Engine
 kabbage
 Kaeleeen
-notjosh"
+Dunkey"
 text = "You, the player
 themuffinman1999
 Auxive
@@ -178,7 +178,7 @@ r/starcraft
 Godot Engine
 kabbage
 Kaeleeen
-notjosh"
+Dunkey"
 scroll_active = false
 __meta__ = {
 "_edit_lock_": true,
