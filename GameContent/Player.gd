@@ -246,7 +246,7 @@ func move_on_inputs(teleport = false):
 		else:
 			rpc("teleport", previous_pos, new_pos);
 
-func enable_powerup(type):
+remotesync func enable_powerup(type):
 	var text = "";
 	if type == 1:
 		$Weapon_Node.reduced_cooldown_enabled = true;
@@ -264,7 +264,8 @@ func enable_powerup(type):
 		DASH_COOLDOWN_PMODIFIER = -1.5;
 		$Powerup_Timer.wait_time = 10;
 		text = "[wave amp=50 freq=12][color=purple]˅˅˅˅˅˅^^ DASH RATE UP ^^";
-	get_tree().get_root().get_node("MainScene/UI_Layer/Input_GUIs/PowerupParticles").start(type);
+	if Globals.testing or is_network_master():
+		get_tree().get_root().get_node("MainScene/UI_Layer/Input_GUIs/PowerupParticles").start(type);
 	$PowerupParticles.start(type);
 	# Only display message if this is our local player
 	if Globals.testing or player_id == Globals.localPlayerID:
@@ -276,7 +277,8 @@ func _powerup_timer_ended():
 	DASH_COOLDOWN_PMODIFIER = 0;
 	$Weapon_Node.reduced_cooldown_enabled = false;
 	$Ability_Node.reduced_cooldown_enabled = false;
-	get_tree().get_root().get_node("MainScene/UI_Layer/Input_GUIs/PowerupParticles").stop();
+	if Globals.testing or is_network_master():
+		get_tree().get_root().get_node("MainScene/UI_Layer/Input_GUIs/PowerupParticles").stop();
 	$PowerupParticles.stop();
 
 	

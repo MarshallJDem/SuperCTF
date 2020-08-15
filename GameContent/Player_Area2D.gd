@@ -15,9 +15,11 @@ func _area_entered(body):
 		return;
 	if body.is_in_group("Flag_Home_Bodies"):
 		collided_with_flag_home(body.get_parent());	
-	if body.is_in_group("Powerup_Bodies"):
-		collided_with_powerup_body(body.get_parent());
-	# Only detect collisions for these cases if we are the server
+	
+	if Globals.testing or get_tree().is_network_server():
+		if body.is_in_group("Powerup_Bodies"):
+			collided_with_powerup_body(body.get_parent());
+	# Only detect collisions for these cases if we are the server and not testing
 	if !Globals.testing and get_tree().is_network_server():
 		if body.is_in_group("Bullet_Bodies"):
 			collided_with_bullet(body.get_parent());
@@ -122,4 +124,7 @@ func collided_with_powerup_body(powerup_parent):
 	var player = get_parent();
 	powerup_parent.call_deferred("queue_free");
 	powerup_parent._used();
-	player.enable_powerup(powerup_parent.type);
+	if Globals.testing:
+		player.enable_powerup(powerup_parent.type);
+	else:
+		player.rpc("enable_powerup", powerup_parent.type);
