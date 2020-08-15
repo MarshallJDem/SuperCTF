@@ -12,6 +12,7 @@ var server = null;
 var client = null;
 var isSkirmish = false;
 
+signal round_started();
 
 var round_is_ended = false;
 var match_is_running = false;
@@ -521,6 +522,10 @@ func reset_game_objects(kill_players = false):
 	for mine in get_tree().get_nodes_in_group("Landmines"):
 		mine.set_name(mine.name + "DELETING");
 		mine.die();
+	# Remove any powerups
+	for powerup in get_tree().get_nodes_in_group("Powerups"):
+		powerup.set_name(powerup.name + "DELETING");
+		powerup.die();
 	Globals.active_landmines = 0;
 
 # Loads up a new round but does not start it yet
@@ -595,6 +600,7 @@ remote func load_mid_round(players, scores, round_start_timer_timeleft, round_nu
 remotesync func start_round():
 	print("Starting Round");
 	round_is_running = true;
+	emit_signal("round_started");
 	get_tree().get_root().get_node("MainScene").slowdown_music();
 	# If we are not the server
 	if !get_tree().is_network_server():

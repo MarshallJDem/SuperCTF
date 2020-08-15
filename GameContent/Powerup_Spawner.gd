@@ -6,11 +6,14 @@ var Powerup = preload("res://GameContent/Powerup.tscn");
 
 
 func _ready():
+	get_tree().get_root().get_node("MainScene/NetworkController").connect("round_started", self, "_round_started");
 	$Spawner_Timer.connect("timeout", self, "_spawner_timer_ended");
 	if Globals.testing:
 		$Spawner_Timer.wait_time = 5;
 		var n = randi()%4+1; #%11+1 means random number 1-10
 		spawn_powerup(n);
+
+func _round_started():
 	$Spawner_Timer.start();
 
 func _process(delta):

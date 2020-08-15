@@ -7,7 +7,9 @@
 radius = 11.3411
 height = 8.61446
 
-[node name="Powerup" type="Node2D"]
+[node name="Powerup" type="Node2D" groups=[
+"Powerups",
+]]
 scale = Vector2( 2, 2 )
 script = ExtResource( 2 )
 
