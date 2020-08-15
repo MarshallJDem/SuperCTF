@@ -9,9 +9,10 @@ func _ready():
 	$Spawner_Timer.connect("timeout", self, "_spawner_timer_ended");
 	if Globals.testing:
 		$Spawner_Timer.wait_time = 5;
-	rand_seed(696969);
-	var n = randi()%4+1; #%11+1 means random number 1-10
-	spawn_powerup(n);
+		var n = randi()%4+1; #%11+1 means random number 1-10
+		spawn_powerup(n);
+	if get_tree().is_network_server():
+		$Spawner_Timer.start();
 
 func _process(delta):
 	

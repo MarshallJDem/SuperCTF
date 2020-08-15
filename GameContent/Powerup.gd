@@ -19,9 +19,14 @@ func _ready():
 func _animation_timer_ended():
 	$Sprite.frame = ($Sprite.frame + 1)%$Sprite.hframes;
 
+remotesync func die():
+	call_deferred("queue_free");
+
 func _used():
 	used = true;
 	if Globals.testing:
 		spawner._powerup_taken();
+		die();
 	if get_tree().is_network_server():
 		spawner.rpc("_powerup_taken");
+		rpc("die");
