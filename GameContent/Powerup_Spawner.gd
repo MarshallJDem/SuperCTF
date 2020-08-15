@@ -26,6 +26,7 @@ remotesync func spawn_powerup(n):
 	powerup.position = position + Vector2(0, -15);
 	powerup.type = n;
 	powerup.spawner = self;
+	powerup.name = name + "_PowerupInstance";
 	get_tree().get_root().get_node("MainScene").call_deferred("add_child", powerup);
 	
 remotesync func _powerup_taken():
