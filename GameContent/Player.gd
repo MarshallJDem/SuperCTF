@@ -265,6 +265,7 @@ func enable_powerup(type):
 		$Powerup_Timer.wait_time = 10;
 		text = "[wave amp=50 freq=12][color=purple]˅˅˅˅˅˅^^ DASH RATE UP ^^";
 	get_tree().get_root().get_node("MainScene/UI_Layer/Input_GUIs/PowerupParticles").start(type);
+	$PowerupParticles.start(type);
 	# Only display message if this is our local player
 	if Globals.testing or player_id == Globals.localPlayerID:
 		get_tree().get_root().get_node("MainScene/UI_Layer").set_alert_text("[center]" + text);
@@ -276,6 +277,7 @@ func _powerup_timer_ended():
 	$Weapon_Node.reduced_cooldown_enabled = false;
 	$Ability_Node.reduced_cooldown_enabled = false;
 	get_tree().get_root().get_node("MainScene/UI_Layer/Input_GUIs/PowerupParticles").stop();
+	$PowerupParticles.stop();
 
 	
 # Changes the sprite's frame to make it "look" at the mouse

@@ -4,14 +4,14 @@
 [ext_resource path="res://GameContent/PowerupGUIParticles.gd" type="Script" id=2]
 
 [sub_resource type="Gradient" id=1]
-offsets = PoolRealArray( 0.523148, 0.972222 )
-colors = PoolColorArray( 1, 1, 1, 0.670588, 1, 1, 1, 0 )
+offsets = PoolRealArray( 0.821759, 1 )
+colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 1, 0 )
 
 [node name="PowerupParticles" type="CPUParticles2D"]
 amount = 20
 texture = ExtResource( 1 )
 emission_shape = 2
-emission_rect_extents = Vector2( 250, 1 )
+emission_rect_extents = Vector2( 300, 1 )
 direction = Vector2( 0, -1 )
 spread = 0.0
 gravity = Vector2( 0, -98 )
