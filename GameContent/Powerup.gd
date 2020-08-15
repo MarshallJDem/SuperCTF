@@ -27,6 +27,7 @@ func _used():
 	if Globals.testing:
 		spawner._powerup_taken();
 		die();
+	else:
+		rpc("die");
 	if get_tree().is_network_server():
 		spawner.rpc("_powerup_taken");
-		rpc("die");
