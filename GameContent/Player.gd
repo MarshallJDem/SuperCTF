@@ -273,6 +273,10 @@ remotesync func enable_powerup(type):
 	$Powerup_Timer.start();
 
 func _powerup_timer_ended():
+	stop_powerups();
+
+# This function is called by player and networkcontroller (potentially back to back)
+func stop_powerups():
 	POWERUP_SPEED = 0;
 	DASH_COOLDOWN_PMODIFIER = 0;
 	$Weapon_Node.reduced_cooldown_enabled = false;
@@ -371,6 +375,7 @@ func die():
 	control = false;
 	alive = false;
 	spawn_death_particles();
+	stop_powerups();
 	# If we're the server
 	if get_tree().is_network_server():
 		$Respawn_Timer.start();

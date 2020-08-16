@@ -502,6 +502,7 @@ func reset_game_objects(kill_players = false):
 	for player in get_tree().get_root().get_node("MainScene/Players").get_children():
 		player.position = player.start_pos;
 		player.visible = true;
+		player.stop_powerups();
 		if player.player_id == Globals.localPlayerID:
 			player.activate_camera();
 		if kill_players:
