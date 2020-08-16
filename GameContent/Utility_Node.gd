@@ -51,7 +51,6 @@ func _process(delta):
 						rpc("place_landmine",player.position,landmines_placed);
 				else:
 					get_tree().get_root().get_node("MainScene/UI_Layer").set_alert_text("[center][color=red]Active landmine limit reached!");
-				
 
 func _draw():
 	if aiming_grenade:
