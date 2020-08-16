@@ -161,13 +161,14 @@ func update_class():
 	print("update class");
 	print(t);
 	print(n);
+	print("IDs");
 	print(player_id);
 	print(team_id);
-	print(is_network_master());
+	print(Globals.localPlayerID);
 	
 	if Globals.testing:
 		update_class_rpc(n,t);
-	elif is_network_master():
+	elif Globals.localPlayerID == player_id:
 		print("Running RPC");
 		rpc("update_class_rpc", n, t);
 
