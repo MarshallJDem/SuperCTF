@@ -75,6 +75,9 @@ func _input(event):
 					move_on_inputs(true);
 					camera_ref.lag_smooth();
 					$Teleport_Timer.start();
+
+
+
 func _process(delta):
 	BASE_SPEED = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("playerSpeed");
 	
@@ -155,9 +158,17 @@ func update_class():
 	if team_id == 1:
 		t = "R";
 	
+	print("update class");
+	print(t);
+	print(n);
+	print(player_id);
+	print(team_id);
+	print(is_network_master());
+	
 	if Globals.testing:
 		update_class_rpc(n,t);
-	elif Globals.localPlayerID == player_id:
+	elif is_network_master():
+		print("Running RPC");
 		rpc("update_class_rpc", n, t);
 
 remotesync func update_class_rpc(n, t):
