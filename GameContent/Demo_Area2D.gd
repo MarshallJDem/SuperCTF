@@ -12,7 +12,8 @@ func _area_entered(body):
 	if body.is_in_group("Forcefield_Bodies"):
 		return;
 	if body.is_in_group("Pit_Bodies"):
-		collided_with_pit(body.get_parent());
+		return;
+		#collided_with_pit(body.get_parent());
 
 # Called when this node collides with a player
 func collided_with_player(player):
