@@ -138,7 +138,6 @@ func shoot_on_inputs():
 					if $Cooldown_Timer.time_left == 0:
 						call_deferred("shoot_bullet", ((get_global_mouse_position() - global_position).normalized()));
 				elif Globals.current_class == Globals.Classes.Laser:
-					
 					if $Cooldown_Timer.time_left == 0:
 						var direction = (get_global_mouse_position() - player.position).normalized();
 						shoot_laser(direction);
@@ -204,6 +203,9 @@ func shoot_bullet(d):
 		$CollisionTester.position.y += 10;
 	$CollisionTester.move_and_collide(direction * 25.0)
 	var collision_tester_length = $CollisionTester.position.distance_to(Vector2(0,5.5));
+	# Compensate distance calculation for the fact that downward shots start 10 units down
+	if direction.y > 0:
+		collision_tester_length = $CollisionTester.position.distance_to(Vector2(0,15.5));
 	
 	bullets_shot = bullets_shot + 1;
 	# Bullet starts out of the end of the gun
@@ -212,7 +214,7 @@ func shoot_bullet(d):
 	var bullet_name = "Bullet"+ "-" + str(player.player_id) + "-" + str(bullets_shot);
 	#player.camera_ref.shake();
 	$Shoot_Animation_Timer.start();
-	
+	print(collision_tester_length);
 	# If we are too close to a wall, shoot a blank
 	if(collision_tester_length < 10):
 		spawn_bullet(bullet_start, 0 if Globals.testing else player.player_id, direction, time, bullet_name, true);
