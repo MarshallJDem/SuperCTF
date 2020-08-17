@@ -48,8 +48,8 @@ func _ready():
 		control = true
 	else:
 		print("ISNETWORKMASTER : " + str(is_network_master()));
-	Globals.connect("class_changed", self, "update_class");
-	update_class();
+	Globals.connect("class_changed", self, "loadout_class_updated");
+	loadout_class_updated();
 	$Respawn_Timer.connect("timeout", self, "_respawn_timer_ended");
 	$Invincibility_Timer.connect("timeout", self, "_invincibility_timer_ended");
 	$Powerup_Timer.connect("timeout", self, "_powerup_timer_ended");
@@ -102,7 +102,7 @@ func _process(delta):
 		var t = $Invincibility_Timer.time_left / $Invincibility_Timer.wait_time 
 		var x =  (t * 10);
 		var color = Color(1,1,1,(sin( (PI / 2) + (x * (1 + (t * ((2 * PI) - 1))))) + 1)/2);
-		modulate = color
+		modulate = color;
 	
 	z_index = global_position.y + 5;
 	
@@ -145,37 +145,25 @@ func _process(delta):
 	$Name_Parent/Label_Name.bbcode_text = "[center][color=" + color + "]" + player_name;
 	last_position = position;
 
-func update_class():
+func update_class(c):
 	var n = "gunner"
-	if Globals.current_class == Globals.Classes.Bullet:
+	if c == Globals.Classes.Bullet:
 		n = "gunner";
-	elif Globals.current_class == Globals.Classes.Laser:
+	elif c == Globals.Classes.Laser:
 		n = "laser";
-	elif Globals.current_class == Globals.Classes.Demo:
+	elif c == Globals.Classes.Demo:
 		n = "demo";
 	
 	var t = "B";
 	if team_id == 1:
 		t = "R";
 	
-	print("update class");
-	print(t);
-	print(n);
-	print("IDs");
-	print(player_id);
-	print(team_id);
-	print(Globals.localPlayerID);
-	
-	if Globals.testing:
-		update_class_rpc(n,t);
-	elif Globals.localPlayerID == player_id:
-		print("Running RPC");
-		rpc("update_class_rpc", n, t);
-
-remotesync func update_class_rpc(n, t):
 	$Sprite_Head.set_texture(load("res://Assets/Player/" + str(n) + "_head_" +t+ ".png"));
 	$Sprite_Body.set_texture(load("res://Assets/Player/" + str(n) + "_body_" +t+ ".png"));
 	$Sprite_Gun.set_texture(load("res://Assets/Player/" + str(n) + "_gun_" +t+ ".png"));
+
+func loadout_class_updated():
+	update_class(Globals.current_class);
 
 func _draw():
 	pass;

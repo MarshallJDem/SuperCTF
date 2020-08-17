@@ -170,7 +170,7 @@ func _HTTP_GetMatchData_Completed(result, response_code, headers, body):
 					spawn_pos = Vector2(-1300, 0);
 				else:
 					spawn_pos = Vector2(1300, 0);
-				players[i] = {"name" : "Player" + str(i), "team_id" : team_id, "user_id": user_id, "network_id": 1, "spawn_pos": spawn_pos, "position": spawn_pos};
+				players[i] = {"name" : "Player" + str(i), "team_id" : team_id, "user_id": user_id, "network_id": 1, "spawn_pos": spawn_pos, "position": spawn_pos, "class" : Globals.Classes.Bullet};
 				i += 1;
 			print(players);
 			start_match();
@@ -285,10 +285,20 @@ func update_player_objects():
 			var player_node = get_tree().get_root().get_node("MainScene/Players/P" + str(player_id));
 			player_node.team_id = players[player_id]["team_id"];
 			player_node.player_name = players[player_id]["name"];
+			player_node.update_class(players[player_id]["class"]);
 			player_node.set_network_master(players[player_id]['network_id']);
 			if !get_tree().is_network_server() and players[player_id]['network_id'] == get_tree().get_network_unique_id():
 				player_node.control = round_is_running;
 				player_node.activate_camera();
+
+remote func player_class_changed(new_class):
+	var sender_network_id = get_tree().get_rpc_sender_id();
+	for player_id in players:
+		if players[player_id]["network_id"] == sender_network_id:
+			players[player_id]["class"] = new_class;
+			rpc("update_players_data", players, round_is_running);
+			return;
+
 
 remotesync func update_players_data(players_data, round_is_running):
 	players = players_data;
@@ -341,7 +351,7 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 						spawn_pos = Vector2(-1300, 0);
 					else:
 						spawn_pos = Vector2(1300, 0);
-					players[network_id] = {"name" : player_name, "team_id" : team_id, "user_id": user_id, "network_id": network_id,"spawn_pos": spawn_pos, "position": spawn_pos};
+					players[network_id] = {"name" : player_name, "team_id" : team_id, "user_id": user_id, "network_id": network_id,"spawn_pos": spawn_pos, "position": spawn_pos, "class" : Globals.Classes.Bullet};
 				# Get the player_id associated with this user_id
 				for player_id in players:
 					if players[player_id]['user_id'] == user_id:
