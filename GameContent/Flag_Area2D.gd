@@ -55,7 +55,6 @@ func collided_with_player(player):
 	elif flag.team_id != player.team_id:
 		if Globals.testing:
 			player.receive_take_flag(flag.flag_id);
-			return;
-		player.rpc("receive_take_flag", flag.flag_id);
-		return;
+		else:
+			player.rpc("receive_take_flag", flag.flag_id);
 
