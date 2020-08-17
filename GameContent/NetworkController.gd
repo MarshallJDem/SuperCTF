@@ -355,8 +355,9 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 				# Get the player_id associated with this user_id
 				for player_id in players:
 					if players[player_id]['user_id'] == user_id:
-						# Update the players array and give it to everyvbody so they can update player data and network masters etc.
+						# Update the players array and give it to everybody so they can update player data and network masters etc.
 						players[player_id]['name'] = player_name;
+						players[player_id]['class'] = Globals.Classes.Bullet;
 						if players[player_id]['network_id'] != 1 and !isSkirmish:
 							server.disconnect_peer(players[player_id]['network_id'], 1000, "A new computer has connected as this player");
 						players[player_id]['network_id'] = network_id;
