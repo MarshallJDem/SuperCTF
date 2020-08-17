@@ -32,7 +32,7 @@ var last_position = Vector2(0,0);
 # The frame of the all of the sprite on the top (Gun, Head, Body)
 var look_direction = 0;
 var has_moved_after_respawn = false;
-
+var current_class;
 
 var Ghost_Trail = preload("res://GameContent/Ghost_Trail.tscn");
 var Player_Death = preload("res://GameContent/Player_Death.tscn");
@@ -49,7 +49,10 @@ func _ready():
 	else:
 		print("ISNETWORKMASTER : " + str(is_network_master()));
 	Globals.connect("class_changed", self, "loadout_class_updated");
-	loadout_class_updated();
+	if Globals.localPlayerID == player_id:
+		loadout_class_updated();
+	else:
+		update_class(current_class);
 	$Respawn_Timer.connect("timeout", self, "_respawn_timer_ended");
 	$Invincibility_Timer.connect("timeout", self, "_invincibility_timer_ended");
 	$Powerup_Timer.connect("timeout", self, "_powerup_timer_ended");

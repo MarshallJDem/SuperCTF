@@ -417,6 +417,7 @@ func spawn_player(id):
 	player.team_id = players[id]["team_id"];
 	player.position = players[id]["position"];
 	player.start_pos = players[id]["spawn_pos"];
+	player.current_class = players[id]["class"];
 	print("Spawning Player");
 	print(players[id]);
 	print(get_tree().get_network_unique_id());
