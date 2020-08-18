@@ -68,7 +68,7 @@ func _input(event):
 			if event.scancode == KEY_T:
 				get_tree().get_root().get_node("MainScene/NetworkController").rpc("test_ping");
 			if event.scancode == KEY_CONTROL:
-				if $Flag_Holder.get_child_count() == 0:
+				if !has_flag():
 					sprintEnabled = !sprintEnabled;
 			if event.scancode == KEY_SPACE:
 				#Attempt a teleport
@@ -148,6 +148,8 @@ func _process(delta):
 	$Name_Parent/Label_Name.bbcode_text = "[center][color=" + color + "]" + player_name;
 	last_position = position;
 
+
+
 func update_class(c):
 	var n = "gunner"
 	if c == Globals.Classes.Bullet:
@@ -171,9 +173,12 @@ func loadout_class_updated():
 func _draw():
 	pass;
 
+func has_flag() -> bool:
+	return $Flag_Holder.get_child_count() != 0;
+
 # Attempts to drop the flag the player is potentially holding. Returns true if there was a flag to drop false otherwise
 func attempt_drop_flag() -> bool:
-	if $Flag_Holder.get_child_count() == 0:
+	if !has_flag():
 		return false;
 	else: # Otherwise drop our flag
 		drop_current_flag($Flag_Holder.get_global_position());
@@ -196,6 +201,11 @@ remotesync func teleport(start, end):
 		node.z_index = z_index;
 		node.look_direction = look_direction;
 		node.scale = $Sprite_Body.scale
+		if has_flag():
+			if team_id == 1:
+				node.flag_team_id = 0;
+			else:
+				node.flag_team_id = 1;
 		node.get_node("Sprite_Gun").texture = $Sprite_Gun.texture
 		node.get_node("Sprite_Gun").z_index = $Sprite_Gun.z_index
 		node.get_node("Sprite_Head").texture = $Sprite_Head.texture
@@ -226,7 +236,7 @@ func move_on_inputs(teleport = false):
 	if $Weapon_Node/Laser_Timer.time_left > 0:
 		speed = POWERUP_SPEED + $Weapon_Node.AIMING_SPEED * ($Weapon_Node/Laser_Timer.time_left / $Weapon_Node/Laser_Timer.wait_time);
 	
-	if($Flag_Holder.get_child_count() > 0):
+	if(has_flag()):
 		speed += FLAG_SLOWDOWN_SPEED;
 	if sprintEnabled:
 		speed += SPRINT_SPEED;
@@ -453,7 +463,7 @@ func take_flag(flag_id):
 # Drops the currently held flag (If there is one)
 func drop_current_flag(flag_position = $Flag_Holder.get_global_position()):
 	# Only run if there is a flag in the Flag_Holder
-	if $Flag_Holder.get_child_count() > 0:
+	if has_flag():
 		if Globals.testing or is_network_master():
 			get_tree().get_root().get_node("MainScene").slowdown_music();
 		$Flag_Drop_Audio.play();

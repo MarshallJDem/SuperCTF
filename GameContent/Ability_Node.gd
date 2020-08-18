@@ -56,6 +56,11 @@ func spawn_camo_flash():
 	node.position = player.position;
 	node.look_direction = player.look_direction;
 	node.scale = player.get_node("Sprite_Body").scale
+	if player.has_flag():
+		if player.team_id == 1:
+			node.flag_team_id = 0;
+		else:
+			node.flag_team_id = 1;
 	node.get_node("Sprite_Gun").texture = player.get_node("Sprite_Gun").texture
 	node.get_node("Sprite_Gun").z_index = player.get_node("Sprite_Gun").z_index
 	node.get_node("Sprite_Head").texture = player.get_node("Sprite_Head").texture
