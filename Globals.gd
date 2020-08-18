@@ -27,6 +27,9 @@ var userToken;
 var player_MMR = -1;
 var player_rank = -1;
 var player_status = 0;
+# At the end of a match its hard to tell whether the current stored data for player MMR
+# is from before or after the match results. This keeps track of what it was before.
+var player_old_MMR = -1;
 
 #Main Server
 var mainServerIP = "https://www.superctf.com" + ":42401/";
@@ -170,7 +173,12 @@ func _HTTP_PollPlayerStatus_Completed(result, response_code, headers, body):
 	if json.result.has("rank"):
 		Globals.player_rank = int(json.result.rank);
 	if json.result.has("mmr"):
-		Globals.player_MMR = int(json.result.mmr);
+		if Globals.player_MMR == -1:
+			Globals.player_MMR = int(json.result.mmr);
+			Globals.player_old_MMR = int(json.result.mmr);
+		elif int(json.result.mmr) != Globals.player_MMR:
+			Globals.player_old_MMR = Globals.player_MMR;
+			Globals.player_MMR = int(json.result.mmr);
 	if( player_status <= 1 and int(json.result.status) > 1):
 		print("Found Match : " + json.result.status);
 		var matchID = json.result.status;

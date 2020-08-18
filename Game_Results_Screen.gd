@@ -20,7 +20,7 @@ func _ready():
 	team_1_score = Globals.result_team1_score;
 	player_team_ID = Globals.localPlayerTeamID;
 	match_ID = Globals.result_match_id;
-	old_mmr = Globals.player_MMR;
+	old_mmr = Globals.player_old_MMR;
 	
 	var query = "matchID=" + String(match_ID);
 	$HTTPRequest_Get_Match_Data.request(Globals.mainServerIP + "getMatchData?" + query, ["authorization: Bearer " + Globals.userToken], false, HTTPClient.METHOD_GET);
