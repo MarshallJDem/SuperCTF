@@ -22,6 +22,7 @@ var laser_gun_B = preload("res://Assets/Player/laser_gun_B.png");
 var laser_gun_R = preload("res://Assets/Player/laser_gun_R.png");
 
 onready var Menu = $CanvasLayer/Control/ColorRect;
+var hidden = false;
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -56,7 +57,7 @@ func _process(delta):
 		Menu.get_node("Utility1").set_texture(grenade_R);
 		Menu.get_node("Utility2").set_texture(landmine_R);
 	
-	$CanvasLayer/Control.visible = Globals.displaying_loadout or Globals.testing;
+	$CanvasLayer/Control.visible = !hidden and (Globals.displaying_loadout or Globals.testing);
 	
 
 func set_weapon_selection(w):

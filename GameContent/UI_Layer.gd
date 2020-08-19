@@ -209,6 +209,7 @@ func disappear():
 	$Input_GUIs.visible = false;
 	$Alert_Text.visible = false;
 	$Skirmish_Subtext.visible = false;
+	$"../Loadout_Menu".hidden = true;
 func appear():
 	$Score_Label.visible = true;
 	$Countdown_Label.visible = true;
@@ -217,3 +218,4 @@ func appear():
 	$Input_GUIs.visible = true;
 	$Alert_Text.visible = true;
 	$Skirmish_Subtext.visible = true;
+	$"../Loadout_Menu".hidden = false;

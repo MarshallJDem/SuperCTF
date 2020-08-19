@@ -39,6 +39,8 @@ func _ready():
 		flags_data["1"] = {"team_id" : 1, "position" : get_tree().get_root().get_node("MainScene/Map/YSort/Flag_Home-" + str(1)).position, "holder_player_id" : -1};
 		spawn_flag(0);
 		spawn_flag(1);
+		yield(get_tree().create_timer(2), "timeout");
+		end_match(0);
 		#call_deferred("spawn_flag", 1, Vector2(-200, 0));
 		return;
 	if Globals.experimental or Globals.player_status == 1 or (Globals.isServer and (Globals.port == 42402 or Globals.port == 42499)):
@@ -623,7 +625,7 @@ remotesync func start_round():
 # Ends the match
 remotesync func end_match(winning_team_id):
 	print("Ending Match");
-	if get_tree().is_network_server():
+	if !Globals.testing and get_tree().is_network_server():
 		$HTTPRequest_GameServerEndMatch.request(Globals.mainServerIP + "gameServerEndMatch?matchID=" + str(Globals.matchID) + "&winningTeamID=" + str(winning_team_id), ["authorization: Bearer " + (Globals.serverPrivateToken)]);
 	else:
 		match_is_running = false;
