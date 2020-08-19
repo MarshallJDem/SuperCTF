@@ -18,6 +18,8 @@ var round_is_ended = false;
 var match_is_running = false;
 var round_is_running = false;
 
+var Game_Results_Screen = preload("res://Game_Results_Screen.tscn");
+
 # players Struct (Indexed by player game ID (which is only the same as network_id on skirmish, and never the same as uid))
 #	- name: string
 #	- team_id: int
@@ -475,13 +477,14 @@ func leave_match():
 	reset_game()
 	# Ideally I'd like to handle passing the variables to the scene here
 	# But alas they are all over the place due to weird reasons
-	get_tree().change_scene("res://Game_Results_Screen.tscn");
+	var scn = Game_Results_Screen.instance();
+	get_tree().get_root().get_node("MainScene").call_deferred("add_child", scn);
 
 # Called when this client disconnects from the server
 func server_disconnect():
 	print("LOST CONNECTION WITH SERVER");
-	get_tree().get_root().get_node("MainScene/UI_Layer").enable_leave_match_button();
-	get_tree().change_scene("res://Game_Results_Screen.tscn");
+	var scn = Game_Results_Screen.instance();
+	get_tree().get_root().get_node("MainScene").call_deferred("add_child", scn);
 	
 
 # Called when a player scores a point

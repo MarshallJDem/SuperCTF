@@ -7,7 +7,7 @@ var show_move_gui = true;
 func _ready():
 	var _err = $Leave_Match_Button.connect("pressed", self, "_leave_match_button_pressed");
 	_err = $Cancel_Button.connect("pressed", self, "_cancel_button_pressed");
-	_err = $Options_Button.connect("button_up", self, "_options_button_clicked");
+	_err = $"../Chat_Layer/Options_Button".connect("button_up", self, "_options_button_clicked");
 	get_tree().connect("screen_resized", self, "_screen_resized");
 	_screen_resized();
 
@@ -135,11 +135,11 @@ func _process(delta):
 
 func _screen_resized():
 	var window_size = OS.get_window_size();
-	$Chat_Box.rect_scale= Vector2(1,1);
-	$LineEdit.rect_scale= Vector2(1,1);
-	$Chat_Box.margin_bottom = window_size.y * (0.6);
-	$Chat_Box.margin_top = 73;
-	$Options_Button.rect_scale = Vector2(0.5,0.5);
+	$"../Chat_Layer/Chat_Box".rect_scale= Vector2(1,1);
+	$"../Chat_Layer/Line_Edit".rect_scale= Vector2(1,1);
+	$"../Chat_Layer/Chat_Box".margin_bottom = window_size.y * (0.6);
+	$"../Chat_Layer/Chat_Box".margin_top = 73;
+	$"../Chat_Layer/Options_Button".rect_scale = Vector2(0.5,0.5);
 	$Cancel_Button.rect_scale = Vector2(0.5,0.5);
 	if window_size.x < 500 or window_size.y < 200:
 		$Input_GUIs.rect_scale = Vector2(0.5,0.5);
@@ -155,20 +155,20 @@ func _screen_resized():
 		$Input_GUIs.rect_scale = Vector2(2,2);
 		$Alert_Text.get_font("normal_font").size =24;
 		$Alert_Text.margin_top = $Input_GUIs.margin_top - 200;
-		$Chat_Box.rect_scale = Vector2(2,2);
-		$LineEdit.rect_scale = Vector2(2,2);
-		$Options_Button.rect_scale = Vector2(1,1);
+		$"../Chat_Layer/Chat_Box".rect_scale = Vector2(2,2);
+		$"../Chat_Layer/Line_Edit".rect_scale = Vector2(2,2);
+		$"../Chat_Layer/Options_Button".rect_scale = Vector2(1,1);
 		$Cancel_Button.rect_scale = Vector2(1,1);
-		$Chat_Box.margin_top = 160;
+		$"../Chat_Layer/Chat_Box".margin_top = 160;
 		
-	var size = $LineEdit.rect_size.y;
-	$LineEdit.margin_top = $Chat_Box.margin_bottom;
-	$LineEdit.margin_bottom = $LineEdit.margin_top + size;
+	var size = $"../Chat_Layer/Line_Edit".rect_size.y;
+	$"../Chat_Layer/Line_Edit".margin_top = $"../Chat_Layer/Chat_Box".margin_bottom;
+	$"../Chat_Layer/Line_Edit".margin_bottom = $"../Chat_Layer/Line_Edit".margin_top + size;
 
 
 func _options_button_clicked():
 	Globals.toggle_options_menu();
-	$Options_Button.release_focus();
+	$"../Chat_Layer/Options_Button".release_focus();
 
 # Color 0 = blue, 1 = red
 func set_big_label_text(text, color):

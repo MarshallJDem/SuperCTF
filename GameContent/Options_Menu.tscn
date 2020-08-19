@@ -29,7 +29,7 @@ __meta__ = {
 }
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
-layer = 3
+layer = 6
 
 [node name="Control" type="Control" parent="CanvasLayer"]
 anchor_left = 0.5

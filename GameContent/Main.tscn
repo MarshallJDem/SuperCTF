@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=2]
+[gd_scene load_steps=36 format=2]
 
 [ext_resource path="res://GameContent/Main.gd" type="Script" id=1]
 [ext_resource path="res://GameContent/Player.tscn" type="PackedScene" id=2]
@@ -27,6 +27,8 @@
 [ext_resource path="res://fonts/pixel.TTF" type="DynamicFontData" id=25]
 [ext_resource path="res://GameContent/Loadout_Menu.tscn" type="PackedScene" id=26]
 [ext_resource path="res://GameContent/PowerupGUIParticles.tscn" type="PackedScene" id=27]
+[ext_resource path="res://Game_Results_Screen.tscn" type="PackedScene" id=28]
+[ext_resource path="res://Assets/GUI/blur.png" type="Texture" id=29]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0, 0, 0, 0.145098 )
@@ -80,10 +82,13 @@ position = Vector2( 15.6066, 14.9669 )
 
 [node name="HTTPRequest_GameServerEndMatch" type="HTTPRequest" parent="NetworkController"]
 
-[node name="UI_Layer" type="CanvasLayer" parent="."]
-script = ExtResource( 4 )
+[node name="Game_Results_Screen" parent="." instance=ExtResource( 28 )]
+z_index = 10
 
-[node name="LineEdit" type="LineEdit" parent="UI_Layer"]
+[node name="Chat_Layer" type="CanvasLayer" parent="."]
+layer = 5
+
+[node name="Line_Edit" type="LineEdit" parent="Chat_Layer"]
 margin_top = 347.562
 margin_right = 238.0
 margin_bottom = 373.562
@@ -99,7 +104,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Chat_Box" type="RichTextLabel" parent="UI_Layer"]
+[node name="Chat_Box" type="RichTextLabel" parent="Chat_Layer"]
 margin_top = 73.0
 margin_right = 292.0
 margin_bottom = 334.0
@@ -114,6 +119,28 @@ custom_effects = [ ExtResource( 19 ) ]
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Options_Button" type="Button" parent="Chat_Layer"]
+margin_left = 38.1514
+margin_top = 24.4809
+margin_right = 164.151
+margin_bottom = 91.4809
+grow_horizontal = 0
+grow_vertical = 0
+rect_scale = Vector2( 0.5, 0.5 )
+rect_pivot_offset = Vector2( 5.308, 0 )
+custom_styles/hover = ExtResource( 9 )
+custom_styles/pressed = ExtResource( 10 )
+custom_styles/normal = ExtResource( 11 )
+custom_fonts/font = SubResource( 4 )
+custom_colors/font_color = Color( 0.172549, 0.172549, 0.172549, 1 )
+text = "Options"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="UI_Layer" type="CanvasLayer" parent="."]
+script = ExtResource( 4 )
 
 [node name="Score_Label" type="RichTextLabel" parent="UI_Layer"]
 anchor_right = 1.0
@@ -190,25 +217,6 @@ custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color = Color( 0.172549, 0.172549, 0.172549, 1 )
 text = "Leave Match"
 
-[node name="Options_Button" type="Button" parent="UI_Layer"]
-margin_left = 35.4974
-margin_top = 24.4809
-margin_right = 161.497
-margin_bottom = 91.4809
-grow_horizontal = 0
-grow_vertical = 0
-rect_scale = Vector2( 0.5, 0.5 )
-rect_pivot_offset = Vector2( 5.308, 0 )
-custom_styles/hover = ExtResource( 9 )
-custom_styles/pressed = ExtResource( 10 )
-custom_styles/normal = ExtResource( 11 )
-custom_fonts/font = SubResource( 4 )
-custom_colors/font_color = Color( 0.172549, 0.172549, 0.172549, 1 )
-text = "Options"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="Input_GUIs" type="Control" parent="UI_Layer"]
 anchor_left = 0.5
 anchor_top = 1.0
@@ -216,6 +224,18 @@ anchor_right = 0.5
 anchor_bottom = 1.0
 margin_top = -81.0
 rect_scale = Vector2( 1.5, 1.5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="UI_Layer/Input_GUIs"]
+visible = false
+margin_left = -653.0
+margin_top = -675.0
+margin_right = 649.0
+margin_bottom = 69.0
+texture = ExtResource( 29 )
+expand = true
 __meta__ = {
 "_edit_use_anchors_": false
 }

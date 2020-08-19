@@ -73,6 +73,6 @@ func add_message(message, sender_id):
 		if get_tree().get_root().get_node("MainScene/NetworkController").players[sender_id]["team_id"] == 0:
 			color = "blue";
 	if sender_id == -1:
-		get_parent().get_node("Chat_Box").bbcode_text = get_parent().get_node("Chat_Box").bbcode_text + message + "\n";
+		get_parent().get_parent().get_node("Chat_Layer/Chat_Box").bbcode_text = get_parent().get_parent().get_node("Chat_Layer/Chat_Box").bbcode_text + message + "\n";
 	else:
-		get_parent().get_node("Chat_Box").bbcode_text = get_parent().get_node("Chat_Box").bbcode_text + "[color=" + color + "]" + str(player_name) + "[/color][color=#3F4A4D]: " + message + "[/color]" + "\n";
+		get_parent().get_parent().get_node("Chat_Layer/Chat_Box").bbcode_text = get_parent().get_parent().get_node("Chat_Layer/Chat_Box").bbcode_text + "[color=" + color + "]" + str(player_name) + "[/color][color=#3F4A4D]: " + message + "[/color]" + "\n";
