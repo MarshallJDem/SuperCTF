@@ -475,16 +475,12 @@ func leave_match():
 	print("Leave Match");
 	get_tree().set_network_peer(null);
 	reset_game()
-	# Ideally I'd like to handle passing the variables to the scene here
-	# But alas they are all over the place due to weird reasons
-	var scn = Game_Results_Screen.instance();
-	get_tree().get_root().get_node("MainScene").call_deferred("add_child", scn);
+	get_tree().change_scene("res://TitleScreen.tscn");
 
 # Called when this client disconnects from the server
 func server_disconnect():
 	print("LOST CONNECTION WITH SERVER");
-	var scn = Game_Results_Screen.instance();
-	get_tree().get_root().get_node("MainScene").call_deferred("add_child", scn);
+	get_tree().change_scene("res://TitleScreen.tscn");
 	
 
 # Called when a player scores a point
@@ -639,7 +635,11 @@ remotesync func end_match(winning_team_id):
 		Globals.result_winning_team_id = winning_team_id;
 		get_tree().get_root().get_node("MainScene/UI_Layer").set_big_label_text(team_name + " WINS!", winning_team_id);
 		yield(get_tree().create_timer(4.0), "timeout");
-		leave_match();
+		# Ideally I'd like to handle passing the variables to the scene here
+		# But alas they are all over the place due to weird reasons
+		var scn = Game_Results_Screen.instance();
+		get_tree().get_root().get_node("MainScene").call_deferred("add_child", scn);
+		$"../UI_Layer".visible = false;
 
 # Temporary storage of the winning_team_id to use since the call GameServerEndMatch may require multiple calls if it fails
 var winning_team_id_to_use;
@@ -648,13 +648,13 @@ func _HTTP_GameServerEndMatch_Completed(result, response_code, headers, body):
 	if(response_code == 200):
 		print("success");
 		updateGameServerStatus(4);
-		yield(get_tree().create_timer(5.0), "timeout")
+		yield(get_tree().create_timer(5.0), "timeout");
 		get_tree().set_network_peer(null);
 		start_server();
 	else:
 		# Endlessly attempt to end the match until the server responds. It is important that this eventually works!
-		print("failiure")
-		yield(get_tree().create_timer(5.0), "timeout")
+		print("failiure");
+		yield(get_tree().create_timer(5.0), "timeout");
 		$HTTPRequest_GameServerEndMatch.request(Globals.mainServerIP + "gameServerEndMatch?matchID=" + str(Globals.matchID) + "&winningTeamID=" + str(winning_team_id_to_use), ["authorization: Bearer " + (Globals.serverPrivateToken)]);
 
 # Called when the Round_End_Timer ends
