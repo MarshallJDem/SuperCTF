@@ -639,7 +639,7 @@ remotesync func end_match(winning_team_id):
 		# But alas they are all over the place due to weird reasons
 		var scn = Game_Results_Screen.instance();
 		get_tree().get_root().get_node("MainScene").call_deferred("add_child", scn);
-		$"../UI_Layer".visible = false;
+		$"../UI_Layer".disappear();
 
 # Temporary storage of the winning_team_id to use since the call GameServerEndMatch may require multiple calls if it fails
 var winning_team_id_to_use;

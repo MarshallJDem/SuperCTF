@@ -201,3 +201,19 @@ func _leave_match_button_pressed():
 
 func _cancel_button_pressed():
 	Globals.leave_MMQueue();
+func disappear():
+	$Score_Label.visible = false;
+	$Countdown_Label.visible = false;
+	$Big_Label_Blue.visible = false;
+	$Big_Label_Red.visible = false;
+	$Input_GUIs.visible = false;
+	$Alert_Text.visible = false;
+	$Skirmish_Subtext.visible = false;
+func appear():
+	$Score_Label.visible = true;
+	$Countdown_Label.visible = true;
+	$Big_Label_Blue.visible = true;
+	$Big_Label_Red.visible = true;
+	$Input_GUIs.visible = true;
+	$Alert_Text.visible = true;
+	$Skirmish_Subtext.visible = true;
