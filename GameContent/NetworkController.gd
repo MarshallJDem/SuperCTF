@@ -12,7 +12,7 @@ var server = null;
 var client = null;
 var isSkirmish = false;
 var isSuddenDeath = false;
-var isDD = true;
+var isDD = false;
 
 signal round_started();
 
