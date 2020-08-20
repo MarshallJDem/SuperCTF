@@ -562,6 +562,7 @@ remotesync func load_new_round():
 			$Timing_Sync_Timer.start();
 	round_num += 1;
 	round_is_ended = false;
+	match_is_running = true;
 	reset_game_objects();
 	get_tree().get_root().get_node("MainScene/Countdown_Audio").play();
 	# If we're the server, instruct other to spawn game nodes
@@ -677,6 +678,7 @@ remotesync func start_rematch():
 	isDD = true;
 	isSuddenDeath = true;
 	match_is_running = true;
+	round_is_running = false
 	if get_tree().is_network_server():
 		rpc("load_new_round");
 		$Match_End_Timer.stop();

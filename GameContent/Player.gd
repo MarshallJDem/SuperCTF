@@ -79,8 +79,6 @@ func _input(event):
 					camera_ref.lag_smooth();
 					$Teleport_Timer.start();
 
-
-
 func _process(delta):
 	BASE_SPEED = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("playerSpeed");
 	
@@ -115,7 +113,6 @@ func _process(delta):
 	
 	if !Globals.testing and is_network_master() and !get_tree().is_network_server():
 		rpc_unreliable("update_position", position);
-	
 	
 	# Animation
 	var diff = last_position - position;
