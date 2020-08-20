@@ -29,6 +29,7 @@ var Game_Results_Screen = preload("res://Game_Results_Screen.tscn");
 #	- network_id: int
 #	- position: Vector2D
 #	- spawn_pos: Vector2D
+#	- DD_vote: bool
 
 # flag_data Struct (Indexed by flag id)
 #	- holder_player_id: int
@@ -97,6 +98,7 @@ func reset_game():
 	round_is_ended = false;
 	match_is_running = false;
 	round_is_running = false;
+	isDD = false;
 	round_num = 0;
 	game_vars = Globals.game_var_defaults.duplicate();
 	get_tree().set_network_peer(null);
@@ -666,8 +668,8 @@ remote func change_DD_vote(vote):
 			players[player_id]["DD_vote"] = vote;
 		# See if everyone voted yes
 		all_true = all_true and players[player_id]["DD_vote"];
+	rpc("update_players_data", players, round_is_running);
 	if all_true:
-		
 		rpc("start_rematch");
 
 remotesync func start_rematch():
