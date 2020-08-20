@@ -25,7 +25,10 @@ func _ready():
 	
 	var query = "matchID=" + String(match_ID);
 	#$HTTPRequest_Get_Match_Data.request(Globals.mainServerIP + "getMatchData?" + query, ["authorization: Bearer " + Globals.userToken], false, HTTPClient.METHOD_GET);
-	
+	if get_tree().get_root().get_node("MainScene/NetworkController").isDD:
+		$CanvasLayer/Control/Button_Rematch.visible = false;
+		$CanvasLayer/Control/DD_Description.visible = false;
+		$CanvasLayer/Control/DD_Votes.visible = false;
 	get_tree().connect("screen_resized", self, "_screen_resized");
 	_screen_resized();
 
@@ -102,3 +105,12 @@ func _process(_delta):
 		$CanvasLayer/Control/Text_MMR_Sub.bbcode_text = "[center][color=black]Your MMR ([/color][color=" + change_color + "]" + change_text + "[/color][color=black])[/color][/center]"; 
 	else:
 		$CanvasLayer/Control/Text_MMR_Sub.bbcode_text = "[center]Your MMR[/center]";
+	
+	# DD
+	var players = get_tree().get_root().get_node("MainScene/NetworkController").players;
+	var num_of_votes = 0;
+	var bob = {};
+	for player_id in players:
+		if players[player_id]["DD_vote"]:
+			num_of_votes += 1;
+	$CanvasLayer/Control/DD_Votes.bbcode_text = str(num_of_votes) + "/" + str(players.size()) + " Votes";

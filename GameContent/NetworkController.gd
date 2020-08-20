@@ -12,6 +12,7 @@ var server = null;
 var client = null;
 var isSkirmish = false;
 var isSuddenDeath = false;
+var isDD = true;
 
 signal round_started();
 
@@ -653,6 +654,9 @@ func _match_end_timer_ended():
 
 # Called by clients on server to opt in / out of double down rematch
 remote func change_DD_vote(vote):
+	# Can't have two DDs in a row
+	if isDD:
+		return;
 	print("^CHANGE DD VOTE " + str(vote) + " " + str(get_tree().get_rpc_sender_id()));
 	var sender_network_id = get_tree().get_rpc_sender_id();
 	var all_true = true;
@@ -663,11 +667,14 @@ remote func change_DD_vote(vote):
 		# See if everyone voted yes
 		all_true = all_true and players[player_id]["DD_vote"];
 	if all_true:
+		
 		rpc("start_rematch");
 
 remotesync func start_rematch():
 	print("^STARTING REMATCH");
+	isDD = true;
 	isSuddenDeath = true;
+	match_is_running = true;
 	if get_tree().is_network_server():
 		rpc("load_new_round");
 		$Match_End_Timer.stop();
