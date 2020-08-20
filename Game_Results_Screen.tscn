@@ -232,7 +232,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Button_Titlescreen2" type="Button" parent="CanvasLayer/Control"]
+[node name="Button_Rematch" type="Button" parent="CanvasLayer/Control"]
 margin_left = -208.575
 margin_top = 276.803
 margin_right = 253.425

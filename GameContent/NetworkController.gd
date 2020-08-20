@@ -11,6 +11,7 @@ var		round_num	= 0;
 var server = null;
 var client = null;
 var isSkirmish = false;
+var isSuddenDeath = false;
 
 signal round_started();
 
@@ -59,6 +60,7 @@ func _ready():
 	_err = $Match_Start_Timer.connect("timeout", self, "_match_start_timer_ended");
 	_err = $Timing_Sync_Timer.connect("timeout", self, "_timing_sync_timer_ended");
 	_err = $Cancel_Match_Timer.connect("timeout", self, "_cancel_match_timer_ended");
+	_err = $Match_End_Timer.connect("timeout", self, "_match_end_timer_ended");
 	_err = $Gameserver_Status_Timer.connect("timeout", self, "_gameserver_status_timer_ended");
 	_err = $HTTPRequest_GameServerCheckUser.connect("request_completed", self, "_HTTP_GameServerCheckUser_Completed");
 	_err = $HTTPRequest_GameServerPollStatus.connect("request_completed", self, "_HTTP_GameServerPollStatus_Completed");
@@ -622,11 +624,13 @@ remotesync func start_round():
 		local_player.control = true;
 		local_player.activate_camera();
 
+var match_end_winning_team_id;
 # Ends the match
 remotesync func end_match(winning_team_id):
 	print("Ending Match");
 	if !Globals.testing and get_tree().is_network_server():
-		$HTTPRequest_GameServerEndMatch.request(Globals.mainServerIP + "gameServerEndMatch?matchID=" + str(Globals.matchID) + "&winningTeamID=" + str(winning_team_id), ["authorization: Bearer " + (Globals.serverPrivateToken)]);
+		$Match_End_Timer.start();
+		match_end_winning_team_id = winning_team_id;
 	else:
 		match_is_running = false;
 		var team_name = "NOBODY";
@@ -642,6 +646,31 @@ remotesync func end_match(winning_team_id):
 		var scn = Game_Results_Screen.instance();
 		get_tree().get_root().get_node("MainScene").call_deferred("add_child", scn);
 		$"../UI_Layer".disappear();
+
+func _match_end_timer_ended():
+	if get_tree().is_network_server():
+		$HTTPRequest_GameServerEndMatch.request(Globals.mainServerIP + "gameServerEndMatch?matchID=" + str(Globals.matchID) + "&winningTeamID=" + str(match_end_winning_team_id), ["authorization: Bearer " + (Globals.serverPrivateToken)]);
+
+# Called by clients on server to opt in / out of double down rematch
+remote func change_DD_vote(vote):
+	print("^CHANGE DD VOTE " + str(vote) + " " + str(get_tree().get_rpc_sender_id()));
+	var sender_network_id = get_tree().get_rpc_sender_id();
+	var all_true = true;
+	for player_id in players:
+		# Update vote of the player
+		if players[player_id]["network_id"] == sender_network_id:
+			players[player_id]["DD_vote"] = vote;
+		# See if everyone voted yes
+		all_true = all_true and players[player_id]["DD_vote"];
+	if all_true:
+		rpc("start_rematch");
+
+remotesync func start_rematch():
+	print("^STARTING REMATCH");
+	isSuddenDeath = true;
+	if get_tree().is_network_server():
+		rpc("load_new_round");
+		$Match_End_Timer.stop();
 
 # Temporary storage of the winning_team_id to use since the call GameServerEndMatch may require multiple calls if it fails
 var winning_team_id_to_use;
@@ -665,10 +694,18 @@ func _round_end_timer_ended():
 	if get_tree().is_network_server():
 		var game_over = false;
 		var winning_team_id = -1;
-		for i in range(0, scores.size()):
-			if scores[i] >= SCORE_LIMIT:
-				game_over = true;
-				winning_team_id = i;
+		# If this is sudden death, just take the best score
+		if isSuddenDeath:
+			winning_team_id = 0;
+			game_over = true;
+			for i in range(0, scores.size()):
+				if scores[i] >= scores[winning_team_id]:
+					winning_team_id = i;
+		else: # Otherwise if somebody hit score limit then they won
+			for i in range(0, scores.size()):
+				if scores[i] >= SCORE_LIMIT:
+					game_over = true;
+					winning_team_id = i;
 		if game_over:
 			rpc("end_match", winning_team_id);
 		else:

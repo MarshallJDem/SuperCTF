@@ -14,6 +14,7 @@ var has_animated_mmr = false;
 
 func _ready():
 	$CanvasLayer/Control/Button_Titlescreen.connect("pressed", self, "_exit_pressed");
+	$CanvasLayer/Control/Button_Rematch.connect("pressed", self, "_rematch_pressed");
 	$HTTPRequest_Get_Match_Data.connect("request_completed", self, "_HTTPRequest_Get_Match_Data_Completed");
 	winning_team_ID = Globals.result_winning_team_id;
 	team_0_score = Globals.result_team0_score;
@@ -52,6 +53,13 @@ func _HTTPRequest_Get_Match_Data_Completed(result, response_code, headers, body)
 	
 func _exit_pressed():
 	get_tree().change_scene("res://TitleScreen.tscn");
+
+var rematch_vote = false;
+func _rematch_pressed():
+	rematch_vote = !rematch_vote;
+	get_tree().get_root().get_node("MainScene/NetworkController").rpc_id(1, "change_DD_vote", rematch_vote);
+
+
 
 func _process(_delta):
 	# Result and Score setup
