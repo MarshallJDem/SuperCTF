@@ -671,6 +671,10 @@ remotesync func start_rematch():
 	if get_tree().is_network_server():
 		rpc("load_new_round");
 		$Match_End_Timer.stop();
+	else:
+		if get_tree().get_root().has_node("MainScene/Game_Results_Screen"):
+			get_tree().get_root().get_node("MainScene/Game_Results_Screen").call_deferred("queue_free");
+			get_tree().get_root().get_node("MainScene/UI_Layer").appear();
 
 # Temporary storage of the winning_team_id to use since the call GameServerEndMatch may require multiple calls if it fails
 var winning_team_id_to_use;
