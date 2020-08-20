@@ -24,7 +24,7 @@ func _ready():
 	old_mmr = Globals.player_old_MMR;
 	
 	var query = "matchID=" + String(match_ID);
-	$HTTPRequest_Get_Match_Data.request(Globals.mainServerIP + "getMatchData?" + query, ["authorization: Bearer " + Globals.userToken], false, HTTPClient.METHOD_GET);
+	#$HTTPRequest_Get_Match_Data.request(Globals.mainServerIP + "getMatchData?" + query, ["authorization: Bearer " + Globals.userToken], false, HTTPClient.METHOD_GET);
 	
 	get_tree().connect("screen_resized", self, "_screen_resized");
 	_screen_resized();
@@ -39,6 +39,7 @@ func _screen_resized():
 	else:
 		s = window_size.x / 1920;
 	$CanvasLayer/Control.rect_scale = Vector2(s,s);
+
 func _HTTPRequest_Get_Match_Data_Completed(result, response_code, headers, body):
 	var json = JSON.parse(body.get_string_from_utf8())
 	if(response_code == 200 && json.result):
@@ -55,6 +56,7 @@ func _exit_pressed():
 	get_tree().change_scene("res://TitleScreen.tscn");
 
 var rematch_vote = false;
+
 func _rematch_pressed():
 	rematch_vote = !rematch_vote;
 	get_tree().get_root().get_node("MainScene/NetworkController").rpc_id(1, "change_DD_vote", rematch_vote);
