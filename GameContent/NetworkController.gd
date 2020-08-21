@@ -636,6 +636,8 @@ remotesync func end_match(winning_team_id):
 		$Match_End_Timer.start();
 		match_end_winning_team_id = winning_team_id;
 	else:
+		var local_player = get_tree().get_root().get_node("MainScene/Players/P" + str(Globals.localPlayerID));
+		local_player.control = false;
 		match_is_running = false;
 		var team_name = "NOBODY";
 		if winning_team_id == 0:
@@ -651,6 +653,10 @@ remotesync func end_match(winning_team_id):
 		get_tree().get_root().get_node("MainScene").call_deferred("add_child", scn);
 		$"../UI_Layer".disappear();
 
+remotesync func tell_clients_to_piss_off():
+	get_tree().set_network_peer(null);
+	get_tree().change_scene("res://TitleScreen.tscn");
+	
 func _match_end_timer_ended():
 	if get_tree().is_network_server():
 		$HTTPRequest_GameServerEndMatch.request(Globals.mainServerIP + "gameServerEndMatch?matchID=" + str(Globals.matchID) + "&winningTeamID=" + str(match_end_winning_team_id), ["authorization: Bearer " + (Globals.serverPrivateToken)]);
