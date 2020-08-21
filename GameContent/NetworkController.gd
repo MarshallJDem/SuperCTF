@@ -670,7 +670,7 @@ remotesync func show_results_screen(scores, results = null):
 		return;
 	var scn = Game_Results_Screen.instance();
 	# Get local player user_id
-	var uid = players[Globals.localPlayerIDs]["user_id"];
+	var uid = players[Globals.localPlayerID]["user_id"];
 	# Find our player in the results
 	for player in results:
 		print(uid);
