@@ -70,6 +70,7 @@ func _ready():
 	_err = $HTTPRequest_GameServerEndMatch.connect("request_completed", self, "_HTTP_GameServerEndMatch_Completed");
 	_err = $HTTPRequest_GetMatchData.connect("request_completed", self, "_HTTP_GetMatchData_Completed");
 	_err = $HTTPRequest_GameServerUpdateStatus.connect("request_completed", self, "_HTTP_GameServerUpdateStatus_Completed");
+	_err = $HTTPRequest_GetPredictedMMRChanges.connect("request_completed", self, "_HTTP_GetPredictedMMRChanges_Completed");
 	if(Globals.isServer):
 		start_server();
 	else:
@@ -640,6 +641,9 @@ remotesync func end_match(winning_team_id):
 	if !Globals.testing and get_tree().is_network_server():
 		$Match_End_Timer.start();
 		match_end_winning_team_id = winning_team_id;
+		yield(get_tree().create_timer(4.0), "timeout");
+		$HTTPRequest_GetPredictedMMRChanges.request(Globals.mainServerIP + "gameServerGetPredictedMMRChanges?matchID=" + str(Globals.matchID) + "&winningTeamID=" + str(match_end_winning_team_id), ["authorization: Bearer " + (Globals.serverPrivateToken)]);
+		
 	else:
 		var local_player = get_tree().get_root().get_node("MainScene/Players/P" + str(Globals.localPlayerID));
 		local_player.control = false;
@@ -651,12 +655,20 @@ remotesync func end_match(winning_team_id):
 			team_name = "RED TEAM"
 		Globals.result_winning_team_id = winning_team_id;
 		get_tree().get_root().get_node("MainScene/UI_Layer").set_big_label_text(team_name + " WINS!", winning_team_id);
-		yield(get_tree().create_timer(4.0), "timeout");
-		# Ideally I'd like to handle passing the variables to the scene here
-		# But alas they are all over the place due to weird reasons
-		var scn = Game_Results_Screen.instance();
-		get_tree().get_root().get_node("MainScene").call_deferred("add_child", scn);
-		$"../UI_Layer".disappear();
+func _HTTP_GetPredictedMMRChanges_Completed(result, response_code, headers, body):
+	if(response_code == 200):
+		print("Successfully retrieved predicted MMR Changes");
+		var json = JSON.parse(body.get_string_from_utf8());
+		print(json);
+	else:
+		# I mean i guess we can't do anything about this failing...
+		pass;
+	
+
+remotesync func show_results_screens():
+	var scn = Game_Results_Screen.instance();
+	get_tree().get_root().get_node("MainScene").call_deferred("add_child", scn);
+	$"../UI_Layer".disappear();
 
 # Shows over. You don't have to go home but you can't stay here
 remotesync func tell_clients_to_piss_off():

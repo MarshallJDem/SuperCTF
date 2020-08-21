@@ -18,6 +18,8 @@ wait_time = 5.0
 
 [node name="HTTPRequest_GameServerUpdateStatus" type="HTTPRequest" parent="."]
 
+[node name="HTTPRequest_GetPredictedMMRChanges" type="HTTPRequest" parent="."]
+
 [node name="Match_Start_Timer" type="Timer" parent="."]
 wait_time = 4.0
 one_shot = true
