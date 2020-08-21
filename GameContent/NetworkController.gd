@@ -700,6 +700,8 @@ remotesync func start_rematch():
 	match_is_running = true;
 	round_is_running = false
 	if get_tree().is_network_server():
+		scores = [0, 0];
+		rpc("set_scores", scores);
 		rpc("load_new_round");
 		$Match_End_Timer.stop();
 	else:
