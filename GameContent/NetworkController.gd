@@ -659,16 +659,28 @@ func _HTTP_GetPredictedMMRChanges_Completed(result, response_code, headers, body
 	if(response_code == 200):
 		print("Successfully retrieved predicted MMR Changes");
 		var json = JSON.parse(body.get_string_from_utf8());
-		print(json.result);
+		rpc("show_results_screens",scores,  json.result);
 	else:
+		rpc("show_results_screens", scores);
 		# I mean i guess we can't do anything about this failing...
 		pass;
-	rpc("show_results_screens");
 
-remotesync func show_results_screens():
+remotesync func show_results_screens(scores, results = null):
 	if get_tree().is_network_server():
 		return;
 	var scn = Game_Results_Screen.instance();
+	# Get local player user_id
+	var uid = players[Globals.localPlayerID]["user_id"];
+	# Find our player in the results
+	for i in results:
+		if results[i]["playerId"] == uid:
+			scn.old_mmr = results[i]["oldRank"];
+			scn.new_mmr = results[i]["newRank"];
+	scn.winning_team_ID = match_end_winning_team_id;
+	scn.scores = scores;
+	scn.player_team_ID = players[Globals.localPlayerID]["team_id"];
+	scn.match_ID = Globals.result_match_id;
+	
 	get_tree().get_root().get_node("MainScene").call_deferred("add_child", scn);
 	$"../UI_Layer".disappear();
 

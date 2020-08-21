@@ -4,8 +4,7 @@ extends Node2D
 var winning_team_ID = -1;
 # The team_ID that the local player was on
 var player_team_ID = -1;
-var team_0_score = 0;
-var team_1_score = 0;
+var scores;
 var old_mmr = -1;
 var new_mmr = -1;
 var match_ID = -1;
@@ -16,15 +15,7 @@ func _ready():
 	$CanvasLayer/Control/Button_Titlescreen.connect("pressed", self, "_exit_pressed");
 	$CanvasLayer/Control/Button_Rematch.connect("pressed", self, "_rematch_pressed");
 	$HTTPRequest_Get_Match_Data.connect("request_completed", self, "_HTTPRequest_Get_Match_Data_Completed");
-	winning_team_ID = Globals.result_winning_team_id;
-	team_0_score = Globals.result_team0_score;
-	team_1_score = Globals.result_team1_score;
-	player_team_ID = Globals.localPlayerTeamID;
-	match_ID = Globals.result_match_id;
-	old_mmr = Globals.player_old_MMR;
-	
 	var query = "matchID=" + String(match_ID);
-	#$HTTPRequest_Get_Match_Data.request(Globals.mainServerIP + "getMatchData?" + query, ["authorization: Bearer " + Globals.userToken], false, HTTPClient.METHOD_GET);
 	if get_tree().get_root().get_node("MainScene/NetworkController").isDD:
 		$CanvasLayer/Control/Button_Rematch.visible = false;
 		$CanvasLayer/Control/DD_Description.visible = false;
@@ -43,18 +34,6 @@ func _screen_resized():
 		s = window_size.x / 1920;
 	$CanvasLayer/Control.rect_scale = Vector2(s,s);
 
-func _HTTPRequest_Get_Match_Data_Completed(result, response_code, headers, body):
-	var json = JSON.parse(body.get_string_from_utf8())
-	if(response_code == 200 && json.result):
-		var clientPlayerID = json.result.clientData.clientID;
-		var rankChanges = JSON.parse(json.result.matchData.rankChanges).result;
-		var players = JSON.parse(json.result.matchData.players).result;
-		var index = players.find(clientPlayerID);
-		old_mmr = rankChanges[index].oldRank;
-		new_mmr = rankChanges[index].newRank;
-	else:
-		pass;
-	
 func _exit_pressed():
 	get_tree().set_network_peer(null);
 	get_tree().change_scene("res://TitleScreen.tscn");
@@ -64,8 +43,6 @@ var rematch_vote = false;
 func _rematch_pressed():
 	rematch_vote = !rematch_vote;
 	get_tree().get_root().get_node("MainScene/NetworkController").rpc_id(1, "change_DD_vote", rematch_vote);
-
-
 
 func _process(_delta):
 	# Result and Score setup
@@ -80,7 +57,7 @@ func _process(_delta):
 	elif player_team_ID != winning_team_ID:
 		result = "LOSS";
 	$CanvasLayer/Control/Text_Result.bbcode_text = "[color=" + color + "][center]" + result + "[/center][/color]";
-	$CanvasLayer/Control/Text_Score.bbcode_text = "[center][color=blue]" + String(team_0_score) + "[/color]" + "[color=black]-[/color][color=red]" + String(team_1_score) + "[/color][/center]";
+	$CanvasLayer/Control/Text_Score.bbcode_text = "[center][color=blue]" + String(scores[0]) + "[/color]" + "[color=black]-[/color][color=red]" + String(scores[1]) + "[/color][/center]";
 	
 	# MMR Label setup
 	if has_animated_mmr:
