@@ -20,15 +20,11 @@ func _ready():
 		$CanvasLayer/Control/DD_Votes.visible = false;
 	get_tree().connect("screen_resized", self, "_screen_resized");
 	_screen_resized();
-	print("oh yea");
-	print(old_mmr);
-	print(new_mmr);
-	print(match_ID);
-	print(has_animated_mmr);
-	print(scores);
-	print(player_team_ID);
-	print(winning_team_ID);
-
+	
+	yield(get_tree().create_timer(2.0), "timeout");
+	has_animated_mmr = true;
+	$MMR_Animation_Timer.start();
+	
 func _screen_resized():
 	var window_size = OS.get_window_size();
 	var s;
@@ -70,13 +66,8 @@ func _process(_delta):
 		var x = ($MMR_Animation_Timer.time_left / $MMR_Animation_Timer.wait_time);
 		var current_value = int(old_mmr + ((1 - x*x*x*x*x) * (new_mmr - old_mmr)));
 		$CanvasLayer/Control/Text_MMR.bbcode_text = "[center]" + String(current_value) + "[/center]";
-	elif old_mmr > -1:
-		$CanvasLayer/Control/Text_MMR.bbcode_text = "[center]" + String(old_mmr) + "[/center]";
-		if new_mmr > -1:
-			has_animated_mmr = true;
-			$MMR_Animation_Timer.start();
 	else:
-		$CanvasLayer/Control/Text_MMR.bbcode_text = "[center]-[/center]";
+		$CanvasLayer/Control/Text_MMR.bbcode_text = "[center]" + String(old_mmr) + "[/center]";
 	# MMR Sub text setup
 	if has_animated_mmr:
 		var MMR_change = new_mmr - old_mmr;

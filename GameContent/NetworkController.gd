@@ -673,7 +673,6 @@ remotesync func show_results_screen(scores, results = null):
 	var uid = players[Globals.localPlayerID]["user_id"];
 	# Find our player in the results
 	for player in results:
-		print(uid);
 		if str(player["playerId"]) == str(uid):
 			scn.old_mmr = player["oldRank"];
 			scn.new_mmr = player["newRank"];
