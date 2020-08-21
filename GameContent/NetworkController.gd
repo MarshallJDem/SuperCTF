@@ -641,6 +641,7 @@ remotesync func end_match(winning_team_id):
 	if !Globals.testing and get_tree().is_network_server():
 		$Match_End_Timer.start();
 		match_end_winning_team_id = winning_team_id;
+		print(match_end_winning_team_id);
 		yield(get_tree().create_timer(4.0), "timeout");
 		$HTTPRequest_GetPredictedMMRChanges.request(Globals.mainServerIP + "gameServerGetPredictedMMRChanges?matchID=" + str(Globals.matchID) + "&winningTeamID=" + str(match_end_winning_team_id), ["authorization: Bearer " + (Globals.serverPrivateToken)]);
 	else:
@@ -673,6 +674,9 @@ remotesync func show_results_screen(scores, results = null):
 	var uid = players[Globals.localPlayerIDs]["user_id"];
 	# Find our player in the results
 	for player in results:
+		print(player);
+		print(player["playerId"]);
+		print(player.playerId);
 		if player["playerId"] == uid:
 			scn.old_mmr = player["oldRank"];
 			scn.new_mmr = player["newRank"];
