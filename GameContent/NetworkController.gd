@@ -659,7 +659,7 @@ func _HTTP_GetPredictedMMRChanges_Completed(result, response_code, headers, body
 	if(response_code == 200):
 		print("Successfully retrieved predicted MMR Changes");
 		var json = JSON.parse(body.get_string_from_utf8());
-		print(json);
+		print(json.result);
 	else:
 		# I mean i guess we can't do anything about this failing...
 		pass;
