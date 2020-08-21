@@ -643,7 +643,6 @@ remotesync func end_match(winning_team_id):
 		match_end_winning_team_id = winning_team_id;
 		yield(get_tree().create_timer(4.0), "timeout");
 		$HTTPRequest_GetPredictedMMRChanges.request(Globals.mainServerIP + "gameServerGetPredictedMMRChanges?matchID=" + str(Globals.matchID) + "&winningTeamID=" + str(match_end_winning_team_id), ["authorization: Bearer " + (Globals.serverPrivateToken)]);
-		
 	else:
 		var local_player = get_tree().get_root().get_node("MainScene/Players/P" + str(Globals.localPlayerID));
 		local_player.control = false;
@@ -655,6 +654,7 @@ remotesync func end_match(winning_team_id):
 			team_name = "RED TEAM"
 		Globals.result_winning_team_id = winning_team_id;
 		get_tree().get_root().get_node("MainScene/UI_Layer").set_big_label_text(team_name + " WINS!", winning_team_id);
+
 func _HTTP_GetPredictedMMRChanges_Completed(result, response_code, headers, body):
 	if(response_code == 200):
 		print("Successfully retrieved predicted MMR Changes");
@@ -663,9 +663,11 @@ func _HTTP_GetPredictedMMRChanges_Completed(result, response_code, headers, body
 	else:
 		# I mean i guess we can't do anything about this failing...
 		pass;
-	
+	rpc("show_results_screens");
 
 remotesync func show_results_screens():
+	if get_tree().is_network_server():
+		return;
 	var scn = Game_Results_Screen.instance();
 	get_tree().get_root().get_node("MainScene").call_deferred("add_child", scn);
 	$"../UI_Layer".disappear();
