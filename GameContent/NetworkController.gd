@@ -459,6 +459,8 @@ func _client_disconnected(id):
 		print("ERROR - CLIENT DISCONNECTED HAD AN UNHANDLED PLAYER ID");
 		return;
 	if get_tree().is_network_server():
+		if $Match_End_Timer.time_left > 0:
+			complete_match_end();
 		var message = players[player_id]["name"];
 		message += " disconnected from the server";
 		get_tree().get_root().get_node("MainScene/UI_Layer/LineEdit").rpc("receive_message", "[color=red]" + message +  "[/color]", -1);
@@ -657,13 +659,15 @@ remotesync func end_match(winning_team_id):
 remotesync func tell_clients_to_piss_off():
 	if !get_tree().is_network_server():
 		get_tree().set_network_peer(null);
-		get_tree().change_scene("res://TitleScreen.tscn");
 
 func _match_end_timer_ended():
+	complete_match_end();
+
+func complete_match_end():
+	$Match_End_Timer.stop();
 	if get_tree().is_network_server():
 		$HTTPRequest_GameServerEndMatch.request(Globals.mainServerIP + "gameServerEndMatch?matchID=" + str(Globals.matchID) + "&winningTeamID=" + str(match_end_winning_team_id), ["authorization: Bearer " + (Globals.serverPrivateToken)]);
 		rpc("tell_clients_to_piss_off");
-
 # Called by clients on server to opt in / out of double down rematch
 remote func change_DD_vote(vote):
 	# Can't have two DDs in a row
