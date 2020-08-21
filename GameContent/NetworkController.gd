@@ -660,7 +660,10 @@ remotesync func end_match(winning_team_id):
 # Shows over. You don't have to go home but you can't stay here
 remotesync func tell_clients_to_piss_off():
 	if !get_tree().is_network_server():
-		leave_match();
+		if !get_tree().get_root().has_node("MainScene/Game_Results_Screen"):
+			leave_match();
+		else:
+			get_tree().set_network_peer(null);
 
 func _match_end_timer_ended():
 	complete_match_end();
