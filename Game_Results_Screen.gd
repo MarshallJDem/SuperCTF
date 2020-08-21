@@ -56,6 +56,7 @@ func _HTTPRequest_Get_Match_Data_Completed(result, response_code, headers, body)
 		pass;
 	
 func _exit_pressed():
+	get_tree().set_network_peer(null);
 	get_tree().change_scene("res://TitleScreen.tscn");
 
 var rematch_vote = false;
