@@ -11,7 +11,6 @@ func _ready():
 	$HTTPRequest_CreateGuest.connect("request_completed", self, "_HTTP_CreateGuest_Completed");
 	$HTTPRequest_GetLeaderboard.connect("request_completed", self, "_HTTP_GetLeaderboard_Completed");
 	$Leaderboard_Refresh_Timer.connect("timeout", self, "_Leaderboard_Refresh_Ended");
-	
 	$Headline_Update_Timer.connect("timeout", self, "_Headline_Update_Timer_Ended");
 	
 	Globals.load_save_data();
@@ -27,6 +26,7 @@ func _ready():
 	$HTTPRequest_GetLeaderboard.request(Globals.mainServerIP + "getLeaderboardData", ["authorization: Bearer " + Globals.userToken]);
 	get_tree().set_screen_stretch(SceneTree.STRETCH_MODE_VIEWPORT, SceneTree.STRETCH_ASPECT_EXPAND,Vector2(1920,1080), 1);
 	
+	get_tree().set_network_peer(null);
 
 
 

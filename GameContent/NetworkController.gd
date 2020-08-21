@@ -490,8 +490,9 @@ func leave_match():
 # Called when this client disconnects from the server
 func server_disconnect():
 	print("LOST CONNECTION WITH SERVER");
-	get_tree().change_scene("res://TitleScreen.tscn");
-	
+	# Only force user back to titlescreen if the game results screen isn't present for some reason
+	if !get_tree().get_root().has_node("MainScene/Game_Results_Screen"):
+		leave_match();
 
 # Called when a player scores a point
 remotesync func round_ended(scoring_team_id, scoring_player_id):
@@ -659,7 +660,7 @@ remotesync func end_match(winning_team_id):
 # Shows over. You don't have to go home but you can't stay here
 remotesync func tell_clients_to_piss_off():
 	if !get_tree().is_network_server():
-		get_tree().set_network_peer(null);
+		leave_match();
 
 func _match_end_timer_ended():
 	complete_match_end();
