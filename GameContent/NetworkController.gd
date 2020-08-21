@@ -653,13 +653,16 @@ remotesync func end_match(winning_team_id):
 		get_tree().get_root().get_node("MainScene").call_deferred("add_child", scn);
 		$"../UI_Layer".disappear();
 
+# Shows over. You don't have to go home but you can't stay here
 remotesync func tell_clients_to_piss_off():
-	get_tree().set_network_peer(null);
-	get_tree().change_scene("res://TitleScreen.tscn");
-	
+	if !get_tree().is_network_server():
+		get_tree().set_network_peer(null);
+		get_tree().change_scene("res://TitleScreen.tscn");
+
 func _match_end_timer_ended():
 	if get_tree().is_network_server():
 		$HTTPRequest_GameServerEndMatch.request(Globals.mainServerIP + "gameServerEndMatch?matchID=" + str(Globals.matchID) + "&winningTeamID=" + str(match_end_winning_team_id), ["authorization: Bearer " + (Globals.serverPrivateToken)]);
+		rpc("tell_clients_to_piss_off");
 
 # Called by clients on server to opt in / out of double down rematch
 remote func change_DD_vote(vote):
