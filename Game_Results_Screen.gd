@@ -14,8 +14,6 @@ var has_animated_mmr = false;
 func _ready():
 	$CanvasLayer/Control/Button_Titlescreen.connect("pressed", self, "_exit_pressed");
 	$CanvasLayer/Control/Button_Rematch.connect("pressed", self, "_rematch_pressed");
-	$HTTPRequest_Get_Match_Data.connect("request_completed", self, "_HTTPRequest_Get_Match_Data_Completed");
-	var query = "matchID=" + String(match_ID);
 	if get_tree().get_root().get_node("MainScene/NetworkController").isDD:
 		$CanvasLayer/Control/Button_Rematch.visible = false;
 		$CanvasLayer/Control/DD_Description.visible = false;
