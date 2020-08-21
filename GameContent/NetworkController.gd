@@ -99,6 +99,7 @@ func reset_game():
 	match_is_running = false;
 	round_is_running = false;
 	isDD = false;
+	isSuddenDeath = false;
 	round_num = 0;
 	game_vars = Globals.game_var_defaults.duplicate();
 	get_tree().set_network_peer(null);
