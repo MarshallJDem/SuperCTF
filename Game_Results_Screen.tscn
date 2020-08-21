@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://fonts/Pixel_Title.tres" type="DynamicFont" id=1]
 [ext_resource path="res://fonts/Pixel_SubTitle.tres" type="DynamicFont" id=2]
@@ -16,12 +16,17 @@ outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 9 )
 
 [sub_resource type="DynamicFont" id=1]
-size = 300
+size = 75
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 9 )
+
+[sub_resource type="DynamicFont" id=10]
+size = 50
 outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 9 )
 
 [sub_resource type="DynamicFont" id=2]
-size = 50
+size = 300
 outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 9 )
 
@@ -113,11 +118,49 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Text_Score_Sub" type="RichTextLabel" parent="CanvasLayer/Control"]
+margin_left = -959.401
+margin_top = 158.0
+margin_right = -368.401
+margin_bottom = 269.0
+rect_scale = Vector2( 1, 0.983539 )
+custom_fonts/mono_font = ExtResource( 3 )
+custom_fonts/bold_italics_font = ExtResource( 2 )
+custom_fonts/italics_font = ExtResource( 2 )
+custom_fonts/bold_font = ExtResource( 2 )
+custom_fonts/normal_font = ExtResource( 3 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]Final Score[/center]"
+text = "Final Score"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Text_KDC_Sub" type="RichTextLabel" parent="CanvasLayer/Control"]
+margin_left = 332.102
+margin_top = 158.0
+margin_right = 923.102
+margin_bottom = 269.0
+rect_scale = Vector2( 1, 0.983539 )
+custom_fonts/mono_font = ExtResource( 3 )
+custom_fonts/bold_italics_font = ExtResource( 2 )
+custom_fonts/italics_font = ExtResource( 2 )
+custom_fonts/bold_font = ExtResource( 2 )
+custom_fonts/normal_font = ExtResource( 3 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]Kill-Death-Capture[/center]"
+text = "Kill-Death-Capture"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Text_MMR" type="RichTextLabel" parent="CanvasLayer/Control"]
-margin_left = -934.0
-margin_top = -49.1071
-margin_right = 985.0
-margin_bottom = 173.893
+margin_left = -937.525
+margin_top = -20.9032
+margin_right = 981.475
+margin_bottom = 202.097
 rect_clip_content = false
 custom_fonts/mono_font = ExtResource( 1 )
 custom_fonts/bold_italics_font = ExtResource( 2 )
@@ -133,10 +176,10 @@ __meta__ = {
 }
 
 [node name="Text_Score" type="RichTextLabel" parent="CanvasLayer/Control"]
-margin_left = -505.0
-margin_top = -406.0
-margin_right = 1365.0
-margin_bottom = -64.0
+margin_left = -1187.43
+margin_top = 34.1259
+margin_right = 682.569
+margin_bottom = 376.126
 rect_scale = Vector2( 0.563012, 0.563012 )
 rect_clip_content = false
 custom_fonts/mono_font = ExtResource( 2 )
@@ -150,20 +193,40 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Text_Result" type="RichTextLabel" parent="CanvasLayer/Control"]
-margin_left = -919.495
-margin_top = -176.755
-margin_right = 960.505
-margin_bottom = 52.2459
-rect_scale = Vector2( 1, 0.964805 )
+[node name="Text_KDC" type="RichTextLabel" parent="CanvasLayer/Control"]
+margin_left = 104.073
+margin_top = 34.1259
+margin_right = 1974.07
+margin_bottom = 376.126
+rect_scale = Vector2( 0.563012, 0.563012 )
 rect_clip_content = false
 custom_fonts/mono_font = ExtResource( 2 )
+custom_fonts/normal_font = SubResource( 1 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]27 / 18 / 1[/center]"
+text = "27 / 18 / 1"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Text_Result" type="RichTextLabel" parent="CanvasLayer/Control"]
+margin_left = -919.554
+margin_top = -430.133
+margin_right = 960.446
+margin_bottom = -201.132
+rect_scale = Vector2( 1, 0.964805 )
+rect_clip_content = false
+custom_fonts/mono_font = SubResource( 10 )
 custom_fonts/normal_font = SubResource( 2 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
 bbcode_text = "[center]LOSS[/center]"
 text = "LOSS"
+scroll_active = false
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
