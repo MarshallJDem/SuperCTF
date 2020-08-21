@@ -202,6 +202,7 @@ func _cancel_match_timer_ended():
 	# If at this time there are zero connections, cancel the match
 	if get_tree().get_network_connected_peers().size() == 0:
 		get_tree().set_network_peer(null);
+		server = null;
 		start_server();
 func updateGameServerStatus(status = null):
 	if status != null:
@@ -479,6 +480,7 @@ func _client_disconnected(id):
 				yield(get_tree().create_timer(15), "timeout");
 				if get_tree().get_network_connected_peers().size() == 0:
 					get_tree().set_network_peer(null);
+					server = null;
 					start_server();
 	
 
@@ -486,6 +488,7 @@ func _client_disconnected(id):
 func leave_match():
 	print("Leave Match");
 	get_tree().set_network_peer(null);
+	client = null;
 	reset_game()
 	get_tree().change_scene("res://TitleScreen.tscn");
 
@@ -691,6 +694,7 @@ remotesync func tell_clients_to_piss_off():
 			leave_match();
 		else:
 			get_tree().set_network_peer(null);
+			client = null;
 
 func _match_end_timer_ended():
 	complete_match_end();
@@ -744,6 +748,7 @@ func _HTTP_GameServerEndMatch_Completed(result, response_code, headers, body):
 		updateGameServerStatus(4);
 		yield(get_tree().create_timer(5.0), "timeout");
 		get_tree().set_network_peer(null);
+		server = null;
 		start_server();
 	else:
 		# Endlessly attempt to end the match until the server responds. It is important that this eventually works!
