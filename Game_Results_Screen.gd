@@ -20,6 +20,14 @@ func _ready():
 		$CanvasLayer/Control/DD_Votes.visible = false;
 	get_tree().connect("screen_resized", self, "_screen_resized");
 	_screen_resized();
+	print("oh yea");
+	print(old_mmr);
+	print(new_mmr);
+	print(match_ID);
+	print(has_animated_mmr);
+	print(scores);
+	print(player_team_ID);
+	print(winning_team_ID);
 
 func _screen_resized():
 	var window_size = OS.get_window_size();
