@@ -21,7 +21,7 @@ func _ready():
 	get_tree().connect("screen_resized", self, "_screen_resized");
 	_screen_resized();
 	
-	yield(get_tree().create_timer(2.0), "timeout");
+	yield(get_tree().create_timer(1.0), "timeout");
 	has_animated_mmr = true;
 	$MMR_Animation_Timer.start();
 	
