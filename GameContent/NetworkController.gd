@@ -102,10 +102,12 @@ func reset_game():
 	round_is_running = false;
 	isDD = false;
 	isSuddenDeath = false;
-	$Match_Time_Limit_Timer.stop();
-	$Match_Time_Limit_Timer.wait_time = 300;
 	round_num = 0;
 	game_vars = Globals.game_var_defaults.duplicate();
+	$Match_Time_Limit_Timer.stop();
+	$Match_Time_Limit_Timer.wait_time = 300;
+	$Match_Time_Limit_Timer.start();
+	$Match_Time_Limit_Timer.paused = true;
 	get_tree().set_network_peer(null);
 	reset_game_objects(true);
 	Globals.allowedPlayers = [];
