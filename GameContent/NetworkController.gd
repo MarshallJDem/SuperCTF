@@ -809,6 +809,7 @@ remotesync func resume_match_time_limit(time_left):
 	$Match_Time_Limit_Timer.stop();
 	$Match_Time_Limit_Timer.wait_time = time_left;
 	$Match_Time_Limit_Timer.start();
+	$Match_Time_Limit_Timer.paused = false;
 
 func _match_time_limit_ended():
 	print("MATCH TIME IS OUT BUB!");
