@@ -642,6 +642,8 @@ var match_end_winning_team_id;
 remotesync func end_match(winning_team_id):
 	print("Ending Match");
 	match_end_winning_team_id = winning_team_id;
+	match_is_running = false;
+	round_is_running = false;
 	if !Globals.testing and get_tree().is_network_server():
 		$Match_End_Timer.start();
 		yield(get_tree().create_timer(4.0), "timeout");
