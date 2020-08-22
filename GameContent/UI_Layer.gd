@@ -42,6 +42,9 @@ func _process(delta):
 		$Cancel_Button.visible = false;
 	else:
 		$Skirmish_Subtext.visible = false;
+	if get_tree().get_root().get_node("MainScene/NetworkController").isSuddenDeath:
+		$Score_Label.bbcode_text = "[center]SUDDEN DEATH";
+		$Time_Label.visible = false;
 	if !Globals.is_typing_in_chat:
 		if Input.is_key_pressed(KEY_E):
 			$"Input_GUIs/Ability_GUIs/E_GUI".frame = 1;

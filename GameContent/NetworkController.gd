@@ -650,7 +650,7 @@ remotesync func start_round():
 		local_player.control = true;
 		local_player.activate_camera();
 	else:
-		if !isSkirmish:
+		if !isSkirmish and !isSuddenDeath:
 			rpc("resume_match_time_limit", $Match_Time_Limit_Timer.time_left);
 
 var match_end_winning_team_id;
