@@ -33,6 +33,7 @@ func _process(delta):
 	
 	if get_tree().get_root().get_node("MainScene/NetworkController").isSkirmish:
 		$Score_Label.bbcode_text = "[center][color=black]SEARCHING " + str(OS.get_system_time_secs() - start_time);
+		$Time_Label.visible = false;
 		$Skirmish_Subtext.visible = true;
 		$Cancel_Button.visible = true;
 	if Globals.experimental:
@@ -78,7 +79,10 @@ func _process(delta):
 			$Input_GUIs/Ability_GUIs/Q_GUI.frame = 1;
 		else:
 			$Input_GUIs/Ability_GUIs/Q_GUI.frame = 0;
-			
+	
+	var time = get_tree().get_root().get_node("MainScene/NetworkController/Match_Time_Limit_Timer").time_left;
+	var seconds = int(time) % 60;
+	$Time_Label.bbcode_text = "[center]" + str(int(time)/int(60)) + ":" + (str(seconds)) if seconds > 9 else ("0" + str(seconds));
 	
 	$Alert_Text.modulate = Color(1,1,1, ($Alert_Fade_Timer.time_left/$Alert_Fade_Timer.wait_time));
 	var local_player;
@@ -184,6 +188,7 @@ func clear_big_label_text():
 func set_alert_text(text):
 	$Alert_Text.bbcode_text = text;
 	$Alert_Fade_Timer.start();
+
 # Sets the score label values
 func set_score_text(team0_score, team1_score, isSkirmish = false):
 	if isSkirmish:
@@ -203,6 +208,7 @@ func _cancel_button_pressed():
 	Globals.leave_MMQueue();
 func disappear():
 	$Score_Label.visible = false;
+	$Time_Label.visible = false;
 	$Countdown_Label.visible = false;
 	$Big_Label_Blue.visible = false;
 	$Big_Label_Red.visible = false;
@@ -212,6 +218,7 @@ func disappear():
 	$"../Loadout_Menu".hidden = true;
 func appear():
 	$Score_Label.visible = true;
+	$Time_Label.visible = true;
 	$Countdown_Label.visible = true;
 	$Big_Label_Blue.visible = true;
 	$Big_Label_Red.visible = true;

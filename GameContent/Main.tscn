@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=2]
+[gd_scene load_steps=36 format=2]
 
 [ext_resource path="res://GameContent/Main.gd" type="Script" id=1]
 [ext_resource path="res://GameContent/Player.tscn" type="PackedScene" id=2]
@@ -44,6 +44,11 @@ bg_color = Color( 1, 1, 1, 0 )
 [sub_resource type="DynamicFont" id=4]
 size = 18
 outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
+font_data = ExtResource( 25 )
+
+[sub_resource type="DynamicFont" id=7]
+size = 25
+outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 25 )
 
 [sub_resource type="DynamicFont" id=5]
@@ -145,6 +150,20 @@ margin_bottom = 120.0
 rect_clip_content = false
 size_flags_stretch_ratio = 0.0
 custom_fonts/normal_font = ExtResource( 7 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Time_Label" type="RichTextLabel" parent="UI_Layer"]
+anchor_right = 1.0
+margin_top = 99.8129
+margin_bottom = 189.813
+rect_clip_content = false
+size_flags_stretch_ratio = 0.0
+custom_fonts/normal_font = SubResource( 7 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
 scroll_active = false

@@ -71,6 +71,7 @@ func _ready():
 	_err = $HTTPRequest_GetMatchData.connect("request_completed", self, "_HTTP_GetMatchData_Completed");
 	_err = $HTTPRequest_GameServerUpdateStatus.connect("request_completed", self, "_HTTP_GameServerUpdateStatus_Completed");
 	_err = $HTTPRequest_GetPredictedMMRChanges.connect("request_completed", self, "_HTTP_GetPredictedMMRChanges_Completed");
+	_err = $Match_Time_Limit_Timer.connect("timeout", self, "_match_time_limit_ended");
 	if(Globals.isServer):
 		start_server();
 	else:
@@ -101,6 +102,8 @@ func reset_game():
 	round_is_running = false;
 	isDD = false;
 	isSuddenDeath = false;
+	$Match_Time_Limit_Timer.stop();
+	$Match_Time_Limit_Timer.wait_time = 300;
 	round_num = 0;
 	game_vars = Globals.game_var_defaults.duplicate();
 	get_tree().set_network_peer(null);
@@ -521,6 +524,7 @@ remotesync func round_ended(scoring_team_id, scoring_player_id):
 		if !isSkirmish:
 			scores[scoring_team_id] = scores[scoring_team_id] + 1;
 			rpc("set_scores", scores);
+			rpc("pause_match_time_limit", $Match_Time_Limit_Timer.time_left);
 		$Round_End_Timer.start()
 
 # Resets all objects in the game scene by deleting them
@@ -636,6 +640,9 @@ remotesync func start_round():
 		var local_player = get_tree().get_root().get_node("MainScene/Players/P" + str(Globals.localPlayerID));
 		local_player.control = true;
 		local_player.activate_camera();
+	else:
+		if !isSkirmish:
+			rpc("resume_match_time_limit", $Match_Time_Limit_Timer.time_left);
 
 var match_end_winning_team_id;
 # Ends the match
@@ -698,6 +705,7 @@ remotesync func tell_clients_to_piss_off():
 		else:
 			get_tree().set_network_peer(null);
 			client = null;
+
 
 func _match_end_timer_ended():
 	complete_match_end();
@@ -789,7 +797,19 @@ func _round_start_timer_ended():
 	if get_tree().is_network_server():
 		rpc("start_round");
 
+remotesync func pause_match_time_limit(time_left):
+	$Match_Time_Limit_Timer.stop();
+	$Match_Time_Limit_Timer.wait_time = time_left;
+	$Match_Time_Limit_Timer.start();
+	$Match_Time_Limit_Timer.paused = true;
 
+remotesync func resume_match_time_limit(time_left):
+	$Match_Time_Limit_Timer.stop();
+	$Match_Time_Limit_Timer.wait_time = time_left;
+	$Match_Time_Limit_Timer.start();
+
+func _match_time_limit_ended():
+	print("MATCH TIME IS OUT BUB!");
 
 
 
