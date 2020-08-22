@@ -82,7 +82,7 @@ func _process(delta):
 	
 	var time = get_tree().get_root().get_node("MainScene/NetworkController/Match_Time_Limit_Timer").time_left;
 	var seconds = int(time) % 60;
-	$Time_Label.bbcode_text = "[center]" + str(int(time)/int(60)) + ":" + (str(seconds)) if seconds > 9 else ("0" + str(seconds));
+	$Time_Label.bbcode_text = "[center]" + str(int(time)/int(60)) + ":" + ((str(seconds)) if seconds > 9 else ("0" + str(seconds)));
 	
 	$Alert_Text.modulate = Color(1,1,1, ($Alert_Fade_Timer.time_left/$Alert_Fade_Timer.wait_time));
 	var local_player;
