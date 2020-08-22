@@ -647,8 +647,9 @@ remotesync func end_match(winning_team_id):
 		yield(get_tree().create_timer(4.0), "timeout");
 		$HTTPRequest_GetPredictedMMRChanges.request(Globals.mainServerIP + "gameServerGetPredictedMMRChanges?matchID=" + str(Globals.matchID) + "&winningTeamID=" + str(match_end_winning_team_id), ["authorization: Bearer " + (Globals.serverPrivateToken)]);
 	else:
-		var local_player = get_tree().get_root().get_node("MainScene/Players/P" + str(Globals.localPlayerID));
-		local_player.control = false;
+		if !Globals.testing:
+			var local_player = get_tree().get_root().get_node("MainScene/Players/P" + str(Globals.localPlayerID));
+			local_player.control = false;
 		match_is_running = false;
 		var team_name = "NOBODY";
 		if winning_team_id == 0:
