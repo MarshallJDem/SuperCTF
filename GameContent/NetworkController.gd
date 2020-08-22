@@ -504,14 +504,21 @@ func server_disconnect():
 	if !get_tree().get_root().has_node("MainScene/Game_Results_Screen"):
 		leave_match();
 
-# Called when a player scores a point
-remotesync func round_ended(scoring_team_id, scoring_player_id):
-	print("Player : " + str(scoring_player_id) + " won a point for team : " + str(scoring_team_id));
-	get_tree().get_root().get_node("MainScene").slowdown_music();
-	
-	get_tree().get_root().get_node("MainScene/UI_Layer").set_big_label_text(str(players[scoring_player_id]['name']) + "\nSCORED!", scoring_team_id);
-	get_tree().get_root().get_node("MainScene/Score_Audio").play();
-	var scoring_player = get_tree().get_root().get_node("MainScene/Players/P" + str(scoring_player_id));
+# Called when a player scores a point or match time runs out
+remotesync func round_ended(scoring_team_id, scoring_player_id, time_limit_reached = false):
+	if time_limit_reached:
+		if !get_tree().is_network_server():
+			get_tree().get_root().get_node("MainScene/UI_Layer").set_big_label_text("TIME LIMIT REACHED", Globals.localPlayerTeamID);
+	else:
+		print("Player : " + str(scoring_player_id) + " won a point for team : " + str(scoring_team_id));
+		if !get_tree().is_network_server():
+			get_tree().get_root().get_node("MainScene").slowdown_music();
+			get_tree().get_root().get_node("MainScene/UI_Layer").set_big_label_text(str(players[scoring_player_id]['name']) + "\nSCORED!", scoring_team_id);
+			get_tree().get_root().get_node("MainScene/Score_Audio").play();
+			var scoring_player = get_tree().get_root().get_node("MainScene/Players/P" + str(scoring_player_id));
+			var local_player = get_tree().get_root().get_node("MainScene/Players/P" + str(Globals.localPlayerID));
+			local_player.deactivate_camera();
+			scoring_player.activate_camera();
 	round_is_ended = true;
 	round_is_running = false;
 	print("Round_is_ended");
@@ -519,11 +526,9 @@ remotesync func round_ended(scoring_team_id, scoring_player_id):
 	if !get_tree().is_network_server():
 		var local_player = get_tree().get_root().get_node("MainScene/Players/P" + str(Globals.localPlayerID));
 		local_player.control = false;
-		local_player.deactivate_camera();
-		scoring_player.activate_camera();
 	# Else if we are the server
 	else:
-		if !isSkirmish:
+		if !isSkirmish and !time_limit_reached:
 			scores[scoring_team_id] = scores[scoring_team_id] + 1;
 			rpc("set_scores", scores);
 			rpc("pause_match_time_limit", $Match_Time_Limit_Timer.time_left);
@@ -564,8 +569,10 @@ func reset_game_objects(kill_players = false):
 
 # Loads up a new round but does not start it yet
 # WARNING - you will likely need to make these edits in "load_mid_round" too
-remotesync func load_new_round():
-	
+remotesync func load_new_round(suddenDeath = false):
+	isSuddenDeath = suddenDeath;
+	if isSuddenDeath:
+		scores = [0,0];
 	print("Loading New Round" + str(round_num + 1));
 	if round_num == 0:
 		# Start syncing time with server. Game time elapse at this point would be 0
@@ -775,6 +782,16 @@ func _round_end_timer_ended():
 	if get_tree().is_network_server():
 		var game_over = false;
 		var winning_team_id = -1;
+		# If the time ran out
+		if $Match_Time_Limit_Timer.time_left == 0:
+			# If its a tie, start a sudden death
+			if scores[0] == scores[1]:
+				rpc("load_new_round", true);
+			elif scores[0] > scores[1]: # Blue Wins
+				rpc("end_match", 0);
+			else: # Red Wins
+				rpc("end_match", 1);
+			return;
 		# If this is sudden death, just take the best score
 		if isSuddenDeath:
 			winning_team_id = 0;
@@ -812,7 +829,8 @@ remotesync func resume_match_time_limit(time_left):
 	$Match_Time_Limit_Timer.paused = false;
 
 func _match_time_limit_ended():
-	print("MATCH TIME IS OUT BUB!");
+	if get_tree().is_network_server():
+		rpc("round_ended",-1,-1,true);
 
 
 
