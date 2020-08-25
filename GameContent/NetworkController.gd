@@ -682,15 +682,17 @@ func _HTTP_GetPredictedMMRChanges_Completed(result, response_code, headers, body
 	if(response_code == 200):
 		print("Successfully retrieved predicted MMR Changes");
 		var json = JSON.parse(body.get_string_from_utf8());
-		rpc("show_results_screen",get_game_stats(), json.result);
+		rpc("show_results_screen",scores, get_game_stats(), json.result);
 	else:
-		rpc("show_results_screen",get_game_stats(), scores);
+		rpc("show_results_screen",scores, get_game_stats());
 		# I mean i guess we can't do anything about this failing...
 		pass;
 
 func get_game_stats():
 	var stats = {};
+	print("Aight ima try to get emnow : " + str(players));
 	for player_id in players:
+		print("trying player : " + str(player_id));
 		if get_tree().get_root().get_node("MainScene/Players").has_node("P" + str(player_id)):
 			var player = get_tree().get_root().get_node("MainScene/PlayersP" + str(player_id));
 			print("Heres a player : " + str(player_id) + " - " +  str(player.get_stats()));
