@@ -9,6 +9,7 @@ var old_mmr = -1;
 var new_mmr = -1;
 var match_ID = -1;
 var has_animated_mmr = false;
+var stats;
 
 
 func _ready():
@@ -24,6 +25,7 @@ func _ready():
 	yield(get_tree().create_timer(1.0), "timeout");
 	has_animated_mmr = true;
 	$MMR_Animation_Timer.start();
+	setup_stats_visuals();
 	
 func _screen_resized():
 	var window_size = OS.get_window_size();
@@ -45,6 +47,11 @@ var rematch_vote = false;
 func _rematch_pressed():
 	rematch_vote = !rematch_vote;
 	get_tree().get_root().get_node("MainScene/NetworkController").rpc_id(1, "change_DD_vote", rematch_vote);
+
+func setup_stats_visuals():
+	print("YO HERE ARE THOSE STATS MY GUY");
+	print(stats);
+	$CanvasLayer/Control/Text_KDC.bbcode_text = "[center]" + str(stats[Globals.localPlayerID]['kills']) + " : " + str(stats[Globals.localPlayerID]['deaths']) + " : " + str(stats[Globals.localPlayerID]['captures'])
 
 func _process(_delta):
 	# Result and Score setup

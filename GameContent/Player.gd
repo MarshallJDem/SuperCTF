@@ -425,7 +425,8 @@ func respawn():
 		lerp_start_pos = position;
 		lerp_end_pos = position;
 		time_of_last_received_pos = 0;
-
+func get_stats():
+	return {"kills" : 10, "deaths" : 5, "captures" : 1, "recovers" : 2};
 # Takes the given flag
 func take_flag(flag_id):
 	if !alive:

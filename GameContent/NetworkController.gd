@@ -682,13 +682,23 @@ func _HTTP_GetPredictedMMRChanges_Completed(result, response_code, headers, body
 	if(response_code == 200):
 		print("Successfully retrieved predicted MMR Changes");
 		var json = JSON.parse(body.get_string_from_utf8());
-		rpc("show_results_screen",scores,  json.result);
+		rpc("show_results_screen",get_game_stats(), json.result);
 	else:
-		rpc("show_results_screen", scores);
+		rpc("show_results_screen",get_game_stats(), scores);
 		# I mean i guess we can't do anything about this failing...
 		pass;
 
-remotesync func show_results_screen(scores, results = null):
+func get_game_stats():
+	var stats = {};
+	for player_id in players:
+		if get_tree().get_root().get_node("MainScene/Players").has_node("P" + str(player_id)):
+			var player = get_tree().get_root().get_node("MainScene/PlayersP" + str(player_id));
+			stats[player_id] = player.get_stats();
+		else:
+			print("I DONT KNOW WHY OR HOW BUT A PLAYER WASN'T SPAWNED ON THE SERVER WHEN GETTING STATS");
+	return stats;
+
+remotesync func show_results_screen(scores, stats, results = null):
 	if get_tree().is_network_server():
 		return;
 	var scn = Game_Results_Screen.instance();
@@ -703,6 +713,9 @@ remotesync func show_results_screen(scores, results = null):
 	scn.scores = scores;
 	scn.player_team_ID = players[Globals.localPlayerID]["team_id"];
 	scn.match_ID = Globals.result_match_id;
+	scn.stats = stats;
+	
+	
 	
 	get_tree().get_root().get_node("MainScene").call_deferred("add_child", scn);
 	$"../UI_Layer".disappear();
