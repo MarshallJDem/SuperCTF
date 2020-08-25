@@ -204,7 +204,8 @@ func attempt_poll_player_status():
 	if Globals.userToken:
 		# If were not already in the middle of a poll, poll it
 		if HTTPRequest_PollPlayerStatus.get_http_client_status() == 0:
-			var query = "?knownStatus=" + player_status + "knownMMR=" + player_MMR + "knownRank=" + player_rank;
+			var query = "?knownStatus=" + str(player_status) + "&knownMMR=" + str(player_MMR) + "&knownRank=" + str(player_rank);
+			print(query);
 			HTTPRequest_PollPlayerStatus.request(Globals.mainServerIP + "pollPlayerStatus" + query, ["authorization: Bearer " + Globals.userToken]);
 
 func write_save_data():

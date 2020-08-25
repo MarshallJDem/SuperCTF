@@ -88,7 +88,7 @@ func _process(delta):
 	if $Round_Start_Timer.time_left != 0:
 		get_tree().get_root().get_node("MainScene/UI_Layer/Countdown_Label").text = str(int($Round_Start_Timer.time_left) + 1);
 	if !Globals.testing and get_tree().is_network_server() and !isSkirmish and $ServerPollStatus_Timer.time_left == 0 and $HTTPRequest_GameServerPollStatus.get_http_client_status() == 0:
-		$HTTPRequest_GameServerPollStatus.request(Globals.mainServerIP + "pollGameServerStatus", ["authorization: Bearer " + (Globals.serverPrivateToken)], false);
+		$HTTPRequest_GameServerPollStatus.request(Globals.mainServerIP + "pollGameServerStatus?knownMatchID=" + str(Globals.matchID), ["authorization: Bearer " + (Globals.serverPrivateToken)], false);
 
 
 # Resets all game data so that a new game can be started
