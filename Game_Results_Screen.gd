@@ -51,6 +51,7 @@ func _rematch_pressed():
 func setup_stats_visuals():
 	print("YO HERE ARE THOSE STATS MY GUY");
 	print(stats);
+	print("Yea thats the end");
 	$CanvasLayer/Control/Text_KDC.bbcode_text = "[center]" + str(stats[Globals.localPlayerID]['kills']) + " : " + str(stats[Globals.localPlayerID]['deaths']) + " : " + str(stats[Globals.localPlayerID]['captures'])
 
 func _process(_delta):

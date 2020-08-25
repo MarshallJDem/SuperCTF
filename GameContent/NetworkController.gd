@@ -693,6 +693,7 @@ func get_game_stats():
 	for player_id in players:
 		if get_tree().get_root().get_node("MainScene/Players").has_node("P" + str(player_id)):
 			var player = get_tree().get_root().get_node("MainScene/PlayersP" + str(player_id));
+			print("Heres a player : " + str(player_id) + " - " +  str(player.get_stats()));
 			stats[player_id] = player.get_stats();
 		else:
 			print("I DONT KNOW WHY OR HOW BUT A PLAYER WASN'T SPAWNED ON THE SERVER WHEN GETTING STATS");
