@@ -34,6 +34,9 @@ var look_direction = 0;
 var has_moved_after_respawn = false;
 var current_class;
 
+# Only accurately being tracked by server
+var stats = {"kills" : 0, "deaths": 0, "captures" : 0, "recovers" : 0};
+
 var Ghost_Trail = preload("res://GameContent/Ghost_Trail.tscn");
 var Player_Death = preload("res://GameContent/Player_Death.tscn");
 
@@ -364,6 +367,7 @@ func deactivate_camera():
 
 # Called when this player is hit by a projectile
 func hit_by_projectile(attacker_id, projectile_type):
+	get_tree().get_root().get_node("MainScene/Players/P" + str(attacker_id)).stats["kills"] += 1;
 	if projectile_type == 0 || projectile_type == 1 || projectile_type == 2 || projectile_type == 3: # Bullet or Laser or Landmine
 		die();
 		var attacker_team_id = get_tree().get_root().get_node("MainScene/NetworkController").players[attacker_id]["team_id"]
@@ -377,13 +381,13 @@ func hit_by_projectile(attacker_id, projectile_type):
 			get_tree().get_root().get_node("MainScene/UI_Layer").set_big_label_text("KILLED BY\n" + str(attacker_name), attacker_team_id);
 			camera_ref.get_parent().remove_child(camera_ref);
 			get_tree().get_root().get_node("MainScene/Players/P" + str(attacker_id) + "/Center_Pivot").add_child(camera_ref);
-		
 
 # "Kills" the player. Only for visuals on client - the server handles the respawning.
 func die():
 	visible = false;
 	control = false;
 	alive = false;
+	stats["deaths"] += 1;
 	spawn_death_particles();
 	stop_powerups();
 	# If we're the server
@@ -427,7 +431,7 @@ func respawn():
 		time_of_last_received_pos = 0;
 
 func get_stats():
-	return {"kills" : 10, "deaths" : 5, "captures" : 1, "recovers" : 2};
+	return stats;
 
 # Takes the given flag
 func take_flag(flag_id):

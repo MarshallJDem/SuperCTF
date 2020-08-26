@@ -690,12 +690,9 @@ func _HTTP_GetPredictedMMRChanges_Completed(result, response_code, headers, body
 
 func get_game_stats():
 	var stats = {};
-	print("Aight ima try to get em now : " + str(players));
 	for player_id in players:
-		print("trying player : " + str(player_id));
 		if get_tree().get_root().get_node("MainScene/Players").has_node("P" + str(player_id)):
 			var player = get_tree().get_root().get_node("MainScene/Players/P" + str(player_id));
-			print("Heres a player : " + str(player_id) + " - " +  str(player.get_stats()));
 			stats[player_id] = player.get_stats();
 		else:
 			print("I DONT KNOW WHY OR HOW BUT A PLAYER WASN'T SPAWNED ON THE SERVER WHEN GETTING STATS");

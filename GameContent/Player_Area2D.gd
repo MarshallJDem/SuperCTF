@@ -72,6 +72,7 @@ func collided_with_flag_home(flag_home):
 				get_tree().get_root().get_node("MainScene/UI_Layer").set_alert_text("[center][color=black]* YOUR FLAG MUST BE HOME TO SCORE *");
 		elif get_tree().is_network_server(): # Otherwise score if we're the server
 			print("Scoring : " + str(get_tree().get_root().get_node("MainScene/NetworkController").round_is_ended));
+			player.stats["captures"] += 1;
 			get_tree().get_root().get_node("MainScene/NetworkController").rpc("round_ended", player.team_id, player.player_id);
 # Called when this player collides with a laser
 func collided_with_laser_body(laser_parent):
@@ -103,6 +104,7 @@ func collided_with_grenade_body(grenade_parent):
 		return;
 	# Otherwise receive a hit from the grenade
 	player.rpc("receive_hit", grenade_parent.player_id, 2);
+
 # Called when this player collides with a demo
 func collided_with_demo_body(demo_parent):
 	if get_tree().get_root().get_node("MainScene/NetworkController").round_is_ended: 

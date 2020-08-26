@@ -49,9 +49,6 @@ func _rematch_pressed():
 	get_tree().get_root().get_node("MainScene/NetworkController").rpc_id(1, "change_DD_vote", rematch_vote);
 
 func setup_stats_visuals():
-	print("YO HERE ARE THOSE STATS MY GUY");
-	print(stats);
-	print("Yea thats the end");
 	$CanvasLayer/Control/Text_KDC.bbcode_text = "[center]" + str(stats[Globals.localPlayerID]['kills']) + " : " + str(stats[Globals.localPlayerID]['deaths']) + " : " + str(stats[Globals.localPlayerID]['captures'])
 
 func _process(_delta):

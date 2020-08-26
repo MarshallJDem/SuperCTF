@@ -49,6 +49,7 @@ func collided_with_player(player):
 		return;
 	# Else If this is this player's flag and it's away from home, return it home
 	elif !flag.is_at_home and flag.team_id == player.team_id:
+		player.stats["recovers"] += 1;
 		flag.rpc("return_home");
 		return;
 	# Else if this is this player's enemy's flag
