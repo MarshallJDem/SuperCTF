@@ -71,8 +71,8 @@ font_data = ExtResource( 9 )
 [node name="Game_Results_Screen" type="Node2D"]
 script = ExtResource( 8 )
 __meta__ = {
-"_edit_horizontal_guides_": [  ],
-"_edit_vertical_guides_": [ 959.899 ]
+"_edit_horizontal_guides_": [ 754.56 ],
+"_edit_vertical_guides_": [ 959.899, 2860.02 ]
 }
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
@@ -99,7 +99,20 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Text_MMR_Sub" type="RichTextLabel" parent="CanvasLayer/Control"]
+[node name="Main_View" type="Control" parent="CanvasLayer/Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -20.0
+margin_top = -20.0
+margin_right = 20.0
+margin_bottom = 20.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Text_MMR_Sub" type="RichTextLabel" parent="CanvasLayer/Control/Main_View"]
 margin_left = -940.0
 margin_top = 158.0
 margin_right = 980.0
@@ -118,7 +131,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Text_Score_Sub" type="RichTextLabel" parent="CanvasLayer/Control"]
+[node name="Text_Score_Sub" type="RichTextLabel" parent="CanvasLayer/Control/Main_View"]
 margin_left = -959.401
 margin_top = 158.0
 margin_right = -368.401
@@ -137,7 +150,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Text_KDC_Sub" type="RichTextLabel" parent="CanvasLayer/Control"]
+[node name="Text_KDC_Sub" type="RichTextLabel" parent="CanvasLayer/Control/Main_View"]
 margin_left = 332.102
 margin_top = 158.0
 margin_right = 923.102
@@ -156,7 +169,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Text_MMR" type="RichTextLabel" parent="CanvasLayer/Control"]
+[node name="Text_MMR" type="RichTextLabel" parent="CanvasLayer/Control/Main_View"]
 margin_left = -937.525
 margin_top = -20.9032
 margin_right = 981.475
@@ -175,7 +188,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Text_Score" type="RichTextLabel" parent="CanvasLayer/Control"]
+[node name="Text_Score" type="RichTextLabel" parent="CanvasLayer/Control/Main_View"]
 margin_left = -1187.43
 margin_top = 34.1259
 margin_right = 682.569
@@ -193,7 +206,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Text_KDC" type="RichTextLabel" parent="CanvasLayer/Control"]
+[node name="Text_KDC" type="RichTextLabel" parent="CanvasLayer/Control/Main_View"]
 margin_left = 104.073
 margin_top = 34.1259
 margin_right = 1974.07
@@ -211,7 +224,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Text_Result" type="RichTextLabel" parent="CanvasLayer/Control"]
+[node name="Text_Result" type="RichTextLabel" parent="CanvasLayer/Control/Main_View"]
 margin_left = -919.554
 margin_top = -430.133
 margin_right = 960.446
@@ -227,6 +240,19 @@ text = "LOSS"
 scroll_active = false
 __meta__ = {
 "_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Stats_View" type="Control" parent="CanvasLayer/Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -20.0
+margin_top = -20.0
+margin_right = -20.0
+margin_bottom = -20.0
+__meta__ = {
 "_edit_use_anchors_": false
 }
 

@@ -11,6 +11,8 @@ var match_ID = -1;
 var has_animated_mmr = false;
 var stats;
 
+var stats_view_cell = preload("res://Stats_View_Cell.tscn");
+
 
 func _ready():
 	$CanvasLayer/Control/Button_Titlescreen.connect("pressed", self, "_exit_pressed");
@@ -50,6 +52,18 @@ func _rematch_pressed():
 
 func setup_stats_visuals():
 	$CanvasLayer/Control/Text_KDC.bbcode_text = "[center]" + str(stats[Globals.localPlayerID]['kills']) + " : " + str(stats[Globals.localPlayerID]['deaths']) + " : " + str(stats[Globals.localPlayerID]['captures'])
+	var count = 0;
+	for player_id in stats:
+		count += 1; # Theres probably a better way to get this number lol
+	var spread = 1000; # The total spread of the cells
+	var start_pos = -(spread/2);
+	var i = 0
+	for player_id in stats:
+		var cell = stats_view_cell.instance();
+		cell.position.x = start_pos + i * (spread / (count - 1));
+		#cell.stats = stats[player_id];
+		$CanvasLayer/Control/Stats_View.call_deferred("add_child", cell);
+		i += 1;
 
 func _process(_delta):
 	# Result and Score setup
