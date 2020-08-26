@@ -684,7 +684,7 @@ func _HTTP_GetPredictedMMRChanges_Completed(result, response_code, headers, body
 		var json = JSON.parse(body.get_string_from_utf8());
 		rpc("show_results_screen", scores, get_game_stats(), json.result);
 	else:
-		rpc("show_results_screen", scores, get_game_stats());
+		rpc("show_results_screen", scores, get_game_stats(), null);
 		# I mean i guess we can't do anything about this failing...
 		pass;
 
@@ -698,7 +698,7 @@ func get_game_stats():
 			print("I DONT KNOW WHY OR HOW BUT A PLAYER WASN'T SPAWNED ON THE SERVER WHEN GETTING STATS");
 	return stats;
 
-remotesync func show_results_screen(scores, stats, results = null):
+remotesync func show_results_screen(scores, stats, results):
 	if get_tree().is_network_server():
 		return;
 	var scn = Game_Results_Screen.instance();
