@@ -11,7 +11,7 @@ var match_ID = -1;
 var has_animated_mmr = false;
 var stats;
 
-#var stats_view_cell = preload("res://Stats_View_Cell.tscn");
+var stats_view_cell = preload("res://Stats_View_Cell.tscn");
 
 
 func _ready():
@@ -27,7 +27,7 @@ func _ready():
 	yield(get_tree().create_timer(1.0), "timeout");
 	has_animated_mmr = true;
 	$MMR_Animation_Timer.start();
-	#setup_stats_visuals();
+	setup_stats_visuals();
 	
 func _screen_resized():
 	var window_size = OS.get_window_size();
@@ -59,10 +59,10 @@ func setup_stats_visuals():
 	var start_pos = -(spread/2);
 	var i = 0
 	for player_id in stats:
-		#var cell = stats_view_cell.instance();
-		#cell.position.x = start_pos + i * (spread / (count - 1));
+		var cell = stats_view_cell.instance();
+		cell.position.x = start_pos + i * (spread / (count - 1));
 		#cell.stats = stats[player_id];
-		#$CanvasLayer/Control/Stats_View.call_deferred("add_child", cell);
+		$CanvasLayer/Control/Stats_View.call_deferred("add_child", cell);
 		i += 1;
 
 func _process(_delta):
