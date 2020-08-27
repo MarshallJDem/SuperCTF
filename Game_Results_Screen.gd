@@ -51,7 +51,7 @@ func _rematch_pressed():
 	get_tree().get_root().get_node("MainScene/NetworkController").rpc_id(1, "change_DD_vote", rematch_vote);
 
 func setup_stats_visuals():
-	$CanvasLayer/Control/Text_KDC.bbcode_text = "[center]" + str(stats[Globals.localPlayerID]['kills']) + " : " + str(stats[Globals.localPlayerID]['deaths']) + " : " + str(stats[Globals.localPlayerID]['captures'])
+	$CanvasLayer/Control/Main_View/Text_KDC.bbcode_text = "[center]" + str(stats[Globals.localPlayerID]['kills']) + " : " + str(stats[Globals.localPlayerID]['deaths']) + " : " + str(stats[Globals.localPlayerID]['captures'])
 	var count = 0;
 	for player_id in stats:
 		count += 1; # Theres probably a better way to get this number lol
@@ -77,16 +77,16 @@ func _process(_delta):
 		result = "WIN";
 	elif player_team_ID != winning_team_ID:
 		result = "LOSS";
-	$CanvasLayer/Control/Text_Result.bbcode_text = "[color=" + color + "][center]" + result + "[/center][/color]";
-	$CanvasLayer/Control/Text_Score.bbcode_text = "[center][color=blue]" + String(scores[0]) + "[/color]" + "[color=black]-[/color][color=red]" + String(scores[1]) + "[/color][/center]";
+	$CanvasLayer/Control/Main_View/Text_Result.bbcode_text = "[color=" + color + "][center]" + result + "[/center][/color]";
+	$CanvasLayer/Control/Main_View/Text_Score.bbcode_text = "[center][color=blue]" + String(scores[0]) + "[/color]" + "[color=black]-[/color][color=red]" + String(scores[1]) + "[/color][/center]";
 	
 	# MMR Label setup
 	if has_animated_mmr:
 		var x = ($MMR_Animation_Timer.time_left / $MMR_Animation_Timer.wait_time);
 		var current_value = int(old_mmr + ((1 - x*x*x*x*x) * (new_mmr - old_mmr)));
-		$CanvasLayer/Control/Text_MMR.bbcode_text = "[center]" + String(current_value) + "[/center]";
+		$CanvasLayer/Control/Main_View/Text_MMR.bbcode_text = "[center]" + String(current_value) + "[/center]";
 	else:
-		$CanvasLayer/Control/Text_MMR.bbcode_text = "[center]" + String(old_mmr) + "[/center]";
+		$CanvasLayer/Control/Main_View/Text_MMR.bbcode_text = "[center]" + String(old_mmr) + "[/center]";
 	# MMR Sub text setup
 	if has_animated_mmr:
 		var MMR_change = new_mmr - old_mmr;
@@ -96,9 +96,9 @@ func _process(_delta):
 		else:
 			change_text = String(MMR_change);
 		var change_color = "red" if MMR_change < 0 else "green";
-		$CanvasLayer/Control/Text_MMR_Sub.bbcode_text = "[center][color=black]Your MMR ([/color][color=" + change_color + "]" + change_text + "[/color][color=black])[/color][/center]"; 
+		$CanvasLayer/Control/Main_View/Text_MMR_Sub.bbcode_text = "[center][color=black]Your MMR ([/color][color=" + change_color + "]" + change_text + "[/color][color=black])[/color][/center]"; 
 	else:
-		$CanvasLayer/Control/Text_MMR_Sub.bbcode_text = "[center]Your MMR[/center]";
+		$CanvasLayer/Control/Main_View/Text_MMR_Sub.bbcode_text = "[center]Your MMR[/center]";
 	
 	# DD
 	var players = get_tree().get_root().get_node("MainScene/NetworkController").players;
