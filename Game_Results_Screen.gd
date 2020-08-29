@@ -93,7 +93,7 @@ func _process(_delta):
 	if $View_Animation_Timer.time_left > 0:
 		var progress = 1.0 - ($View_Animation_Timer.time_left / $View_Animation_Timer.wait_time);
 		if view == 0:
-			$CanvasLayer/Control/Main_View.position.x = lerp(1920, 0, progress);
+			$CanvasLayer/Control/Main_View.position.x = lerp(-1920, 0, progress);
 			$CanvasLayer/Control/Stats_View.position.x = lerp(0, 1920, progress);
 		else:
 			$CanvasLayer/Control/Main_View.position.x = lerp(0, -1920, progress);
