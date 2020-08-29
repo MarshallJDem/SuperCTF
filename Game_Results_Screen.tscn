@@ -99,18 +99,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Main_View" type="Control" parent="CanvasLayer/Control"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -20.0
-margin_top = -20.0
-margin_right = 20.0
-margin_bottom = 20.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="Main_View" type="Node2D" parent="CanvasLayer/Control"]
 
 [node name="Text_MMR_Sub" type="RichTextLabel" parent="CanvasLayer/Control/Main_View"]
 margin_left = -940.0
@@ -243,12 +232,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Stats_View" type="Control" parent="CanvasLayer/Control"]
-margin_left = 1920.0
-margin_right = 1920.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="Stats_View" type="Node2D" parent="CanvasLayer/Control"]
 
 [node name="DD_Description" type="RichTextLabel" parent="CanvasLayer/Control"]
 margin_left = 301.136
