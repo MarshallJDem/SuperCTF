@@ -60,15 +60,17 @@ func setup_stats_visuals():
 		count += 1; # Theres probably a better way to get this number lol
 	var spread = 150 * count; # The total spread of the cells
 	var start_pos = -(spread/2);
+	var y_offset = -300;
 	var i = 0
 	for player_id in stats:
 		var cell = stats_view_cell.instance();
 		cell.position.x = start_pos + i * (spread / (count - 1));
-		cell.position.y = -300;
+		cell.position.y = y_offset;
 		#cell.stats = stats[player_id];
 		$CanvasLayer/Control/Stats_View.call_deferred("add_child", cell);
 		i += 1;
-	$CanvasLayer/Control/Stats_View/Stats_Key.rect_position.x = (start_pos - 250) - 50;
+	$CanvasLayer/Control/Stats_View/Stats_Key.rect_position.x = (start_pos - 250) - 150;
+	$CanvasLayer/Control/Stats_View/Stats_Key.rect_position.y = y_offset;
 
 var view = 0;
 func switch_views():
