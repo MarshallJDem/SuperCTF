@@ -63,7 +63,7 @@ func setup_stats_visuals():
 	for player_id in stats:
 		var cell = stats_view_cell.instance();
 		cell.position.x = start_pos + i * (spread / (count - 1));
-		cell.position.y = -300;
+		cell.position.y = -10;
 		#cell.stats = stats[player_id];
 		$CanvasLayer/Control/Stats_View.call_deferred("add_child", cell);
 		i += 1;
