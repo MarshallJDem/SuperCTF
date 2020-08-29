@@ -15,6 +15,7 @@ var stats_view_cell = preload("res://Stats_View_Cell.tscn");
 
 
 func _ready():
+	$View_Animation_Timer.connect("timeout", self, "_view_animation_timer_ended");
 	$CanvasLayer/Control/Button_Titlescreen.connect("pressed", self, "_exit_pressed");
 	$CanvasLayer/Control/Button_Rematch.connect("pressed", self, "_rematch_pressed");
 	if get_tree().get_root().get_node("MainScene/NetworkController").isDD:
@@ -57,13 +58,13 @@ func setup_stats_visuals():
 	var count = 0;
 	for player_id in stats:
 		count += 1; # Theres probably a better way to get this number lol
-	var spread = 500; # The total spread of the cells
+	var spread = 250 * count; # The total spread of the cells
 	var start_pos = -(spread/2);
 	var i = 0
 	for player_id in stats:
 		var cell = stats_view_cell.instance();
 		cell.position.x = start_pos + i * (spread / (count - 1));
-		cell.position.y = -10;
+		cell.position.y = -300;
 		#cell.stats = stats[player_id];
 		$CanvasLayer/Control/Stats_View.call_deferred("add_child", cell);
 		i += 1;
@@ -72,15 +73,32 @@ var view = 0;
 func switch_views():
 	if view == 0:
 		view = 1;
-		$CanvasLayer/Control/Main_View.position.x = -1920;
-		$CanvasLayer/Control/Stats_View.position.x = 0;
+		$View_Animation_Timer.stop();
+		$View_Animation_Timer.start();
 	else:
 		view = 0;
+		$View_Animation_Timer.stop();
+		$View_Animation_Timer.start();
+
+func _view_animation_timer_ended():
+	if view == 0:
 		$CanvasLayer/Control/Main_View.position.x = 0;
 		$CanvasLayer/Control/Stats_View.position.x = 1920;
-
+	else:
+		$CanvasLayer/Control/Main_View.position.x = -1920;
+		$CanvasLayer/Control/Stats_View.position.x = 0;
 
 func _process(_delta):
+	# View Animation
+	if $View_Animation_Timer.time_left > 0:
+		var progress = 1.0 - ($View_Animation_Timer.time_left / $View_Animation_Timer.wait_time);
+		if view == 0:
+			$CanvasLayer/Control/Main_View.position.x = lerp(1920, 0, progress);
+			$CanvasLayer/Control/Stats_View.position.x = lerp(0, 1920, progress);
+		else:
+			$CanvasLayer/Control/Main_View.position.x = lerp(0, -1920, progress);
+			$CanvasLayer/Control/Stats_View.position.x = lerp(1920, 0, progress);
+
 	# Result and Score setup
 	var color = "gray";
 	if player_team_ID == 0:

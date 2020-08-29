@@ -323,3 +323,6 @@ wait_time = 2.0
 one_shot = true
 
 [node name="HTTPRequest_Get_Match_Data" type="HTTPRequest" parent="."]
+
+[node name="View_Animation_Timer" type="Timer" parent="."]
+one_shot = true
