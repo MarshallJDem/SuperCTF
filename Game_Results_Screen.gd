@@ -47,6 +47,8 @@ func _exit_pressed():
 var rematch_vote = false;
 
 func _rematch_pressed():
+	switch_views();
+	return;
 	rematch_vote = !rematch_vote;
 	get_tree().get_root().get_node("MainScene/NetworkController").rpc_id(1, "change_DD_vote", rematch_vote);
 
@@ -64,6 +66,18 @@ func setup_stats_visuals():
 		#cell.stats = stats[player_id];
 		$CanvasLayer/Control/Stats_View.call_deferred("add_child", cell);
 		i += 1;
+
+var view = 0;
+func switch_views():
+	if view == 0:
+		view = 1;
+		$CanvasLayer/Control/Main_View.position.x = -1920;
+		$CanvasLayer/Control/Stats_view.position.x = 0;
+	else:
+		view = 0;
+		$CanvasLayer/Control/Main_View.position.x = 0;
+		$CanvasLayer/Control/Stats_view.position.x = 1920;
+
 
 func _process(_delta):
 	# Result and Score setup
