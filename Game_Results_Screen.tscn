@@ -235,14 +235,6 @@ __meta__ = {
 [node name="Stats_View" type="Node2D" parent="CanvasLayer/Control"]
 position = Vector2( 1920, 0 )
 
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer/Control/Stats_View"]
-margin_right = 100.0
-margin_bottom = 100.0
-color = Color( 0.309804, 0.858824, 0.0588235, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="DD_Description" type="RichTextLabel" parent="CanvasLayer/Control"]
 margin_left = 301.136
 margin_top = 259.404

@@ -73,11 +73,11 @@ func switch_views():
 	if view == 0:
 		view = 1;
 		$CanvasLayer/Control/Main_View.position.x = -1920;
-		$CanvasLayer/Control/Stats_view.position.x = 0;
+		$CanvasLayer/Control/Stats_View.position.x = 0;
 	else:
 		view = 0;
 		$CanvasLayer/Control/Main_View.position.x = 0;
-		$CanvasLayer/Control/Stats_view.position.x = 1920;
+		$CanvasLayer/Control/Stats_View.position.x = 1920;
 
 
 func _process(_delta):
