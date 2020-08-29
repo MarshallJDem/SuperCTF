@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://fonts/Pixel_Title.tres" type="DynamicFont" id=1]
 [ext_resource path="res://fonts/Pixel_SubTitle.tres" type="DynamicFont" id=2]
@@ -28,6 +28,11 @@ font_data = ExtResource( 9 )
 [sub_resource type="DynamicFont" id=2]
 size = 300
 outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 9 )
+
+[sub_resource type="DynamicFont" id=11]
+size = 30
+outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
 font_data = ExtResource( 9 )
 
 [sub_resource type="DynamicFont" id=6]
@@ -234,6 +239,34 @@ __meta__ = {
 
 [node name="Stats_View" type="Node2D" parent="CanvasLayer/Control"]
 position = Vector2( 1920, 0 )
+
+[node name="Stats_Key" type="RichTextLabel" parent="CanvasLayer/Control/Stats_View"]
+margin_left = -250.0
+margin_top = 86.0
+margin_right = -3.0
+margin_bottom = 374.0
+rect_clip_content = false
+custom_fonts/normal_font = SubResource( 11 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[right]Kills
+
+Deaths
+
+Captures
+
+Recovers"
+text = "Kills
+
+Deaths
+
+Captures
+
+Recovers"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="DD_Description" type="RichTextLabel" parent="CanvasLayer/Control"]
 margin_left = 301.136

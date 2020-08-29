@@ -64,19 +64,19 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Sprite2" type="Sprite" parent="."]
+position = Vector2( -76.9403, 3.03584 )
+scale = Vector2( 6, 6 )
+texture = ExtResource( 4 )
+
+[node name="Sprite3" type="Sprite" parent="."]
+position = Vector2( 83.9966, 3.02321 )
+scale = Vector2( 6, 6 )
+texture = ExtResource( 3 )
+
 [node name="Sprite" type="Sprite" parent="."]
 position = Vector2( 2.84094, 11.4612 )
 scale = Vector2( 8, 8 )
 texture = ExtResource( 2 )
 hframes = 8
 frame = 2
-
-[node name="Sprite2" type="Sprite" parent="."]
-position = Vector2( -124.727, 11.7244 )
-scale = Vector2( 6, 6 )
-texture = ExtResource( 4 )
-
-[node name="Sprite3" type="Sprite" parent="."]
-position = Vector2( 138.172, 12.2229 )
-scale = Vector2( 6, 6 )
-texture = ExtResource( 3 )
