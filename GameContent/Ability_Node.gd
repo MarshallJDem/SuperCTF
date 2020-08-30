@@ -49,6 +49,8 @@ func _input(event):
 						place_forcefield();
 					elif Globals.current_ability == Globals.Abilities.Camo:
 						activate_camo();
+			if event.scancode == KEY_Q:
+				player.get_node("Weapon_Node").ult_active = !player.get_node("Weapon_Node").ult_active;
 func _ult_charge_timer_ended():
 	ult_charge += 1;
 	if ult_charge > 100:

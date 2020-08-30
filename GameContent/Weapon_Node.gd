@@ -151,7 +151,7 @@ func shoot_on_inputs():
 					if $Cooldown_Timer.time_left == 0:
 						var direction = (get_global_mouse_position() - player.position).normalized();
 						if ult_active:
-							shoot_laser(direction, 45);
+							shoot_laser(direction, 60);
 						else:
 							shoot_laser(direction, 15);
 				elif Globals.current_class == Globals.Classes.Demo:
