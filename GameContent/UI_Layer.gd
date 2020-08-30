@@ -120,7 +120,8 @@ func _process(delta):
 		else:
 			$Input_GUIs/Ability_GUIs/Ability_GUI_Text.text = "%0.2f" % ability_time_left;
 			$Input_GUIs/Ability_GUIs/E_GUI.modulate = Color(1,1,1,0.2 + 0.4 * ((ability_wait_time - ability_time_left) / ability_wait_time) );
-		
+		var stacks = local_player.get_node("Ability_Node").ability_stacks;
+		$Input_GUIs/Ability_GUIs/Ability_Sub_GUI_Text.text = ("+" + str(stacks)) if stacks > 0 else "";
 		
 		# Utility
 		var utility_time_left = local_player.get_node("Utility_Node/Cooldown_Timer").time_left;

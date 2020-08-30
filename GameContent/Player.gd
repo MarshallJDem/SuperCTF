@@ -270,9 +270,10 @@ remotesync func enable_powerup(type):
 		$Powerup_Timer.wait_time = 10;
 		text = "[wave amp=50 freq=12][color=blue]^^ SPEED UP ^^";
 	elif type == 3:
-		$Ability_Node.reduced_cooldown_enabled = true;
-		$Powerup_Timer.wait_time = 15;
-		text = "[wave amp=50 freq=12][color=red]^^ ABILITY RATE UP ^^";
+		#$Ability_Node.reduced_cooldown_enabled = true;
+		$Powerup_Timer.wait_time = 0;
+		$Ability_Node.ability_stacks += 1;
+		text = "[wave amp=50 freq=12][color=red]^^ +1 INSTANT ABILITY USE ^^";
 	elif type == 4:
 		DASH_COOLDOWN_PMODIFIER = -1.5;
 		$Powerup_Timer.wait_time = 10;
@@ -388,6 +389,7 @@ func die():
 	control = false;
 	alive = false;
 	stats["deaths"] += 1;
+	$Ability_Node.ability_stacks = 0;
 	spawn_death_particles();
 	stop_powerups();
 	# If we're the server

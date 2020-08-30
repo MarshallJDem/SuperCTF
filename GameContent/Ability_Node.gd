@@ -4,6 +4,8 @@ var Forcefield = preload("res://GameContent/Forcefield.tscn");
 var Ghost_Trail = preload("res://GameContent/Ghost_Trail.tscn");
 var player;
 var reduced_cooldown_enabled = false;
+# How many saved up ability uses this palyer has (No cooldown required after using one)
+var ability_stacks = 0;
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -34,7 +36,9 @@ func _input(event):
 	if player.control:
 		if event is InputEventKey and event.pressed:
 			if event.scancode == KEY_E:
-				if $Cooldown_Timer.time_left == 0:
+				if $Cooldown_Timer.time_left == 0 || ability_stacks > 0:
+					if $Cooldown_Timer.time_left != 0 && ability_stacks > 0:
+						ability_stacks += -1;
 					if Globals.current_ability == Globals.Abilities.Forcefield:
 						place_forcefield();
 					elif Globals.current_ability == Globals.Abilities.Camo:

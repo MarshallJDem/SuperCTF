@@ -368,6 +368,21 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Ability_Sub_GUI_Text" type="Label" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
+margin_left = -31.0888
+margin_top = -44.78
+margin_right = 102.911
+margin_bottom = -29.78
+rect_pivot_offset = Vector2( -533.113, 40.108 )
+custom_fonts/font = ExtResource( 5 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "+1"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Utility_GUI_Text" type="Label" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
 margin_left = -101.584
 margin_top = 20.0
