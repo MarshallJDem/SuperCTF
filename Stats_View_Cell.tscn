@@ -5,7 +5,7 @@
 [ext_resource path="res://Assets/GUI/forcefield_B.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Utilities/grenade_B.png" type="Texture" id=4]
 
-[sub_resource type="DynamicFont" id=1]
+[sub_resource type="DynamicFont" id=11]
 size = 30
 outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
 font_data = ExtResource( 1 )
@@ -22,7 +22,8 @@ margin_top = -132.817
 margin_right = 337.945
 margin_bottom = -77.817
 rect_clip_content = false
-custom_fonts/normal_font = SubResource( 1 )
+mouse_filter = 2
+custom_fonts/normal_font = SubResource( 11 )
 custom_colors/default_color = Color( 0, 0.133333, 1, 1 )
 bbcode_enabled = true
 bbcode_text = "[center]carshalljd"
@@ -42,7 +43,8 @@ margin_top = 85.5312
 margin_right = 337.945
 margin_bottom = 373.531
 rect_clip_content = false
-custom_fonts/normal_font = SubResource( 1 )
+mouse_filter = 2
+custom_fonts/normal_font = SubResource( 11 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
 bbcode_text = "[center]12
