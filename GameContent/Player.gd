@@ -371,6 +371,7 @@ func deactivate_camera():
 # Called when this player is hit by a projectile
 func hit_by_projectile(attacker_id, projectile_type):
 	get_tree().get_root().get_node("MainScene/Players/P" + str(attacker_id)).stats["kills"] += 1;
+	get_tree().get_root().get_node("MainScene/Players/P" + str(attacker_id)).get_node("Ability_Node").ult_charge += 10;
 	if projectile_type == 0 || projectile_type == 1 || projectile_type == 2 || projectile_type == 3: # Bullet or Laser or Landmine
 		die();
 		var attacker_team_id = get_tree().get_root().get_node("MainScene/NetworkController").players[attacker_id]["team_id"]
