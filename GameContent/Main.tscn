@@ -55,8 +55,8 @@ font_data = ExtResource( 25 )
 outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
 font_data = ExtResource( 25 )
 
-[sub_resource type="DynamicFont" id=6]
-size = 12
+[sub_resource type="DynamicFont" id=8]
+size = 30
 outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
 font_data = ExtResource( 25 )
 
@@ -403,9 +403,10 @@ __meta__ = {
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = -181.0
+margin_top = -888.821
+margin_bottom = -707.821
 rect_clip_content = false
-custom_fonts/normal_font = SubResource( 6 )
+custom_fonts/normal_font = SubResource( 8 )
 bbcode_enabled = true
 bbcode_text = "[center][color=black] KILLED"
 text = " KILLED"
