@@ -18,6 +18,8 @@ func _ready():
 	$View_Animation_Timer.connect("timeout", self, "_view_animation_timer_ended");
 	$CanvasLayer/Control/Button_Titlescreen.connect("pressed", self, "_exit_pressed");
 	$CanvasLayer/Control/Button_Rematch.connect("pressed", self, "_rematch_pressed");
+	$CanvasLayer/Control/Main_View/Switch_View_Button1.connect("pressed", self, "switch_views");
+	$CanvasLayer/Control/Main_View/Switch_View_Button2.connect("pressed", self, "switch_views");
 	if get_tree().get_root().get_node("MainScene/NetworkController").isDD:
 		$CanvasLayer/Control/Button_Rematch.visible = false;
 		$CanvasLayer/Control/DD_Description.visible = false;
@@ -48,8 +50,6 @@ func _exit_pressed():
 var rematch_vote = false;
 
 func _rematch_pressed():
-	switch_views();
-	return;
 	rematch_vote = !rematch_vote;
 	get_tree().get_root().get_node("MainScene/NetworkController").rpc_id(1, "change_DD_vote", rematch_vote);
 

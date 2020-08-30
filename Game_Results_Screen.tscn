@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://fonts/Pixel_Title.tres" type="DynamicFont" id=1]
 [ext_resource path="res://fonts/Pixel_SubTitle.tres" type="DynamicFont" id=2]
@@ -9,6 +9,12 @@
 [ext_resource path="res://Pressed_Button_Style.tres" type="StyleBox" id=7]
 [ext_resource path="res://Game_Results_Screen.gd" type="Script" id=8]
 [ext_resource path="res://fonts/pixel.TTF" type="DynamicFontData" id=9]
+
+[sub_resource type="DynamicFont" id=12]
+size = 24
+outline_color = Color( 0, 0, 0, 1 )
+extra_spacing_top = 9
+font_data = ExtResource( 9 )
 
 [sub_resource type="DynamicFont" id=3]
 size = 125
@@ -105,6 +111,24 @@ __meta__ = {
 }
 
 [node name="Main_View" type="Node2D" parent="CanvasLayer/Control"]
+
+[node name="Switch_View_Button1" type="Button" parent="CanvasLayer/Control/Main_View"]
+margin_left = 677.748
+margin_top = 468.604
+margin_right = 961.748
+margin_bottom = 540.604
+custom_styles/hover = ExtResource( 6 )
+custom_styles/pressed = ExtResource( 7 )
+custom_styles/normal = ExtResource( 5 )
+custom_fonts/font = SubResource( 12 )
+custom_colors/font_color_disabled = Color( 0, 0, 0, 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
+custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
+text = "Advanced Stats"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Text_MMR_Sub" type="RichTextLabel" parent="CanvasLayer/Control/Main_View"]
 margin_left = -940.0
@@ -239,6 +263,24 @@ __meta__ = {
 
 [node name="Stats_View" type="Node2D" parent="CanvasLayer/Control"]
 position = Vector2( 1920, 0 )
+
+[node name="Switch_View_Button2" type="Button" parent="CanvasLayer/Control/Stats_View"]
+margin_left = -888.0
+margin_top = -173.0
+margin_right = -771.0
+margin_bottom = -69.0
+custom_styles/hover = ExtResource( 6 )
+custom_styles/pressed = ExtResource( 7 )
+custom_styles/normal = ExtResource( 5 )
+custom_fonts/font = SubResource( 12 )
+custom_colors/font_color_disabled = Color( 0, 0, 0, 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
+custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
+text = "<"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Stats_Key" type="RichTextLabel" parent="CanvasLayer/Control/Stats_View"]
 margin_left = -250.0
