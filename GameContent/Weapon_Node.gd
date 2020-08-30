@@ -282,7 +282,7 @@ remotesync func spawn_bullet(pos, player_id, direction, time_shot, bullet_name, 
 	get_tree().get_root().get_node("MainScene").call_deferred("add_child", bullet);
 	return bullet;
 var laser_is_blank = false;
-remotesync func start_laser(direction, start_pos, target_pos, look_direction,time_shot, is_blank):
+remotesync func start_laser(direction, start_pos, target_pos, look_direction,time_shot,width, is_blank):
 	laser_is_blank = is_blank;
 	player.get_node("Sprite_Gun").frame = look_direction;
 	player.get_node("Sprite_Head").frame = look_direction;
@@ -291,6 +291,7 @@ remotesync func start_laser(direction, start_pos, target_pos, look_direction,tim
 	#$CollisionTester.position = target_pos;
 	laser_direction = direction;
 	laser_position = start_pos;
+	laser_width = width;
 	laser_target_position = target_pos;
 	var wait_time = 0.4;
 	# Compensate for master (Make time to shoot longer)
@@ -385,6 +386,6 @@ func shoot_laser(d, width):
 		target_pos = start_pos;
 		length = 0;
 	if Globals.testing:
-		start_laser( laser_direction, start_pos,target_pos, player.look_direction,time_shot, is_blank);
+		start_laser( laser_direction, start_pos,target_pos, player.look_direction,time_shot,laser_width, is_blank);
 	else:
-		rpc("start_laser", laser_direction, start_pos,target_pos, player.look_direction,time_shot, is_blank);
+		rpc("start_laser", laser_direction, start_pos,target_pos, player.look_direction,time_shot,laser_width, is_blank);
