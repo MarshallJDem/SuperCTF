@@ -20,11 +20,14 @@ var player;
 var laser_direction = Vector2(0,0);
 # The position the laser is firing from
 var laser_position = Vector2(0,0);
+var laser_width = 15;
 var laser_target_position = null;
 # The number of bullets this player has shot. Used for naming bullets
 var bullets_shot = 0;
 # The number of demos this player has shot. Used for naming demos
 var demos_shot = 0;
+
+var ult_active = true;
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -136,11 +139,21 @@ func shoot_on_inputs():
 			if !player.attempt_drop_flag():
 				if Globals.current_class == Globals.Classes.Bullet:
 					if $Cooldown_Timer.time_left == 0:
-						call_deferred("shoot_bullet", ((get_global_mouse_position() - global_position).normalized()));
+						var direction = ((get_global_mouse_position() - global_position).normalized());
+						var angle = PI / 16.0;
+						var direction2 = Vector2((cos(angle) * direction.x) - (sin(angle) * direction.y),(sin(angle) * direction.x) + (cos(angle) * direction.y));
+						var direction3 = Vector2((cos(-angle) * direction.x) - (sin(-angle) * direction.y),(sin(-angle) * direction.x) + (cos(-angle) * direction.y));
+						shoot_bullet(direction);
+						if ult_active:
+							shoot_bullet(direction2);
+							shoot_bullet(direction3);
 				elif Globals.current_class == Globals.Classes.Laser:
 					if $Cooldown_Timer.time_left == 0:
 						var direction = (get_global_mouse_position() - player.position).normalized();
-						shoot_laser(direction);
+						if ult_active:
+							shoot_laser(direction, 45);
+						else:
+							shoot_laser(direction, 15);
 				elif Globals.current_class == Globals.Classes.Demo:
 					if $Cooldown_Timer.time_left == 0:
 						var direction = (get_global_mouse_position() - global_position).normalized();
@@ -153,10 +166,18 @@ func shoot_on_inputs():
 						if forcefield_test and forcefield_test.collider.is_in_group("Forcefield_Bodies"):
 							shoot_demo(direction, demos_shot, true);
 						else: #Otherwise fire a real shot
+							var angle = PI / 8.0;
+							var direction2 = Vector2((cos(angle) * direction.x) - (sin(angle) * direction.y),(sin(angle) * direction.x) + (cos(angle) * direction.y));
+							var direction3 = Vector2((cos(-angle) * direction.x) - (sin(-angle) * direction.y),(sin(-angle) * direction.x) + (cos(-angle) * direction.y));
 							if !Globals.testing:
 								rpc("shoot_demo", direction,demos_shot);
+								rpc("shoot_demo", direction2,demos_shot);
+								rpc("shoot_demo", direction3,demos_shot);
 							else:
 								shoot_demo(direction,demos_shot);
+								if ult_active:
+									shoot_demo(direction2,demos_shot);
+									shoot_demo(direction3,demos_shot);
 
 remotesync func shoot_demo(d, shots, is_blank = false):
 	$Cooldown_Timer.start();
@@ -312,12 +333,13 @@ func spawn_laser():
 	laser.team_id = player.team_id;
 	laser.z_index = (player.position.y + laser_target_position.y) - 2;
 	laser.is_blank = laser_is_blank;
+	laser.size = laser_width;
 	get_tree().get_root().get_node("MainScene").add_child(laser);
 	$Laser_Fire_Audio.play();
 	$Cooldown_Timer.start();
 	laser_is_blank = false;
 
-func shoot_laser(d):
+func shoot_laser(d, width):
 	# Test to see if demo is spawning inside of forcefield
 	$CollisionTester.position = get_node("Laser_Starts/" + String(player.look_direction)).position ;
 	var forcefield_test = $CollisionTester.move_and_collide(d * 0.0);
@@ -327,6 +349,7 @@ func shoot_laser(d):
 	if forcefield_test and forcefield_test.collider.is_in_group("Forcefield_Bodies"):
 		is_blank = true;
 	laser_direction = d;
+	laser_width = width;
 	laser_position = player.position + get_node("Laser_Starts/" + String(player.look_direction)).position * 20;
 	var start_pos = get_node("Laser_Starts/" + String(player.look_direction)).position;
 	$CollisionTester.position = Vector2(0,0);

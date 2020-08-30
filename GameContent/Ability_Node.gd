@@ -6,12 +6,15 @@ var player;
 var reduced_cooldown_enabled = false;
 # How many saved up ability uses this palyer has (No cooldown required after using one)
 var ability_stacks = 0;
+# 100 = %100
+var ult_charge = 0;
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	player = get_parent();
 	set_ability(Globals.current_ability);
 	$Camo_Timer.connect("timeout", self, "_camo_timer_ended")
+	$Ult_Charge_Timer.connect("timeout", self, "_ult_charge_timer_ended");
 
 func _process(delta):
 	if !player.alive:
@@ -29,6 +32,9 @@ func _process(delta):
 		if int((($Camo_Timer.wait_time - $Camo_Timer.time_left) + start ) / spacing) > camo_flashes_completed:
 			camo_flashes_completed += 1;
 			spawn_camo_flash();
+	
+	if ult_charge > 100:
+		ult_charge = 100;
 
 func _input(event):
 	if Globals.is_typing_in_chat or Globals.displaying_loadout:
@@ -43,6 +49,10 @@ func _input(event):
 						place_forcefield();
 					elif Globals.current_ability == Globals.Abilities.Camo:
 						activate_camo();
+func _ult_charge_timer_ended():
+	ult_charge += 1;
+	if ult_charge > 100:
+		ult_charge = 100;
 
 func set_ability(a):
 	Globals.current_ability = a;

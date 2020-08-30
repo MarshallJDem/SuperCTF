@@ -11,7 +11,7 @@ var is_blank = false;
 
 func _ready():
 	$Death_Timer.connect("timeout", self, "_death_timer_ended");
-	size = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("laserWidth");
+	#size = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("laserWidth");
 	target_pos -= position;
 	
 	if is_blank:
