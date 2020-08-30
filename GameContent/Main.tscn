@@ -110,6 +110,7 @@ margin_top = 73.0
 margin_right = 292.0
 margin_bottom = 334.0
 rect_clip_content = false
+mouse_filter = 2
 custom_styles/normal = SubResource( 3 )
 custom_fonts/normal_font = ExtResource( 5 )
 bbcode_enabled = true
