@@ -104,6 +104,13 @@ func _process(_delta):
 		else:
 			$CanvasLayer/Control/Main_View.position.x = lerp(0, -OS.get_window_size().x / $CanvasLayer/Control.rect_scale.x, progress);
 			$CanvasLayer/Control/Stats_View.position.x = lerp(OS.get_window_size().x / $CanvasLayer/Control.rect_scale.x, 0, progress);
+	else:
+		if view == 0:
+			$CanvasLayer/Control/Main_View.position.x = 0;
+			$CanvasLayer/Control/Stats_View.position.x = OS.get_window_size().x / $CanvasLayer/Control.rect_scale.x;
+		else:
+			$CanvasLayer/Control/Main_View.position.x = -OS.get_window_size().x / $CanvasLayer/Control.rect_scale.x;
+			$CanvasLayer/Control/Stats_View.position.x = 0;
 
 	if Globals.testing:
 		return;
