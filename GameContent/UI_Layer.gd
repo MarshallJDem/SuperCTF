@@ -151,17 +151,17 @@ func _screen_resized():
 	if window_size.x < 500 or window_size.y < 200:
 		$Input_GUIs.rect_scale = Vector2(0.5,0.5);
 		$Input_GUIs.margin_top = -40;
-		$Alert_Text.get_font("normal_font").size =6;
-		$Alert_Text.margin_top = $Skirmish_Subtext.margin_top + 75;
+		$Alert_Text.get_font("normal_font").size =12;
+		$Alert_Text.margin_top = $Skirmish_Subtext.margin_top + 50;
 	elif window_size.x <= 1920 or window_size.y <= 1080:
 		$Input_GUIs.rect_scale = Vector2(1,1);
-		$Alert_Text.get_font("normal_font").size =12;
+		$Alert_Text.get_font("normal_font").size =24;
 		$Input_GUIs.margin_top = -80;
-		$Alert_Text.margin_top = $Skirmish_Subtext.margin_top + 150;
+		$Alert_Text.margin_top = $Skirmish_Subtext.margin_top + 100;
 	else:
 		$Input_GUIs.rect_scale = Vector2(2,2);
-		$Alert_Text.get_font("normal_font").size =24;
-		$Alert_Text.margin_top = $Skirmish_Subtext.margin_top + 300;
+		$Alert_Text.get_font("normal_font").size =48;
+		$Alert_Text.margin_top = $Skirmish_Subtext.margin_top + 200;
 		$"../Chat_Layer/Chat_Box".rect_scale = Vector2(2,2);
 		$"../Chat_Layer/Line_Edit".rect_scale = Vector2(2,2);
 		$"../Chat_Layer/Options_Button".rect_scale = Vector2(1,1);
