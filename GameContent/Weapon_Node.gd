@@ -27,7 +27,7 @@ var bullets_shot = 0;
 # The number of demos this player has shot. Used for naming demos
 var demos_shot = 0;
 
-var ult_active = true;
+var ult_active = false;
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

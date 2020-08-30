@@ -15,6 +15,7 @@ func _ready() -> void:
 	set_ability(Globals.current_ability);
 	$Camo_Timer.connect("timeout", self, "_camo_timer_ended")
 	$Ult_Charge_Timer.connect("timeout", self, "_ult_charge_timer_ended");
+	$Ult_Timer.connect("timeout", self, "_ult_timer_ended");
 
 func _process(delta):
 	if !player.alive:
@@ -50,11 +51,22 @@ func _input(event):
 					elif Globals.current_ability == Globals.Abilities.Camo:
 						activate_camo();
 			if event.scancode == KEY_Q:
-				player.get_node("Weapon_Node").ult_active = !player.get_node("Weapon_Node").ult_active;
+				if ult_charge >= 100:
+					$Ult_Timer.start();
+					ult_charge = 0;
+					player.get_node("Weapon_Node").ult_active = true;
+			if event.scancode == KEY_P:
+				$Ult_Timer.start();
+				ult_charge = 0;
+				player.get_node("Weapon_Node").ult_active = true;
+
+
 func _ult_charge_timer_ended():
 	ult_charge += 1;
 	if ult_charge > 100:
 		ult_charge = 100;
+func _ult_timer_ended():
+	player.get_node("Weapon_Node").ult_active = false;
 
 func set_ability(a):
 	Globals.current_ability = a;

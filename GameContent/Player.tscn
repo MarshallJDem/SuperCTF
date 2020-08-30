@@ -167,6 +167,10 @@ one_shot = true
 wait_time = 2.0
 autostart = true
 
+[node name="Ult_Timer" type="Timer" parent="Ability_Node"]
+wait_time = 8.0
+one_shot = true
+
 [node name="Sprite_Legs" type="Sprite" parent="."]
 texture = ExtResource( 3 )
 vframes = 4
