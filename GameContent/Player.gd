@@ -271,7 +271,7 @@ remotesync func enable_powerup(type):
 		text = "[wave amp=50 freq=12][color=blue]^^ SPEED UP ^^";
 	elif type == 3:
 		#$Ability_Node.reduced_cooldown_enabled = true;
-		$Powerup_Timer.wait_time = 0;
+		#$Powerup_Timer.wait_time = 0;
 		$Ability_Node.ability_stacks += 1;
 		text = "[wave amp=50 freq=12][color=red]^^ +1 INSTANT ABILITY USE ^^";
 	elif type == 4:
@@ -280,11 +280,13 @@ remotesync func enable_powerup(type):
 		text = "[wave amp=50 freq=12][color=purple]˅˅˅˅˅˅^^ DASH RATE UP ^^";
 	if Globals.testing or is_network_master():
 		get_tree().get_root().get_node("MainScene/UI_Layer/Input_GUIs/PowerupParticles").start(type);
-	$PowerupParticles.start(type);
+	
 	# Only display message if this is our local player
 	if Globals.testing or player_id == Globals.localPlayerID:
 		get_tree().get_root().get_node("MainScene/UI_Layer").set_alert_text("[center]" + text);
-	$Powerup_Timer.start();
+	if type != 3:
+		$PowerupParticles.start(type);
+		$Powerup_Timer.start();
 
 func _powerup_timer_ended():
 	stop_powerups();
