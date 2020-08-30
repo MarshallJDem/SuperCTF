@@ -70,7 +70,7 @@ func setup_stats_visuals():
 		$CanvasLayer/Control/Stats_View.call_deferred("add_child", cell);
 		i += 1;
 	$CanvasLayer/Control/Stats_View/Stats_Key.rect_position.x = (start_pos - 250) - 150;
-	$CanvasLayer/Control/Stats_View/Stats_Key.rect_position.y = y_offset;
+	$CanvasLayer/Control/Stats_View/Stats_Key.rect_position.y = 86 + y_offset;
 
 var view = 0;
 func switch_views():
