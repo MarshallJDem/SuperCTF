@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=2]
+[gd_scene load_steps=37 format=2]
 
 [ext_resource path="res://GameContent/Main.gd" type="Script" id=1]
 [ext_resource path="res://GameContent/Player.tscn" type="PackedScene" id=2]
@@ -27,6 +27,7 @@
 [ext_resource path="res://fonts/pixel.TTF" type="DynamicFontData" id=25]
 [ext_resource path="res://GameContent/Loadout_Menu.tscn" type="PackedScene" id=26]
 [ext_resource path="res://GameContent/PowerupGUIParticles.tscn" type="PackedScene" id=27]
+[ext_resource path="res://Assets/GUI/Q-Key-GUI.png" type="Texture" id=28]
 [ext_resource path="res://Assets/GUI/blur.png" type="Texture" id=29]
 
 [sub_resource type="StyleBoxFlat" id=1]
@@ -311,37 +312,44 @@ hframes = 2
 [node name="Ability_GUIs" type="Node2D" parent="UI_Layer/Input_GUIs"]
 
 [node name="E_GUI" type="Sprite" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
-position = Vector2( 19.9311, -26.4901 )
+position = Vector2( 49.4302, -25.8934 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 17 )
 centered = false
 hframes = 2
 
 [node name="Q_GUI" type="Sprite" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
-position = Vector2( -50.5642, -26.4901 )
+position = Vector2( -80.7254, -26.4901 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 18 )
 centered = false
 hframes = 2
 
+[node name="ULT_GUI" type="Sprite" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
+position = Vector2( -15.2682, -26.4901 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 28 )
+centered = false
+hframes = 2
+
 [node name="SHIFT_GUI" type="Sprite" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
-position = Vector2( 84.5007, -26 )
+position = Vector2( 114, -25.6022 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 20 )
 centered = false
 hframes = 2
 
 [node name="SPACE_GUI" type="Sprite" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
-position = Vector2( -144.176, -26 )
+position = Vector2( -174.337, -26 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 21 )
 centered = false
 hframes = 2
 
 [node name="Teleport_GUI_Text" type="Label" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
-margin_left = -182.176
+margin_left = -212.337
 margin_top = 20.0
-margin_right = -48.1763
+margin_right = -78.3375
 margin_bottom = 35.0
 rect_pivot_offset = Vector2( -533.113, 40.108 )
 custom_fonts/font = ExtResource( 5 )
@@ -354,9 +362,9 @@ __meta__ = {
 }
 
 [node name="Ability_GUI_Text" type="Label" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
-margin_left = -31.0888
+margin_left = -1.58972
 margin_top = 20.0
-margin_right = 102.911
+margin_right = 132.41
 margin_bottom = 35.0
 rect_pivot_offset = Vector2( -533.113, 40.108 )
 custom_fonts/font = ExtResource( 5 )
@@ -369,10 +377,10 @@ __meta__ = {
 }
 
 [node name="Ability_Sub_GUI_Text" type="Label" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
-margin_left = -31.0888
-margin_top = -44.78
-margin_right = 102.911
-margin_bottom = -29.78
+margin_left = -1.58971
+margin_top = -44.3823
+margin_right = 132.41
+margin_bottom = -29.3823
 rect_pivot_offset = Vector2( -533.113, 40.108 )
 custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
@@ -383,10 +391,25 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="ULT_Sub_GUI_Text" type="Label" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
+margin_left = -66.7961
+margin_top = -44.3823
+margin_right = 67.2037
+margin_bottom = -29.3823
+rect_pivot_offset = Vector2( -533.113, 40.108 )
+custom_fonts/font = ExtResource( 5 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "%20"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Utility_GUI_Text" type="Label" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
-margin_left = -101.584
+margin_left = -131.745
 margin_top = 20.0
-margin_right = 32.4159
+margin_right = 2.25473
 margin_bottom = 35.0
 rect_pivot_offset = Vector2( -533.113, 40.108 )
 custom_fonts/font = ExtResource( 5 )
@@ -398,11 +421,26 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="ULT_GUI_Text" type="Label" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
+margin_left = -66.1782
+margin_top = 20.0
+margin_right = 67.8217
+margin_bottom = 35.0
+rect_pivot_offset = Vector2( -533.113, 40.108 )
+custom_fonts/font = ExtResource( 5 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "ULT"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="ToggleWeapon_GUI_Text2" type="Label" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
-margin_left = 46.3917
-margin_top = 11.0
-margin_right = 180.392
-margin_bottom = 44.0
+margin_left = 75.8908
+margin_top = 11.1989
+margin_right = 209.891
+margin_bottom = 44.1989
 rect_pivot_offset = Vector2( -533.113, 40.108 )
 custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
