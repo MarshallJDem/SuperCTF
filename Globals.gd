@@ -181,8 +181,8 @@ func _HTTP_PollPlayerStatus_Completed(result, response_code, headers, body):
 			Globals.player_MMR = int(json.result.mmr);
 	if(player_status <= 1 and int(json.result.status) > 1):
 		print("Found Match : " + str(json.result.status));
-		var matchID = json.result.status;
-		var query = "matchID=" + matchID;
+		var matchID = str(json.result.status);
+		var query = "matchID=" + str(matchID);
 		HTTPRequest_GetMatchData.request(Globals.mainServerIP + "getMatchData?" + query, ["authorization: Bearer " + Globals.userToken], false, HTTPClient.METHOD_GET);
 	elif(player_status == 1 and int(json.result.status) == 0):
 		get_tree().change_scene("res://TitleScreen.tscn");
