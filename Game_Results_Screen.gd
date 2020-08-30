@@ -20,7 +20,7 @@ func _ready():
 	$CanvasLayer/Control/Button_Rematch.connect("pressed", self, "_rematch_pressed");
 	$CanvasLayer/Control/Main_View/Switch_View_Button1.connect("pressed", self, "switch_views");
 	$CanvasLayer/Control/Stats_View/Switch_View_Button2.connect("pressed", self, "switch_views");
-	if get_tree().get_root().get_node("MainScene/NetworkController").isDD:
+	if !Globals.testing and get_tree().get_root().get_node("MainScene/NetworkController").isDD:
 		$CanvasLayer/Control/Button_Rematch.visible = false;
 		$CanvasLayer/Control/DD_Description.visible = false;
 		$CanvasLayer/Control/DD_Votes.visible = false;
@@ -54,6 +54,8 @@ func _rematch_pressed():
 	get_tree().get_root().get_node("MainScene/NetworkController").rpc_id(1, "change_DD_vote", rematch_vote);
 
 func setup_stats_visuals():
+	if Globals.testing:
+		return;
 	$CanvasLayer/Control/Main_View/Text_KDC.bbcode_text = "[center]" + str(stats[Globals.localPlayerID]['kills']) + " : " + str(stats[Globals.localPlayerID]['deaths']) + " : " + str(stats[Globals.localPlayerID]['captures'])
 	var count = 0;
 	for player_id in stats:
@@ -84,11 +86,12 @@ func switch_views():
 		$View_Animation_Timer.start();
 
 func _view_animation_timer_ended():
+	print(OS.get_window_size().x);
 	if view == 0:
 		$CanvasLayer/Control/Main_View.position.x = 0;
-		$CanvasLayer/Control/Stats_View.position.x = OS.get_window_size().x;
+		$CanvasLayer/Control/Stats_View.position.x = OS.get_window_size().x / $CanvasLayer/Control.rect_scale.x;
 	else:
-		$CanvasLayer/Control/Main_View.position.x = -OS.get_window_size().x;
+		$CanvasLayer/Control/Main_View.position.x = -OS.get_window_size().x / $CanvasLayer/Control.rect_scale.x;
 		$CanvasLayer/Control/Stats_View.position.x = 0;
 
 func _process(_delta):
@@ -96,12 +99,14 @@ func _process(_delta):
 	if $View_Animation_Timer.time_left > 0:
 		var progress = 1.0 - ($View_Animation_Timer.time_left / $View_Animation_Timer.wait_time);
 		if view == 0:
-			$CanvasLayer/Control/Main_View.position.x = lerp(-OS.get_window_size().x, 0, progress);
-			$CanvasLayer/Control/Stats_View.position.x = lerp(0, OS.get_window_size().x, progress);
+			$CanvasLayer/Control/Main_View.position.x = lerp(-OS.get_window_size().x / $CanvasLayer/Control.rect_scale.x, 0, progress);
+			$CanvasLayer/Control/Stats_View.position.x = lerp(0, OS.get_window_size().x / $CanvasLayer/Control.rect_scale.x, progress);
 		else:
-			$CanvasLayer/Control/Main_View.position.x = lerp(0, -OS.get_window_size().x, progress);
-			$CanvasLayer/Control/Stats_View.position.x = lerp(OS.get_window_size().x, 0, progress);
+			$CanvasLayer/Control/Main_View.position.x = lerp(0, -OS.get_window_size().x / $CanvasLayer/Control.rect_scale.x, progress);
+			$CanvasLayer/Control/Stats_View.position.x = lerp(OS.get_window_size().x / $CanvasLayer/Control.rect_scale.x, 0, progress);
 
+	if Globals.testing:
+		return;
 	# Result and Score setup
 	var color = "gray";
 	if player_team_ID == 0:
@@ -114,7 +119,8 @@ func _process(_delta):
 	elif player_team_ID != winning_team_ID:
 		result = "LOSS";
 	$CanvasLayer/Control/Main_View/Text_Result.bbcode_text = "[color=" + color + "][center]" + result + "[/center][/color]";
-	$CanvasLayer/Control/Main_View/Text_Score.bbcode_text = "[center][color=blue]" + String(scores[0]) + "[/color]" + "[color=black]-[/color][color=red]" + String(scores[1]) + "[/color][/center]";
+	if !Globals.testing:
+		$CanvasLayer/Control/Main_View/Text_Score.bbcode_text = "[center][color=blue]" + String(scores[0]) + "[/color]" + "[color=black]-[/color][color=red]" + String(scores[1]) + "[/color][/center]";
 	
 	# MMR Label setup
 	if has_animated_mmr:
