@@ -19,7 +19,7 @@ func _ready():
 	$CanvasLayer/Control/Button_Titlescreen.connect("pressed", self, "_exit_pressed");
 	$CanvasLayer/Control/Button_Rematch.connect("pressed", self, "_rematch_pressed");
 	$CanvasLayer/Control/Main_View/Switch_View_Button1.connect("pressed", self, "switch_views");
-	$CanvasLayer/Control/Main_View/Switch_View_Button2.connect("pressed", self, "switch_views");
+	$CanvasLayer/Control/Stats_View/Switch_View_Button2.connect("pressed", self, "switch_views");
 	if get_tree().get_root().get_node("MainScene/NetworkController").isDD:
 		$CanvasLayer/Control/Button_Rematch.visible = false;
 		$CanvasLayer/Control/DD_Description.visible = false;
