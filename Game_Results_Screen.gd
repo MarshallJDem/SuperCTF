@@ -10,6 +10,7 @@ var new_mmr = -1;
 var match_ID = -1;
 var has_animated_mmr = false;
 var stats;
+var players;
 
 var stats_view_cell = preload("res://Stats_View_Cell.tscn");
 
@@ -68,6 +69,9 @@ func setup_stats_visuals():
 		var cell = stats_view_cell.instance();
 		cell.position.x = start_pos + i * (spread / (count - 1));
 		cell.position.y = y_offset;
+		cell.stats = stats;
+		cell.players = players;
+		cell.player_id = player_id;
 		#cell.stats = stats[player_id];
 		$CanvasLayer/Control/Stats_View.call_deferred("add_child", cell);
 		i += 1;

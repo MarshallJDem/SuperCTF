@@ -222,8 +222,7 @@ custom_fonts/mono_font = ExtResource( 2 )
 custom_fonts/normal_font = SubResource( 1 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
-bbcode_text = "[center]3-2[/center]"
-text = "3-2"
+bbcode_text = "[center][/center]"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -241,8 +240,7 @@ custom_fonts/mono_font = ExtResource( 2 )
 custom_fonts/normal_font = SubResource( 1 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
-bbcode_text = "[center]27 / 18 / 1[/center]"
-text = "27 / 18 / 1"
+bbcode_text = "[center][/center]"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false

@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://fonts/pixel.TTF" type="DynamicFontData" id=1]
 [ext_resource path="res://Assets/Player/gunner_head_B.png" type="Texture" id=2]
 [ext_resource path="res://Assets/GUI/forcefield_B.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Utilities/grenade_B.png" type="Texture" id=4]
+[ext_resource path="res://Stats_View_Cell.gd" type="Script" id=5]
 
 [sub_resource type="DynamicFont" id=11]
 size = 30
@@ -11,8 +12,9 @@ outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
 font_data = ExtResource( 1 )
 
 [node name="Stats_View_Cell" type="Node2D"]
+script = ExtResource( 5 )
 
-[node name="RichTextLabel" type="RichTextLabel" parent="."]
+[node name="Player_Name" type="RichTextLabel" parent="."]
 anchor_left = 0.000854429
 anchor_top = 0.00125162
 anchor_right = 0.000854429
@@ -33,7 +35,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="RichTextLabel2" type="RichTextLabel" parent="."]
+[node name="Player_Stats" type="RichTextLabel" parent="."]
 anchor_left = 0.000854429
 anchor_top = 0.00125162
 anchor_right = 0.000854429
@@ -66,17 +68,17 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Sprite2" type="Sprite" parent="."]
+[node name="Utility_Sprite" type="Sprite" parent="."]
 position = Vector2( -76.9403, 3.03584 )
 scale = Vector2( 6, 6 )
 texture = ExtResource( 4 )
 
-[node name="Sprite3" type="Sprite" parent="."]
+[node name="Ability_Sprite" type="Sprite" parent="."]
 position = Vector2( 83.9966, 3.02321 )
 scale = Vector2( 6, 6 )
 texture = ExtResource( 3 )
 
-[node name="Sprite" type="Sprite" parent="."]
+[node name="Player_Sprite" type="Sprite" parent="."]
 position = Vector2( 2.84094, 11.4612 )
 scale = Vector2( 8, 8 )
 texture = ExtResource( 2 )
