@@ -28,7 +28,7 @@ animations = [ {
 } ]
 
 [sub_resource type="ConvexPolygonShape2D" id=3]
-points = PoolVector2Array( -5.605, -9.171, 23.751, -8.802, 23.926, 33.35, -5.457, 33.419 )
+points = PoolVector2Array( -10, -9.171, 23.751, -8.802, 23.926, 33.35, -10, 33.419 )
 
 [node name="Flag" type="Node2D" groups=[
 "Flags",
@@ -40,14 +40,12 @@ script = ExtResource( 1 )
 position = Vector2( 10, -14 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 1 )
-frame = 3
 playing = true
 
 [node name="Red_Sprite" type="AnimatedSprite" parent="."]
 position = Vector2( 10, -14 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 2 )
-frame = 3
 playing = true
 
 [node name="Area2D" type="Area2D" parent="." groups=[
