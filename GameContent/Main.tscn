@@ -47,16 +47,16 @@ size = 18
 outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
 font_data = ExtResource( 25 )
 
-[sub_resource type="DynamicFont" id=7]
+[sub_resource type="DynamicFont" id=5]
 size = 25
 outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 25 )
 
-[sub_resource type="DynamicFont" id=5]
+[sub_resource type="DynamicFont" id=6]
 outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
 font_data = ExtResource( 25 )
 
-[sub_resource type="DynamicFont" id=8]
+[sub_resource type="DynamicFont" id=7]
 size = 30
 outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
 font_data = ExtResource( 25 )
@@ -165,7 +165,7 @@ margin_top = 99.8129
 margin_bottom = 189.813
 rect_clip_content = false
 size_flags_stretch_ratio = 0.0
-custom_fonts/normal_font = SubResource( 7 )
+custom_fonts/normal_font = SubResource( 5 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
 scroll_active = false
@@ -272,7 +272,7 @@ margin_top = -78.1522
 margin_right = 67.1633
 margin_bottom = -56.1522
 rect_pivot_offset = Vector2( -533.113, 40.108 )
-custom_fonts/font = SubResource( 5 )
+custom_fonts/font = SubResource( 6 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "MOVE"
 align = 1
@@ -318,7 +318,7 @@ texture = ExtResource( 17 )
 centered = false
 hframes = 2
 
-[node name="Q_GUI" type="Sprite" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
+[node name="UTILITY_GUI" type="Sprite" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
 position = Vector2( -80.7254, -26.4901 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 18 )
@@ -460,7 +460,7 @@ margin_top = 180.0
 margin_right = 960.0
 margin_bottom = 358.0
 rect_clip_content = false
-custom_fonts/normal_font = SubResource( 8 )
+custom_fonts/normal_font = SubResource( 7 )
 bbcode_enabled = true
 bbcode_text = "[center][color=black] KILLED"
 text = " KILLED"

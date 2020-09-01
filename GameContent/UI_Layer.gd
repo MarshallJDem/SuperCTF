@@ -79,9 +79,9 @@ func _process(delta):
 		else:
 			$"Input_GUIs/Ability_GUIs/SHIFT_GUI".frame = 0;
 		if Input.is_action_pressed("clickR"):
-			$Input_GUIs/Ability_GUIs/Q_GUI.frame = 1;
+			$Input_GUIs/Ability_GUIs/UTILITY_GUI.frame = 1;
 		else:
-			$Input_GUIs/Ability_GUIs/Q_GUI.frame = 0;
+			$Input_GUIs/Ability_GUIs/UTILITY_GUI.frame = 0;
 	
 	var time = get_tree().get_root().get_node("MainScene/NetworkController/Match_Time_Limit_Timer").time_left;
 	var seconds = int(time) % 60;
@@ -133,14 +133,15 @@ func _process(delta):
 			elif Globals.current_utility == Globals.Utilities.Landmine:
 				t = "LANDMINE"
 			$Input_GUIs/Ability_GUIs/Utility_GUI_Text.text = t;
-			$Input_GUIs/Ability_GUIs/Utility_GUI_Text.modulate = Color(1,1,1,1);
+			$Input_GUIs/Ability_GUIs/UTILITY_GUI.modulate = Color(1,1,1,1);
 		else:
 			$Input_GUIs/Ability_GUIs/Utility_GUI_Text.text = "%0.2f" % utility_time_left;
-			$Input_GUIs/Ability_GUIs/Utility_GUI_Text.modulate = Color(1,1,1,0.2 + 0.4 * ((utility_wait_time - utility_time_left) / utility_wait_time) );
+			$Input_GUIs/Ability_GUIs/UTILITY_GUI.modulate = Color(1,1,1,0.2 + 0.4 * ((utility_wait_time - utility_time_left) / utility_wait_time) );
 		
 		# If player is holding a flag
 		if local_player.get_node("Flag_Holder").get_child_count() > 0:
-			$Input_GUIs/Ability_GUIs/Q_GUI.modulate = Color(1,1,1,0.4);
+			#$Input_GUIs/Ability_GUIs/UTILITY_GUI.modulate = Color(1,1,1,0.4);
+			pass;
 			
 		
 		# Ult Charge
