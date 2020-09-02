@@ -101,8 +101,7 @@ var match_start_time = 0;
 var HTTPRequest_PollPlayerStatus = HTTPRequest.new();
 var HTTPRequest_GetMatchData = HTTPRequest.new();
 var HTTPRequest_CancelQueue = HTTPRequest.new();
-var HTTPRequest_ConfirmClientStatus = HTTPRequest.new();
-var PollPlayerStatus_Timer = Timer.new();
+var HTTPRequest_ConfirmClientConnection = HTTPRequest.new();
 
 onready var viewport = get_viewport()
 
@@ -128,24 +127,21 @@ func _enter_tree():
 
 func _ready():
 	add_child(HTTPRequest_PollPlayerStatus);
-	add_child(HTTPRequest_ConfirmClientStatus);
+	add_child(HTTPRequest_ConfirmClientConnection);
 	add_child(HTTPRequest_GetMatchData);
 	add_child(HTTPRequest_CancelQueue);
 	HTTPRequest_PollPlayerStatus.connect("request_completed", self, "_HTTP_PollPlayerStatus_Completed");
 	HTTPRequest_PollPlayerStatus.connect("request_completed", self, "_HTTP_ConfirmClientStatus_Completed");
 	HTTPRequest_GetMatchData.connect("request_completed", self, "_HTTP_GetMatchData_Completed");
 	HTTPRequest_CancelQueue.connect("request_completed", self, "_HTTP_CancelQueue_Completed");
-	PollPlayerStatus_Timer.one_shot = true;
-	PollPlayerStatus_Timer.autostart = false;
-	PollPlayerStatus_Timer.wait_time = 1;
-	add_child(PollPlayerStatus_Timer);
-	
 
 func _process(delta):
 	if get_tree().get_root().has_node("MainScene/NetworkController"):
 		Globals.player_lerp_time = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("playerLagTime");
 	if !isServer:
-		attempt_poll_player_status();
+		if Globals.userToken:
+			attempt_ConfirmClientConnection();
+			attempt_PollPlayerStatus();
 
 var volume_sliders = Vector2(50,50);
 func toggle_options_menu():
@@ -169,7 +165,7 @@ func _HTTP_CancelQueue_Completed(result, response_code, headers, body):
 
 # Polls the player's status
 func _HTTP_PollPlayerStatus_Completed(result, response_code, headers, body):
-	PollPlayerStatus_Timer.start();
+	last_pollPlayerStatus_response = OS.get_ticks_msec();
 	if response_code != 200:
 		return;
 	var json = JSON.parse(body.get_string_from_utf8())
@@ -192,7 +188,8 @@ func _HTTP_PollPlayerStatus_Completed(result, response_code, headers, body):
 	player_status = int(json.result.status);
 
 func _HTTP_ConfirmClientStatus_Completed(result, response_code, headers, body):
-	print("CONFIRMATION " + str(response_code));
+	last_confirmClientConnection_response = OS.get_ticks_msec();
+	# No need to really do anything
 
 func _HTTP_GetMatchData_Completed(result, response_code, headers, body):
 	var json = JSON.parse(body.get_string_from_utf8())
@@ -202,20 +199,21 @@ func _HTTP_GetMatchData_Completed(result, response_code, headers, body):
 	result_match_id = json.result.matchData.matchID;
 	get_tree().change_scene("res://GameContent/Main.tscn");
 
-func attempt_poll_player_status():
-	# Don't poll if we just recently polled
-	if PollPlayerStatus_Timer.time_left > 0:
-		return;
-	# If we are logged in
-	if Globals.userToken:
-		if HTTPRequest_ConfirmClientStatus.get_http_client_status() == 0:
-			HTTPRequest_CancelQueue.request(Globals.mainServerIP + "confirmClientStatus", ["authorization: Bearer " + Globals.userToken]);
-			
+var last_pollPlayerStatus_response = 0;
+var last_confirmClientConnection_response = 0;
+
+func attempt_PollPlayerStatus():
+	if OS.get_ticks_msec() - last_pollPlayerStatus_response > 1000:
 		# If were not already in the middle of a poll, poll it
 		if HTTPRequest_PollPlayerStatus.get_http_client_status() == 0:
 			var query = "?knownStatus=" + str(player_status) + "&knownMMR=" + str(player_MMR) + "&knownRank=" + str(player_rank);
-			print(query);
 			HTTPRequest_PollPlayerStatus.request(Globals.mainServerIP + "pollPlayerStatus" + query, ["authorization: Bearer " + Globals.userToken]);
+	
+func attempt_ConfirmClientConnection():
+	if OS.get_ticks_msec() - last_confirmClientConnection_response > 1000:
+		# If were not already in the middle of a poll, poll it
+		if HTTPRequest_ConfirmClientConnection.get_http_client_status() == 0:
+			HTTPRequest_ConfirmClientConnection.request(Globals.mainServerIP + "confirmClientConnection", ["authorization: Bearer " + Globals.userToken]);
 
 func write_save_data():
 	var file = File.new()
