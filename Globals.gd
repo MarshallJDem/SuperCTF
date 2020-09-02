@@ -101,6 +101,7 @@ var match_start_time = 0;
 var HTTPRequest_PollPlayerStatus = HTTPRequest.new();
 var HTTPRequest_GetMatchData = HTTPRequest.new();
 var HTTPRequest_CancelQueue = HTTPRequest.new();
+var HTTPRequest_ConfirmClientStatus = HTTPRequest.new();
 var PollPlayerStatus_Timer = Timer.new();
 
 onready var viewport = get_viewport()
@@ -127,10 +128,12 @@ func _enter_tree():
 
 func _ready():
 	add_child(HTTPRequest_PollPlayerStatus);
+	add_child(HTTPRequest_ConfirmClientStatus);
 	add_child(HTTPRequest_GetMatchData);
 	add_child(HTTPRequest_CancelQueue);
-	HTTPRequest_PollPlayerStatus.connect("request_completed", self, "_HTTP_PollPlayerStatus_Completed")
-	HTTPRequest_GetMatchData.connect("request_completed", self, "_HTTP_GetMatchData_Completed")
+	HTTPRequest_PollPlayerStatus.connect("request_completed", self, "_HTTP_PollPlayerStatus_Completed");
+	HTTPRequest_PollPlayerStatus.connect("request_completed", self, "_HTTP_ConfirmClientStatus_Completed");
+	HTTPRequest_GetMatchData.connect("request_completed", self, "_HTTP_GetMatchData_Completed");
 	HTTPRequest_CancelQueue.connect("request_completed", self, "_HTTP_CancelQueue_Completed");
 	PollPlayerStatus_Timer.one_shot = true;
 	PollPlayerStatus_Timer.autostart = false;
@@ -188,6 +191,9 @@ func _HTTP_PollPlayerStatus_Completed(result, response_code, headers, body):
 		get_tree().change_scene("res://TitleScreen.tscn");
 	player_status = int(json.result.status);
 
+func _HTTP_ConfirmClientStatus_Completed(result, response_code, headers, body):
+	print("CONFIRMATION " + str(response_code));
+
 func _HTTP_GetMatchData_Completed(result, response_code, headers, body):
 	var json = JSON.parse(body.get_string_from_utf8())
 	print(json.result)
@@ -202,6 +208,9 @@ func attempt_poll_player_status():
 		return;
 	# If we are logged in
 	if Globals.userToken:
+		if HTTPRequest_ConfirmClientStatus.get_http_client_status() == 0:
+			HTTPRequest_CancelQueue.request(Globals.mainServerIP + "confirmClientStatus", ["authorization: Bearer " + Globals.userToken]);
+			
 		# If were not already in the middle of a poll, poll it
 		if HTTPRequest_PollPlayerStatus.get_http_client_status() == 0:
 			var query = "?knownStatus=" + str(player_status) + "&knownMMR=" + str(player_MMR) + "&knownRank=" + str(player_rank);
