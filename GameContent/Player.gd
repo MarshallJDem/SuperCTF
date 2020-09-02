@@ -49,8 +49,7 @@ func _ready():
 	if Globals.testing:
 		activate_camera();
 		control = true
-	else:
-		print("ISNETWORKMASTER : " + str(is_network_master()));
+	
 	Globals.connect("class_changed", self, "loadout_class_updated");
 	if Globals.localPlayerID == player_id:
 		loadout_class_updated();
