@@ -568,6 +568,8 @@ remotesync func load_new_round(suddenDeath = false):
 	isSuddenDeath = suddenDeath;
 	if isSuddenDeath:
 		scores = [0,0];
+		for player in get_tree().get_root().get_node("MainScene/Players").get_children():
+			player.get_node("Weapon_Node").ult_charge = 0;
 	print("Loading New Round" + str(round_num + 1));
 	if round_num == 0:
 		# Start syncing time with server. Game time elapse at this point would be 0
