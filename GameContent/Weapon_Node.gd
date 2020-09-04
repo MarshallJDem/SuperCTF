@@ -132,6 +132,7 @@ func _draw():
 func shoot_on_inputs():
 	if Globals.is_typing_in_chat or Globals.displaying_loadout:
 		return;
+	player.has_moved_after_respawn = true;
 	# Check for mouse input
 	if Input.is_action_pressed("clickL"):
 		# Only accepts clicks if we're not aiming a laser
