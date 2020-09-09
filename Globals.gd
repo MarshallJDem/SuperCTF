@@ -27,6 +27,8 @@ var userToken;
 var player_MMR = -1;
 var player_rank = -1;
 var player_status = 0;
+var player_party_data;
+var knownPartyData;
 # At the end of a match its hard to tell whether the current stored data for player MMR
 # is from before or after the match results. This keeps track of what it was before.
 var player_old_MMR = -1;
@@ -120,7 +122,7 @@ func _enter_tree():
 	if arguments.has("isServer"):
 		isServer = true if arguments["isServer"] == "true" else false;
 	if OS.has_feature("editor"):
-		testing = true;
+		testing = false;
 	experimental =  false;#OS.has_feature("debug") and !OS.has_feature("editor");
 	if experimental:
 		get_tree().change_scene("res://GameContent/Main.tscn");
@@ -178,6 +180,10 @@ func _HTTP_PollPlayerStatus_Completed(result, response_code, headers, body):
 		elif int(json.result.mmr) != Globals.player_MMR:
 			Globals.player_old_MMR = Globals.player_MMR;
 			Globals.player_MMR = int(json.result.mmr);
+	if json.result.has("partyData"):
+		Globals.knownPartyData = json.result.partyData;
+		Globals.player_party_data = json.result.partyData;
+		Globals.player_party_data.players = Globals.player_party_data.players;
 	if(player_status <= 1 and int(json.result.status) > 1):
 		print("Found Match : " + str(json.result.status));
 		var matchID = str(json.result.status);
@@ -206,7 +212,7 @@ func attempt_PollPlayerStatus():
 	if OS.get_ticks_msec() - last_pollPlayerStatus_response > 1000:
 		# If were not already in the middle of a poll, poll it
 		if HTTPRequest_PollPlayerStatus.get_http_client_status() == 0:
-			var query = "?knownStatus=" + str(player_status) + "&knownMMR=" + str(player_MMR) + "&knownRank=" + str(player_rank);
+			var query = "?knownStatus=" + str(player_status) + "&knownMMR=" + str(player_MMR) + "&knownRank=" + str(player_rank) + "&knownPartyData=" + str(JSON.print(Globals.knownPartyData));
 			HTTPRequest_PollPlayerStatus.request(Globals.mainServerIP + "pollPlayerStatus" + query, ["authorization: Bearer " + Globals.userToken]);
 	
 func attempt_ConfirmClientConnection():

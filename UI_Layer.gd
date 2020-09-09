@@ -2,11 +2,14 @@ extends CanvasLayer
 
 enum {VIEW_START, VIEW_MAIN, VIEW_IN_QUEUE, VIEW_CREATE_ACCOUNT, VIEW_LOGIN, VIEW_SPLASH}
 
+var JoinPartyPopup = preload("res://JoinPartyPopup.tscn");
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$FindMatchButton.connect("pressed", self, "_find_match_pressed");
 	$CancelQueueButton.connect("pressed", self, "_cancel_queue_pressed");
 	$PlayAsGuestButton.connect("pressed", self, "_play_as_guest_pressed");
+	$JoinPartyButton.connect("pressed", self, "_join_party_pressed");
 	$LogoutButton.connect("pressed", self, "_logout_pressed");
 	$SplashStartButton.connect("pressed", self, "_splash_start_pressed");
 	$Searching_Text_Timer.connect("timeout", self, "_searching_text_timer_ended");
@@ -86,6 +89,17 @@ func set_view(state):
 			$LogoutButton.visible = false;
 			$SplashStartButton.visible = true;
 
+func _process(delta):
+	var code = "";
+	var players = "";
+	if Globals.player_party_data != null:
+		code = str(Globals.player_party_data.partyCode);
+		for i in Globals.player_party_data.players:
+			players += str(i.values()[0]) + "\n";
+		
+	$PartyText.bbcode_text = "[center][color=black]Party Code\n[color=green]" + str(code) + "\n\n[color=black]Members\n[color=green]" + str(players);
+
+
 func _play_as_guest_pressed():
 	get_parent().create_guest();
 func _sign_in_pressed():
@@ -97,6 +111,9 @@ func _logout_pressed():
 func _splash_start_pressed():
 	get_parent().start();
 
+func _join_party_pressed():
+	var scn = JoinPartyPopup.instance();
+	call_deferred("add_child", scn);
 
 # Called when the cancel queue button is pressed
 func _cancel_queue_pressed():
