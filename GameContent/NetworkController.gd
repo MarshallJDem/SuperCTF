@@ -185,7 +185,7 @@ func _HTTP_GetMatchData_Completed(result, response_code, headers, body):
 					spawn_pos = Vector2(-1300, 0);
 				else:
 					spawn_pos = Vector2(1300, 0);
-				players[i] = {"name" : "Player" + str(i), "team_id" : team_id, "user_id": user_id, "network_id": 1, "spawn_pos": spawn_pos, "position": spawn_pos, "class" : Globals.Classes.Bullet};
+				players[i] = {"name" : "Player" + str(i), "team_id" : team_id, "user_id": int(user_id), "network_id": 1, "spawn_pos": spawn_pos, "position": spawn_pos, "class" : Globals.Classes.Bullet};
 				i += 1;
 			print(players);
 			start_match();
