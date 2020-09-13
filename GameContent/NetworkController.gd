@@ -349,7 +349,7 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 			if !is_connected:
 				return;
 			# If the user is one of the players in the current match or this is a skirmish
-			if(Globals.allowedPlayers.has(user_id) || isSkirmish):
+			if(Globals.allowedPlayers.has(str(user_id)) || isSkirmish):
 				var message = player_name + " connected to the server";
 				get_tree().get_root().get_node("MainScene/UI_Layer/LineEdit").rpc("receive_message", "[color=green]" + message +  "[/color]", -1);
 				if isSkirmish:
@@ -462,7 +462,6 @@ func _client_disconnected(id):
 		if players[i]["network_id"] == id:
 			player_id = i;
 	if player_id == -1:
-		print("ERROR - CLIENT DISCONNECTED HAD AN UNHANDLED PLAYER ID");
 		return;
 	if get_tree().is_network_server():
 		if $Match_End_Timer.time_left > 0:
