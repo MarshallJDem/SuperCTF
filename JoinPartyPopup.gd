@@ -1,4 +1,4 @@
-extends Node2D
+extends Control
 
 
 # Called when the node enters the scene tree for the first time.
@@ -19,9 +19,20 @@ func _enter_pressed():
 func _JoinParty_HTTP_Completed(result, response_code, headers, body):
 	if response_code == 200:
 		var json = JSON.parse(body.get_string_from_utf8())
-		print(json.result);
-	if response_code == 404:
+		$Control/TitleText.bbcode_text = "[color=green][center]Joined Party!";
+		yield(get_tree().create_timer(0.5), "timeout");
+		self.call_deferred("queue_free");
+		return;
+	elif response_code == 404:
 		$Control/TitleText.bbcode_text = "[color=red][center]Invalid Party Code";
+		return;
+	elif response_code == 403:
+		var json = JSON.parse(body.get_string_from_utf8())
+		if json.result.has("isFull") and json.result.isFull:
+			$Control/TitleText.bbcode_text = "[color=red][center]Party Full";
+			return;
+	$Control/TitleText.bbcode_text = "[color=red][center]An uknown error occurred (Sorry we're in beta)";
+	return;
 
 func _process(delta):
 	if $Control/LineEdit.text.length() > 4:

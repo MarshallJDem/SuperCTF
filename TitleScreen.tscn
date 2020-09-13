@@ -21,29 +21,29 @@
 [ext_resource path="res://Assets/Sound/CTFTitlescreen.ogg" type="AudioStream" id=19]
 [ext_resource path="res://Chat_Text.tres" type="RichTextEffect" id=20]
 
-[sub_resource type="DynamicFont" id=1]
+[sub_resource type="DynamicFont" id=9]
 size = 24
 outline_color = Color( 0, 0, 0, 1 )
 extra_spacing_top = 9
 font_data = ExtResource( 18 )
 
-[sub_resource type="DynamicFont" id=7]
+[sub_resource type="DynamicFont" id=10]
 size = 8
 outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
 font_data = ExtResource( 18 )
 
-[sub_resource type="DynamicFont" id=8]
+[sub_resource type="DynamicFont" id=11]
 size = 32
 outline_color = Color( 0, 0, 0, 1 )
 extra_spacing_top = 9
 font_data = ExtResource( 18 )
 
-[sub_resource type="DynamicFont" id=2]
+[sub_resource type="DynamicFont" id=12]
 size = 10
 outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
 font_data = ExtResource( 18 )
 
-[sub_resource type="StyleBoxFlat" id=3]
+[sub_resource type="StyleBoxFlat" id=13]
 bg_color = Color( 1, 1, 1, 1 )
 border_width_left = 4
 border_width_top = 4
@@ -51,11 +51,11 @@ border_width_right = 4
 border_width_bottom = 4
 border_color = Color( 0, 0, 0, 1 )
 
-[sub_resource type="DynamicFont" id=4]
+[sub_resource type="DynamicFont" id=14]
 outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
 font_data = ExtResource( 18 )
 
-[sub_resource type="SpriteFrames" id=5]
+[sub_resource type="SpriteFrames" id=7]
 animations = [ {
 "frames": [ ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ) ],
 "loop": true,
@@ -63,13 +63,13 @@ animations = [ {
 "speed": 7.0
 } ]
 
-[sub_resource type="ConvexPolygonShape2D" id=6]
+[sub_resource type="ConvexPolygonShape2D" id=8]
 points = PoolVector2Array( 0, 0, 18.693, 3.609, 18.937, 14.698, 0, 28.805 )
 
 [node name="TitleScreen" type="Node2D"]
 script = ExtResource( 1 )
 __meta__ = {
-"_edit_horizontal_guides_": [  ],
+"_edit_horizontal_guides_": [ 1001.32 ],
 "_edit_vertical_guides_": [ 959.427 ]
 }
 
@@ -83,6 +83,8 @@ __meta__ = {
 
 [node name="UI_Layer" type="CanvasLayer" parent="."]
 script = ExtResource( 9 )
+
+[node name="HTTPRequest_LeaveParty" type="HTTPRequest" parent="UI_Layer"]
 
 [node name="Title" type="RichTextLabel" parent="UI_Layer"]
 anchor_left = 0.5
@@ -177,10 +179,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -929.588
-margin_top = 489.461
-margin_right = 47.4133
-margin_bottom = 1004.46
+margin_left = -931.857
+margin_top = 482.655
+margin_right = 45.1445
+margin_bottom = 997.654
 rect_scale = Vector2( 0.639761, 0.639761 )
 custom_fonts/mono_font = ExtResource( 11 )
 custom_fonts/normal_font = ExtResource( 12 )
@@ -198,10 +200,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -699.395
-margin_top = 490.928
-margin_right = 341.602
-margin_bottom = 1012.93
+margin_left = -701.988
+margin_top = 483.149
+margin_right = 339.009
+margin_bottom = 1005.15
 rect_scale = Vector2( 0.639761, 0.639761 )
 custom_fonts/mono_font = ExtResource( 11 )
 custom_fonts/normal_font = ExtResource( 12 )
@@ -232,17 +234,17 @@ custom_colors/default_color = Color( 0.368627, 0.368627, 0.368627, 1 )
 bbcode_enabled = true
 bbcode_text = "[color=black]NEWS:
 
-The game is planned to release at the [rainbow]end of august![/rainbow] Any final feature suggestions or bugs should be reported onto the discord ASAP!
+The game is planned to release approx  [rainbow]Sept 20th![/rainbow] Any final feature suggestions or bugs should be reported onto the discord ASAP!
 
 Discord Link:[color=blue] [url]https://discord.gg/D3Ban34[/url][color=black]
 Twitter:[color=blue] [url]https://twitter.com/SuperCTFGame[/url][color=black]
 
 We are looking for people to get involved and make suggestions or help build the game. Join our discord or email me to get involved!
 
-- Carshalljd (add me on discord [color=green]carshalljd#4808[color=black] or email me at [color=green]marshalljdem@gmail.com[color=black])"
+- Carshalljd (add me on discord [color=black]carshalljd#4808[color=black] or email me at [color=black]marshalljdem@gmail.com[color=black])"
 text = "NEWS:
 
-The game is planned to release at the end of august! Any final feature suggestions or bugs should be reported onto the discord ASAP!
+The game is planned to release approx  Sept 20th! Any final feature suggestions or bugs should be reported onto the discord ASAP!
 
 Discord Link: https://discord.gg/D3Ban34
 Twitter: https://twitter.com/SuperCTFGame
@@ -282,9 +284,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -165.564
-margin_top = 422.403
+margin_top = 419.946
 margin_right = 152.436
-margin_bottom = 504.406
+margin_bottom = 501.949
 custom_styles/hover = ExtResource( 14 )
 custom_styles/pressed = ExtResource( 15 )
 custom_styles/normal = ExtResource( 16 )
@@ -297,10 +299,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = 209.195
-margin_top = 423.219
-margin_right = 373.671
-margin_bottom = 506.215
+margin_left = 208.785
+margin_top = 419.124
+margin_right = 373.261
+margin_bottom = 502.12
 custom_styles/hover = ExtResource( 14 )
 custom_styles/pressed = ExtResource( 15 )
 custom_styles/normal = ExtResource( 16 )
@@ -316,10 +318,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -931.104
-margin_top = 447.347
-margin_right = -757.104
-margin_bottom = 529.346
+margin_left = -930.285
+margin_top = 431.785
+margin_right = -756.285
+margin_bottom = 513.784
 rect_scale = Vector2( 0.742863, 0.742863 )
 custom_styles/hover = ExtResource( 14 )
 custom_styles/pressed = ExtResource( 15 )
@@ -357,9 +359,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -205.813
-margin_top = 428.403
+margin_top = 426.355
 margin_right = 203.187
-margin_bottom = 498.406
+margin_bottom = 496.358
 custom_styles/hover = ExtResource( 14 )
 custom_styles/pressed = ExtResource( 15 )
 custom_styles/normal = ExtResource( 16 )
@@ -375,14 +377,14 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = 234.441
-margin_top = 431.453
-margin_right = 474.441
-margin_bottom = 501.453
+margin_left = 234.85
+margin_top = 426.948
+margin_right = 474.85
+margin_bottom = 496.948
 custom_styles/hover = ExtResource( 14 )
 custom_styles/pressed = ExtResource( 15 )
 custom_styles/normal = ExtResource( 16 )
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 9 )
 custom_colors/font_color = Color( 0.137255, 0.137255, 0.137255, 1 )
 text = "Join Party"
 __meta__ = {
@@ -401,8 +403,8 @@ margin_bottom = 664.367
 rect_scale = Vector2( 0.639761, 0.639761 )
 rect_clip_content = false
 focus_mode = 2
-custom_fonts/mono_font = SubResource( 7 )
-custom_fonts/normal_font = SubResource( 8 )
+custom_fonts/mono_font = SubResource( 10 )
+custom_fonts/normal_font = SubResource( 11 )
 custom_colors/default_color = Color( 0.368627, 0.368627, 0.368627, 1 )
 bbcode_enabled = true
 bbcode_text = "[center][color=black]Party Code[color=green]
@@ -464,7 +466,7 @@ margin_top = 10.0
 margin_right = 1644.0
 margin_bottom = 45.0
 rect_clip_content = false
-custom_fonts/normal_font = SubResource( 2 )
+custom_fonts/normal_font = SubResource( 12 )
 bbcode_enabled = true
 bbcode_text = "---GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD---"
 text = "---GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD---"
@@ -482,8 +484,8 @@ margin_left = -158.997
 margin_top = 433.358
 margin_right = 158.997
 margin_bottom = 495.721
-custom_styles/normal = SubResource( 3 )
-custom_fonts/font = SubResource( 4 )
+custom_styles/normal = SubResource( 13 )
+custom_fonts/font = SubResource( 14 )
 custom_colors/selection_color = Color( 0, 0, 0, 1 )
 custom_colors/cursor_color = Color( 0, 0, 0, 1 )
 custom_colors/clear_button_color_pressed = Color( 0, 0, 0, 1 )
@@ -539,8 +541,8 @@ script = ExtResource( 3 )
 [node name="Blue_Sprite" type="AnimatedSprite" parent="UI_Layer/Flags/Flag2"]
 position = Vector2( 10, -14 )
 scale = Vector2( 2, 2 )
-frames = SubResource( 5 )
-frame = 2
+frames = SubResource( 7 )
+frame = 1
 playing = true
 
 [node name="Area2D" type="Area2D" parent="UI_Layer/Flags/Flag2" groups=[
@@ -551,7 +553,7 @@ script = ExtResource( 8 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="UI_Layer/Flags/Flag2/Area2D"]
 position = Vector2( -20.7247, 2.43704 )
-shape = SubResource( 6 )
+shape = SubResource( 8 )
 
 [node name="Titlemusic_Audio" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 19 )

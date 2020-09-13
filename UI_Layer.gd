@@ -15,6 +15,7 @@ func _ready():
 	$Searching_Text_Timer.connect("timeout", self, "_searching_text_timer_ended");
 	$MOTDText.connect("meta_clicked", self, "_MOTD_meta_clicked");
 	$Options_Button.connect("button_up", self, "_options_button_clicked");
+	$HTTPRequest_LeaveParty.connect("request_completed", self, "_HTTP_LeaveParty_Completed");
 	disable_buttons();
 
 func _MOTD_meta_clicked(meta):
@@ -61,6 +62,9 @@ func disable_buttons():
 	$PlayerRankSubtitle.visible = false;
 	$PlayerMMRSubtitle.visible = false;
 	$UsernameLineEdit.visible = false;
+	$PartyText.visible = false;
+	$JoinPartyButton.visible = false;
+	
 
 func set_view(state):
 	# All UI has a default state of being disabled
@@ -76,6 +80,8 @@ func set_view(state):
 			$FindMatchButton.visible = true;
 			$PlayerRank.visible = true;
 			$PlayerMMR.visible = true;
+			$PartyText.visible = true;
+			$JoinPartyButton.visible = true;
 			$PlayerRankSubtitle.visible = true;
 			$PlayerMMRSubtitle.visible = true;
 		VIEW_IN_QUEUE:
@@ -96,8 +102,16 @@ func _process(delta):
 		code = str(Globals.player_party_data.partyCode);
 		for i in Globals.player_party_data.players:
 			players += str(i.values()[0]) + "\n";
-		
 	$PartyText.bbcode_text = "[center][color=black]Party Code\n[color=green]" + str(code) + "\n\n[color=black]Members\n[color=green]" + str(players);
+	if Globals.player_party_data and Globals.player_party_data.players.size() > 1:
+		$JoinPartyButton.text = "Leave Party";
+	else:
+		$JoinPartyButton.text = "Join Party";
+
+func _HTTP_LeaveParty_Completed(result, response_code, headers, body):
+	# Do notihng cuz the results are reflected in poll player status
+	return;
+
 
 
 func _play_as_guest_pressed():
@@ -112,8 +126,12 @@ func _splash_start_pressed():
 	get_parent().start();
 
 func _join_party_pressed():
-	var scn = JoinPartyPopup.instance();
-	call_deferred("add_child", scn);
+	if Globals.player_party_data.players.size() > 1:
+		if $HTTPRequest_LeaveParty.get_http_client_status() == 0:
+			$HTTPRequest_LeaveParty.request(Globals.mainServerIP + "leaveParty", ["authorization: Bearer " + Globals.userToken]);
+	else:
+		var scn = JoinPartyPopup.instance();
+		call_deferred("add_child", scn);
 
 # Called when the cancel queue button is pressed
 func _cancel_queue_pressed():
