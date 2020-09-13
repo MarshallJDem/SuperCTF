@@ -197,7 +197,10 @@ func get_game_var(name):
 	return game_vars[name];
 
 func _gameserver_status_timer_ended():
-	updateGameServerStatus();
+	#Disabled this because we no longer check if a game server has update din a while
+	
+	#updateGameServerStatus();
+	pass;
 
 func _cancel_match_timer_ended():
 	# Don't cancel the match if this is a skirmish

@@ -542,7 +542,7 @@ script = ExtResource( 3 )
 position = Vector2( 10, -14 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 7 )
-frame = 1
+frame = 2
 playing = true
 
 [node name="Area2D" type="Area2D" parent="UI_Layer/Flags/Flag2" groups=[
@@ -560,7 +560,7 @@ stream = ExtResource( 19 )
 bus = "MusicBus"
 
 [node name="Leaderboard_Refresh_Timer" type="Timer" parent="."]
-wait_time = 5.0
+wait_time = 60.0
 autostart = true
 
 [node name="Headline_Update_Timer" type="Timer" parent="."]
