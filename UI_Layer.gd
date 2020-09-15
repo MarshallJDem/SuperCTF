@@ -4,6 +4,8 @@ enum {VIEW_START, VIEW_MAIN, VIEW_IN_QUEUE, VIEW_CREATE_ACCOUNT, VIEW_LOGIN, VIE
 
 var JoinPartyPopup = preload("res://JoinPartyPopup.tscn");
 
+var current_state = VIEW_SPLASH;
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$FindMatchButton.connect("pressed", self, "_find_match_pressed");
@@ -94,6 +96,7 @@ func set_view(state):
 		VIEW_SPLASH:
 			$LogoutButton.visible = false;
 			$SplashStartButton.visible = true;
+	current_state = state;
 
 func _process(delta):
 	var code = "";
@@ -102,11 +105,28 @@ func _process(delta):
 		code = str(Globals.player_party_data.partyCode);
 		for i in Globals.player_party_data.players:
 			players += str(i.values()[0]) + "\n";
+		if Globals.player_party_data.partyHostID != Globals.player_uid:
+			$FindMatchButton.disabled = true;
+			$FindMatchWarning.bbcode_text = "[center][color=gray]Must be party host"
+			$FindMatchWarning.visible = true;
+		else:
+			$FindMatchButton.disabled = false;
+			$FindMatchWarning.visible = false;
+	else:
+		$FindMatchButton.disabled = true;
+		if current_state == VIEW_MAIN:
+			$FindMatchWarning.bbcode_text = "[center][color=gray]Connecting to server..."
+			$FindMatchWarning.visible = true;
+		else:
+			$FindMatchWarning.visible = false;
+	
 	$PartyText.bbcode_text = "[center][color=black]Party Code\n[color=green]" + str(code) + "\n\n[color=black]Members\n[color=green]" + str(players);
 	if Globals.player_party_data and Globals.player_party_data.players.size() > 1:
 		$JoinPartyButton.text = "Leave Party";
 	else:
 		$JoinPartyButton.text = "Join Party";
+	
+	
 
 func _HTTP_LeaveParty_Completed(result, response_code, headers, body):
 	# Do notihng cuz the results are reflected in poll player status

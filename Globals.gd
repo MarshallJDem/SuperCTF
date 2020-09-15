@@ -28,6 +28,7 @@ var player_MMR = -1;
 var player_rank = -1;
 var player_status = 0;
 var player_party_data;
+var player_uid;
 var knownPartyData;
 # At the end of a match its hard to tell whether the current stored data for player MMR
 # is from before or after the match results. This keeps track of what it was before.
@@ -173,6 +174,8 @@ func _HTTP_PollPlayerStatus_Completed(result, response_code, headers, body):
 	var json = JSON.parse(body.get_string_from_utf8())
 	if json.result.has("rank"):
 		Globals.player_rank = int(json.result.rank);
+	if json.result.has("uid"):
+		Globals.player_uid = int(json.result.uid);
 	if json.result.has("mmr"):
 		if Globals.player_MMR == -1:
 			Globals.player_MMR = int(json.result.mmr);
