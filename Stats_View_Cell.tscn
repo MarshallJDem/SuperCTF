@@ -6,7 +6,7 @@
 [ext_resource path="res://Assets/Utilities/grenade_B.png" type="Texture" id=4]
 [ext_resource path="res://Stats_View_Cell.gd" type="Script" id=5]
 
-[sub_resource type="DynamicFont" id=11]
+[sub_resource type="DynamicFont" id=1]
 size = 30
 outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
 font_data = ExtResource( 1 )
@@ -25,7 +25,7 @@ margin_right = 337.945
 margin_bottom = -77.817
 rect_clip_content = false
 mouse_filter = 2
-custom_fonts/normal_font = SubResource( 11 )
+custom_fonts/normal_font = SubResource( 1 )
 custom_colors/default_color = Color( 0, 0.133333, 1, 1 )
 bbcode_enabled = true
 bbcode_text = "[center]carshalljd"
@@ -46,7 +46,7 @@ margin_right = 337.945
 margin_bottom = 373.531
 rect_clip_content = false
 mouse_filter = 2
-custom_fonts/normal_font = SubResource( 11 )
+custom_fonts/normal_font = SubResource( 1 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
 bbcode_text = "[center]12

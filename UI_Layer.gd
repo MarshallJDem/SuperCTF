@@ -3,6 +3,8 @@ extends CanvasLayer
 enum {VIEW_START, VIEW_MAIN, VIEW_IN_QUEUE, VIEW_CREATE_ACCOUNT, VIEW_LOGIN, VIEW_SPLASH}
 
 var JoinPartyPopup = preload("res://JoinPartyPopup.tscn");
+var OnboardingPopup = preload("res://OnboardingPopup.tscn");
+var LoginPopup = preload("res://LoginPopup.tscn");
 
 var current_state = VIEW_SPLASH;
 
@@ -11,6 +13,8 @@ func _ready():
 	$FindMatchButton.connect("pressed", self, "_find_match_pressed");
 	$CancelQueueButton.connect("pressed", self, "_cancel_queue_pressed");
 	$PlayAsGuestButton.connect("pressed", self, "_play_as_guest_pressed");
+	$CreateAccountButton.connect("pressed", self, "_create_account_pressed");
+	$LoginButton.connect("pressed", self, "_sign_in_pressed");
 	$JoinPartyButton.connect("pressed", self, "_join_party_pressed");
 	$LogoutButton.connect("pressed", self, "_logout_pressed");
 	$SplashStartButton.connect("pressed", self, "_splash_start_pressed");
@@ -57,6 +61,8 @@ func disable_buttons():
 	$CancelQueueButton.visible = false;
 	$FindMatchButton.visible = false;
 	$PlayAsGuestButton.visible = false;
+	$CreateAccountButton.visible = false;
+	$LoginButton.visible = false;
 	$SplashStartButton.visible = false;
 	$Searching_Text.visible = false;
 	$PlayerRank.visible = false;
@@ -77,7 +83,9 @@ func set_view(state):
 		VIEW_START:
 			$LogoutButton.visible = false;
 			$PlayAsGuestButton.visible = true;
-			$UsernameLineEdit.visible = true;
+			$CreateAccountButton.visible = true;
+			$LoginButton.visible = true;
+			$UsernameLineEdit.visible = false;
 		VIEW_MAIN:
 			$FindMatchButton.visible = true;
 			$PlayerRank.visible = true;
@@ -137,9 +145,11 @@ func _HTTP_LeaveParty_Completed(result, response_code, headers, body):
 func _play_as_guest_pressed():
 	get_parent().create_guest();
 func _sign_in_pressed():
-	pass;
+	var scn = LoginPopup.instance();
+	call_deferred("add_child", scn);
 func _create_account_pressed():
-	pass;
+	var scn = OnboardingPopup.instance();
+	call_deferred("add_child", scn);
 func _logout_pressed():
 	get_parent().logout();
 func _splash_start_pressed():

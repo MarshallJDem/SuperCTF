@@ -1,0 +1,269 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://fonts/pixel.TTF" type="DynamicFontData" id=1]
+[ext_resource path="res://Hover_Button_Style.tres" type="StyleBox" id=2]
+[ext_resource path="res://Normal_Button_Style.tres" type="StyleBox" id=3]
+[ext_resource path="res://Pressed_Button_Style.tres" type="StyleBox" id=4]
+[ext_resource path="res://OnboardingPopup.gd" type="Script" id=5]
+
+[sub_resource type="StyleBoxEmpty" id=1]
+
+[sub_resource type="StyleBoxEmpty" id=2]
+
+[sub_resource type="StyleBoxEmpty" id=3]
+
+[sub_resource type="DynamicFont" id=4]
+size = 32
+outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=5]
+size = 24
+outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=6]
+size = 32
+outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
+extra_spacing_top = 12
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=8]
+size = 22
+outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
+extra_spacing_top = 12
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=7]
+size = 28
+outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
+extra_spacing_top = 5
+font_data = ExtResource( 1 )
+
+[node name="OnboardingPopup" type="Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+script = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false,
+"_edit_vertical_guides_": [ 971.958 ]
+}
+
+[node name="Control" type="Control" parent="."]
+margin_left = -960.0
+margin_top = -540.0
+margin_right = 960.0
+margin_bottom = 540.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Background_Button" type="Button" parent="Control"]
+margin_left = -10730.6
+margin_top = -2109.58
+margin_right = 12761.4
+margin_bottom = 3144.42
+custom_styles/hover = SubResource( 1 )
+custom_styles/pressed = SubResource( 2 )
+custom_styles/normal = SubResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect8" type="ColorRect" parent="Control"]
+margin_left = 386.0
+margin_top = 442.0
+margin_right = 1529.0
+margin_bottom = 1041.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect9" type="ColorRect" parent="Control"]
+margin_left = -10254.8
+margin_top = 382.152
+margin_right = 12229.2
+margin_bottom = 388.152
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect11" type="ColorRect" parent="Control"]
+margin_left = -9649.0
+margin_top = 387.967
+margin_right = 11727.0
+margin_bottom = 8719.97
+color = Color( 0, 0, 0, 0.729412 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect2" type="ColorRect" parent="Control"]
+margin_left = 391.0
+margin_top = 447.0
+margin_right = 1524.0
+margin_bottom = 1036.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Title_Text" type="RichTextLabel" parent="Control"]
+margin_left = 483.117
+margin_top = 489.756
+margin_right = 1465.12
+margin_bottom = 546.756
+rect_clip_content = false
+custom_fonts/normal_font = SubResource( 4 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]Create a new account"
+text = "Create a new account"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TitleText2" type="RichTextLabel" parent="Control"]
+margin_left = 105.802
+margin_top = 613.636
+margin_right = 682.802
+margin_bottom = 670.636
+rect_clip_content = false
+custom_fonts/normal_font = SubResource( 4 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[right]NAME:"
+text = "NAME:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TitleText3" type="RichTextLabel" parent="Control"]
+margin_left = 105.802
+margin_top = 739.918
+margin_right = 682.802
+margin_bottom = 796.918
+rect_clip_content = false
+custom_fonts/normal_font = SubResource( 4 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[right]PASSWORD:"
+text = "PASSWORD:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TitleText4" type="RichTextLabel" parent="Control"]
+margin_left = 105.802
+margin_top = 863.291
+margin_right = 682.802
+margin_bottom = 920.291
+rect_clip_content = false
+custom_fonts/normal_font = SubResource( 4 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[right]E-MAIIL:"
+text = "E-MAIIL:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Warning_Text" type="RichTextLabel" parent="Control"]
+margin_left = 422.463
+margin_top = 964.626
+margin_right = 1523.46
+margin_bottom = 1021.63
+rect_clip_content = false
+custom_fonts/normal_font = SubResource( 5 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center][color=gray]Email will be used ONLY for account recovery"
+text = "Email will be used ONLY for account recovery"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Name_LineEdit" type="LineEdit" parent="Control"]
+margin_left = 732.336
+margin_top = 590.262
+margin_right = 1214.34
+margin_bottom = 680.257
+rect_clip_content = true
+custom_fonts/font = SubResource( 6 )
+align = 1
+max_length = 15
+placeholder_text = "xXDestroyerXx"
+caret_blink = true
+caret_blink_speed = 0.5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Password_LineEdit" type="LineEdit" parent="Control"]
+margin_left = 732.336
+margin_top = 708.624
+margin_right = 1214.34
+margin_bottom = 798.619
+custom_fonts/font = SubResource( 8 )
+align = 1
+max_length = 20
+placeholder_text = "EAsuxW3in3r"
+caret_blink = true
+caret_blink_speed = 0.5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Password_LineEdit2" type="LineEdit" parent="Control"]
+margin_left = 732.336
+margin_top = 831.996
+margin_right = 1214.34
+margin_bottom = 921.991
+custom_fonts/font = SubResource( 8 )
+align = 1
+max_length = 40
+placeholder_text = "spicy_santa@hotmail.com"
+caret_blink = true
+caret_blink_speed = 0.5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Enter_Button" type="Button" parent="Control"]
+margin_left = 1251.11
+margin_top = 652.417
+margin_right = 1504.11
+margin_bottom = 753.417
+rect_clip_content = true
+custom_styles/hover = ExtResource( 2 )
+custom_styles/pressed = ExtResource( 4 )
+custom_styles/normal = ExtResource( 3 )
+custom_fonts/font = SubResource( 7 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Enter"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Cancel_Button" type="Button" parent="Control"]
+margin_left = 1288.38
+margin_top = 787.95
+margin_right = 1463.38
+margin_bottom = 862.95
+rect_clip_content = true
+custom_styles/hover = ExtResource( 2 )
+custom_styles/pressed = ExtResource( 4 )
+custom_styles/normal = ExtResource( 3 )
+custom_fonts/font = SubResource( 7 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Cancel"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CreateAccount_HTTP" type="HTTPRequest" parent="."]
+
+[node name="Login_HTTP" type="HTTPRequest" parent="."]

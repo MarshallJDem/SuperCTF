@@ -166,12 +166,42 @@ func _HTTP_CancelQueue_Completed(result, response_code, headers, body):
 	if(response_code == 200):
 		pass;
 
+func logout():
+	Globals.userToken = "";
+	Globals.write_save_data();
+		
+	# Client data
+	localPlayerID = null;
+	localPlayerTeamID = null;
+	#User data
+	userToken = null;
+	player_MMR = -1;
+	player_rank = -1;
+	player_status = 0;
+	player_party_data = null;
+	player_uid = null;
+	knownPartyData = null;
+	player_old_MMR = -1;
+	
+	
+	HTTPRequest_PollPlayerStatus.cancel_request();
+	HTTPRequest_GetMatchData.cancel_request();
+	HTTPRequest_CancelQueue.cancel_request();
+	HTTPRequest_ConfirmClientConnection.cancel_request();
+	
+	last_pollPlayerStatus_response = 0;
+	last_confirmClientConnection_response = 0;
+	get_tree().change_scene("res://TitleScreen.tscn");
+
 # Polls the player's status
 func _HTTP_PollPlayerStatus_Completed(result, response_code, headers, body):
 	last_pollPlayerStatus_response = OS.get_ticks_msec();
 	if response_code != 200:
 		return;
 	var json = JSON.parse(body.get_string_from_utf8())
+	if json.result.has("logout") and json.result.logout:
+		logout();
+		return;
 	if json.result.has("rank"):
 		Globals.player_rank = int(json.result.rank);
 	if json.result.has("uid"):

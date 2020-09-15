@@ -266,6 +266,7 @@ __meta__ = {
 }
 
 [node name="CancelQueueButton" type="Button" parent="UI_Layer"]
+visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -285,6 +286,7 @@ __meta__ = {
 }
 
 [node name="FindMatchButton" type="Button" parent="UI_Layer"]
+visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -308,16 +310,54 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = 208.785
-margin_top = 419.124
-margin_right = 373.261
-margin_bottom = 502.12
+margin_left = -147.825
+margin_top = 417.889
+margin_right = 145.175
+margin_bottom = 500.889
 custom_styles/hover = ExtResource( 14 )
 custom_styles/pressed = ExtResource( 15 )
 custom_styles/normal = ExtResource( 16 )
 custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color = Color( 0.109804, 0.109804, 0.109804, 1 )
-text = "Play"
+text = "Play as Guest"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CreateAccountButton" type="Button" parent="UI_Layer"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -643.091
+margin_top = 418.0
+margin_right = -282.091
+margin_bottom = 501.0
+custom_styles/hover = ExtResource( 14 )
+custom_styles/pressed = ExtResource( 15 )
+custom_styles/normal = ExtResource( 16 )
+custom_fonts/font = ExtResource( 12 )
+custom_colors/font_color = Color( 0.109804, 0.109804, 0.109804, 1 )
+text = "Create Acccount"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LoginButton" type="Button" parent="UI_Layer"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 276.642
+margin_top = 418.0
+margin_right = 491.642
+margin_bottom = 501.0
+custom_styles/hover = ExtResource( 14 )
+custom_styles/pressed = ExtResource( 15 )
+custom_styles/normal = ExtResource( 16 )
+custom_fonts/font = ExtResource( 12 )
+custom_colors/font_color = Color( 0.109804, 0.109804, 0.109804, 1 )
+text = "Login"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -363,6 +403,7 @@ __meta__ = {
 }
 
 [node name="SplashStartButton" type="Button" parent="UI_Layer"]
+visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -382,6 +423,7 @@ __meta__ = {
 }
 
 [node name="JoinPartyButton" type="Button" parent="UI_Layer"]
+visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -510,6 +552,7 @@ __meta__ = {
 }
 
 [node name="UsernameLineEdit" type="LineEdit" parent="UI_Layer"]
+visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5

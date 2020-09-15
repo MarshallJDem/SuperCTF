@@ -36,6 +36,9 @@ func _Headline_Update_Timer_Ended():
 	text = text.substr(1, len(text) - 1);
 	$UI_Layer/Headline_Rect/Headline_Text.bbcode_text = text + first;
 func _process(delta):
+	if Globals.userToken == "" or Globals.userToken == null:
+		if $UI_Layer.current_state != $UI_Layer.VIEW_START && $UI_Layer.current_state != $UI_Layer.VIEW_SPLASH:
+			$UI_Layer.set_view($UI_Layer.VIEW_START);
 	$UI_Layer.update_title_color($Titlemusic_Audio.get_playback_position() + 3.7);
 	$UI_Layer.set_mmr_and_rank_labels(Globals.player_rank, Globals.player_MMR);
 	if Globals.player_status == 1:
@@ -51,9 +54,7 @@ func join_MM_queue():
 	print("Token : " + Globals.userToken);
 	$HTTPRequest_FindMatch.request(Globals.mainServerIP + "joinMMQueue", ["authorization: Bearer " + Globals.userToken]);
 func logout():
-	Globals.userToken = "";
-	Globals.write_save_data();
-	$UI_Layer.set_view($UI_Layer.VIEW_START);
+	Globals.logout();
 	
 func start():
 	# If there is a cached user token
