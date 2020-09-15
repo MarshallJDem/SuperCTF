@@ -333,7 +333,7 @@ remotesync func update_timing_sync(time_elapsed):
 func _timing_sync_timer_ended():
 	if get_tree().is_network_server():
 		rpc("update_timing_sync", OS.get_system_time_msecs() - Globals.match_start_time);
-		rpc("resync_match_time_limit", $Match_Time_Limit_Timer.time_left, $Match_Time_Limit_Timer.paused);
+		#rpc("resync_match_time_limit", $Match_Time_Limit_Timer.time_left, $Match_Time_Limit_Timer.paused);
 func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 	if get_tree().is_network_server():
 		if(response_code == 200):
