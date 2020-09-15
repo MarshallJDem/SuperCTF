@@ -197,8 +197,7 @@ func get_game_var(name):
 	return game_vars[name];
 
 func _gameserver_status_timer_ended():
-	#Disabled this because we no longer check if a game server has update din a while
-	
+	#Disabled this because we no longer check if a game server has updated in a while
 	#updateGameServerStatus();
 	pass;
 
@@ -334,6 +333,7 @@ remotesync func update_timing_sync(time_elapsed):
 func _timing_sync_timer_ended():
 	if get_tree().is_network_server():
 		rpc("update_timing_sync", OS.get_system_time_msecs() - Globals.match_start_time);
+		rpc("resync_match_time_limit", $Match_Time_Limit_Timer.time_left, $Match_Time_Limit_Timer.paused);
 func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 	if get_tree().is_network_server():
 		if(response_code == 200):
@@ -379,6 +379,7 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 						players[player_id]['network_id'] = network_id;
 						print("Authenticated new connection : " + str(network_id) + " and giving them control of player " + str(player_id));
 						rpc("update_players_data", players, round_is_running);
+						rpc("resync_match_time_limit", $Match_Time_Limit_Timer.time_left, $Match_Time_Limit_Timer.paused);
 						# If this user is joining mid match
 						if match_is_running:
 							update_flags_data();
@@ -838,6 +839,13 @@ remotesync func resume_match_time_limit(time_left):
 	$Match_Time_Limit_Timer.wait_time = time_left;
 	$Match_Time_Limit_Timer.start();
 	$Match_Time_Limit_Timer.paused = false;
+
+remotesync func resync_match_time_limit(time_left, isPaused):
+	$Match_Time_Limit_Timer.stop();
+	$Match_Time_Limit_Timer.wait_time = time_left;
+	$Match_Time_Limit_Timer.start();
+	$Match_Time_Limit_Timer.paused = isPaused;
+	
 
 func _match_time_limit_ended():
 	if get_tree().is_network_server():
