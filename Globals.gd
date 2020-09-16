@@ -188,16 +188,16 @@ func logout():
 	knownPartyData = null;
 	player_old_MMR = -1;
 	
-	HTTPRequest_PollPlayerStatus.free();
+	HTTPRequest_PollPlayerStatus.queue_free();
 	HTTPRequest_PollPlayerStatus = HTTPRequest.new();
 	add_child(HTTPRequest_PollPlayerStatus);
-	HTTPRequest_GetMatchData.free();
+	HTTPRequest_GetMatchData.queue_free();
 	HTTPRequest_GetMatchData = HTTPRequest.new();
 	add_child(HTTPRequest_GetMatchData);
-	HTTPRequest_CancelQueue.free();
+	HTTPRequest_CancelQueue.queue_free();
 	HTTPRequest_CancelQueue = HTTPRequest.new();
 	add_child(HTTPRequest_CancelQueue);
-	HTTPRequest_ConfirmClientConnection.free();
+	HTTPRequest_ConfirmClientConnection.queue_free();
 	HTTPRequest_ConfirmClientConnection = HTTPRequest.new();
 	add_child(HTTPRequest_ConfirmClientConnection);
 	

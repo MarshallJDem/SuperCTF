@@ -77,11 +77,13 @@ func load_leaderboard(leaderboard_data):
 	var rows = 10;
 	var columns = 8;
 	for i in range(80):
-		var data = leaderboard_data[i];
+		var data = null;
 		var cell = LeaderboardCell.instance();
-		cell.mmr = data.mmr;
-		cell.player_name = data.name;
-		cell.player_id = data.uid;
+		if(i < leaderboard_data.size()):
+			data = leaderboard_data[i];
+			cell.mmr = data.mmr;
+			cell.player_name = data.name;
+			cell.player_id = data.uid;
 		cell.rank = i + 1;
 		var row = i % rows;
 		var col = int( i / rows);
