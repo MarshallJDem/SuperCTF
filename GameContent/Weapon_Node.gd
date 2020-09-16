@@ -172,8 +172,9 @@ func shoot_on_inputs():
 							var direction3 = Vector2((cos(-angle) * direction.x) - (sin(-angle) * direction.y),(sin(-angle) * direction.x) + (cos(-angle) * direction.y));
 							if !Globals.testing:
 								rpc("shoot_demo", direction,demos_shot);
-								rpc("shoot_demo", direction2,demos_shot);
-								rpc("shoot_demo", direction3,demos_shot);
+								if ult_active:
+									rpc("shoot_demo", direction2,demos_shot);
+									rpc("shoot_demo", direction3,demos_shot);
 							else:
 								shoot_demo(direction,demos_shot);
 								if ult_active:
