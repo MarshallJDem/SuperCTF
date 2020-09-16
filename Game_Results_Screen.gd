@@ -166,6 +166,6 @@ func _process(_delta):
 	var timeleft = int(get_parent().get_node("NetworkController/Match_End_Timer").time_left);
 	$CanvasLayer/Control/Time_Left_Text.text = str(timeleft if timeleft > 0 else "Server Disconnected");
 	if timeleft <= 0:
-		$CanvasLayer/Control/DD_Description.modulate = Color(0.5,0.5,0.5,0.5);
-		$CanvasLayer/Control/DD_Votes.modulate = Color(0.5,0.5,0.5,0.5);
+		$CanvasLayer/Control/DD_Description.modulate = Color(0.0,0.0,0.0,0.3);
+		$CanvasLayer/Control/DD_Votes.modulate = Color(0.0,0.0,0.0,0.3);
 		$CanvasLayer/Control/Button_Rematch.disabled = true;
