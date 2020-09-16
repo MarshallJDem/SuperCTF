@@ -56,6 +56,7 @@ func _input(event):
 					ult_charge = 0;
 					player.get_node("Weapon_Node").ult_active = true;
 			if event.scancode == KEY_P:
+				return;
 				$Ult_Timer.start();
 				ult_charge = 0;
 				player.get_node("Weapon_Node").ult_active = true;
