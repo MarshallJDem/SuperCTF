@@ -217,7 +217,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Password_LineEdit2" type="LineEdit" parent="Control"]
+[node name="Email_LineEdit" type="LineEdit" parent="Control"]
 margin_left = 732.336
 margin_top = 831.996
 margin_right = 1214.34

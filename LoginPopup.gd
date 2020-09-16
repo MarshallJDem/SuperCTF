@@ -23,7 +23,7 @@ func _enter_pressed():
 		$Control/Warning_Text.bbcode_text = "[color=black][center]Loading...";
 		var query = "?name=" + str(n);
 		var body = '{"password" : "' + str($Control/Password_LineEdit.text) + '"}';
-		$Login_HTTP.request(Globals.mainServerIP + "loginUser" + query, ["authorization: Bearer " + Globals.userToken],true,0,body);
+		$Login_HTTP.request(Globals.mainServerIP + "loginUser" + query, ["authorization: Bearer " + Globals.userToken],true,2,body);
 
 func _Login_HTTP_Completed(result, response_code, headers, body):
 	if response_code == 200:

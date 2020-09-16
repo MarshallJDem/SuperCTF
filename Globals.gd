@@ -108,6 +108,11 @@ var HTTPRequest_ConfirmClientConnection = HTTPRequest.new();
 
 onready var viewport = get_viewport()
 
+func test():
+	HTTPRequest_ConfirmClientConnection.queue_free();
+	HTTPRequest_ConfirmClientConnection = HTTPRequest.new();
+	add_child(HTTPRequest_ConfirmClientConnection);
+
 func _enter_tree():
 	var arguments = {}
 	for argument in OS.get_cmdline_args():
@@ -134,7 +139,7 @@ func _ready():
 	add_child(HTTPRequest_GetMatchData);
 	add_child(HTTPRequest_CancelQueue);
 	HTTPRequest_PollPlayerStatus.connect("request_completed", self, "_HTTP_PollPlayerStatus_Completed");
-	HTTPRequest_PollPlayerStatus.connect("request_completed", self, "_HTTP_ConfirmClientStatus_Completed");
+	HTTPRequest_ConfirmClientConnection.connect("request_completed", self, "_HTTP_ConfirmClientStatus_Completed");
 	HTTPRequest_GetMatchData.connect("request_completed", self, "_HTTP_GetMatchData_Completed");
 	HTTPRequest_CancelQueue.connect("request_completed", self, "_HTTP_CancelQueue_Completed");
 
@@ -183,11 +188,24 @@ func logout():
 	knownPartyData = null;
 	player_old_MMR = -1;
 	
+	HTTPRequest_PollPlayerStatus.free();
+	HTTPRequest_PollPlayerStatus = HTTPRequest.new();
+	add_child(HTTPRequest_PollPlayerStatus);
+	HTTPRequest_GetMatchData.free();
+	HTTPRequest_GetMatchData = HTTPRequest.new();
+	add_child(HTTPRequest_GetMatchData);
+	HTTPRequest_CancelQueue.free();
+	HTTPRequest_CancelQueue = HTTPRequest.new();
+	add_child(HTTPRequest_CancelQueue);
+	HTTPRequest_ConfirmClientConnection.free();
+	HTTPRequest_ConfirmClientConnection = HTTPRequest.new();
+	add_child(HTTPRequest_ConfirmClientConnection);
 	
-	HTTPRequest_PollPlayerStatus.cancel_request();
-	HTTPRequest_GetMatchData.cancel_request();
-	HTTPRequest_CancelQueue.cancel_request();
-	HTTPRequest_ConfirmClientConnection.cancel_request();
+	HTTPRequest_PollPlayerStatus.connect("request_completed", self, "_HTTP_PollPlayerStatus_Completed");
+	HTTPRequest_ConfirmClientConnection.connect("request_completed", self, "_HTTP_ConfirmClientStatus_Completed");
+	HTTPRequest_GetMatchData.connect("request_completed", self, "_HTTP_GetMatchData_Completed");
+	HTTPRequest_CancelQueue.connect("request_completed", self, "_HTTP_CancelQueue_Completed");
+	
 	
 	last_pollPlayerStatus_response = 0;
 	last_confirmClientConnection_response = 0;
@@ -196,6 +214,9 @@ func logout():
 # Polls the player's status
 func _HTTP_PollPlayerStatus_Completed(result, response_code, headers, body):
 	last_pollPlayerStatus_response = OS.get_ticks_msec();
+	if response_code == 401:
+		logout();
+		return;
 	if response_code != 200:
 		return;
 	var json = JSON.parse(body.get_string_from_utf8())
@@ -252,7 +273,8 @@ func attempt_ConfirmClientConnection():
 	if OS.get_ticks_msec() - last_confirmClientConnection_response > 1000:
 		# If were not already in the middle of a poll, poll it
 		if HTTPRequest_ConfirmClientConnection.get_http_client_status() == 0:
-			HTTPRequest_ConfirmClientConnection.request(Globals.mainServerIP + "confirmClientConnection", ["authorization: Bearer " + Globals.userToken]);
+			print("REQUESTING CONFIRM CLIENT CONNECTION");
+			HTTPRequest_ConfirmClientConnection.request(Globals.mainServerIP + "confirmClientConnection", ["authorization: Bearer " + Globals.userToken], true, HTTPClient.METHOD_POST);
 
 func write_save_data():
 	var file = File.new()

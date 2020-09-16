@@ -167,10 +167,10 @@ rect_clip_content = false
 custom_fonts/normal_font = SubResource( 5 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
-bbcode_text = "[center][color=gray]If you forgot your passowrd or are having trouble,
+bbcode_text = "[center][color=gray]If you forgot your password or are having trouble,
 email [color=green]marshall@superctf.com 
 [center][color=gray] with your username and your issue and I will help you fix things"
-text = "If you forgot your passowrd or are having trouble,
+text = "If you forgot your password or are having trouble,
 email marshall@superctf.com 
  with your username and your issue and I will help you fix things"
 scroll_active = false
