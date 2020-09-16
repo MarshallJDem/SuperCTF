@@ -35,7 +35,7 @@ one_shot = true
 one_shot = true
 
 [node name="Match_End_Timer" type="Timer" parent="."]
-wait_time = 15.0
+wait_time = 25.0
 one_shot = true
 
 [node name="Match_Time_Limit_Timer" type="Timer" parent="."]
