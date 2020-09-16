@@ -174,6 +174,7 @@ func _HTTP_CancelQueue_Completed(result, response_code, headers, body):
 func logout():
 	Globals.userToken = "";
 	Globals.write_save_data();
+	JavaScript.eval("location.reload();", true);
 		
 	# Client data
 	localPlayerID = null;
