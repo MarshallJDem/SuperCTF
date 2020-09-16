@@ -736,7 +736,7 @@ func _match_end_timer_ended():
 func complete_match_end():
 	$Match_End_Timer.stop();
 	if get_tree().is_network_server():
-		$HTTPRequest_GameServerEndMatch.request(Globals.mainServerIP + "gameServerEndMatch?matchID=" + str(Globals.matchID) + "&winningTeamID=" + str(match_end_winning_team_id), ["authorization: Bearer " + (Globals.serverPrivateToken)]);
+		$HTTPRequest_GameServerEndMatch.request(Globals.mainServerIP + "gameServerEndMatch?matchID=" + str(Globals.matchID) + "&winningTeamID=" + str(winning_team_id_to_use) + "&isDoubleDown=" + str(isDD), ["authorization: Bearer " + (Globals.serverPrivateToken)]);
 		rpc("tell_clients_to_piss_off");
 
 # Called by clients on server to opt in / out of double down rematch
@@ -786,7 +786,8 @@ func _HTTP_GameServerEndMatch_Completed(result, response_code, headers, body):
 		# Endlessly attempt to end the match until the server responds. It is important that this eventually works!
 		print("failiure");
 		yield(get_tree().create_timer(5.0), "timeout");
-		$HTTPRequest_GameServerEndMatch.request(Globals.mainServerIP + "gameServerEndMatch?matchID=" + str(Globals.matchID) + "&winningTeamID=" + str(winning_team_id_to_use), ["authorization: Bearer " + (Globals.serverPrivateToken)]);
+		
+		$HTTPRequest_GameServerEndMatch.request(Globals.mainServerIP + "gameServerEndMatch?matchID=" + str(Globals.matchID) + "&winningTeamID=" + str(winning_team_id_to_use) + "&isDoubleDown=" + str(isDD), ["authorization: Bearer " + (Globals.serverPrivateToken)]);
 
 # Called when the Round_End_Timer ends
 func _round_end_timer_ended():
