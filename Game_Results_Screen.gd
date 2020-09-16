@@ -161,3 +161,8 @@ func _process(_delta):
 		if players[player_id]["DD_vote"]:
 			num_of_votes += 1;
 	$CanvasLayer/Control/DD_Votes.bbcode_text = str(num_of_votes) + "/" + str(players.size()) + " Votes";
+	
+	# Time left
+	var timeleft = int(get_parent().get_node("NetworkController/Match_Time_Limit_Timer").time_left);
+	
+	$CanvasLayer/Control/Time_Left_Text.text = str(timeleft if timeleft > 0 else "Server Disconnected");

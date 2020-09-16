@@ -660,8 +660,8 @@ remotesync func end_match(winning_team_id):
 	match_end_winning_team_id = winning_team_id;
 	match_is_running = false;
 	round_is_running = false;
+	$Match_End_Timer.start();
 	if !Globals.testing and get_tree().is_network_server():
-		$Match_End_Timer.start();
 		yield(get_tree().create_timer(4.0), "timeout");
 		$HTTPRequest_GetPredictedMMRChanges.request(Globals.mainServerIP + "gameServerGetPredictedMMRChanges?matchID=" + str(Globals.matchID) + "&winningTeamID=" + str(match_end_winning_team_id) + "&isDoubleDown=" + str(isDD), ["authorization: Bearer " + (Globals.serverPrivateToken)]);
 	else:

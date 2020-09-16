@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://fonts/Pixel_Title.tres" type="DynamicFont" id=1]
 [ext_resource path="res://fonts/Pixel_SubTitle.tres" type="DynamicFont" id=2]
@@ -10,39 +10,46 @@
 [ext_resource path="res://Game_Results_Screen.gd" type="Script" id=8]
 [ext_resource path="res://fonts/pixel.TTF" type="DynamicFontData" id=9]
 
-[sub_resource type="DynamicFont" id=12]
+[sub_resource type="DynamicFont" id=1]
 size = 24
 outline_color = Color( 0, 0, 0, 1 )
 extra_spacing_top = 9
 font_data = ExtResource( 9 )
 
-[sub_resource type="DynamicFont" id=3]
+[sub_resource type="DynamicFont" id=2]
 size = 125
 outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 9 )
 
-[sub_resource type="DynamicFont" id=1]
+[sub_resource type="DynamicFont" id=3]
 size = 75
 outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 9 )
 
-[sub_resource type="DynamicFont" id=10]
+[sub_resource type="DynamicFont" id=4]
 size = 50
 outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 9 )
 
-[sub_resource type="DynamicFont" id=2]
+[sub_resource type="DynamicFont" id=5]
 size = 300
 outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 9 )
 
-[sub_resource type="DynamicFont" id=11]
+[sub_resource type="DynamicFont" id=6]
 size = 30
 outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
 font_data = ExtResource( 9 )
 
-[sub_resource type="DynamicFont" id=6]
+[sub_resource type="DynamicFont" id=7]
 size = 27
+outline_size = 2
+outline_color = Color( 1, 0, 0, 1 )
+extra_spacing_top = 9
+font_data = ExtResource( 9 )
+
+[sub_resource type="DynamicFont" id=8]
+size = 40
 outline_size = 2
 outline_color = Color( 1, 0, 0, 1 )
 extra_spacing_top = 9
@@ -56,7 +63,7 @@ border_width_right = 5
 border_width_bottom = 5
 border_color = Color( 0.305882, 0.0823529, 0.0823529, 1 )
 
-[sub_resource type="StyleBoxFlat" id=7]
+[sub_resource type="StyleBoxFlat" id=10]
 bg_color = Color( 0.227451, 0.105882, 0.105882, 1 )
 border_width_left = 5
 border_width_top = 5
@@ -64,7 +71,7 @@ border_width_right = 5
 border_width_bottom = 5
 border_color = Color( 0.329412, 0.0862745, 0.0862745, 1 )
 
-[sub_resource type="StyleBoxFlat" id=8]
+[sub_resource type="StyleBoxFlat" id=11]
 bg_color = Color( 1, 0.823529, 0.823529, 1 )
 border_width_left = 5
 border_width_top = 5
@@ -72,7 +79,7 @@ border_width_right = 5
 border_width_bottom = 5
 border_color = Color( 0.447059, 0.0862745, 0.0862745, 1 )
 
-[sub_resource type="DynamicFont" id=4]
+[sub_resource type="DynamicFont" id=12]
 size = 24
 outline_color = Color( 1, 0, 0, 1 )
 extra_spacing_top = 9
@@ -120,7 +127,7 @@ margin_bottom = 540.604
 custom_styles/hover = ExtResource( 6 )
 custom_styles/pressed = ExtResource( 7 )
 custom_styles/normal = ExtResource( 5 )
-custom_fonts/font = SubResource( 12 )
+custom_fonts/font = SubResource( 1 )
 custom_colors/font_color_disabled = Color( 0, 0, 0, 1 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
@@ -201,7 +208,7 @@ custom_fonts/mono_font = ExtResource( 1 )
 custom_fonts/bold_italics_font = ExtResource( 2 )
 custom_fonts/italics_font = ExtResource( 2 )
 custom_fonts/bold_font = ExtResource( 2 )
-custom_fonts/normal_font = SubResource( 3 )
+custom_fonts/normal_font = SubResource( 2 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
 bbcode_text = "[center]2000[/center]"
@@ -219,7 +226,7 @@ rect_scale = Vector2( 0.563012, 0.563012 )
 rect_clip_content = false
 mouse_filter = 2
 custom_fonts/mono_font = ExtResource( 2 )
-custom_fonts/normal_font = SubResource( 1 )
+custom_fonts/normal_font = SubResource( 3 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
 bbcode_text = "[center][/center]"
@@ -237,7 +244,7 @@ rect_scale = Vector2( 0.563012, 0.563012 )
 rect_clip_content = false
 mouse_filter = 2
 custom_fonts/mono_font = ExtResource( 2 )
-custom_fonts/normal_font = SubResource( 1 )
+custom_fonts/normal_font = SubResource( 3 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
 bbcode_text = "[center][/center]"
@@ -254,8 +261,8 @@ margin_bottom = -201.132
 rect_scale = Vector2( 1, 0.964805 )
 rect_clip_content = false
 mouse_filter = 2
-custom_fonts/mono_font = SubResource( 10 )
-custom_fonts/normal_font = SubResource( 2 )
+custom_fonts/mono_font = SubResource( 4 )
+custom_fonts/normal_font = SubResource( 5 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
 bbcode_text = "[center]LOSS[/center]"
@@ -277,7 +284,7 @@ margin_bottom = -69.0
 custom_styles/hover = ExtResource( 6 )
 custom_styles/pressed = ExtResource( 7 )
 custom_styles/normal = ExtResource( 5 )
-custom_fonts/font = SubResource( 12 )
+custom_fonts/font = SubResource( 1 )
 custom_colors/font_color_disabled = Color( 0, 0, 0, 1 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
@@ -294,7 +301,7 @@ margin_right = -3.0
 margin_bottom = 374.0
 rect_clip_content = false
 mouse_filter = 2
-custom_fonts/normal_font = SubResource( 11 )
+custom_fonts/normal_font = SubResource( 6 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
 bbcode_text = "[right]Kills
@@ -323,7 +330,7 @@ margin_right = 941.136
 margin_bottom = 661.404
 rect_scale = Vector2( 1, 0.983539 )
 mouse_filter = 2
-custom_fonts/normal_font = SubResource( 6 )
+custom_fonts/normal_font = SubResource( 7 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
 bbcode_text = "- Double MMR Gain/Loss
@@ -345,11 +352,28 @@ margin_right = 210.546
 margin_bottom = 706.19
 rect_scale = Vector2( 1, 0.983539 )
 mouse_filter = 2
-custom_fonts/normal_font = SubResource( 6 )
+custom_fonts/normal_font = SubResource( 7 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
 bbcode_text = "1/4 Votes"
 text = "1/4 Votes"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Time_Left_Text" type="RichTextLabel" parent="CanvasLayer/Control"]
+margin_left = -903.422
+margin_top = 476.455
+margin_right = -263.422
+margin_bottom = 878.455
+rect_scale = Vector2( 1, 0.983539 )
+rect_clip_content = false
+mouse_filter = 2
+custom_fonts/normal_font = SubResource( 8 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "17"
+text = "17"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -389,9 +413,9 @@ margin_top = 276.803
 margin_right = 253.425
 margin_bottom = 382.803
 custom_styles/hover = SubResource( 9 )
-custom_styles/pressed = SubResource( 7 )
-custom_styles/normal = SubResource( 8 )
-custom_fonts/font = SubResource( 4 )
+custom_styles/pressed = SubResource( 10 )
+custom_styles/normal = SubResource( 11 )
+custom_fonts/font = SubResource( 12 )
 custom_colors/font_color_disabled = Color( 0, 0, 0, 1 )
 custom_colors/font_color = Color( 0.52549, 0, 0, 1 )
 custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
