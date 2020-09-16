@@ -147,7 +147,7 @@ func _process(delta):
 	if get_tree().get_root().has_node("MainScene/NetworkController"):
 		Globals.player_lerp_time = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("playerLagTime");
 	if !isServer:
-		if Globals.userToken:
+		if Globals.userToken != null:
 			attempt_ConfirmClientConnection();
 			attempt_PollPlayerStatus();
 
@@ -172,9 +172,12 @@ func _HTTP_CancelQueue_Completed(result, response_code, headers, body):
 		pass;
 
 func logout():
-	Globals.userToken = "";
-	Globals.write_save_data();
+	userToken = null;
+	write_save_data();
+	load_save_data();
+	return;
 	JavaScript.eval("location.reload();", true);
+	
 		
 	# Client data
 	localPlayerID = null;
@@ -306,6 +309,11 @@ func load_save_data():
 		index += 1
 	f.close();
 	userToken = result["1"];
+	if userToken == null || userToken == "Null" || userToken == "null" || userToken.length() < 5:
+		userToken = null;
+	else:
+		userToken = str(result["1"]);
+	print("HERE IS THE I " + str(index) + " AND RETRIEVED TOKEN : " + str(userToken));
 	if result.has("2"):
 		AudioServer.set_bus_volume_db(0,float(result["2"]));
 	if result.has("3"):

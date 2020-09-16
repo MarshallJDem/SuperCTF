@@ -23,7 +23,7 @@ func _ready():
 	if Globals.isServer:
 		print("Checking is server");
 		get_tree().change_scene("res://GameContent/Main.tscn");
-	$HTTPRequest_GetLeaderboard.request(Globals.mainServerIP + "getLeaderboardData", ["authorization: Bearer " + Globals.userToken]);
+	$HTTPRequest_GetLeaderboard.request(Globals.mainServerIP + "getLeaderboardData");
 	get_tree().set_screen_stretch(SceneTree.STRETCH_MODE_VIEWPORT, SceneTree.STRETCH_ASPECT_EXPAND,Vector2(1920,1080), 1);
 	
 	get_tree().set_network_peer(null);
@@ -58,7 +58,7 @@ func logout():
 	
 func start():
 	# If there is a cached user token
-	if(Globals.userToken):
+	if(Globals.userToken != null):
 		$UI_Layer.set_view($UI_Layer.VIEW_MAIN);
 	else: # Else show them login
 		$UI_Layer.set_view($UI_Layer.VIEW_START);
