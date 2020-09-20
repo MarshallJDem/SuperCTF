@@ -35,7 +35,7 @@ func _enter_pressed():
 		$Control/Warning_Text.bbcode_text = "[color=black][center]Loading...";
 		var query = "?name=" + str(n) + "&email=" + str(email);
 		var body = '{"password" : "' + str($Control/Password_LineEdit.text) + '"}';
-		$CreateAccount_HTTP.request(Globals.mainServerIP + "createAccount" + query, ["authorization: Bearer " + Globals.userToken],true,2,body);
+		$CreateAccount_HTTP.request(Globals.mainServerIP + "createAccount" + query, PoolStringArray(), true,2,body);
 	
 
 func _CreateAccount_HTTP_Completed(result, response_code, headers, body):
