@@ -61,7 +61,7 @@ func setup_stats_visuals():
 	var count = 0;
 	for player_id in stats:
 		count += 1; # Theres probably a better way to get this number lol
-	var spread = 150 * count; # The total spread of the cells
+	var spread = 250 * count; # The total spread of the cells
 	var start_pos = -(spread/2);
 	var y_offset = -300;
 	var i = 0
