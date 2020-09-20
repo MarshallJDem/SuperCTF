@@ -21,35 +21,35 @@
 [ext_resource path="res://Assets/Sound/CTFTitlescreen.ogg" type="AudioStream" id=19]
 [ext_resource path="res://Chat_Text.tres" type="RichTextEffect" id=20]
 
-[sub_resource type="DynamicFont" id=9]
+[sub_resource type="DynamicFont" id=1]
 size = 24
 outline_color = Color( 0, 0, 0, 1 )
 extra_spacing_top = 9
 font_data = ExtResource( 18 )
 
-[sub_resource type="DynamicFont" id=10]
+[sub_resource type="DynamicFont" id=2]
 size = 8
 outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
 font_data = ExtResource( 18 )
 
-[sub_resource type="DynamicFont" id=11]
+[sub_resource type="DynamicFont" id=3]
 size = 32
 outline_color = Color( 0, 0, 0, 1 )
 extra_spacing_top = 9
 font_data = ExtResource( 18 )
 
-[sub_resource type="DynamicFont" id=15]
+[sub_resource type="DynamicFont" id=4]
 size = 20
 outline_color = Color( 0, 0, 0, 1 )
 extra_spacing_top = 9
 font_data = ExtResource( 18 )
 
-[sub_resource type="DynamicFont" id=12]
+[sub_resource type="DynamicFont" id=5]
 size = 10
 outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
 font_data = ExtResource( 18 )
 
-[sub_resource type="StyleBoxFlat" id=13]
+[sub_resource type="StyleBoxFlat" id=6]
 bg_color = Color( 1, 1, 1, 1 )
 border_width_left = 4
 border_width_top = 4
@@ -57,11 +57,11 @@ border_width_right = 4
 border_width_bottom = 4
 border_color = Color( 0, 0, 0, 1 )
 
-[sub_resource type="DynamicFont" id=14]
+[sub_resource type="DynamicFont" id=7]
 outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
 font_data = ExtResource( 18 )
 
-[sub_resource type="SpriteFrames" id=7]
+[sub_resource type="SpriteFrames" id=8]
 animations = [ {
 "frames": [ ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ) ],
 "loop": true,
@@ -69,7 +69,7 @@ animations = [ {
 "speed": 7.0
 } ]
 
-[sub_resource type="ConvexPolygonShape2D" id=8]
+[sub_resource type="ConvexPolygonShape2D" id=9]
 points = PoolVector2Array( 0, 0, 18.693, 3.609, 18.937, 14.698, 0, 28.805 )
 
 [node name="TitleScreen" type="Node2D"]
@@ -435,7 +435,7 @@ margin_bottom = 496.948
 custom_styles/hover = ExtResource( 14 )
 custom_styles/pressed = ExtResource( 15 )
 custom_styles/normal = ExtResource( 16 )
-custom_fonts/font = SubResource( 9 )
+custom_fonts/font = SubResource( 1 )
 custom_colors/font_color = Color( 0.137255, 0.137255, 0.137255, 1 )
 text = "Join Party"
 __meta__ = {
@@ -454,8 +454,8 @@ margin_bottom = 664.367
 rect_scale = Vector2( 0.639761, 0.639761 )
 rect_clip_content = false
 focus_mode = 2
-custom_fonts/mono_font = SubResource( 10 )
-custom_fonts/normal_font = SubResource( 11 )
+custom_fonts/mono_font = SubResource( 2 )
+custom_fonts/normal_font = SubResource( 3 )
 custom_colors/default_color = Color( 0.368627, 0.368627, 0.368627, 1 )
 bbcode_enabled = true
 bbcode_text = "[center][color=black]Party Code[color=green]
@@ -489,8 +489,8 @@ margin_bottom = 458.761
 rect_scale = Vector2( 0.639761, 0.639761 )
 rect_clip_content = false
 focus_mode = 2
-custom_fonts/mono_font = SubResource( 10 )
-custom_fonts/normal_font = SubResource( 15 )
+custom_fonts/mono_font = SubResource( 2 )
+custom_fonts/normal_font = SubResource( 4 )
 custom_colors/default_color = Color( 0.368627, 0.368627, 0.368627, 1 )
 bbcode_enabled = true
 bbcode_text = "[center][color=gray]Must be party host"
@@ -542,7 +542,7 @@ margin_top = 10.0
 margin_right = 1644.0
 margin_bottom = 45.0
 rect_clip_content = false
-custom_fonts/normal_font = SubResource( 12 )
+custom_fonts/normal_font = SubResource( 5 )
 bbcode_enabled = true
 bbcode_text = "---GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD---"
 text = "---GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD------GLOBAL-LEADERBOARD---"
@@ -561,8 +561,8 @@ margin_left = -158.997
 margin_top = 433.358
 margin_right = 158.997
 margin_bottom = 495.721
-custom_styles/normal = SubResource( 13 )
-custom_fonts/font = SubResource( 14 )
+custom_styles/normal = SubResource( 6 )
+custom_fonts/font = SubResource( 7 )
 custom_colors/selection_color = Color( 0, 0, 0, 1 )
 custom_colors/cursor_color = Color( 0, 0, 0, 1 )
 custom_colors/clear_button_color_pressed = Color( 0, 0, 0, 1 )
@@ -618,7 +618,7 @@ script = ExtResource( 3 )
 [node name="Blue_Sprite" type="AnimatedSprite" parent="UI_Layer/Flags/Flag2"]
 position = Vector2( 10, -14 )
 scale = Vector2( 2, 2 )
-frames = SubResource( 7 )
+frames = SubResource( 8 )
 frame = 2
 playing = true
 
@@ -630,7 +630,7 @@ script = ExtResource( 8 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="UI_Layer/Flags/Flag2/Area2D"]
 position = Vector2( -20.7247, 2.43704 )
-shape = SubResource( 8 )
+shape = SubResource( 9 )
 
 [node name="Titlemusic_Audio" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 19 )
