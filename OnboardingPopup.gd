@@ -16,7 +16,7 @@ func _enter_pressed():
 	if !("a" + $Control/Name_LineEdit.text).is_valid_identifier():
 		$Control/Warning_Text.bbcode_text = '[color=red][center]Name can only contain letters, numbers, and "-"';
 		return;
-	if $Control/Password_LineEdit.text.length() < 3:
+	if $Control/Name_LineEdit.text.length() < 3:
 		$Control/Warning_Text.bbcode_text = '[color=red][center]Name must be at least 3 characters long';
 		return;
 	# Sanitize password
