@@ -162,7 +162,7 @@ func _HTTP_GameServerPollStatus_Completed(result, response_code, headers, body):
 			if matchID:
 				print("Getting Match Data for MatchID = " + str(matchID));
 				updateGameServerStatus(2);
-				$HTTPRequest_GetMatchData.request(Globals.mainServerIP + "getMatchData?matchID=" + str(matchID), ["authorization: Bearer " + (Globals.serverPrivateToken)], false);
+				$HTTPRequest_GetMatchData.request(Globals.mainServerIP + "getMatchData?matchID=" + str(matchID) + "&authority=gameServer", ["authorization: Bearer " + (Globals.serverPrivateToken)], false);
 		else:
 			pass;
 
