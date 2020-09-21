@@ -115,7 +115,7 @@ func reset_game():
 
 # Starts a server
 func start_server():
-	print("starting server");
+	print("Starting Server");
 	reset_game();
 	server = WebSocketServer.new();
 	if Globals.useSecure:
@@ -123,9 +123,7 @@ func start_server():
 		server.ssl_certificate = load("res://HTTPS_Keys/linux_cert.crt");
 	server.listen(Globals.port, PoolStringArray(), true);
 	get_tree().set_network_peer(server);
-	print("IsSkirmish? - " + str(isSkirmish));
 	if !isSkirmish:
-		print("Making Game Server Available");
 		$HTTPRequest_GameServerMakeAvailable.request(Globals.mainServerIP + "makeGameServerAvailable?publicToken=" + str("RANDOMTOKEN"), ["authorization: Bearer " + (Globals.serverPrivateToken)], false);
 		updateGameServerStatus(1);
 		$Gameserver_Status_Timer.start();
@@ -435,9 +433,7 @@ func spawn_player(id):
 	player.position = players[id]["position"];
 	player.start_pos = players[id]["spawn_pos"];
 	player.current_class = players[id]["class"];
-	print("Spawning Player");
-	print(players[id]);
-	print(get_tree().get_network_unique_id());
+	print("Spawning Player " + str(players[id]));
 	player.player_name = players[id]["name"];
 	if players[id]["network_id"] == get_tree().get_network_unique_id():
 		player.control = round_is_running;
@@ -776,7 +772,6 @@ var winning_team_id_to_use;
 # Called when the HTTP request GameServerEndMatch completes. If successful, it will reset the server for next use after 5 seconds
 func _HTTP_GameServerEndMatch_Completed(result, response_code, headers, body):
 	if(response_code == 200):
-		print("success");
 		updateGameServerStatus(4);
 		yield(get_tree().create_timer(5.0), "timeout");
 		get_tree().set_network_peer(null);
@@ -784,7 +779,7 @@ func _HTTP_GameServerEndMatch_Completed(result, response_code, headers, body):
 		start_server();
 	else:
 		# Endlessly attempt to end the match until the server responds. It is important that this eventually works!
-		print("failiure");
+		print("FAILED TO END MATCH FOR SOME REASON");
 		yield(get_tree().create_timer(5.0), "timeout");
 		
 		$HTTPRequest_GameServerEndMatch.request(Globals.mainServerIP + "gameServerEndMatch?matchID=" + str(Globals.matchID) + "&winningTeamID=" + str(winning_team_id_to_use) + "&isDoubleDown=" + str(isDD), ["authorization: Bearer " + (Globals.serverPrivateToken)]);

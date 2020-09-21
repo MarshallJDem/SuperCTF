@@ -47,9 +47,3 @@ func collided_with_laser(laser):
 		flagged_for_death = true;
 	else:
 		get_parent().call_deferred("preliminary_death");
-
-## Tells all clients to kill the bullet
-#func call_death():
-#	print("CALL_DEATH")
-#	if get_tree().is_network_server():
-#		get_parent().rpc("receive_death");

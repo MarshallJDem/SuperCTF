@@ -211,7 +211,6 @@ func enable_leave_match_button():
 	$Leave_Match_Button.visible = true;
 
 func _leave_match_button_pressed():
-	print("pressed");
 	get_tree().get_root().get_node("MainScene/NetworkController").leave_match();
 
 func _cancel_button_pressed():
