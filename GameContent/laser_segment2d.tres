@@ -1,0 +1,4 @@
+[gd_resource type="SegmentShape2D" format=2]
+
+[resource]
+b = Vector2( 0, 1 )

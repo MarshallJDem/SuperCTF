@@ -22,8 +22,7 @@ func _ready():
 		$Area2D.monitoring = true;
 	
 	$Area2D.rotation = Vector2(0,0).angle_to_point(target_pos) + PI/2;
-	$Area2D/CollisionShape2D.shape.set_b(Vector2(0,Vector2(0,0).distance_to(target_pos)));
-	$Area2D.scale = Vector2(size/3, 1);
+	$Area2D/CollisionShape2D.scale = Vector2(size/3, Vector2(0,0).distance_to(target_pos));
 	print(is_blank);
 	
 func _physics_process(delta):

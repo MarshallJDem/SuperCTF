@@ -1,9 +1,7 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://GameContent/Laser.gd" type="Script" id=1]
-
-[sub_resource type="SegmentShape2D" id=1]
-b = Vector2( 0, 100 )
+[ext_resource path="res://GameContent/laser_segment2d.tres" type="Shape2D" id=2]
 
 [node name="Laser" type="Node2D" groups=[
 "Lasers",
@@ -26,4 +24,4 @@ monitorable = false
 collision_layer = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-shape = SubResource( 1 )
+shape = ExtResource( 2 )
