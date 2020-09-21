@@ -31,6 +31,9 @@ func _JoinParty_HTTP_Completed(result, response_code, headers, body):
 		if json.result.has("isFull") and json.result.isFull:
 			$Control/TitleText.bbcode_text = "[color=red][center]Party Full";
 			return;
+		if json.result.has("isQueued") and json.result.isQueued:
+			$Control/TitleText.bbcode_text = "[color=red][center]Party is already queued";
+			return;
 	$Control/TitleText.bbcode_text = "[color=red][center]An uknown error occurred (Sorry we're in beta)";
 	return;
 
