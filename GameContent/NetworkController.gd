@@ -461,9 +461,6 @@ func _client_disconnected(id):
 	if player_id == -1:
 		return;
 	if get_tree().is_network_server():
-		if $Match_End_Timer.time_left > 0:
-			complete_match_end();
-			return;
 		var message = players[player_id]["name"];
 		message += " disconnected from the server";
 		get_tree().get_root().get_node("MainScene/UI_Layer/LineEdit").rpc("receive_message", "[color=red]" + message +  "[/color]", -1);
@@ -471,7 +468,9 @@ func _client_disconnected(id):
 			players.erase(player_id);
 			if players.size() == 0:
 				game_vars = Globals.game_var_defaults.duplicate();
-		
+		if $Match_End_Timer.time_left > 0:
+			complete_match_end();
+			return;
 		rpc("update_players_data", players, round_is_running);
 		if !isSkirmish:
 			if get_tree().get_network_connected_peers().size() == 0:
@@ -481,6 +480,9 @@ func _client_disconnected(id):
 					get_tree().set_network_peer(null);
 					server = null;
 					start_server();
+	else: # This will disable DD buttons etc on game results screen
+		if $Match_End_Timer.time_left > 0:
+			$Match_End_Timer.stop();
 	
 
 # Goes back to title screen and drops the socket connection and resets the game
@@ -721,6 +723,7 @@ remotesync func show_results_screen(scores, stats,players, results):
 # Shows over. You don't have to go home but you can't stay here
 remotesync func tell_clients_to_piss_off():
 	if !get_tree().is_network_server():
+		$Match_End_Timer.stop();
 		if !get_tree().get_root().has_node("MainScene/Game_Results_Screen"):
 			leave_match();
 		else:
