@@ -53,7 +53,7 @@ func collided_with_bullet(bullet):
 			# Horizontal wall
 			if wall.scale.x > wall.scale.y:
 				# If bullet and player are on different sides, ignore it
-				if (player.position.y > wall.position.y and bullet.position.y < wall.position.y) or ((player.position.y < wall.position.y and bullet.position.y > wall.position.y)):
+				if (player.position.y + 5 > wall.position.y and bullet.position.y < wall.position.y) or ((player.position.y + 5 < wall.position.y and bullet.position.y > wall.position.y)):
 					return;
 			else:# Vertical wall
 				# If bullet and player are on different sides, ignore it
