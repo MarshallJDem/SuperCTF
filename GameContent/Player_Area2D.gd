@@ -42,10 +42,24 @@ func collided_with_bullet(bullet):
 	# If our team shot this, ignore it
 	if get_tree().get_root().get_node("MainScene/NetworkController").players[bullet.player_id]['team_id'] == player.team_id:
 		return;
-	# If we're currently in a forcefield, ignore it
+		
 	for area in get_overlapping_areas():
+		# If we're currently in a forcefield, ignore it
 		if area.is_in_group("Forcefield_Bodies"):
 			return;
+		# If we're currently against a wall, and the bullet is on the other side, ignore it
+		if area.is_in_group("Wall_Bodies"):
+			var wall = area.get_parent()
+			# Horizontal wall
+			if wall.scale.x > wall.scale.y:
+				# If bullet and player are on different sides, ignore it
+				if (player.position.y > wall.position.y and bullet.position.y < wall.position.y) or ((player.position.y < wall.position.y and bullet.position.y > wall.position.y)):
+					return;
+			else:# Vertical wall
+				# If bullet and player are on different sides, ignore it
+				if (player.position.x > wall.position.x and bullet.position.x < wall.position.x) or ((player.position.x < wall.position.x and bullet.position.x > wall.position.x)):
+					return;
+	
 	# Else we've been hit by an enemy
 	player.rpc("receive_hit", bullet.player_id, 0);
 	bullet.rpc("receive_death");
@@ -129,3 +143,4 @@ func collided_with_powerup_body(powerup_parent):
 		player.enable_powerup(powerup_parent.type);
 	else:
 		player.rpc("enable_powerup", powerup_parent.type);
+

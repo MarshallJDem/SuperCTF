@@ -30,7 +30,7 @@ func _process(_delta):
 # stupid workaround neccessary to make particles not flash random colors upon spawning
 func _physics_process(_delta):
 	move();
-	
+
 # Given an amount of delta time, moves the grenade in its trajectory direction using its speed
 func move():
 	var time_elapsed = ((OS.get_system_time_msecs() - Globals.match_start_time) - initial_time_shot)/1000.0;
