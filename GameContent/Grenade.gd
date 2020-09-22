@@ -56,6 +56,9 @@ func move():
 	var sca = (1 +  scale_max * (-pow((2 *t) - 1,2) +1))
 	scale = Vector2(sca,sca);
 	if t >= 1.0 and $Detonation_Timer.time_left == 0:
+		# If this grenade was thrown very close by, take longer to detonate
+		if time_elapsed < 0.5:
+			$Detonation_Timer.wait_time += (0.5 - time_elapsed);
 		$Detonation_Timer.start();
 
 # Called when the animation timer fires
