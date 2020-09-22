@@ -183,7 +183,7 @@ func _HTTP_GetMatchData_Completed(result, response_code, headers, body):
 					spawn_pos = Vector2(-1300, 0);
 				else:
 					spawn_pos = Vector2(1300, 0);
-				players[i] = {"name" : "Player" + str(i), "team_id" : team_id, "user_id": int(user_id), "network_id": 1, "spawn_pos": spawn_pos, "position": spawn_pos, "class" : Globals.Classes.Bullet};
+				players[i] = {"name" : "Player" + str(i), "team_id" : team_id, "user_id": int(user_id), "network_id": 1, "spawn_pos": spawn_pos, "position": spawn_pos, "class" : Globals.Classes.Bullet, "DD_vote" : false};
 				i += 1;
 			print(players);
 			start_match();
@@ -365,7 +365,7 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 						spawn_pos = Vector2(-1300, 0);
 					else:
 						spawn_pos = Vector2(1300, 0);
-					players[network_id] = {"name" : player_name, "team_id" : team_id, "user_id": user_id, "network_id": network_id,"spawn_pos": spawn_pos, "position": spawn_pos, "class" : Globals.Classes.Bullet};
+					players[network_id] = {"name" : player_name, "team_id" : team_id, "user_id": user_id, "network_id": network_id,"spawn_pos": spawn_pos, "position": spawn_pos, "class" : Globals.Classes.Bullet, "DD_vote" : false};
 				# Get the player_id associated with this user_id
 				for player_id in players:
 					if players[player_id]['user_id'] == user_id:
@@ -494,9 +494,11 @@ func leave_match():
 # Called when this client disconnects from the server
 func server_disconnect():
 	print("LOST CONNECTION WITH SERVER");
-	# Only force user back to titlescreen if the game results screen isn't present for some reason
+	# Force user back to titlescreen if the game results screen isn't present for some reason
 	if !get_tree().get_root().has_node("MainScene/Game_Results_Screen"):
 		leave_match();
+	else: # Otherwise set match end timer to 0 for the game results screen to take notice of
+		$Match_End_Timer.stop();
 
 # Called when a player scores a point or match time runs out
 remotesync func round_ended(scoring_team_id, scoring_player_id, time_limit_reached = false):

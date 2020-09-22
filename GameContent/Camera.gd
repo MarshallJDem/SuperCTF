@@ -29,7 +29,7 @@ func _screen_resized():
 	var scale = 0.5;
 	var difX = window_size.x / 480;
 	var difY = window_size.y / 270;
-	var s = min(int(difX), int(difY));
+	var s = int(difX);#min(int(difX), int(difY));
 	while (s % 2 != 0):
 		s -= 1;
 	if s == 0:
