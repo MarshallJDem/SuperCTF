@@ -13,18 +13,17 @@ func _ready():
 	$Animation_Timer.connect("timeout",self,"_animation_timer_ended");
 	get_tree().get_root().get_node("MainScene/NetworkController").connect("round_started", self, "_round_started");
 	$Spawner_Timer.connect("timeout", self, "_spawner_timer_ended");
+	get_tree().connect("connected_to_server",self, "_connected_to_server");
 	_used();
 	set_network_master(1);
 	if Globals.testing:
 		$Spawner_Timer.wait_time = 5;
 		var n = randi()%4+1; #%11+1 means random number 1-10
 		spawn_powerup(n);
-	else:
-		if !get_tree().is_network_server():
-			print("REQUESTING AN UPDATE");
-			print(get_tree().get_network_unique_id());
-			rpc("request_update");
 
+func connected_to_server():
+	if !get_tree().is_network_server() and !Globals.testing:
+		rpc("request_update");
 func _round_started():
 	_used();
 
