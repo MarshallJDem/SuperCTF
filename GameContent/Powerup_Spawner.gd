@@ -19,6 +19,7 @@ func _ready():
 		spawn_powerup(n);
 
 func _round_started():
+	$Spawner_Timer.stop();
 	$Spawner_Timer.start();
 
 func _process(delta):

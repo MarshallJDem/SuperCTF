@@ -561,7 +561,7 @@ func reset_game_objects(kill_players = false):
 		mine.die();
 	# Remove any powerups
 	for powerup in get_tree().get_nodes_in_group("Powerups"):
-		powerup.die();
+		powerup._used();
 	Globals.active_landmines = 0;
 
 # Loads up a new round but does not start it yet
