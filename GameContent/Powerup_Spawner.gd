@@ -50,7 +50,7 @@ master func request_update():
 # Called by the server on the client to send them details on current state
 puppet func receive_update(time_left, type, used, v):
 	print("WOWZ I GOT MY UPDATE :OOOO");
-	if powerup_used and !used:
+	if !used:
 		spawn_powerup(type);
 	else:
 		powerup_used = used;
