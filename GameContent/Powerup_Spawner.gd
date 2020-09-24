@@ -14,6 +14,7 @@ func _ready():
 	get_tree().get_root().get_node("MainScene/NetworkController").connect("round_started", self, "_round_started");
 	$Spawner_Timer.connect("timeout", self, "_spawner_timer_ended");
 	_used();
+	set_network_master(1);
 	if Globals.testing:
 		$Spawner_Timer.wait_time = 5;
 		var n = randi()%4+1; #%11+1 means random number 1-10
@@ -21,19 +22,8 @@ func _ready():
 	else:
 		if !get_tree().is_network_server():
 			print("REQUESTING AN UPDATE");
+			print(get_tree().get_network_unique_id());
 			rpc("request_update");
-			print("REQUESTING TEST1");
-			rpc("test1");
-			print("REQUESTING TEST2");
-			rpc("test2");
-			print("REQUESTING TEST1");
-			rpc_id(1, "test1");
-			print("REQUESTING TEST2");
-			rpc_id(1, "test2");
-			print("REQUESTING TEST1");
-			rpc_id(0, "test1");
-			print("REQUESTING TEST2");
-			rpc_id(0, "test2");
 
 func _round_started():
 	_used();
@@ -52,13 +42,7 @@ remotesync func spawn_powerup(n):
 	$Powerup.set_texture(sprite);
 	$Spawner_Timer.stop();
 
-remote func test1():
-	print("receiving test1");
-
-puppet func test2():
-	print("receiving test2");
-
-# Called by cllient on server to ask for an update on the spawner state
+# Called by client on server to ask for an update on the spawner state
 master func request_update():
 	var id = get_tree().get_rpc_caller_id();
 	print("this dude wants AN UPDATE??");
