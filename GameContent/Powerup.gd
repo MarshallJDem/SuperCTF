@@ -16,6 +16,7 @@ func _ready():
 func respawn(n):
 	visible = true; 
 	used = false;
+	type = n;
 	var sprite = load("res://Assets/Items/powerup-" + colors[type] + ".png");
 	$Sprite.set_texture(sprite);
 	
