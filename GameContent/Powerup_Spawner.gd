@@ -6,7 +6,7 @@ extends Node2D
 # 4 = Dash rateup
 
 var colors = ["black", "g","b","r","p","y"];
-var powerup_used = false;
+var powerup_used = true;
 var powerup_type = 1;
 
 func _ready():
@@ -17,6 +17,8 @@ func _ready():
 		$Spawner_Timer.wait_time = 5;
 		var n = randi()%4+1; #%11+1 means random number 1-10
 		spawn_powerup(n);
+	else:
+		_used();
 
 func _round_started():
 	$Spawner_Timer.stop();
