@@ -21,7 +21,7 @@ func _ready():
 	else:
 		if !get_tree().is_network_server():
 			print("REQUESTING AN UPDATE");
-			rpc_id(1, "request_update");
+			rpc("request_update");
 
 func _round_started():
 	_used();
