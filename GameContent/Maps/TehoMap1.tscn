@@ -32,10 +32,12 @@ __meta__ = {
 
 [node name="YSort" type="YSort" parent="."]
 
-[node name="Powerup_Spawner" parent="YSort" instance=ExtResource( 3 )]
+[node name="Powerup_Parent" type="Node2D" parent="YSort"]
+
+[node name="Powerup_Spawner1" parent="YSort/Powerup_Parent" instance=ExtResource( 3 )]
 position = Vector2( -0.23691, 299.311 )
 
-[node name="Powerup_Spawner2" parent="YSort" instance=ExtResource( 3 )]
+[node name="Powerup_Spawner2" parent="YSort/Powerup_Parent" instance=ExtResource( 3 )]
 position = Vector2( 0.812893, -298.902 )
 z_index = -1000
 

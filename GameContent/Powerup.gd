@@ -1,6 +1,5 @@
 extends Node2D
 
-var spawner;
 var used = false;
 var type = 1;
 
@@ -13,21 +12,27 @@ var colors = ["black", "g","b","r","p","y"];
 
 func _ready():
 	$Animation_Timer.connect("timeout",self,"_animation_timer_ended");
+
+func respawn(n):
+	visible = true; 
+	used = false;
 	var sprite = load("res://Assets/Items/powerup-" + colors[type] + ".png");
 	$Sprite.set_texture(sprite);
-
+	
 func _animation_timer_ended():
 	$Sprite.frame = ($Sprite.frame + 1)%$Sprite.hframes;
 
 remotesync func die():
-	call_deferred("queue_free");
+	visible = false; 
+	used = true;
 
 func _used():
 	used = true;
+	visible = false; 
 	if Globals.testing:
-		spawner._powerup_taken();
+		get_parent()._powerup_taken();
 		die();
 	else:
 		rpc("die");
 	if get_tree().is_network_server():
-		spawner.rpc("_powerup_taken");
+		get_parent().rpc("_powerup_taken");

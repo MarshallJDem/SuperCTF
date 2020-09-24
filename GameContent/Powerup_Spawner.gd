@@ -1,10 +1,5 @@
 extends Node2D
 
-var spawner_id = 0;
-
-var Powerup = preload("res://GameContent/Powerup.tscn");
-
-
 func _ready():
 	get_tree().get_root().get_node("MainScene/NetworkController").connect("round_started", self, "_round_started");
 	$Spawner_Timer.connect("timeout", self, "_spawner_timer_ended");
@@ -23,13 +18,7 @@ func _process(delta):
 		$Text.bbcode_text = "[center][color=black]" + str(int($Spawner_Timer.time_left) + 1);
 
 remotesync func spawn_powerup(n):
-	print("SPAWNING POWERUP");
-	var powerup = Powerup.instance();
-	powerup.position = position + Vector2(0, -15);
-	powerup.type = n;
-	powerup.spawner = self;
-	powerup.name = name + "_PowerupInstance";
-	get_tree().get_root().get_node("MainScene").call_deferred("add_child", powerup);
+	$Powerup.respawn(n);
 	
 remotesync func _powerup_taken():
 	$Spawner_Timer.start();
