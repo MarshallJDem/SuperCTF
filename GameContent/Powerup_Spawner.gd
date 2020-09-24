@@ -21,7 +21,7 @@ func _ready():
 		var n = randi()%4+1; #%11+1 means random number 1-10
 		spawn_powerup(n);
 
-func connected_to_server():
+func _connected_to_server():
 	if !get_tree().is_network_server() and !Globals.testing:
 		rpc("request_update");
 func _round_started():
