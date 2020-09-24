@@ -139,11 +139,12 @@ func collided_with_powerup_body(powerup_parent):
 	if get_tree().get_root().get_node("MainScene/NetworkController").round_is_ended: return;
 	var player = get_parent();
 	# Ignore if this powerup is currently already used
-	if powerup_parent.used:
+	if powerup_parent.powerup_used:
 		return;
-	powerup_parent.rpc("_used");
 	if Globals.testing:
+		powerup_parent._used();
 		player.enable_powerup(powerup_parent.powerup_type);
 	else:
+		powerup_parent.rpc("_used");
 		player.rpc("enable_powerup", powerup_parent.powerup_type);
 

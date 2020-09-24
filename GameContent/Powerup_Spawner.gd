@@ -20,6 +20,7 @@ func _ready():
 		spawn_powerup(n);
 	else:
 		if !get_tree().is_network_server():
+			print("REQUESTING AN UPDATE");
 			rpc_id(1, "request_update");
 
 func _round_started():
@@ -37,14 +38,17 @@ remotesync func spawn_powerup(n):
 	powerup_type = n;
 	var sprite = load("res://Assets/Items/powerup-" + colors[powerup_type] + ".png");
 	$Powerup.set_texture(sprite);
+	$Spawner_Timer.stop();
 
 # Called by cllient on server to ask for an update on the spawner state
 remote func request_update():
 	var id = get_tree().get_rpc_caller_id();
+	print("this dude wants AN UPDATE??");
 	rpc_id(id, "receive_update",$Spawner_Timer.time_left,powerup_type,powerup_used, $Powerup.visible);
 
 # Called by the server on the client to send them details on current state
 remote func receive_update(time_left, type, used, v):
+	print("WOWZ I GOT MY UPDATE :OOOO");
 	powerup_used = used;
 	powerup_type = type;
 	$Powerup.visible = v;
