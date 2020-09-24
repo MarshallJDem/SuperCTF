@@ -14,7 +14,9 @@ font_data = ExtResource( 1 )
 radius = 11.3411
 height = 8.61446
 
-[node name="Powerup_Spawner" type="Node2D"]
+[node name="Powerup_Spawner" type="Node2D" groups=[
+"Powerups",
+]]
 z_index = -50
 script = ExtResource( 3 )
 
