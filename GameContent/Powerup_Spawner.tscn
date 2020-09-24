@@ -1,9 +1,8 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://fonts/pixel.TTF" type="DynamicFontData" id=1]
 [ext_resource path="res://Assets/Items/powerup_spawner.png" type="Texture" id=2]
 [ext_resource path="res://GameContent/Powerup_Spawner.gd" type="Script" id=3]
-[ext_resource path="res://GameContent/Powerup.gd" type="Script" id=4]
 [ext_resource path="res://Assets/Items/powerup-g.png" type="Texture" id=5]
 
 [sub_resource type="DynamicFont" id=1]
@@ -42,27 +41,24 @@ texture = ExtResource( 2 )
 wait_time = 20.0
 one_shot = true
 
-[node name="Powerup" type="Node2D" parent="." groups=[
-"Powerups",
-]]
+[node name="Powerup" type="Sprite" parent="."]
 position = Vector2( 0, -15 )
 scale = Vector2( 2, 2 )
-script = ExtResource( 4 )
-
-[node name="Sprite" type="Sprite" parent="Powerup"]
 texture = ExtResource( 5 )
 hframes = 4
 
-[node name="Area2D" type="Area2D" parent="Powerup" groups=[
+[node name="Animation_Timer" type="Timer" parent="."]
+wait_time = 0.1
+autostart = true
+
+[node name="Area2D" type="Area2D" parent="." groups=[
 "Powerup_Bodies",
 ]]
+position = Vector2( 0, -15 )
+scale = Vector2( 2, 2 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Powerup/Area2D" groups=[
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" groups=[
 "Powerup_Bodies",
 ]]
 position = Vector2( 0.0852585, 1.10835 )
 shape = SubResource( 2 )
-
-[node name="Animation_Timer" type="Timer" parent="Powerup"]
-wait_time = 0.1
-autostart = true

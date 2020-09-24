@@ -141,9 +141,9 @@ func collided_with_powerup_body(powerup_parent):
 	# Ignore if this powerup is currently already used
 	if powerup_parent.used:
 		return;
-	powerup_parent._used();
+	powerup_parent.rpc("_used");
 	if Globals.testing:
-		player.enable_powerup(powerup_parent.type);
+		player.enable_powerup(powerup_parent.powerup_type);
 	else:
-		player.rpc("enable_powerup", powerup_parent.type);
+		player.rpc("enable_powerup", powerup_parent.powerup_type);
 
