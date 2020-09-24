@@ -22,6 +22,18 @@ func _ready():
 		if !get_tree().is_network_server():
 			print("REQUESTING AN UPDATE");
 			rpc("request_update");
+			print("REQUESTING TEST1");
+			rpc("test1");
+			print("REQUESTING TEST2");
+			rpc("test2");
+			print("REQUESTING TEST1");
+			rpc_id(1, "test1");
+			print("REQUESTING TEST2");
+			rpc_id(1, "test2");
+			print("REQUESTING TEST1");
+			rpc_id(0, "test1");
+			print("REQUESTING TEST2");
+			rpc_id(0, "test2");
 
 func _round_started():
 	_used();
@@ -39,6 +51,12 @@ remotesync func spawn_powerup(n):
 	var sprite = load("res://Assets/Items/powerup-" + colors[powerup_type] + ".png");
 	$Powerup.set_texture(sprite);
 	$Spawner_Timer.stop();
+
+remote func test1():
+	print("receiving test1");
+
+puppet func test2():
+	print("receiving test2");
 
 # Called by cllient on server to ask for an update on the spawner state
 master func request_update():
