@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=2]
+[gd_scene load_steps=38 format=2]
 
 [ext_resource path="res://GameContent/Main.gd" type="Script" id=1]
 [ext_resource path="res://GameContent/Player.tscn" type="PackedScene" id=2]
@@ -41,6 +41,11 @@ bg_color = Color( 0, 0, 0, 0 )
 content_margin_left = 8.0
 content_margin_top = 8.0
 bg_color = Color( 1, 1, 1, 0 )
+
+[sub_resource type="DynamicFont" id=8]
+size = 12
+outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
+font_data = ExtResource( 25 )
 
 [sub_resource type="DynamicFont" id=4]
 size = 18
@@ -116,6 +121,28 @@ custom_styles/normal = SubResource( 3 )
 custom_fonts/normal_font = ExtResource( 5 )
 bbcode_enabled = true
 bbcode_text = "[chat]"
+scroll_active = false
+scroll_following = true
+custom_effects = [ ExtResource( 19 ) ]
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Kill_Feed" type="RichTextLabel" parent="Chat_Layer"]
+modulate = Color( 1, 1, 1, 0.815686 )
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -1000.0
+margin_right = -20.0
+margin_bottom = 261.0
+rect_clip_content = false
+mouse_filter = 2
+custom_styles/normal = SubResource( 3 )
+custom_fonts/normal_font = SubResource( 8 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[right][color=red]carshalljd [color=black] killed [color=blue] Rhizersc2"
+text = "carshalljd  killed  Rhizersc2"
 scroll_active = false
 scroll_following = true
 custom_effects = [ ExtResource( 19 ) ]

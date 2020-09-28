@@ -153,6 +153,7 @@ func _screen_resized():
 	$"../Chat_Layer/Line_Edit".rect_scale= Vector2(1,1);
 	$"../Chat_Layer/Chat_Box".margin_bottom = window_size.y * (0.6);
 	$"../Chat_Layer/Chat_Box".margin_top = 73;
+	$"../Chat_Layer/Kill_Feed".get_font("normal_font").size = 16;
 	$"../Chat_Layer/Options_Button".rect_scale = Vector2(0.5,0.5);
 	$Cancel_Button.rect_scale = Vector2(0.5,0.5);
 	if window_size.x < 500 or window_size.y < 200:
@@ -170,6 +171,7 @@ func _screen_resized():
 		$Alert_Text.get_font("normal_font").size =48;
 		$Alert_Text.margin_top = $Skirmish_Subtext.margin_top + 140;
 		$"../Chat_Layer/Chat_Box".rect_scale = Vector2(2,2);
+		$"../Chat_Layer/Kill_Feed".get_font("normal_font").size = 24;
 		$"../Chat_Layer/Line_Edit".rect_scale = Vector2(2,2);
 		$"../Chat_Layer/Options_Button".rect_scale = Vector2(1,1);
 		$Cancel_Button.rect_scale = Vector2(1,1);
@@ -183,6 +185,25 @@ func _screen_resized():
 func _options_button_clicked():
 	Globals.toggle_options_menu();
 	$"../Chat_Layer/Options_Button".release_focus();
+
+func add_to_kill_feed(string):
+	$"../Chat_Layer/Kill_Feed".bbcode_text += string + "\n";
+	var timer = Timer.new()
+	timer.wait_time = 5.0;
+	timer.one_shot = true;
+	timer.connect("timeout",self,"remove_line_from_kill_feed", timer);
+	timer.start();
+
+func remove_line_from_kill_feed(timer):
+	var string = $"../Chat_Layer/Kill_Feed".bbcode_text;
+	var index = string.find("\n");
+	if index != -1:
+		if index + 2 < string.length():
+			string.substr(index + 2);
+		else:
+			string = "";
+	$"../Chat_Layer/Kill_Feed".bbcode_text = string;
+	timer.queue_free();
 
 # Color 0 = blue, 1 = red
 func set_big_label_text(text, color):

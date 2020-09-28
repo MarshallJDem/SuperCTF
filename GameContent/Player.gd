@@ -374,11 +374,14 @@ func hit_by_projectile(attacker_id, projectile_type):
 		die();
 		var attacker_team_id = get_tree().get_root().get_node("MainScene/NetworkController").players[attacker_id]["team_id"]
 		var attacker_name = get_tree().get_root().get_node("MainScene/NetworkController").players[attacker_id]["name"]
+		var color_1 = "red"
+		var color_2 = "blue"
+		if team_id == 1:
+			color_1 = "blue";
+			color_2 = "red";
 		if attacker_id == Globals.localPlayerID:
-			var color = "blue"
-			if team_id == 1:
-				color = "red";
-			get_tree().get_root().get_node("MainScene/UI_Layer").set_alert_text("[center][color=black]KILLED [color=" + color +"]" + player_name);
+			get_tree().get_root().get_node("MainScene/UI_Layer").set_alert_text("[center][color=black]KILLED [color=" + color_2 +"]" + player_name);
+		get_tree().get_root().get_node("MainScene/UI_Layer").add_to_kill_feed("[right][color=" + color_1 + "]" + attacker_name + "[color=black]KILLED [color=" + color_2 +"]" + player_name);
 		if is_network_master():
 			get_tree().get_root().get_node("MainScene/UI_Layer").set_big_label_text("KILLED BY\n" + str(attacker_name), attacker_team_id);
 			camera_ref.get_parent().remove_child(camera_ref);
