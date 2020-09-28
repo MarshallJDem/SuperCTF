@@ -31,6 +31,8 @@ func _ready():
 	$Lag_Comp_Timer.start();
 	$Detonation_Timer.start();
 	$Area2D.monitorable = false;
+	
+
 func _detonation_timer_ended():
 	detonate();
 
@@ -78,6 +80,7 @@ func _draw():
 func _physics_process(delta):
 	if !is_blank:
 		move(delta);
+
 var previous_compensation_progress = 0.0;
 # Given an amount of delta time, moves the bullet in its trajectory direction using its speed
 func move(d):
@@ -97,6 +100,7 @@ func move(d):
 	elif puppet_state == Puppet_State.Server:
 		total_compensation = 0;
 		
+	print(progress_delta * total_compensation);
 	deltatime += progress_delta * total_compensation;
 	var collision = move_and_collide(direction * deltatime * speed);
 	if collision:
