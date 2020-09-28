@@ -163,25 +163,26 @@ func shoot_on_inputs():
 						$CollisionTester.position = get_node("Bullet_Starts/" + String(player.look_direction)).position;
 						var forcefield_test = $CollisionTester.move_and_collide(direction * 0.0);
 						
+						var time_shot = OS.get_system_time_msecs() - Globals.match_start_time;
 						# If it was inside a forcefield, fire a local blank
 						if forcefield_test and forcefield_test.collider.is_in_group("Forcefield_Bodies"):
-							shoot_demo(direction, demos_shot, true);
+							shoot_demo(direction, demos_shot,time_shot, true);
 						else: #Otherwise fire a real shot
 							var angle = PI / 8.0;
 							var direction2 = Vector2((cos(angle) * direction.x) - (sin(angle) * direction.y),(sin(angle) * direction.x) + (cos(angle) * direction.y));
 							var direction3 = Vector2((cos(-angle) * direction.x) - (sin(-angle) * direction.y),(sin(-angle) * direction.x) + (cos(-angle) * direction.y));
 							if !Globals.testing:
-								rpc("shoot_demo", direction,demos_shot);
+								rpc("shoot_demo", direction,demos_shot, time_shot);
 								if ult_active:
-									rpc("shoot_demo", direction2,demos_shot);
-									rpc("shoot_demo", direction3,demos_shot);
+									rpc("shoot_demo", direction2,demos_shot,time_shot);
+									rpc("shoot_demo", direction3,demos_shot,time_shot);
 							else:
-								shoot_demo(direction,demos_shot);
+								shoot_demo(direction,demos_shot,time_shot);
 								if ult_active:
-									shoot_demo(direction2,demos_shot);
-									shoot_demo(direction3,demos_shot);
+									shoot_demo(direction2,demos_shot,time_shot);
+									shoot_demo(direction3,demos_shot,time_shot);
 
-remotesync func shoot_demo(d, shots, is_blank = false):
+remotesync func shoot_demo(d, shots, time_shot, is_blank = false):
 	$Cooldown_Timer.start();
 	$Shoot_Animation_Timer.start();
 	
@@ -203,7 +204,7 @@ remotesync func shoot_demo(d, shots, is_blank = false):
 	
 	# Initialize Bullet
 	var node = Demo.instance();
-	node.original_time_shot = OS.get_system_time_msecs() - Globals.match_start_time;
+	node.original_time_shot = time_shot;
 	node.position = start_pos;
 	node.direction = direction;
 	node.team_id = player.team_id;
