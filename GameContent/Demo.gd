@@ -19,6 +19,8 @@ func _ready():
 	#$Animation_Timer.connect("timeout", self, "_animation_timer_ended");
 	# If the master of this bullet is not the local master player, then this is a puppet
 	puppet_time_shot = OS.get_system_time_msecs() - Globals.match_start_time;
+	
+	print("Demo shot time : " + str(puppet_time_shot) + " : " + str(original_time_shot));
 	if !Globals.testing and get_tree().get_network_unique_id() != get_network_master():
 		if get_tree().is_network_server():
 			puppet_state = Puppet_State.Server;
@@ -100,7 +102,7 @@ func move(d):
 	elif puppet_state == Puppet_State.Server:
 		total_compensation = 0;
 		
-	print(progress_delta * total_compensation);
+	print(total_compensation);
 	deltatime += progress_delta * total_compensation;
 	var collision = move_and_collide(direction * deltatime * speed);
 	if collision:
