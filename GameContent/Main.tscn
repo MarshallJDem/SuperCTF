@@ -141,8 +141,6 @@ custom_styles/normal = SubResource( 3 )
 custom_fonts/normal_font = SubResource( 8 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
-bbcode_text = "[right][color=red]carshalljd [color=black] killed [color=blue] Rhizersc2"
-text = "carshalljd  killed  Rhizersc2"
 scroll_active = false
 scroll_following = true
 custom_effects = [ ExtResource( 19 ) ]
