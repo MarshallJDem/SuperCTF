@@ -24,6 +24,7 @@ func _ready():
 			puppet_state = Puppet_State.Server;
 		else:
 			puppet_state = Puppet_State.Puppet;
+			print("HERE" + str((puppet_time_shot-original_time_shot)/1000.0));
 			if (puppet_time_shot-original_time_shot)/1000.0 > $Detonation_Timer.wait_time:
 				call_deferred("queue_free");
 				return;
