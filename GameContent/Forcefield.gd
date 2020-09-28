@@ -28,16 +28,12 @@ func _ready():
 	
 	var puppet_time_placed = OS.get_system_time_msecs() - Globals.match_start_time;
 	
-	print(original_time_placed);
-	print(puppet_time_placed);
-	print((puppet_time_placed-original_time_placed)/1000.0);
-	print($Death_Timer.wait_time);
 	if !Globals.testing and (puppet_time_placed-original_time_placed) > 10:
 		if (puppet_time_placed-original_time_placed)/1000.0 > $Death_Timer.wait_time:
 			call_deferred("queue_free");
 			return;
 		$Death_Timer.wait_time -= (puppet_time_placed-original_time_placed)/1000.0;
-	print($Death_Timer.wait_time);
+	$Death_Timer.start();
 
 func _process(delta):
 	if $Death_Animation_Timer.time_left > 0:
