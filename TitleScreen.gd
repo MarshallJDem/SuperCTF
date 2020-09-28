@@ -97,7 +97,7 @@ func _HTTP_GetLeaderboard_Completed(result, response_code, headers, body):
 
 func _Leaderboard_Refresh_Ended():
 	if $HTTPRequest_GetLeaderboard.get_http_client_status() == 0:
-		$HTTPRequest_GetLeaderboard.request(Globals.mainServerIP + "getLeaderboardData", ["authorization: Bearer " + Globals.userToken]);
+		$HTTPRequest_GetLeaderboard.request(Globals.mainServerIP + "getLeaderboardData", []);
 	
 	
 # Called when the find match HTTP request completes

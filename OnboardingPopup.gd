@@ -13,28 +13,31 @@ func _enter_pressed():
 	var email = $Control/Email_LineEdit.text.strip_edges(true,true);
 	
 	# Sanitize name
-	if !("a" + $Control/Name_LineEdit.text).is_valid_identifier():
-		$Control/Warning_Text.bbcode_text = '[color=red][center]Name can only contain letters, numbers, and "-"';
-		return;
-	if $Control/Name_LineEdit.text.length() < 3:
-		$Control/Warning_Text.bbcode_text = '[color=red][center]Name must be at least 3 characters long';
-		return;
-	# Sanitize password
-	if $Control/Password_LineEdit.text.length() < 8:
-		$Control/Warning_Text.bbcode_text = '[color=red][center]Password must be at least 8 characters long';
+	var regex = RegEx.new()
+	regex.compile("^(?=.{3,15}$)(?!.*[_]{2})[a-zA-Z0-9_]+$")
+	var result = regex.search(n)
+	if !result:
+		$Control/Warning_Text.bbcode_text = '[color=red][center]Name must be 3-15 letters, numbers, or single underscores';
 		return;
 	# Sanitize email
-	var regex = RegEx.new()
+	regex = RegEx.new()
 	regex.compile("^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$")
-	var result = regex.search(email)
+	result = regex.search(email)
 	if !result:
 		$Control/Warning_Text.bbcode_text = '[color=red][center]Please enter a valid E-mail address';
 		return;
-		
+	# Sanitize password
+	regex = RegEx.new()
+	regex.compile("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$");
+	result = regex.search(password)
+	if !result:
+		$Control/Warning_Text.bbcode_text = '[color=red][center]Password must be 8 characters with at least 1 letter and 1 number';
+		return;
+	
 	if $CreateAccount_HTTP.get_http_client_status() == 0:
 		$Control/Warning_Text.bbcode_text = "[color=black][center]Loading...";
 		var query = "?name=" + str(n) + "&email=" + str(email);
-		var body = '{"password" : "' + str($Control/Password_LineEdit.text) + '"}';
+		var body = '{"password" : "' + str(password) + '"}';
 		$CreateAccount_HTTP.request(Globals.mainServerIP + "createAccount" + query, PoolStringArray(), true,2,body);
 	
 

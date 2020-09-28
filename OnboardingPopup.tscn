@@ -28,13 +28,13 @@ outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
 extra_spacing_top = 12
 font_data = ExtResource( 1 )
 
-[sub_resource type="DynamicFont" id=8]
+[sub_resource type="DynamicFont" id=7]
 size = 22
 outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
 extra_spacing_top = 12
 font_data = ExtResource( 1 )
 
-[sub_resource type="DynamicFont" id=7]
+[sub_resource type="DynamicFont" id=8]
 size = 28
 outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
 extra_spacing_top = 5
@@ -172,16 +172,21 @@ __meta__ = {
 }
 
 [node name="Warning_Text" type="RichTextLabel" parent="Control"]
-margin_left = 422.463
-margin_top = 964.626
-margin_right = 1523.46
-margin_bottom = 1021.63
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -550.499
+margin_top = 423.47
+margin_right = 550.499
+margin_bottom = 523.47
 rect_clip_content = false
 custom_fonts/normal_font = SubResource( 5 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
 bbcode_text = "[center][color=gray]Email will be used ONLY for account recovery"
 text = "Email will be used ONLY for account recovery"
+scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -207,7 +212,7 @@ margin_left = 732.336
 margin_top = 708.624
 margin_right = 1214.34
 margin_bottom = 798.619
-custom_fonts/font = SubResource( 8 )
+custom_fonts/font = SubResource( 7 )
 align = 1
 max_length = 20
 placeholder_text = "EAsuxW3in3r"
@@ -222,7 +227,7 @@ margin_left = 732.336
 margin_top = 831.996
 margin_right = 1214.34
 margin_bottom = 921.991
-custom_fonts/font = SubResource( 8 )
+custom_fonts/font = SubResource( 7 )
 align = 1
 max_length = 40
 placeholder_text = "spicy_santa@hotmail.com"
@@ -241,7 +246,7 @@ rect_clip_content = true
 custom_styles/hover = ExtResource( 2 )
 custom_styles/pressed = ExtResource( 4 )
 custom_styles/normal = ExtResource( 3 )
-custom_fonts/font = SubResource( 7 )
+custom_fonts/font = SubResource( 8 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Enter"
 __meta__ = {
@@ -257,7 +262,7 @@ rect_clip_content = true
 custom_styles/hover = ExtResource( 2 )
 custom_styles/pressed = ExtResource( 4 )
 custom_styles/normal = ExtResource( 3 )
-custom_fonts/font = SubResource( 7 )
+custom_fonts/font = SubResource( 8 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Cancel"
 __meta__ = {
