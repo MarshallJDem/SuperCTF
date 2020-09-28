@@ -27,11 +27,11 @@ func _ready():
 	
 	
 	var puppet_time_placed = OS.get_system_time_msecs() - Globals.match_start_time;
-	if !Globals.testing and get_tree().get_network_unique_id() != get_network_master():
+	if !Globals.testing and (puppet_time_placed-original_time_placed) > 10:
 		if (puppet_time_placed-original_time_placed)/1000.0 > $Death_Timer.wait_time:
 			call_deferred("queue_free");
 			return;
-		$Death_Timer.wait_time += -(puppet_time_placed-original_time_placed)/1000.0;
+		$Death_Timer.wait_time -= (puppet_time_placed-original_time_placed)/1000.0;
 
 
 func _process(delta):
