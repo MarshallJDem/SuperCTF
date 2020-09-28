@@ -20,7 +20,10 @@ func _ready():
 	# If the master of this bullet is not the local master player, then this is a puppet
 	puppet_time_shot = OS.get_system_time_msecs() - Globals.match_start_time;
 	
-	print("Demo shot time : " + str(puppet_time_shot) + " : " + str(original_time_shot));
+	print("Demo shot time : ");
+	print(puppet_time_shot);
+	print(original_time_shot);
+	
 	if !Globals.testing and get_tree().get_network_unique_id() != get_network_master():
 		if get_tree().is_network_server():
 			puppet_state = Puppet_State.Server;
