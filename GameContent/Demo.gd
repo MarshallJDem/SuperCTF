@@ -20,13 +20,12 @@ func _ready():
 	# If the master of this bullet is not the local master player, then this is a puppet
 	
 	puppet_time_shot = OS.get_system_time_msecs() - Globals.match_start_time;
-	print(puppet_time_shot - original_time_shot);
+	print(original_time_shot);
 	if !Globals.testing and get_tree().get_network_unique_id() != get_network_master():
 		if get_tree().is_network_server():
 			puppet_state = Puppet_State.Server;
 		else:
 			puppet_state = Puppet_State.Puppet;
-			print(original_time_shot);
 			print("HERE" + str((puppet_time_shot-original_time_shot)/1000.0));
 			if (puppet_time_shot-original_time_shot)/1000.0 > $Detonation_Timer.wait_time:
 				call_deferred("queue_free");
