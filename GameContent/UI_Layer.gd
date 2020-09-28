@@ -191,7 +191,7 @@ func add_to_kill_feed(string):
 	var timer = Timer.new()
 	timer.wait_time = 5.0;
 	timer.one_shot = true;
-	timer.connect("timeout",self,"remove_line_from_kill_feed", timer);
+	timer.connect("timeout",self,"remove_line_from_kill_feed", [timer]);
 	add_child(timer);
 	timer.start();
 
