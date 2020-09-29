@@ -28,10 +28,10 @@ func _enter_pressed():
 		return;
 	# Sanitize password
 	regex = RegEx.new()
-	regex.compile("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$");
+	regex.compile("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z!@#\\$%_+~=\\-&\\*\\?\\d]{8,30}$");
 	result = regex.search(password)
 	if !result:
-		$Control/Warning_Text.bbcode_text = '[color=red][center]Password must be 8 characters with at least 1 letter and 1 number';
+		$Control/Warning_Text.bbcode_text = '[color=red][center]Password must be 8 characters with at least 1 letter and 1 number\nand may contain special characters !@#$%&?*-_+=~';
 		return;
 	
 	if $CreateAccount_HTTP.get_http_client_status() == 0:

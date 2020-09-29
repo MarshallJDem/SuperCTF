@@ -11,18 +11,25 @@ func _enter_pressed():
 	var n = $Control/Name_LineEdit.text;
 	var password = $Control/Password_LineEdit.text;
 	
-	
-	if !("a" + $Control/Name_LineEdit.text).is_valid_identifier():
-		$Control/Warning_Text.bbcode_text = '[color=red][center]Name can only contain letters, numbers, and "-"';
+	# Sanitize name
+	var regex = RegEx.new()
+	regex.compile("^(?=.{3,15}$)(?!.*[_]{2})[a-zA-Z0-9_]+$")
+	var result = regex.search(n)
+	if !result:
+		$Control/Warning_Text.bbcode_text = '[color=red][center]Name must be 3-15 letters, numbers, or single underscores';
 		return;
-	if $Control/Password_LineEdit.text.length() < 8:
-		$Control/Warning_Text.bbcode_text = '[color=red][center]Password must be at least 8 characters long';
+	# Sanitize password
+	regex = RegEx.new()
+	regex.compile("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z!@#\\$%_+~=\\-&\\*\\?\\d]{8,30}$");
+	result = regex.search(password)
+	if !result:
+		$Control/Warning_Text.bbcode_text = '[color=red][center]Password must be 8 characters with at least 1 letter and 1 number\nand may contain special characters !@#$%&?*-_+=~';
 		return;
 	
 	if $Login_HTTP.get_http_client_status() == 0:
 		$Control/Warning_Text.bbcode_text = "[color=black][center]Loading...";
 		var query = "?name=" + str(n);
-		var body = '{"password" : "' + str($Control/Password_LineEdit.text) + '"}';
+		var body = '{"password" : "' + str(password) + '"}';
 		$Login_HTTP.request(Globals.mainServerIP + "loginUser" + query, ["authorization: Bearer "],true,2,body);
 
 func _Login_HTTP_Completed(result, response_code, headers, body):
