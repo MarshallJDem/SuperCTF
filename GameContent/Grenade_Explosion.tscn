@@ -93,14 +93,13 @@ autostart = true
 visible = false
 scale = Vector2( 2, 2 )
 frames = SubResource( 6 )
-frame = 1
+frame = 3
 playing = true
 
 [node name="MainRed" type="AnimatedSprite" parent="."]
 visible = false
 scale = Vector2( 2, 2 )
 frames = SubResource( 11 )
-frame = 2
 playing = true
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]

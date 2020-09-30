@@ -3,7 +3,7 @@
 [ext_resource path="res://GameContent/Bullet.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Weapons/bullet_b.png" type="Texture" id=2]
 [ext_resource path="res://GameContent/Bullet_Area2D.gd" type="Script" id=3]
-[ext_resource path="res://Assets/Sound/Bullet_Shot_1.wav" type="AudioStream" id=4]
+[ext_resource path="res://Assets/Sound/Bullet_Shot_2.wav" type="AudioStream" id=4]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 5.65601
@@ -37,7 +37,6 @@ autostart = true
 
 [node name="Shot_Audio" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 4 )
-volume_db = -6.524
 autoplay = true
 attenuation = 0.287175
 

@@ -5,6 +5,8 @@ var player_id = 1;
 var atlas_blue = preload("res://Assets/Utilities/landmine_B.png");
 var atlas_red = preload("res://Assets/Utilities/landmine_R.png");
 
+var triggered = false;
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$Activation_Timer.connect("timeout", self, "_activation_timer_ended");
@@ -38,9 +40,12 @@ func _activation_timer_ended():
 		modulate = Color(0.0,0.0,0.0,0.0);
 
 remotesync func start_detonation():
+	if triggered:
+		return;
+	triggered = true;
 	modulate = Color(1,1,1,1);
 	$Detonation_Timer.start();
-	
+	$Explosion_Audio.play();
 
 func _detonation_timer_ended():
 	$Explosion_Area2D.monitorable = true;

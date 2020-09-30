@@ -18,6 +18,9 @@ func collided_with_player(player):
 	# If mine and player are on same team, ignore
 	if mine.team_id == player.team_id:
 		return;
+	# If its already been triggered
+	if mine.triggered:
+		return;
 	if Globals.testing:
 		mine.start_detonation();
 	mine.rpc("start_detonation");

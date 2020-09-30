@@ -282,6 +282,7 @@ remotesync func enable_powerup(type):
 	
 	# Only display message if this is our local player
 	if Globals.testing or player_id == Globals.localPlayerID:
+		$Powerup_Audio.play();
 		get_tree().get_root().get_node("MainScene/UI_Layer").set_alert_text("[center]" + text);
 	$PowerupParticles.start(type);
 	$Powerup_Timer.start();
