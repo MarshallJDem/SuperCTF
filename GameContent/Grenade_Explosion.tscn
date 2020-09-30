@@ -1,57 +1,58 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Grenade_Explosion.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Abilities/grenade_explosion_B.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Abilities/forcefield_bottom_B.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Abilities/forcefield_bottom_R.png" type="Texture" id=4]
 [ext_resource path="res://Assets/Abilities/grenade_explosion_R.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Sound/Grenade_Explosion.wav" type="AudioStream" id=6]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 1.0
 
-[sub_resource type="AtlasTexture" id=7]
+[sub_resource type="AtlasTexture" id=2]
 atlas = ExtResource( 2 )
 region = Rect2( 0, 0, 50, 50 )
 
-[sub_resource type="AtlasTexture" id=8]
+[sub_resource type="AtlasTexture" id=3]
 atlas = ExtResource( 2 )
 region = Rect2( 50, 0, 50, 50 )
 
-[sub_resource type="AtlasTexture" id=9]
+[sub_resource type="AtlasTexture" id=4]
 atlas = ExtResource( 2 )
 region = Rect2( 100, 0, 50, 50 )
 
-[sub_resource type="AtlasTexture" id=10]
+[sub_resource type="AtlasTexture" id=5]
 atlas = ExtResource( 2 )
 region = Rect2( 150, 0, 50, 50 )
 
-[sub_resource type="SpriteFrames" id=11]
+[sub_resource type="SpriteFrames" id=6]
 animations = [ {
-"frames": [ SubResource( 7 ), SubResource( 8 ), SubResource( 9 ), SubResource( 10 ) ],
+"frames": [ SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ) ],
 "loop": true,
 "name": "default",
 "speed": 15.0
 } ]
 
-[sub_resource type="AtlasTexture" id=12]
+[sub_resource type="AtlasTexture" id=7]
 atlas = ExtResource( 5 )
 region = Rect2( 0, 0, 50, 50 )
 
-[sub_resource type="AtlasTexture" id=13]
+[sub_resource type="AtlasTexture" id=8]
 atlas = ExtResource( 5 )
 region = Rect2( 50, 0, 50, 50 )
 
-[sub_resource type="AtlasTexture" id=14]
+[sub_resource type="AtlasTexture" id=9]
 atlas = ExtResource( 5 )
 region = Rect2( 100, 0, 50, 50 )
 
-[sub_resource type="AtlasTexture" id=15]
+[sub_resource type="AtlasTexture" id=10]
 atlas = ExtResource( 5 )
 region = Rect2( 150, 0, 50, 50 )
 
-[sub_resource type="SpriteFrames" id=6]
+[sub_resource type="SpriteFrames" id=11]
 animations = [ {
-"frames": [ SubResource( 12 ), SubResource( 13 ), SubResource( 14 ), SubResource( 15 ) ],
+"frames": [ SubResource( 7 ), SubResource( 8 ), SubResource( 9 ), SubResource( 10 ) ],
 "loop": true,
 "name": "default",
 "speed": 15.0
@@ -91,13 +92,19 @@ autostart = true
 [node name="MainBlue" type="AnimatedSprite" parent="."]
 visible = false
 scale = Vector2( 2, 2 )
-frames = SubResource( 11 )
-frame = 2
+frames = SubResource( 6 )
+frame = 1
 playing = true
 
 [node name="MainRed" type="AnimatedSprite" parent="."]
 visible = false
 scale = Vector2( 2, 2 )
-frames = SubResource( 6 )
-frame = 3
+frames = SubResource( 11 )
+frame = 2
 playing = true
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 6 )
+volume_db = 8.0
+pitch_scale = 2.0
+autoplay = true

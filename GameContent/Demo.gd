@@ -57,12 +57,20 @@ remotesync func detonate(from_remote = false):
 
 	$Detonation_Timer.stop();
 	$Death_Timer.start();
+	$Explosion_Audio.play();
 	$Area2D.monitorable = true;
 	speed = 0;
 
 func _death_timer_ended():
+	
+	# Give time for audio to finish
+	$Area2D.monitorable = false;
+	$Area2D.monitoring = false;
+	$Area2D2.monitorable = false;
+	$Area2D2.monitoring = false;
+	visible = false;
+	yield(get_tree().create_timer(1), "timeout");
 	call_deferred("queue_free");
-
 func _process(delta):
 	if $Death_Timer.time_left > 0:
 		var progress = 1.0 - $Death_Timer.time_left/$Death_Timer.wait_time;

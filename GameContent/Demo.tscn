@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://GameContent/Demo.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Weapons/bullet_death_B.png" type="Texture" id=2]
 [ext_resource path="res://GameContent/Demo_Area2D.gd" type="Script" id=3]
-[ext_resource path="res://Assets/Sound/Bullet_Shot_1.wav" type="AudioStream" id=4]
+[ext_resource path="res://Assets/Sound/Demo_Shoot.wav" type="AudioStream" id=4]
+[ext_resource path="res://Assets/Sound/Grenade_Explosion.wav" type="AudioStream" id=5]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 50.0
@@ -45,9 +46,15 @@ one_shot = true
 
 [node name="Shot_Audio" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 4 )
-volume_db = -6.524
+volume_db = 8.0
 autoplay = true
 attenuation = 0.287175
+
+[node name="Explosion_Audio" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 5 )
+volume_db = 8.0
+pitch_scale = 1.5
+attenuation = 2.82843
 
 [node name="Animation_Timer" type="Timer" parent="."]
 wait_time = 0.08

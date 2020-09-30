@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Grenade_Throw.wav-ac2d2c7cb0423c4ee2fa3c49caf44806.sample"
+
+[deps]
+
+source_file="res://Assets/Sound/Grenade_Throw.wav"
+dest_files=[ "res://.import/Grenade_Throw.wav-ac2d2c7cb0423c4ee2fa3c49caf44806.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

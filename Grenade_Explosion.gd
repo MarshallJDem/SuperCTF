@@ -27,6 +27,11 @@ func _draw():
 	#draw_circle(Vector2.ZERO, radius, color);
 
 func _death_timer_ended():
+	# Give time for audio to finish
+	$Area2D.monitorable = false;
+	$Area2D.monitoring = false;
+	visible = false;
+	yield(get_tree().create_timer(1), "timeout");
 	call_deferred("queue_free");
 
 func _flash_timer_ended():

@@ -47,13 +47,15 @@ func collided_with_player(player):
 	# If the player is currently firing a laser. ignore it
 	if player.get_node("Weapon_Node/Laser_Timer").time_left != 0:
 		return;
-	# If this is not a sudden death
-	if !get_tree().get_root().get_node("MainScene/NetworkController").isSuddenDeath:
-		# If this is this player's flag and it's away from home, return it home
-		if !flag.is_at_home and flag.team_id == player.team_id:
+	# If this is this player's flag and it's away from home, return it home
+	if !flag.is_at_home and flag.team_id == player.team_id:
+		# Do it only ff this is not a sudden death
+		if !get_tree().get_root().get_node("MainScene/NetworkController").isSuddenDeath:
 			player.stats["recovers"] += 1;
 			flag.rpc("return_home");
 			return;
+		else: # Otherwise give a warning
+			pass;
 	# Else if this is this player's enemy's flag
 	if flag.team_id != player.team_id:
 		if Globals.testing:
