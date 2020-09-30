@@ -31,23 +31,19 @@ func _process(delta):
 		$Input_GUIs/Move_GUIs.modulate = Color(0,0,0,0);
 		$Input_GUIs/Ability_GUIs.modulate = Color(1,1,1,1);
 	
+	$Skirmish_Subtext.visible = false;
 	if get_tree().get_root().get_node("MainScene/NetworkController").isSkirmish:
 		$Score_Label.bbcode_text = "[center][color=black]SEARCHING " + str(OS.get_system_time_secs() - start_time);
 		$Time_Label.visible = false;
 		$Skirmish_Subtext.visible = true;
 		$Skirmish_Subtext.bbcode_text = "[center][color=black] This is a skirmish lobby for waiting in matchmaking queue."
 		$Cancel_Button.visible = true;
-	if Globals.experimental:
-		$Score_Label.bbcode_text = "";
-		$Skirmish_Subtext.visible = false;
-		$Cancel_Button.visible = false;
-	else:
-		$Skirmish_Subtext.visible = false;
 	if get_tree().get_root().get_node("MainScene/NetworkController").isSuddenDeath:
-		$Score_Label.bbcode_text = "[center]SUDDEN DEATH";
+		$Score_Label.bbcode_text = "[center][color=red]SUDDEN DEATH";
 		$Time_Label.visible = false;
 		$Skirmish_Subtext.visible = true;
-		$Skirmish_Subtext.bbcode_text = "[center][color=green]Special Rules:\n[color=black]Flag cannot be recovered. You can score without your flag home."
+		$Skirmish_Subtext.bbcode_text = "[center][color=black]Flag cannot be recovered. You can score without your flag home."
+	
 	if !Globals.is_typing_in_chat:
 		if Input.is_key_pressed(KEY_E):
 			$"Input_GUIs/Ability_GUIs/E_GUI".frame = 1;
@@ -163,15 +159,18 @@ func _screen_resized():
 		$Input_GUIs.rect_scale = Vector2(0.5,0.5);
 		$Input_GUIs.margin_top = -40;
 		$Alert_Text.get_font("normal_font").size =12;
+		$Skirmish_Subtext.get_font("normal_font").size =12;
 		$Alert_Text.margin_top = $Skirmish_Subtext.margin_top + 35;
 	elif window_size.x <= 1920 or window_size.y <= 1080:
 		$Input_GUIs.rect_scale = Vector2(1,1);
-		$Alert_Text.get_font("normal_font").size =24;
+		$Alert_Text.get_font("normal_font").size =16;
+		$Skirmish_Subtext.get_font("normal_font").size =24;
 		$Input_GUIs.margin_top = -80;
 		$Alert_Text.margin_top = $Skirmish_Subtext.margin_top + 70;
 	else:
 		$Input_GUIs.rect_scale = Vector2(2,2);
 		$Alert_Text.get_font("normal_font").size =48;
+		$Skirmish_Subtext.get_font("normal_font").size =20;
 		$Alert_Text.margin_top = $Skirmish_Subtext.margin_top + 140;
 		$"../Chat_Layer/Chat_Box".rect_scale = Vector2(2,2);
 		$"../Chat_Layer/Kill_Feed".get_font("normal_font").size = 24;

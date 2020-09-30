@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=2]
+[gd_scene load_steps=39 format=2]
 
 [ext_resource path="res://GameContent/Main.gd" type="Script" id=1]
 [ext_resource path="res://GameContent/Player.tscn" type="PackedScene" id=2]
@@ -63,6 +63,11 @@ font_data = ExtResource( 25 )
 
 [sub_resource type="DynamicFont" id=7]
 size = 30
+outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
+font_data = ExtResource( 25 )
+
+[sub_resource type="DynamicFont" id=9]
+size = 8
 outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
 font_data = ExtResource( 25 )
 
@@ -499,7 +504,7 @@ anchor_right = 1.0
 margin_top = 115.462
 margin_bottom = 215.462
 rect_clip_content = false
-custom_fonts/normal_font = ExtResource( 12 )
+custom_fonts/normal_font = SubResource( 9 )
 bbcode_enabled = true
 bbcode_text = "[center][color=black] This is a skirmish lobby for waiting in matchmaking queue."
 text = " This is a skirmish lobby for waiting in matchmaking queue."
