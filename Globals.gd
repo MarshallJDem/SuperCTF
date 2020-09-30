@@ -105,6 +105,7 @@ var HTTPRequest_PollPlayerStatus = HTTPRequest.new();
 var HTTPRequest_GetMatchData = HTTPRequest.new();
 var HTTPRequest_CancelQueue = HTTPRequest.new();
 var HTTPRequest_ConfirmClientConnection = HTTPRequest.new();
+var HTTPRequest_Logout = HTTPRequest.new();
 
 onready var viewport = get_viewport()
 
@@ -128,7 +129,7 @@ func _enter_tree():
 	if arguments.has("isServer"):
 		isServer = true if arguments["isServer"] == "true" else false;
 	if OS.has_feature("editor"):
-		testing = false;
+		testing = true;
 	experimental =  false;#OS.has_feature("debug") and !OS.has_feature("editor");
 	if experimental:
 		get_tree().change_scene("res://GameContent/Main.tscn");
@@ -138,10 +139,12 @@ func _ready():
 	add_child(HTTPRequest_ConfirmClientConnection);
 	add_child(HTTPRequest_GetMatchData);
 	add_child(HTTPRequest_CancelQueue);
+	add_child(HTTPRequest_Logout);
 	HTTPRequest_PollPlayerStatus.connect("request_completed", self, "_HTTP_PollPlayerStatus_Completed");
 	HTTPRequest_ConfirmClientConnection.connect("request_completed", self, "_HTTP_ConfirmClientStatus_Completed");
 	HTTPRequest_GetMatchData.connect("request_completed", self, "_HTTP_GetMatchData_Completed");
 	HTTPRequest_CancelQueue.connect("request_completed", self, "_HTTP_CancelQueue_Completed");
+	HTTPRequest_Logout.connect("request_completed", self, "_HTTPRequest_Logout_Completed");
 
 func _process(delta):
 	if get_tree().get_root().has_node("MainScene/NetworkController"):
@@ -171,14 +174,13 @@ func _HTTP_CancelQueue_Completed(result, response_code, headers, body):
 	if(response_code == 200):
 		pass;
 
-func logout():
+func logout(reload = false):
 	userToken = null;
 	write_save_data();
-	load_save_data();
-	return;
-	JavaScript.eval("location.reload();", true);
 	
-		
+	if reload:
+		JavaScript.eval("location.reload();", true);
+	
 	# Client data
 	localPlayerID = null;
 	localPlayerTeamID = null;
@@ -215,17 +217,28 @@ func logout():
 	last_confirmClientConnection_response = 0;
 	get_tree().change_scene("res://TitleScreen.tscn");
 
+func call_logout_http():
+	if HTTPRequest_Logout.get_http_client_status() == 0:
+		HTTPRequest_Logout.request(Globals.mainServerIP + "logoutUser", ["authorization: Bearer " + Globals.userToken]);
+
+func _HTTPRequest_Logout_Completed(result, response_code, headers, body):
+	if response_code == 200:
+		logout(true);
+	else:
+		print("LOGOUT FAILED");
+		return;
+
 # Polls the player's status
 func _HTTP_PollPlayerStatus_Completed(result, response_code, headers, body):
 	last_pollPlayerStatus_response = OS.get_ticks_msec();
 	if response_code == 401:
-		logout();
+		logout(false);
 		return;
 	if response_code != 200:
 		return;
 	var json = JSON.parse(body.get_string_from_utf8())
 	if json.result.has("logout") and json.result.logout:
-		logout();
+		logout(true);
 		return;
 	if json.result.has("rank"):
 		Globals.player_rank = int(json.result.rank);

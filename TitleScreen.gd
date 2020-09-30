@@ -54,7 +54,7 @@ func join_MM_queue():
 	print("Token : " + Globals.userToken);
 	$HTTPRequest_FindMatch.request(Globals.mainServerIP + "joinMMQueue", ["authorization: Bearer " + Globals.userToken]);
 func logout():
-	Globals.logout();
+	Globals.call_logout_http();
 	
 func start():
 	# If there is a cached user token

@@ -39,7 +39,6 @@ func _enter_pressed():
 		var query = "?name=" + str(n) + "&email=" + str(email);
 		var body = '{"password" : "' + str(password) + '"}';
 		$CreateAccount_HTTP.request(Globals.mainServerIP + "createAccount" + query, PoolStringArray(), true,2,body);
-	
 
 func _CreateAccount_HTTP_Completed(result, response_code, headers, body):
 	if response_code == 200:

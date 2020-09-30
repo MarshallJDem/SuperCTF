@@ -80,7 +80,8 @@ func collided_with_flag_home(flag_home):
 			if each_flag.flag_id == flag_home.flag_id:
 				flag = each_flag;
 		# If this flag_home's flag is not at home, ignore it because you can't score yet
-		if !flag.is_at_home:
+		# It must also not be sudden death B/c you can score without flag being home
+		if !flag.is_at_home and !get_tree().get_root().get_node("MainScene/NetworkController").isSuddenDeath:
 			# Only display message if this is our local player
 			if get_parent().player_id == Globals.localPlayerID:
 				get_tree().get_root().get_node("MainScene/UI_Layer").set_alert_text("[center][color=black]* YOUR FLAG MUST BE HOME TO SCORE *");
