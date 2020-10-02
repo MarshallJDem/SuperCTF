@@ -51,7 +51,6 @@ font_data = ExtResource( 9 )
 [sub_resource type="DynamicFont" id=8]
 size = 40
 outline_size = 2
-outline_color = Color( 1, 0, 0, 1 )
 extra_spacing_top = 9
 font_data = ExtResource( 9 )
 
@@ -362,6 +361,8 @@ __meta__ = {
 }
 
 [node name="Time_Left_Text" type="RichTextLabel" parent="CanvasLayer/Control"]
+anchor_top = -7.62939e-07
+anchor_bottom = -1.52588e-06
 margin_left = -903.422
 margin_top = 476.455
 margin_right = -263.422
@@ -408,9 +409,9 @@ __meta__ = {
 }
 
 [node name="Button_Rematch" type="Button" parent="CanvasLayer/Control"]
-margin_left = -208.575
+margin_left = -208.0
 margin_top = 276.803
-margin_right = 253.425
+margin_right = 252.0
 margin_bottom = 382.803
 custom_styles/hover = SubResource( 9 )
 custom_styles/pressed = SubResource( 10 )

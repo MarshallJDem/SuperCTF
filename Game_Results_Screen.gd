@@ -48,11 +48,10 @@ func _exit_pressed():
 	get_tree().set_network_peer(null);
 	get_tree().change_scene("res://TitleScreen.tscn");
 
-var rematch_vote = false;
-
 func _rematch_pressed():
-	rematch_vote = !rematch_vote;
-	get_tree().get_root().get_node("MainScene/NetworkController").rpc_id(1, "change_DD_vote", rematch_vote);
+	var current_vote = get_tree().get_root().get_node("MainScene/NetworkController").players[Globals.localPlayerID]["DD_vote"];
+	get_tree().get_root().get_node("MainScene/NetworkController").players[Globals.localPlayerID]["DD_vote"] = !current_vote;
+	get_tree().get_root().get_node("MainScene/NetworkController").rpc_id(1, "change_DD_vote", !current_vote);
 
 func setup_stats_visuals():
 	if Globals.testing:
@@ -161,6 +160,16 @@ func _process(_delta):
 		if players[player_id]["DD_vote"]:
 			num_of_votes += 1;
 	$CanvasLayer/Control/DD_Votes.bbcode_text = str(num_of_votes) + "/" + str(players.size()) + " Votes";
+	var current_vote = get_tree().get_root().get_node("MainScene/NetworkController").players[Globals.localPlayerID]["DD_vote"];
+	if current_vote:
+		$CanvasLayer/Control/Button_Rematch.text = "CANCEL";
+		$CanvasLayer/Control/Button_Rematch.rect_size.x = 230;
+		$CanvasLayer/Control/Button_Rematch.rect_position.x = -96;
+	else:
+		$CanvasLayer/Control/Button_Rematch.text = "DOUBLE DOWN";
+		$CanvasLayer/Control/Button_Rematch.rect_size.x = 460;
+		$CanvasLayer/Control/Button_Rematch.rect_position.x = -208;
+		
 	
 	# Time left
 	var timeleft = int(get_parent().get_node("NetworkController/Match_End_Timer").time_left);
