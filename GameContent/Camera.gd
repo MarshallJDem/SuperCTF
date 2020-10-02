@@ -34,7 +34,9 @@ func _screen_resized():
 		s -= 1;
 	if s == 0:
 		s = 1;
-	zoom = Vector2(2.0 / s,2.0 / s);
+	if s > 4:
+		s = 4;
+	zoom = Vector2(2.0 / s, 2.0 / s);
 var smooth_lag_start;
 func lag_smooth(duration = 1, start = 1):
 	smoothing_speed = start;

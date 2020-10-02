@@ -128,7 +128,11 @@ func _process(delta):
 		else:
 			$FindMatchWarning.visible = false;
 	
-	$PartyText.bbcode_text = "[center][color=black]Party Code\n[color=green]" + str(code) + "\n\n[color=black]Members\n[color=green]" + str(players);
+	#$PartyText.bbcode_text = ;
+	$PartyText.clear();
+	$PartyText.append_bbcode("[center][color=black]Party Code\n[color=green]" + str(code) + "\n\n[color=black]Members\n[color=green]" + str(players));
+	$PartyText.selection_enabled = true;
+	$PartyText.update();
 	if Globals.player_party_data and Globals.player_party_data.players.size() > 1:
 		$JoinPartyButton.text = "Leave Party";
 	else:

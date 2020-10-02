@@ -22,18 +22,18 @@
 [ext_resource path="res://Chat_Text.tres" type="RichTextEffect" id=20]
 
 [sub_resource type="DynamicFont" id=1]
-size = 24
-outline_color = Color( 0, 0, 0, 1 )
-extra_spacing_top = 9
-font_data = ExtResource( 18 )
-
-[sub_resource type="DynamicFont" id=2]
 size = 8
 outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
 font_data = ExtResource( 18 )
 
-[sub_resource type="DynamicFont" id=3]
+[sub_resource type="DynamicFont" id=2]
 size = 32
+outline_color = Color( 0, 0, 0, 1 )
+extra_spacing_top = 9
+font_data = ExtResource( 18 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 24
 outline_color = Color( 0, 0, 0, 1 )
 extra_spacing_top = 9
 font_data = ExtResource( 18 )
@@ -91,6 +91,77 @@ __meta__ = {
 script = ExtResource( 9 )
 
 [node name="HTTPRequest_LeaveParty" type="HTTPRequest" parent="UI_Layer"]
+
+[node name="PartyText" type="RichTextLabel" parent="UI_Layer"]
+anchor_left = 0.5
+anchor_top = 0.49966
+anchor_right = 0.5
+anchor_bottom = 0.49966
+margin_left = 478.0
+margin_top = 325.367
+margin_right = 1229.0
+margin_bottom = 664.367
+rect_scale = Vector2( 0.639761, 0.639761 )
+rect_clip_content = false
+focus_mode = 2
+custom_fonts/mono_font = SubResource( 1 )
+custom_fonts/normal_font = SubResource( 2 )
+custom_colors/default_color = Color( 0.368627, 0.368627, 0.368627, 1 )
+bbcode_enabled = true
+bbcode_text = "[center][color=black]Party Code[color=green]
+1232
+
+[color=black]Members[color=green]
+carshalljd
+themuffinman"
+text = "Party Code
+1232
+
+Members
+carshalljd
+themuffinman"
+scroll_active = false
+selection_enabled = true
+custom_effects = [ ExtResource( 20 ) ]
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PartyText2" type="RichTextLabel" parent="UI_Layer"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.49966
+anchor_right = 0.5
+anchor_bottom = 0.49966
+margin_left = 478.0
+margin_top = 325.367
+margin_right = 1229.0
+margin_bottom = 664.367
+rect_scale = Vector2( 0.639761, 0.639761 )
+rect_clip_content = false
+focus_mode = 2
+custom_fonts/mono_font = SubResource( 1 )
+custom_fonts/normal_font = SubResource( 2 )
+custom_colors/default_color = Color( 0.368627, 0.368627, 0.368627, 1 )
+bbcode_enabled = true
+bbcode_text = "[center][color=black]Party Code[color=green]
+1232
+
+[color=black]Members[color=green]
+carshalljd
+themuffinman"
+text = "Party Code
+1232
+
+Members
+carshalljd
+themuffinman"
+scroll_active = false
+selection_enabled = true
+custom_effects = [ ExtResource( 20 ) ]
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Title" type="RichTextLabel" parent="UI_Layer"]
 anchor_left = 0.5
@@ -435,44 +506,9 @@ margin_bottom = 496.948
 custom_styles/hover = ExtResource( 14 )
 custom_styles/pressed = ExtResource( 15 )
 custom_styles/normal = ExtResource( 16 )
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 3 )
 custom_colors/font_color = Color( 0.137255, 0.137255, 0.137255, 1 )
 text = "Join Party"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="PartyText" type="RichTextLabel" parent="UI_Layer"]
-anchor_left = 0.5
-anchor_top = 0.49966
-anchor_right = 0.5
-anchor_bottom = 0.49966
-margin_left = 478.0
-margin_top = 325.367
-margin_right = 1229.0
-margin_bottom = 664.367
-rect_scale = Vector2( 0.639761, 0.639761 )
-rect_clip_content = false
-focus_mode = 2
-custom_fonts/mono_font = SubResource( 2 )
-custom_fonts/normal_font = SubResource( 3 )
-custom_colors/default_color = Color( 0.368627, 0.368627, 0.368627, 1 )
-bbcode_enabled = true
-bbcode_text = "[center][color=black]Party Code[color=green]
-1232
-
-[color=black]Members[color=green]
-carshalljd
-themuffinman"
-text = "Party Code
-1232
-
-Members
-carshalljd
-themuffinman"
-scroll_active = false
-selection_enabled = true
-custom_effects = [ ExtResource( 20 ) ]
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -489,7 +525,7 @@ margin_bottom = 458.761
 rect_scale = Vector2( 0.639761, 0.639761 )
 rect_clip_content = false
 focus_mode = 2
-custom_fonts/mono_font = SubResource( 2 )
+custom_fonts/mono_font = SubResource( 1 )
 custom_fonts/normal_font = SubResource( 4 )
 custom_colors/default_color = Color( 0.368627, 0.368627, 0.368627, 1 )
 bbcode_enabled = true
@@ -619,7 +655,7 @@ script = ExtResource( 3 )
 position = Vector2( 10, -14 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 8 )
-frame = 2
+frame = 3
 playing = true
 
 [node name="Area2D" type="Area2D" parent="UI_Layer/Flags/Flag2" groups=[
