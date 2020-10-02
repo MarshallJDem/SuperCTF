@@ -199,10 +199,11 @@ func add_to_kill_feed(string):
 
 func remove_line_from_kill_feed(timer):
 	var string = $"../Chat_Layer/Kill_Feed".bbcode_text;
+	print("DELETING");
 	var index = string.find("\n");
 	if index != -1:
 		if index + 2 < string.length():
-			string.substr(index + 2);
+			string = string.substr(index + 2);
 		else:
 			string = "";
 	$"../Chat_Layer/Kill_Feed".bbcode_text = string;

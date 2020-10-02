@@ -42,26 +42,26 @@ content_margin_left = 8.0
 content_margin_top = 8.0
 bg_color = Color( 1, 1, 1, 0 )
 
-[sub_resource type="DynamicFont" id=8]
+[sub_resource type="DynamicFont" id=4]
 size = 12
 outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
 font_data = ExtResource( 25 )
 
-[sub_resource type="DynamicFont" id=4]
+[sub_resource type="DynamicFont" id=5]
 size = 18
 outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
 font_data = ExtResource( 25 )
 
-[sub_resource type="DynamicFont" id=5]
+[sub_resource type="DynamicFont" id=6]
 size = 25
 outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 25 )
 
-[sub_resource type="DynamicFont" id=6]
+[sub_resource type="DynamicFont" id=7]
 outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
 font_data = ExtResource( 25 )
 
-[sub_resource type="DynamicFont" id=7]
+[sub_resource type="DynamicFont" id=8]
 size = 30
 outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
 font_data = ExtResource( 25 )
@@ -143,7 +143,7 @@ margin_bottom = 261.0
 rect_clip_content = false
 mouse_filter = 2
 custom_styles/normal = SubResource( 3 )
-custom_fonts/normal_font = SubResource( 8 )
+custom_fonts/normal_font = SubResource( 4 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
 scroll_active = false
@@ -165,7 +165,7 @@ rect_pivot_offset = Vector2( 5.308, 0 )
 custom_styles/hover = ExtResource( 9 )
 custom_styles/pressed = ExtResource( 10 )
 custom_styles/normal = ExtResource( 11 )
-custom_fonts/font = SubResource( 4 )
+custom_fonts/font = SubResource( 5 )
 custom_colors/font_color = Color( 0.172549, 0.172549, 0.172549, 1 )
 text = "Options"
 __meta__ = {
@@ -195,7 +195,7 @@ margin_top = 99.8129
 margin_bottom = 189.813
 rect_clip_content = false
 size_flags_stretch_ratio = 0.0
-custom_fonts/normal_font = SubResource( 5 )
+custom_fonts/normal_font = SubResource( 6 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
 scroll_active = false
@@ -302,7 +302,7 @@ margin_top = -78.1522
 margin_right = 67.1633
 margin_bottom = -56.1522
 rect_pivot_offset = Vector2( -533.113, 40.108 )
-custom_fonts/font = SubResource( 6 )
+custom_fonts/font = SubResource( 7 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "MOVE"
 align = 1
@@ -490,7 +490,7 @@ margin_top = 180.0
 margin_right = 960.0
 margin_bottom = 358.0
 rect_clip_content = false
-custom_fonts/normal_font = SubResource( 7 )
+custom_fonts/normal_font = SubResource( 8 )
 bbcode_enabled = true
 bbcode_text = "[center][color=black] KILLED"
 text = " KILLED"
@@ -533,7 +533,7 @@ rect_scale = Vector2( 0.5, 0.5 )
 custom_styles/hover = ExtResource( 9 )
 custom_styles/pressed = ExtResource( 10 )
 custom_styles/normal = ExtResource( 11 )
-custom_fonts/font = SubResource( 4 )
+custom_fonts/font = SubResource( 5 )
 custom_colors/font_color = Color( 0.172549, 0.172549, 0.172549, 1 )
 text = "Cancel"
 __meta__ = {
