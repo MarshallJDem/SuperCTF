@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=2]
+[gd_scene load_steps=31 format=2]
 
 [ext_resource path="res://TitleScreen.gd" type="Script" id=1]
 [ext_resource path="res://GameContent/Flag.tscn" type="PackedScene" id=2]
@@ -20,6 +20,7 @@
 [ext_resource path="res://fonts/pixel.TTF" type="DynamicFontData" id=18]
 [ext_resource path="res://Assets/Sound/CTFTitlescreen.ogg" type="AudioStream" id=19]
 [ext_resource path="res://Chat_Text.tres" type="RichTextEffect" id=20]
+[ext_resource path="res://Assets/GUI/pumpkin.png" type="Texture" id=21]
 
 [sub_resource type="DynamicFont" id=1]
 size = 8
@@ -655,7 +656,7 @@ script = ExtResource( 3 )
 position = Vector2( 10, -14 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 8 )
-frame = 3
+frame = 2
 playing = true
 
 [node name="Area2D" type="Area2D" parent="UI_Layer/Flags/Flag2" groups=[
@@ -679,3 +680,7 @@ autostart = true
 [node name="Headline_Update_Timer" type="Timer" parent="."]
 wait_time = 0.1
 autostart = true
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 1753.17, 689.402 )
+texture = ExtResource( 21 )
