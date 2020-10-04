@@ -17,7 +17,6 @@ var allowCommands = true;
 var useSecure = true;
 var gameserverStatus = 0;
 
-
 # Client data
 var localPlayerID;
 var localPlayerTeamID;
@@ -30,6 +29,7 @@ var player_status = 0;
 var player_party_data;
 var player_uid;
 var knownPartyData;
+
 # At the end of a match its hard to tell whether the current stored data for player MMR
 # is from before or after the match results. This keeps track of what it was before.
 var player_old_MMR = -1;
@@ -129,7 +129,7 @@ func _enter_tree():
 	if arguments.has("isServer"):
 		isServer = true if arguments["isServer"] == "true" else false;
 	if OS.has_feature("editor"):
-		testing = false;
+		testing = true;
 	experimental =  false;#OS.has_feature("debug") and !OS.has_feature("editor");
 	if experimental:
 		get_tree().change_scene("res://GameContent/Main.tscn");
