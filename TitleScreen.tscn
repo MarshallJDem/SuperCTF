@@ -682,5 +682,6 @@ wait_time = 0.1
 autostart = true
 
 [node name="Sprite" type="Sprite" parent="."]
+visible = false
 position = Vector2( 1753.17, 689.402 )
 texture = ExtResource( 21 )
