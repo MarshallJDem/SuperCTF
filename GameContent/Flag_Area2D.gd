@@ -41,6 +41,7 @@ func collided_with_player(player):
 	# If the player is not alive, ignore it
 	if !player.alive:
 		return;
+	# Comment
 	# If this is this player's flag and it already safe, then ignore it
 	if flag.is_at_home and flag.team_id == player.team_id:
 		return
