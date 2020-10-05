@@ -312,24 +312,26 @@ custom_colors/default_color = Color( 0.368627, 0.368627, 0.368627, 1 )
 bbcode_enabled = true
 bbcode_text = "[color=black]NEWS:
 
-The game is planned to release approx  [rainbow]Oct 1st![/rainbow] Any final feature suggestions or bugs should be reported onto the discord ASAP!
+The game is now [rainbow]OFFICIALLY RELEASED[/rainbow] as of Oct 1st! Welcome to Super[color=red]CTF[color=black]!
+
+Tournaments hosted every Wednesday at 7PM PST and also at 7PM BST. Join the discord for more info.
 
 Discord Link:[color=blue] [url]https://discord.gg/D3Ban34[/url][color=black]
 Twitter:[color=blue] [url]https://twitter.com/SuperCTFGame[/url][color=black]
 
 We are looking for people to get involved and make suggestions or help build the game. Join our discord or email me to get involved!
-
-- Carshalljd (add me on discord [color=black]carshalljd#4808[color=black] or email me at [color=black]marshalljdem@gmail.com[color=black])"
+- Carshalljd (Discord [color=black]carshalljd#4808[color=black] or Email [color=black]marshall@superctf.com[color=black])"
 text = "NEWS:
 
-The game is planned to release approx  Oct 1st! Any final feature suggestions or bugs should be reported onto the discord ASAP!
+The game is now OFFICIALLY RELEASED as of Oct 1st! Welcome to SuperCTF!
+
+Tournaments hosted every Wednesday at 7PM PST and also at 7PM BST. Join the discord for more info.
 
 Discord Link: https://discord.gg/D3Ban34
 Twitter: https://twitter.com/SuperCTFGame
 
 We are looking for people to get involved and make suggestions or help build the game. Join our discord or email me to get involved!
-
-- Carshalljd (add me on discord carshalljd#4808 or email me at marshalljdem@gmail.com)"
+- Carshalljd (Discord carshalljd#4808 or Email marshall@superctf.com)"
 scroll_active = false
 selection_enabled = true
 custom_effects = [ ExtResource( 20 ) ]
@@ -656,7 +658,7 @@ script = ExtResource( 3 )
 position = Vector2( 10, -14 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 8 )
-frame = 2
+frame = 1
 playing = true
 
 [node name="Area2D" type="Area2D" parent="UI_Layer/Flags/Flag2" groups=[
