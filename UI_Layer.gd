@@ -107,6 +107,7 @@ func set_view(state):
 	current_state = state;
 
 func _process(delta):
+	$MOTDText.bbcode_text = OS.get_name() + "\n" + String(OS.has_touchscreen_ui_hint());
 	var code = "";
 	var players = "";
 	if Globals.player_party_data != null:
