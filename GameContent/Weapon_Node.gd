@@ -134,12 +134,11 @@ func shoot_on_inputs():
 		return;
 	player.has_moved_after_respawn = true;
 	# Check for mouse input
-	
-	if (Globals.control_scheme == Globals.Control_Schemes.keyboard and Input.is_action_pressed("clickL")) or (Globals.control_scheme == Globals.Control_Schemes.touchscreen and get_tree().get_root().get_node("MainScene/UI_Layer/Shoot_Stick").pressed):
+	if (Globals.control_scheme == Globals.Control_Schemes.keyboard and Input.is_action_pressed("clickL")) or (Globals.control_scheme == Globals.Control_Schemes.touchscreen and get_tree().get_root().get_node("MainScene/UI_Layer/Shoot_Stick").stick_vector != Vector2(0,0)):
 		
 		var direction = ((get_global_mouse_position() - global_position).normalized());
 		if Globals.control_scheme == Globals.Control_Schemes.touchscreen:
-			direction = get_tree().get_root().get_node("MainScene/UI_Layer/Shoot_Stick").stick_vector;
+			direction = get_tree().get_root().get_node("MainScene/UI_Layer/Shoot_Stick").stick_vector.normalized();
 		# Only accepts clicks if we're not aiming a laser
 		if $Laser_Timer.time_left == 0:
 			if !player.attempt_drop_flag():
