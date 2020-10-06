@@ -224,9 +224,12 @@ remotesync func teleport(start, end):
 # Checks the current pressed keys and calculates a new player position using the KinematicBody2D
 func move_on_inputs(teleport = false):
 	var input = Vector2(0,0);
-	input.x = (1 if Input.is_key_pressed(KEY_D) else 0) - (1 if Input.is_key_pressed(KEY_A) else 0)
-	input.y = (1 if Input.is_key_pressed(KEY_S) else 0) - (1 if Input.is_key_pressed(KEY_W) else 0)
-	input = input.normalized();
+	if Globals.control_scheme == Globals.Control_Schemes.touchscreen:
+		input = get_tree().get_root().get_node("MainScene/UI_Layer/Move_Stick").stick_vector / get_tree().get_root().get_node("MainScene/UI_Layer/Move_Stick").radius_big;
+	else:
+		input.x = (1 if Input.is_key_pressed(KEY_D) else 0) - (1 if Input.is_key_pressed(KEY_A) else 0)
+		input.y = (1 if Input.is_key_pressed(KEY_S) else 0) - (1 if Input.is_key_pressed(KEY_W) else 0)
+		input = input.normalized();
 	last_movement_input = input;
 	if teleport or (input.x != 0 or input.y != 0):
 		has_moved_after_respawn = true;
