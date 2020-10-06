@@ -550,7 +550,6 @@ __meta__ = {
 }
 
 [node name="Move_Stick" type="Button" parent="UI_Layer"]
-anchor_top = 0.1
 anchor_right = 0.5
 anchor_bottom = 1.0
 custom_styles/hover = SubResource( 10 )
@@ -563,6 +562,22 @@ script = ExtResource( 30 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Shoot_Stick" type="Button" parent="UI_Layer"]
+anchor_left = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_styles/hover = SubResource( 10 )
+custom_styles/pressed = SubResource( 11 )
+custom_styles/focus = SubResource( 13 )
+custom_styles/normal = SubResource( 12 )
+action_mode = 0
+keep_pressed_outside = true
+script = ExtResource( 30 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+is_move = false
 
 [node name="Score_Audio" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 22 )
