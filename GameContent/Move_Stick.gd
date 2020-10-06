@@ -31,13 +31,14 @@ func _input(event):
 			vector = vector.normalized();
 			stick_vector = vector * (min(magnitude, radius_big));
 func _process(_delta):
-	
-	radius_big = OS.get_window_size().y/6
+	if Globals.control_scheme != Globals.Control_Schemes.touchscreen:
+		return;
+	radius_big = OS.get_window_size().y/10
 	radius_small = radius_big / 3;
 	if is_move:
-		origin = Vector2((radius_big + margin.x), rect_size.y - (radius_big * 1.5));
+		origin = Vector2((radius_big + margin.x + 50), rect_size.y - ((radius_big * 1.5) + 50));
 	else:
-		origin = Vector2(rect_size.x - (radius_big + margin.x), rect_size.y - (radius_big * 1.5));
+		origin = Vector2(rect_size.x - (radius_big + margin.x + 50), rect_size.y - ((radius_big * 1.5) + 50));
 		
 	update();
 	

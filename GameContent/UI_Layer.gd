@@ -20,17 +20,28 @@ func _process(delta):
 	elif show_move_gui == true:
 		show_move_gui = false;
 		$Move_GUI_Fade_Timer.start();
+	
 	if show_move_gui:
 		$Input_GUIs/Move_GUIs.modulate = Color(1,1,1,1);
 		$Input_GUIs/Ability_GUIs.modulate = Color(0,0,0,0);
+		$Shoot_Stick.modulate = Color(0,0,0,0);
 	elif $Move_GUI_Fade_Timer.time_left > 0:
 		var progress = 1 - ($Move_GUI_Fade_Timer.time_left / $Move_GUI_Fade_Timer.wait_time);
 		$Input_GUIs/Move_GUIs.modulate = Color(1,1,1,1-progress);
 		$Input_GUIs/Ability_GUIs.modulate = Color(1,1,1,progress);
+		$Shoot_Stick.modulate = Color(1,1,1,progress);
 	else:
 		$Input_GUIs/Move_GUIs.modulate = Color(0,0,0,0);
 		$Input_GUIs/Ability_GUIs.modulate = Color(1,1,1,1);
+		$Shoot_Stick.modulate = Color(1,1,1,1);
 	
+	if Globals.control_scheme == Globals.Control_Schemes.touchscreen:
+		$Shoot_Stick.visible = true;
+		$Move_Stick.visible = true;
+	else:
+		$Shoot_Stick.visible = false;
+		$Move_Stick.visible = false;
+		
 	$Skirmish_Subtext.visible = false;
 	if get_tree().get_root().get_node("MainScene/NetworkController").isSkirmish:
 		$Score_Label.bbcode_text = "[center][color=black]SEARCHING " + str(OS.get_system_time_secs() - start_time);

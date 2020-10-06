@@ -118,7 +118,7 @@ func _process(delta):
 	
 	# Animation
 	var diff = last_position - position;
-	if sqrt(pow(diff.x, 2) + pow(diff.y, 2)) < 1:
+	if sqrt(pow(diff.x, 2) + pow(diff.y, 2)) < 0.1:
 		# Idle
 		if team_id == 1:
 			#$Sprite_Top.set_texture(idle_top_atlas_red);
