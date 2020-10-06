@@ -305,10 +305,17 @@ func stop_powerups():
 
 	
 # Changes the sprite's frame to make it "look" at the mouse
-var previous_look_input = Vector2(0,0);
+var previous_dist = Vector2(0,0);
 func update_look_direction():
 	var pos = get_global_mouse_position();
 	var dist = pos - position;
+	if Globals.control_scheme == Globals.Control_Schemes.touchscreen:
+		dist = get_tree().get_root().get_node("MainScene/UI_Layer/Shoot_Stick").stick_vector;
+		if dist == Vector2.ZERO:
+			dist = get_tree().get_root().get_node("MainScene/UI_Layer/Move_Stick").stick_vector;
+			if dist == Vector2.ZERO:
+				dist = previous_dist;
+	previous_dist = dist;
 	var angle = get_vector_angle(dist);
 	var adjustedAngle = -1 * (angle + (PI/8));
 	var octant = (adjustedAngle / (2 * PI)) * 8

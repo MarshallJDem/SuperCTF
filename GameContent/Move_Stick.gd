@@ -35,9 +35,9 @@ func _process(_delta):
 	radius_big = OS.get_window_size().y/6
 	radius_small = radius_big / 3;
 	if is_move:
-		origin = Vector2((radius_big + margin.x), OS.get_window_size().y - (radius_big * 1.5));
+		origin = Vector2((radius_big + margin.x), rect_size.y - (radius_big * 1.5));
 	else:
-		origin = Vector2(rect_size.x - (radius_big + margin.x), OS.get_window_size().y - (radius_big * 1.5));
+		origin = Vector2(rect_size.x - (radius_big + margin.x), rect_size.y - (radius_big * 1.5));
 		
 	update();
 	
