@@ -14,7 +14,24 @@ var stick_vector = Vector2(0,0);
 func _ready():
 	pass # Replace with function body.
 
+func _input(event):
+	if event is InputEventScreenTouch:
+		if (is_move and event.position.x < OS.get_window_size().x/2) or (!is_move and not event.position.x < OS.get_window_size().x/2):
+			if event.is_pressed():
+				var vector = (event.position - rect_position) - origin;
+				var magnitude = sqrt(pow(vector.x,2) + pow(vector.y,2));
+				vector = vector.normalized();
+				stick_vector = vector * (min(magnitude, radius_big));
+			else:
+				stick_vector = Vector2(0,0);
+	elif event is InputEventScreenDrag:
+		if (is_move and event.position.x < OS.get_window_size().x/2) or (!is_move and not event.position.x < OS.get_window_size().x/2):
+			var vector = (event.position - rect_position) - origin;
+			var magnitude = sqrt(pow(vector.x,2) + pow(vector.y,2));
+			vector = vector.normalized();
+			stick_vector = vector * (min(magnitude, radius_big));
 func _process(_delta):
+	
 	radius_big = OS.get_window_size().y/6
 	radius_small = radius_big / 3;
 	if is_move:
@@ -26,11 +43,4 @@ func _process(_delta):
 	
 func _draw():
 	draw_circle(origin,radius_big,Color(0.5,0.5,0.5,0.4));
-	if pressed:
-		var vector = get_local_mouse_position() - origin;
-		var magnitude = sqrt(pow(vector.x,2) + pow(vector.y,2));
-		vector = vector.normalized();
-		stick_vector = vector * (min(magnitude, radius_big));
-	else:
-		stick_vector = Vector2(0,0);
 	draw_circle(origin + stick_vector,radius_small,Color(0.5,0.5,0.5,0.4));
