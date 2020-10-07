@@ -404,14 +404,21 @@ remote func user_ready(id, userToken):
 	print("User Ready");
 	# Now if we are the server we will add this player to the queue of players to be checked
 	if get_tree().is_network_server():
-		
+		var net_id = get_tree().get_rpc_sender_id();
+		var repeats = 0;
 		# Wait for match data to come in if this isn't a skirmish
 		if(!isSkirmish):
 			while(true):
+				# If we've tried for too long without success, kick this player
+				if repeats > 5:
+					server.disconnect_peer(net_id, 1000, "Unavailable");
+					print("Giving up on player " + str(net_id));
+					return;
 				if(Globals.allowedPlayers != []):
 					break;
-				print("Waiting for allowed match data to download");
+				print("Player " + str(net_id) + " connnected while there was no match data");
 				yield(get_tree().create_timer(0.5), "timeout");
+				repeats += 1;
 		var http = HTTPRequest.new()
 		add_child(http);
 		http.connect("request_completed", self, "_HTTP_GameServerCheckUser_Completed")

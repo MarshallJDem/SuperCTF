@@ -73,10 +73,10 @@ var displaying_loadout = false;
 
 # ----- Constants -----
 const game_var_defaults = {"playerSpeed" : 200, "playerLagTime" : 50,
-	"bulletSpeed" : 350, "bulletCooldown" : 400, 
+	"bulletSpeed" : 350, "bulletCooldown" : 350, 
 	"laserChargeTime" : 650, "laserCooldown" : 500, 
 	"laserWidth" :15, "laserLength" : 1300,
-	"dashDistance" : 3000, "dashCooldown" : 3000, 
+	"dashDistance" : 5000, "dashCooldown" : 3000, 
 	"forcefieldCooldown" : 8000,
 	"scoreLimit" : 2,
 	"grenadeRadius" : 50,"grenadeCooldown":5000,
