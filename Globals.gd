@@ -30,6 +30,9 @@ var player_party_data;
 var player_uid;
 var knownPartyData;
 
+enum Control_Schemes { touchscreen, keyboard, controller};
+var control_scheme = Control_Schemes.keyboard;
+
 # At the end of a match its hard to tell whether the current stored data for player MMR
 # is from before or after the match results. This keeps track of what it was before.
 var player_old_MMR = -1;
@@ -145,7 +148,8 @@ func _ready():
 	HTTPRequest_GetMatchData.connect("request_completed", self, "_HTTP_GetMatchData_Completed");
 	HTTPRequest_CancelQueue.connect("request_completed", self, "_HTTP_CancelQueue_Completed");
 	HTTPRequest_Logout.connect("request_completed", self, "_HTTPRequest_Logout_Completed");
-
+	if OS.has_touchscreen_ui_hint():
+		control_scheme = Control_Schemes.touchscreen;
 func _process(delta):
 	if get_tree().get_root().has_node("MainScene/NetworkController"):
 		Globals.player_lerp_time = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("playerLagTime");

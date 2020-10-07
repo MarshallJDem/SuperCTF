@@ -10,6 +10,16 @@ func _ready():
 	_err = $"../Chat_Layer/Options_Button".connect("button_up", self, "_options_button_clicked");
 	get_tree().connect("screen_resized", self, "_screen_resized");
 	_screen_resized();
+	$Shoot_Stick.visible = false;
+	$Move_Stick.visible = false;
+	$Input_GUIs.visible = false;
+	$Alert_Text.visible = false;
+	if Globals.control_scheme == Globals.Control_Schemes.touchscreen:
+		$Shoot_Stick.visible = true;
+		$Move_Stick.visible = true;
+	else:
+		$Input_GUIs.visible = true;
+		$Alert_Text.visible = true;
 
 func _process(delta):
 	if Globals.isServer:
@@ -20,17 +30,21 @@ func _process(delta):
 	elif show_move_gui == true:
 		show_move_gui = false;
 		$Move_GUI_Fade_Timer.start();
+	
 	if show_move_gui:
 		$Input_GUIs/Move_GUIs.modulate = Color(1,1,1,1);
 		$Input_GUIs/Ability_GUIs.modulate = Color(0,0,0,0);
+		$Shoot_Stick.modulate = Color(0,0,0,0);
 	elif $Move_GUI_Fade_Timer.time_left > 0:
 		var progress = 1 - ($Move_GUI_Fade_Timer.time_left / $Move_GUI_Fade_Timer.wait_time);
 		$Input_GUIs/Move_GUIs.modulate = Color(1,1,1,1-progress);
 		$Input_GUIs/Ability_GUIs.modulate = Color(1,1,1,progress);
+		$Shoot_Stick.modulate = Color(1,1,1,progress);
 	else:
 		$Input_GUIs/Move_GUIs.modulate = Color(0,0,0,0);
 		$Input_GUIs/Ability_GUIs.modulate = Color(1,1,1,1);
-	
+		$Shoot_Stick.modulate = Color(1,1,1,1);
+		
 	$Skirmish_Subtext.visible = false;
 	if get_tree().get_root().get_node("MainScene/NetworkController").isSkirmish:
 		$Score_Label.bbcode_text = "[center][color=black]SEARCHING " + str(OS.get_system_time_secs() - start_time);
@@ -245,6 +259,8 @@ func disappear():
 	$Countdown_Label.visible = false;
 	$Big_Label_Blue.visible = false;
 	$Big_Label_Red.visible = false;
+	$Shoot_Stick.visible = false;
+	$Move_Stick.visible = false;
 	$Input_GUIs.visible = false;
 	$Alert_Text.visible = false;
 	$Skirmish_Subtext.visible = false;
@@ -255,7 +271,11 @@ func appear():
 	$Countdown_Label.visible = true;
 	$Big_Label_Blue.visible = true;
 	$Big_Label_Red.visible = true;
-	$Input_GUIs.visible = true;
-	$Alert_Text.visible = true;
+	if Globals.control_scheme == Globals.Control_Schemes.touchscreen:
+		$Shoot_Stick.visible = true;
+		$Move_Stick.visible = true;
+	else:
+		$Input_GUIs.visible = true;
+		$Alert_Text.visible = true;
 	$Skirmish_Subtext.visible = true;
 	$"../Loadout_Menu".hidden = false;

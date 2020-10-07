@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=2]
+[gd_scene load_steps=47 format=2]
 
 [ext_resource path="res://GameContent/Main.gd" type="Script" id=1]
 [ext_resource path="res://GameContent/Player.tscn" type="PackedScene" id=2]
@@ -29,6 +29,7 @@
 [ext_resource path="res://GameContent/PowerupGUIParticles.tscn" type="PackedScene" id=27]
 [ext_resource path="res://Assets/GUI/Q-Key-GUI.png" type="Texture" id=28]
 [ext_resource path="res://Assets/GUI/blur.png" type="Texture" id=29]
+[ext_resource path="res://GameContent/Move_Stick.gd" type="Script" id=30]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0, 0, 0, 0.145098 )
@@ -68,6 +69,28 @@ font_data = ExtResource( 25 )
 
 [sub_resource type="DynamicFont" id=9]
 size = 8
+outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
+font_data = ExtResource( 25 )
+
+[sub_resource type="StyleBoxEmpty" id=10]
+
+[sub_resource type="StyleBoxEmpty" id=11]
+
+[sub_resource type="StyleBoxEmpty" id=13]
+
+[sub_resource type="StyleBoxEmpty" id=12]
+
+[sub_resource type="DynamicFont" id=14]
+outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
+font_data = ExtResource( 25 )
+
+[sub_resource type="DynamicFont" id=15]
+size = 12
+outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
+font_data = ExtResource( 25 )
+
+[sub_resource type="DynamicFont" id=16]
+size = 12
 outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
 font_data = ExtResource( 25 )
 
@@ -536,6 +559,88 @@ custom_styles/normal = ExtResource( 11 )
 custom_fonts/font = SubResource( 5 )
 custom_colors/font_color = Color( 0.172549, 0.172549, 0.172549, 1 )
 text = "Cancel"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Move_Stick" type="Button" parent="UI_Layer"]
+anchor_right = 0.5
+anchor_bottom = 1.0
+custom_styles/hover = SubResource( 10 )
+custom_styles/pressed = SubResource( 11 )
+custom_styles/focus = SubResource( 13 )
+custom_styles/normal = SubResource( 12 )
+action_mode = 0
+keep_pressed_outside = true
+script = ExtResource( 30 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Shoot_Stick" type="Button" parent="UI_Layer"]
+anchor_left = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_styles/hover = SubResource( 10 )
+custom_styles/pressed = SubResource( 11 )
+custom_styles/focus = SubResource( 13 )
+custom_styles/normal = SubResource( 12 )
+action_mode = 0
+keep_pressed_outside = true
+script = ExtResource( 30 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+is_move = false
+
+[node name="Dash" type="Label" parent="UI_Layer/Shoot_Stick"]
+margin_left = 231.36
+margin_top = 859.44
+margin_right = 287.36
+margin_bottom = 881.44
+custom_fonts/font = SubResource( 14 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "DASH"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Ult" type="Label" parent="UI_Layer/Shoot_Stick"]
+margin_left = 289.672
+margin_top = 792.08
+margin_right = 345.672
+margin_bottom = 814.08
+custom_fonts/font = SubResource( 14 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "ULT"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Utility" type="Label" parent="UI_Layer/Shoot_Stick"]
+margin_left = 363.629
+margin_top = 737.36
+margin_right = 419.629
+margin_bottom = 759.36
+custom_fonts/font = SubResource( 15 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "GRENADE"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Ability" type="Label" parent="UI_Layer/Shoot_Stick"]
+margin_left = 454.258
+margin_top = 705.298
+margin_right = 510.258
+margin_bottom = 727.298
+custom_fonts/font = SubResource( 16 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "FORCEFIELD"
+align = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }

@@ -19,8 +19,31 @@ func _ready() -> void:
 func _utility_changed():
 	pass;
 
+func utility_pressed():
+	if $Cooldown_Timer.time_left == 0:
+		if Globals.current_utility == Globals.Utilities.Grenade:
+			aiming_grenade = true;
+
+func utility_released(pos):
+	if Globals.current_utility == Globals.Utilities.Grenade:
+		if aiming_grenade:
+			# Fire grenade on right mouse up
+			if Globals.testing:
+				shoot_grenade(pos, OS.get_system_time_msecs());
+			else:
+				rpc("shoot_grenade",pos, OS.get_system_time_msecs() - Globals.match_start_time);
+	elif Globals.current_utility == Globals.Utilities.Landmine:
+		if $Cooldown_Timer.time_left == 0:
+			if Globals.active_landmines < 3:
+				if Globals.testing:
+					place_landmine(player.position,landmines_placed);
+				else:
+					rpc("place_landmine",player.position,landmines_placed);
+			else:
+				get_tree().get_root().get_node("MainScene/UI_Layer").set_alert_text("[center][color=red]Active landmine limit reached!");
+
+
 func _process(delta):
-	
 	if !player.alive:
 		$Cooldown_Timer.stop();
 	if !player.control:
@@ -29,29 +52,11 @@ func _process(delta):
 	if Globals.is_typing_in_chat or Globals.displaying_loadout:
 		return;
 	if Input.is_action_just_pressed("clickR"):
-		if $Cooldown_Timer.time_left == 0:
-			if Globals.current_utility == Globals.Utilities.Grenade:
-				aiming_grenade = true;
+		utility_pressed();
 	if Input.is_action_pressed("clickR"):
 		pass;
 	if Input.is_action_just_released("clickR"):
-		if Globals.current_utility == Globals.Utilities.Grenade:
-			if aiming_grenade:
-				# Fire grenade on right mouse up
-				if Globals.testing:
-					shoot_grenade(get_global_mouse_position(), OS.get_system_time_msecs());
-				else:
-					rpc("shoot_grenade",get_global_mouse_position(), OS.get_system_time_msecs() - Globals.match_start_time);
-		elif Globals.current_utility == Globals.Utilities.Landmine:
-			if $Cooldown_Timer.time_left == 0:
-				if Globals.active_landmines < 3:
-					if Globals.testing:
-						place_landmine(player.position,landmines_placed);
-					else:
-						rpc("place_landmine",player.position,landmines_placed);
-				else:
-					get_tree().get_root().get_node("MainScene/UI_Layer").set_alert_text("[center][color=red]Active landmine limit reached!");
-
+		utility_released(get_global_mouse_position());
 func _draw():
 	if aiming_grenade:
 		draw_circle(get_local_mouse_position(), get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("grenadeRadius"), Color(0,0,0,0.2));
