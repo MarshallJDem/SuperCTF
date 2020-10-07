@@ -3,7 +3,7 @@ extends Button
 var radius_big = 125;
 var radius_small = 50;
 var origin = Vector2(0,0);
-var margin = Vector2(375,300);
+var margin = Vector2(275,200);
 export var is_move = true;
 # This is the input vector of the stick
 # Its max magnitude is radius_big
@@ -25,7 +25,8 @@ func _input(event):
 		if !is_move:
 			if local_player.get_node("Utility_Node").aiming_grenade and event.is_pressed():
 				modulate = Color(1,1,1,1);
-				local_player.get_node("Utility_Node").utility_released(local_player.get_node("Utility_Node").get_global_mouse_position());
+				var translate = local_player.get_node("Utility_Node").get_global_mouse_position() - get_global_mouse_position();
+				local_player.get_node("Utility_Node").utility_released(event.position + translate);
 			if event.is_pressed() and (event.position - rect_position).distance_to($Dash.rect_position + $Dash.rect_size/2) < button_radius:
 				if local_player != null:
 					local_player.teleport_pressed();
@@ -69,13 +70,23 @@ func _process(_delta):
 		origin = Vector2(rect_size.x - (radius_big + margin.x), rect_size.y - ((radius_big * 1.5) + margin.y));
 		
 		var dist = 1;
-		dist = radius_big * 1.5;
+		dist = radius_big * 2.5;
 		# Buttons
-		button_radius = ($Utility.rect_size.x/2) * 1.6
-		$Dash.rect_position = (origin + (Vector2(-227, 150).normalized() * dist)) - $Dash.rect_size/2;
-		$Ult.rect_position = (origin + (Vector2(-263, -43).normalized() * dist)) - $Ult.rect_size/2;
-		$Utility.rect_position = (origin + (Vector2(-203, -200).normalized() * dist)) - $Utility.rect_size/2;
+		button_radius = ($Dash.rect_size.x/2) * 2
+		$Dash.rect_position = (origin + (Vector2(-180, 150).normalized() * dist)) - $Dash.rect_size/2;
+		$Ult.rect_position = (origin + (Vector2(-163, -10).normalized() * dist)) - $Ult.rect_size/2;
+		$Utility.rect_position = (origin + (Vector2(-183, -195).normalized() * dist)) - $Utility.rect_size/2;
 		$Ability.rect_position = (origin + (Vector2(0, -1).normalized() * dist)) - $Ability.rect_size/2;
+	
+		
+		if Globals.current_utility == Globals.Utilities.Grenade:
+			$Utility.text = "GRENADE";
+		elif Globals.current_utility == Globals.Utilities.Landmine:
+			$Utility.text = "LANDMINE"
+		if Globals.current_ability == Globals.Abilities.Forcefield:
+			$Ability.text = "FORCEFIELD";
+		elif Globals.current_ability == Globals.Abilities.Camo:
+			$Ability.text = "CAMO"
 	
 	update();
 	

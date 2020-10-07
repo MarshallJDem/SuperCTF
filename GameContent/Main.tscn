@@ -628,6 +628,9 @@ custom_fonts/font = SubResource( 15 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "GRENADE"
 align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Ability" type="Label" parent="UI_Layer/Shoot_Stick"]
 margin_left = 454.258
