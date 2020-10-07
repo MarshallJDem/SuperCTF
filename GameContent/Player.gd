@@ -71,7 +71,8 @@ func _input(event):
 				get_tree().get_root().get_node("MainScene/NetworkController").rpc("test_ping");
 			if event.scancode == KEY_CONTROL:
 				if !has_flag():
-					sprintEnabled = !sprintEnabled;
+					pass;
+					#printEnabled = !sprintEnabled;
 			if event.scancode == KEY_SPACE:
 				#Attempt a teleport
 				# Re-enable line below to prevent telporting while you have flag
