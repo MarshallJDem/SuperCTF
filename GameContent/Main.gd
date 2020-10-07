@@ -8,7 +8,7 @@ func _ready():
 	Globals.options_menu_should_scale = true;
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE);
 	if !Globals.testing:
-		$Test_Player.queue_free();
+		$Test_Player.call_deferred("queue_free");
 	get_tree().set_screen_stretch(SceneTree.STRETCH_MODE_DISABLED, SceneTree.STRETCH_ASPECT_EXPAND,Vector2(1920,1080), 1);
 func _process(delta):
 	#get_tree().set_screen_stretch(SceneTree.STRETCH_MODE_DISABLED, SceneTree.STRETCH_ASPECT_IGNORE, Vector2(1920,1080));

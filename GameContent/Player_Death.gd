@@ -26,5 +26,5 @@ func _process(_delta):
 	$Sprite.frame_coords.y = frame;
 
 func _death_timer_ended():
-	queue_free();
+	call_deferred("queue_free");
 	

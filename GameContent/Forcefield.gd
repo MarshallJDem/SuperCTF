@@ -44,7 +44,7 @@ func _death_timer_ended():
 	$Death_Animation_Timer.start();
 
 func _death_animation_timer_ended():
-	queue_free();
+	call_deferred("queue_free");
 
 func _animation_timer_ended():
 	$Sprite_Top.frame = ($Sprite_Top.frame + 1) % $Sprite_Top.hframes;

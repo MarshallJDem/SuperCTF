@@ -265,7 +265,7 @@ remotesync func spawn_bullet(pos, player_id, direction, time_shot, bullet_name, 
 		self.add_child(t);
 		t.start();
 		yield(t, "timeout");
-		t.queue_free();
+		t.call_deferred("queue_free");
 	
 	# Initialize Bullet
 	var bullet = Bullet.instance();

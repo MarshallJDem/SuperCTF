@@ -286,7 +286,7 @@ func update_player_objects():
 		name.erase(0,1);
 		if !players.has(int(name)):
 			player.drop_current_flag();
-			player.queue_free();
+			player.call_deferred("queue_free");
 	# For every new player
 	for player in players:
 		if !get_tree().get_root().get_node("MainScene/Players").has_node("P" + str(player)):
@@ -446,7 +446,7 @@ func spawn_player(id):
 		player.activate_camera();
 	if get_tree().get_root().get_node("MainScene/Players").has_node("P" + str(id)):
 		get_tree().get_root().get_node("MainScene/Players/P" + str(id)).set_name("P" + str(id) + "DELETED");
-		get_tree().get_root().get_node("MainScene/Players/P" + str(id)).queue_free();
+		get_tree().get_root().get_node("MainScene/Players/P" + str(id)).call_deferred("queue_free");
 	get_tree().get_root().get_node("MainScene/Players").call_deferred("add_child",player);
 	
 
@@ -548,19 +548,19 @@ func reset_game_objects(kill_players = false):
 		if player.player_id == Globals.localPlayerID:
 			player.activate_camera();
 		if kill_players:
-			player.queue_free();
+			player.call_deferred("queue_free");
 	# Remove any old flags
 	for flag in get_tree().get_nodes_in_group("Flags"):
 		flag.set_name(flag.name + "DELETING");
-		flag.queue_free();
+		flag.call_deferred("queue_free");
 	# Remove any old projectiles
 	for projectile in get_tree().get_nodes_in_group("Projectiles"):
 		projectile.set_name(projectile.name + "DELETING");
-		projectile.queue_free();
+		projectile.call_deferred("queue_free");
 	# Remove any old forcefields
 	for forcefield in get_tree().get_nodes_in_group("Forcefields"):
 		forcefield.set_name(forcefield.name + "DELETING");
-		forcefield.queue_free();
+		forcefield.call_deferred("queue_free");
 	# Remove any old landmines
 	for mine in get_tree().get_nodes_in_group("Landmines"):
 		mine.set_name(mine.name + "DELETING");

@@ -113,7 +113,7 @@ var HTTPRequest_Logout = HTTPRequest.new();
 onready var viewport = get_viewport()
 
 func test():
-	HTTPRequest_ConfirmClientConnection.queue_free();
+	HTTPRequest_ConfirmClientConnection.call_deferred("queue_free");
 	HTTPRequest_ConfirmClientConnection = HTTPRequest.new();
 	add_child(HTTPRequest_ConfirmClientConnection);
 
@@ -198,16 +198,16 @@ func logout(reload = false):
 	knownPartyData = null;
 	player_old_MMR = -1;
 	
-	HTTPRequest_PollPlayerStatus.queue_free();
+	HTTPRequest_PollPlayerStatus.call_deferred("queue_free");
 	HTTPRequest_PollPlayerStatus = HTTPRequest.new();
 	add_child(HTTPRequest_PollPlayerStatus);
-	HTTPRequest_GetMatchData.queue_free();
+	HTTPRequest_GetMatchData.call_deferred("queue_free");
 	HTTPRequest_GetMatchData = HTTPRequest.new();
 	add_child(HTTPRequest_GetMatchData);
-	HTTPRequest_CancelQueue.queue_free();
+	HTTPRequest_CancelQueue.call_deferred("queue_free");
 	HTTPRequest_CancelQueue = HTTPRequest.new();
 	add_child(HTTPRequest_CancelQueue);
-	HTTPRequest_ConfirmClientConnection.queue_free();
+	HTTPRequest_ConfirmClientConnection.call_deferred("queue_free");
 	HTTPRequest_ConfirmClientConnection = HTTPRequest.new();
 	add_child(HTTPRequest_ConfirmClientConnection);
 	
