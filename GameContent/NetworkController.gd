@@ -228,7 +228,7 @@ func join_server():
 		get_tree().set_network_peer(client);
 	else:
 		print(error);
-		# Infinetely attempt to reconnect
+		# Attempt one more connection
 		yield(get_tree().create_timer(1.0), "timeout");
 		join_server();
 
@@ -276,8 +276,7 @@ func _connection_ok():
 	rpc_id(1, "user_ready", get_tree().get_network_unique_id(), Globals.userToken);
 
 func _connection_failed():
-	# Try again cuz this is probably a 1 off issue
-	join_server();
+	leave_match();
 
 func update_player_objects():
 	# Delete players that have left and spawn new players
