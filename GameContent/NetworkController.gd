@@ -228,7 +228,7 @@ func join_server():
 		get_tree().set_network_peer(client);
 	else:
 		print(error);
-		# Infinetely attempt to reconnect
+		# Attempt one more connection
 		yield(get_tree().create_timer(1.0), "timeout");
 		join_server();
 
