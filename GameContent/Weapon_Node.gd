@@ -238,7 +238,6 @@ func shoot_bullet(d):
 	var bullet_name = "Bullet"+ "-" + str(player.player_id) + "-" + str(bullets_shot);
 	#player.camera_ref.shake();
 	$Shoot_Animation_Timer.start();
-	print(collision_tester_length);
 	# If we are too close to a wall, shoot a blank
 	if(collision_tester_length < 10):
 		spawn_bullet(bullet_start, 0 if Globals.testing else player.player_id, direction, time, bullet_name, true);

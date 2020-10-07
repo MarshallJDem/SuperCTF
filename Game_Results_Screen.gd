@@ -89,7 +89,6 @@ func switch_views():
 		$View_Animation_Timer.start();
 
 func _view_animation_timer_ended():
-	print(OS.get_window_size().x);
 	if view == 0:
 		$CanvasLayer/Control/Main_View.position.x = 0;
 		$CanvasLayer/Control/Stats_View.position.x = OS.get_window_size().x / $CanvasLayer/Control.rect_scale.x;
