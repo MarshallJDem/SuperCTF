@@ -75,11 +75,12 @@ func _input(event):
 			if event.scancode == KEY_SPACE:
 				#Attempt a teleport
 				# Re-enable line below to prevent telporting while you have flag
-				# if $Flag_Holder.get_child_count() == 0:
-				if $Teleport_Timer.time_left == 0 and $Weapon_Node/Laser_Timer.time_left == 0:
-					move_on_inputs(true);
-					camera_ref.lag_smooth();
-					$Teleport_Timer.start();
+				teleport_pressed();
+func teleport_pressed():
+	if $Teleport_Timer.time_left == 0 and $Weapon_Node/Laser_Timer.time_left == 0:
+		move_on_inputs(true);
+		camera_ref.lag_smooth();
+		$Teleport_Timer.start();
 
 func _process(delta):
 	BASE_SPEED = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("playerSpeed");
