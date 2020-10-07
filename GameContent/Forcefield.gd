@@ -30,7 +30,7 @@ func _ready():
 	
 	if !Globals.testing and (puppet_time_placed-original_time_placed) > 10:
 		if (puppet_time_placed-original_time_placed)/1000.0 > $Death_Timer.wait_time:
-			call_deferred("queue_free");
+			call_deferred("free");
 			return;
 		$Death_Timer.wait_time -= (puppet_time_placed-original_time_placed)/1000.0;
 	$Death_Timer.start();
@@ -44,7 +44,7 @@ func _death_timer_ended():
 	$Death_Animation_Timer.start();
 
 func _death_animation_timer_ended():
-	call_deferred("queue_free");
+	call_deferred("free");
 
 func _animation_timer_ended():
 	$Sprite_Top.frame = ($Sprite_Top.frame + 1) % $Sprite_Top.hframes;

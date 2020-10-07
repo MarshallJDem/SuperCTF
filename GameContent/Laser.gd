@@ -53,4 +53,4 @@ func _draw():
 # Called when the death timer ends;
 func _death_timer_ended():
 	get_parent().remove_child(self);
-	call_deferred("queue_free");
+	call_deferred("free");

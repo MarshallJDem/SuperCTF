@@ -53,6 +53,6 @@ func _detonation_timer_ended():
 func die():
 	if player_id == Globals.localPlayerID:
 		Globals.active_landmines -= 1;
-	call_deferred("queue_free");
+	call_deferred("free");
 func _death_timer_ended():
 	die();

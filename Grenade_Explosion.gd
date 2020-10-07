@@ -32,7 +32,7 @@ func _death_timer_ended():
 	$Area2D.monitoring = false;
 	visible = false;
 	yield(get_tree().create_timer(1), "timeout");
-	call_deferred("queue_free");
+	call_deferred("free");
 
 func _flash_timer_ended():
 	if alpha == 0.4:

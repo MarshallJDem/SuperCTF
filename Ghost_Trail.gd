@@ -16,4 +16,4 @@ func _process(delta):
 	if $Death_Timer.time_left > 0:
 		modulate = Color(1, 1, 1, $Death_Timer.time_left / $Death_Timer.wait_time);
 func _death_timer_ended():
-	call_deferred("queue_free");
+	call_deferred("free");

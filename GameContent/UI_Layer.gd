@@ -220,7 +220,7 @@ func remove_line_from_kill_feed(timer):
 		else:
 			string = "";
 	$"../Chat_Layer/Kill_Feed".bbcode_text = string;
-	timer.call_deferred("queue_free");
+	timer.call_deferred("free");
 
 # Color 0 = blue, 1 = red
 func set_big_label_text(text, color):

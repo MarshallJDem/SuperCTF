@@ -113,7 +113,7 @@ var HTTPRequest_Logout = HTTPRequest.new();
 onready var viewport = get_viewport()
 
 func test():
-	HTTPRequest_ConfirmClientConnection.call_deferred("queue_free");
+	HTTPRequest_ConfirmClientConnection.call_deferred("free");
 	HTTPRequest_ConfirmClientConnection = HTTPRequest.new();
 	add_child(HTTPRequest_ConfirmClientConnection);
 
@@ -161,7 +161,7 @@ func _process(delta):
 var volume_sliders = Vector2(50,50);
 func toggle_options_menu():
 	if get_tree().get_root().has_node("Options_Menu"):
-		get_tree().get_root().get_node("Options_Menu").call_deferred("queue_free");
+		get_tree().get_root().get_node("Options_Menu").call_deferred("free");
 		write_save_data();
 	else:
 		load_save_data();
@@ -198,16 +198,16 @@ func logout(reload = false):
 	knownPartyData = null;
 	player_old_MMR = -1;
 	
-	HTTPRequest_PollPlayerStatus.call_deferred("queue_free");
+	HTTPRequest_PollPlayerStatus.call_deferred("free");
 	HTTPRequest_PollPlayerStatus = HTTPRequest.new();
 	add_child(HTTPRequest_PollPlayerStatus);
-	HTTPRequest_GetMatchData.call_deferred("queue_free");
+	HTTPRequest_GetMatchData.call_deferred("free");
 	HTTPRequest_GetMatchData = HTTPRequest.new();
 	add_child(HTTPRequest_GetMatchData);
-	HTTPRequest_CancelQueue.call_deferred("queue_free");
+	HTTPRequest_CancelQueue.call_deferred("free");
 	HTTPRequest_CancelQueue = HTTPRequest.new();
 	add_child(HTTPRequest_CancelQueue);
-	HTTPRequest_ConfirmClientConnection.call_deferred("queue_free");
+	HTTPRequest_ConfirmClientConnection.call_deferred("free");
 	HTTPRequest_ConfirmClientConnection = HTTPRequest.new();
 	add_child(HTTPRequest_ConfirmClientConnection);
 	

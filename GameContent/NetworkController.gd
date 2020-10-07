@@ -286,7 +286,7 @@ func update_player_objects():
 		name.erase(0,1);
 		if !players.has(int(name)):
 			player.drop_current_flag();
-			player.call_deferred("queue_free");
+			player.call_deferred("free");
 	# For every new player
 	for player in players:
 		if !get_tree().get_root().get_node("MainScene/Players").has_node("P" + str(player)):
@@ -423,7 +423,7 @@ remote func user_ready(id, userToken):
 		http.connect("request_completed", self, "_HTTP_GameServerCheckUser_Completed")
 		http.request(Globals.mainServerIP + "gameServerCheckUser?" + "userToken=" + str(userToken) + "&networkID=" + str(id), ["authorization: Bearer " + Globals.serverPrivateToken], false);
 		yield(http, "request_completed");
-		http.call_deferred("queue_free");
+		http.call_deferred("free");
 
 # A test function for sending a ping
 remotesync func test_ping():
@@ -446,7 +446,7 @@ func spawn_player(id):
 		player.activate_camera();
 	if get_tree().get_root().get_node("MainScene/Players").has_node("P" + str(id)):
 		get_tree().get_root().get_node("MainScene/Players/P" + str(id)).set_name("P" + str(id) + "DELETED");
-		get_tree().get_root().get_node("MainScene/Players/P" + str(id)).call_deferred("queue_free");
+		get_tree().get_root().get_node("MainScene/Players/P" + str(id)).call_deferred("free");
 	get_tree().get_root().get_node("MainScene/Players").call_deferred("add_child",player);
 	
 
@@ -548,19 +548,19 @@ func reset_game_objects(kill_players = false):
 		if player.player_id == Globals.localPlayerID:
 			player.activate_camera();
 		if kill_players:
-			player.call_deferred("queue_free");
+			player.call_deferred("free");
 	# Remove any old flags
 	for flag in get_tree().get_nodes_in_group("Flags"):
 		flag.set_name(flag.name + "DELETING");
-		flag.call_deferred("queue_free");
+		flag.call_deferred("free");
 	# Remove any old projectiles
 	for projectile in get_tree().get_nodes_in_group("Projectiles"):
 		projectile.set_name(projectile.name + "DELETING");
-		projectile.call_deferred("queue_free");
+		projectile.call_deferred("free");
 	# Remove any old forcefields
 	for forcefield in get_tree().get_nodes_in_group("Forcefields"):
 		forcefield.set_name(forcefield.name + "DELETING");
-		forcefield.call_deferred("queue_free");
+		forcefield.call_deferred("free");
 	# Remove any old landmines
 	for mine in get_tree().get_nodes_in_group("Landmines"):
 		mine.set_name(mine.name + "DELETING");
@@ -774,7 +774,7 @@ remotesync func start_rematch():
 		$Match_End_Timer.stop();
 	else:
 		if get_tree().get_root().has_node("MainScene/Game_Results_Screen"):
-			get_tree().get_root().get_node("MainScene/Game_Results_Screen").call_deferred("queue_free");
+			get_tree().get_root().get_node("MainScene/Game_Results_Screen").call_deferred("free");
 			get_tree().get_root().get_node("MainScene/UI_Layer").appear();
 
 # Temporary storage of the winning_team_id to use since the call GameServerEndMatch may require multiple calls if it fails
