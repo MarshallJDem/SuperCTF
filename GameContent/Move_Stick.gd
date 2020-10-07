@@ -118,7 +118,6 @@ func _process(_delta):
 				ult_color = Color(0.5,0.5,0.5,0.4);
 	update();
 	
-	
 var ability_color = Color(0.5,0.5,0.5,0.4);
 var utility_color = Color(0.5,0.5,0.5,0.4);
 var dash_color = Color(0.5,0.5,0.5,0.4);
