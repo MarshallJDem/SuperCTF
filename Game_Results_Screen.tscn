@@ -361,7 +361,7 @@ __meta__ = {
 }
 
 [node name="Time_Left_Text" type="RichTextLabel" parent="CanvasLayer/Control"]
-anchor_top = -7.62939e-07
+anchor_top = -1.52588e-06
 anchor_bottom = -1.52588e-06
 margin_left = -903.422
 margin_top = 476.455
