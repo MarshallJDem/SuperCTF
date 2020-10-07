@@ -9,14 +9,13 @@ export var is_move = true;
 # Its max magnitude is radius_big
 var stick_vector = Vector2(0,0);
 var button_radius = 0;
-
+var local_player;
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
 
 func _input(event):
-	var local_player;
 	if Globals.testing:
 		local_player = get_tree().get_root().get_node("MainScene/Test_Player");
 	elif Globals.localPlayerID != null and get_tree().get_root().get_node("MainScene/Players").has_node("P" + str(Globals.localPlayerID)):
@@ -59,6 +58,7 @@ func _input(event):
 			var magnitude = sqrt(pow(vector.x,2) + pow(vector.y,2));
 			vector = vector.normalized();
 			stick_vector = vector * (min(magnitude, radius_big));
+
 func _process(_delta):
 	if Globals.control_scheme != Globals.Control_Schemes.touchscreen:
 		return;
@@ -77,7 +77,6 @@ func _process(_delta):
 		$Ult.rect_position = (origin + (Vector2(-163, -10).normalized() * dist)) - $Ult.rect_size/2;
 		$Utility.rect_position = (origin + (Vector2(-183, -195).normalized() * dist)) - $Utility.rect_size/2;
 		$Ability.rect_position = (origin + (Vector2(0, -1).normalized() * dist)) - $Ability.rect_size/2;
-	
 		
 		if Globals.current_utility == Globals.Utilities.Grenade:
 			$Utility.text = "GRENADE";
@@ -87,16 +86,48 @@ func _process(_delta):
 			$Ability.text = "FORCEFIELD";
 		elif Globals.current_ability == Globals.Abilities.Camo:
 			$Ability.text = "CAMO"
-	
+		
+		if local_player != null:
+			# Ability button
+			var progress = ((local_player.get_node("Ability_Node/Cooldown_Timer").wait_time - local_player.get_node("Ability_Node/Cooldown_Timer").time_left) / local_player.get_node("Ability_Node/Cooldown_Timer").wait_time);
+			$Ability.modulate = Color(1,1,1,0.1 + 0.4 * progress);
+			ability_color = Color(0.0,0.0,0.0,0.6);
+			if progress == 1.0:
+				$Ability.modulate = Color(1,1,1,1);
+				ability_color = Color(0.5,0.5,0.5,0.4);
+			# Utility button
+			progress = ((local_player.get_node("Utility_Node/Cooldown_Timer").wait_time - local_player.get_node("Utility_Node/Cooldown_Timer").time_left) / local_player.get_node("Utility_Node/Cooldown_Timer").wait_time);
+			$Utility.modulate = Color(1,1,1,0.1 + 0.4 * progress);
+			utility_color = Color(0.0,0.0,0.0,0.6);
+			if progress == 1.0:
+				$Utility.modulate = Color(1,1,1,1);
+				utility_color = Color(0.5,0.5,0.5,0.4);
+			# Dash button
+			progress = ((local_player.get_node("Teleport_Timer").wait_time - local_player.get_node("Teleport_Timer").time_left) / local_player.get_node("Teleport_Timer").wait_time);
+			$Dash.modulate = Color(1,1,1,0.1 + 0.4 * progress);
+			dash_color = Color(0.0,0.0,0.0,0.6);
+			if progress == 1.0:
+				$Dash.modulate = Color(1,1,1,1);
+				dash_color = Color(0.5,0.5,0.5,0.4);
+			# Ult button
+			progress = float(local_player.get_node("Ability_Node").ult_charge)/100.0;
+			$Ult.modulate = Color(1,1,1,0.1 + 0.1 * progress);
+			ult_color = Color(0.0,0.0,0.0,0.1);
+			if progress == 1.0:
+				$Ult.modulate = Color(1,1,1,1);
+				ult_color = Color(0.5,0.5,0.5,0.4);
 	update();
 	
 	
-	
+var ability_color = Color(0.5,0.5,0.5,0.4);
+var utility_color = Color(0.5,0.5,0.5,0.4);
+var dash_color = Color(0.5,0.5,0.5,0.4);
+var ult_color = Color(0.5,0.5,0.5,0.4);
 func _draw():
 	draw_circle(origin,radius_big,Color(0.5,0.5,0.5,0.4));
 	draw_circle(origin + stick_vector,radius_small,Color(0.5,0.5,0.5,0.4));
 	if !is_move:
-		draw_circle($Dash.rect_position + $Dash.rect_size/2,button_radius,Color(0.5,0.5,0.5,0.4));
-		draw_circle($Ult.rect_position + $Ult.rect_size/2,button_radius,Color(0.5,0.5,0.5,0.4));
-		draw_circle($Utility.rect_position + $Utility.rect_size/2,button_radius,Color(0.5,0.5,0.5,0.4));
-		draw_circle($Ability.rect_position + $Ability.rect_size/2,button_radius,Color(0.5,0.5,0.5,0.4));
+		draw_circle($Dash.rect_position + $Dash.rect_size/2,button_radius,dash_color);
+		draw_circle($Ult.rect_position + $Ult.rect_size/2,button_radius,ult_color);
+		draw_circle($Utility.rect_position + $Utility.rect_size/2,button_radius,utility_color);
+		draw_circle($Ability.rect_position + $Ability.rect_size/2,button_radius,ability_color);
