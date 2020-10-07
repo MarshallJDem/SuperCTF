@@ -494,10 +494,10 @@ func _client_disconnected(id):
 # Goes back to title screen and drops the socket connection and resets the game
 func leave_match():
 	print("Leave Match");
-	get_tree().set_network_peer(null);
-	client = null;
-	reset_game()
+	client.call_deferred("free");
 	get_tree().change_scene("res://TitleScreen.tscn");
+	get_tree().call_deferred("set_network_peer", null);
+	call_deferred("free");
 
 # Called when this client disconnects from the server
 func server_disconnect():

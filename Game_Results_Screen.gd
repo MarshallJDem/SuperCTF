@@ -54,7 +54,7 @@ func _rematch_pressed():
 	get_tree().get_root().get_node("MainScene/NetworkController").rpc_id(1, "change_DD_vote", !current_vote);
 
 func setup_stats_visuals():
-	if Globals.testing:
+	if Globals.testing: 
 		return;
 	$CanvasLayer/Control/Main_View/Text_KDC.bbcode_text = "[center]" + str(stats[Globals.localPlayerID]['kills']) + " : " + str(stats[Globals.localPlayerID]['deaths']) + " : " + str(stats[Globals.localPlayerID]['captures'])
 	var count = 0;
