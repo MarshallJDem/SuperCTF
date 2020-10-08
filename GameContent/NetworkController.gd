@@ -216,7 +216,7 @@ func updateGameServerStatus(status = null):
 # Joins a server
 func join_server():
 	client = WebSocketClient.new();
-	
+	client.verify_ssl = false;
 	var url = "ws://" + Globals.serverIP;
 	if Globals.useSecure:
 		url = "wss://" + Globals.serverIP;
@@ -499,7 +499,6 @@ func _client_disconnected(id):
 # Goes back to title screen and drops the socket connection and resets the game
 func leave_match():
 	print("Leave Match");
-	client.call_deferred("free");
 	get_tree().change_scene("res://TitleScreen.tscn");
 	get_tree().call_deferred("set_network_peer", null);
 	call_deferred("free");

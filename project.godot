@@ -78,10 +78,6 @@ clickR={
  ]
 }
 
-[input_devices]
-
-pointing/emulate_touch_from_mouse=true
-
 [rendering]
 
 quality/driver/driver_name="GLES2"
