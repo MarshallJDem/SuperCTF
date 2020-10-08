@@ -76,9 +76,9 @@ font_data = ExtResource( 25 )
 
 [sub_resource type="StyleBoxEmpty" id=11]
 
-[sub_resource type="StyleBoxEmpty" id=13]
-
 [sub_resource type="StyleBoxEmpty" id=12]
+
+[sub_resource type="StyleBoxEmpty" id=13]
 
 [sub_resource type="DynamicFont" id=14]
 outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
@@ -568,8 +568,8 @@ anchor_right = 0.5
 anchor_bottom = 1.0
 custom_styles/hover = SubResource( 10 )
 custom_styles/pressed = SubResource( 11 )
-custom_styles/focus = SubResource( 13 )
-custom_styles/normal = SubResource( 12 )
+custom_styles/focus = SubResource( 12 )
+custom_styles/normal = SubResource( 13 )
 action_mode = 0
 keep_pressed_outside = true
 script = ExtResource( 30 )
@@ -583,8 +583,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 custom_styles/hover = SubResource( 10 )
 custom_styles/pressed = SubResource( 11 )
-custom_styles/focus = SubResource( 13 )
-custom_styles/normal = SubResource( 12 )
+custom_styles/focus = SubResource( 12 )
+custom_styles/normal = SubResource( 13 )
 action_mode = 0
 keep_pressed_outside = true
 script = ExtResource( 30 )

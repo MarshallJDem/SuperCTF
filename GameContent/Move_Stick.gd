@@ -22,7 +22,7 @@ func _input(event):
 		local_player = get_tree().get_root().get_node("MainScene/Players/P" + str(Globals.localPlayerID));
 	if event is InputEventScreenTouch:
 		if !is_move:
-			if local_player.get_node("Utility_Node").aiming_grenade and event.is_pressed():
+			if local_player != null and local_player.get_node("Utility_Node").aiming_grenade and event.is_pressed():
 				modulate = Color(1,1,1,1);
 				var translate = local_player.get_node("Utility_Node").get_global_mouse_position() - get_global_mouse_position();
 				local_player.get_node("Utility_Node").utility_released(event.position + translate);

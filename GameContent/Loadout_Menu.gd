@@ -71,7 +71,8 @@ func set_weapon_selection(w):
 	elif w == 3:
 		Globals.current_class = Globals.Classes.Demo;
 	if !Globals.testing:
-		get_tree().get_root().get_node("MainScene/NetworkController").rpc_id(1, "player_class_changed", Globals.current_class);
+		if get_tree().network_peer != null:
+			get_tree().get_root().get_node("MainScene/NetworkController").rpc_id(1, "player_class_changed", Globals.current_class);
 	Globals.emit_signal("class_changed");
 
 func set_ability_selection(w):

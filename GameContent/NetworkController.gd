@@ -227,10 +227,11 @@ func join_server():
 	if error == 0:
 		get_tree().set_network_peer(client);
 	else:
+		print("ERROR CONNECTING TO SERVER");
 		print(error);
 		# Attempt one more connection
 		yield(get_tree().create_timer(1.0), "timeout");
-		join_server();
+		error = client.connect_to_url(url, PoolStringArray(), true);
 
 # Starts the match
 func start_match():
