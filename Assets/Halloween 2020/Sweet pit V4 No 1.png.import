@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/pumpkin.png-809890197536191f61efc1ccc77e82de.stex"
+path="res://.import/Sweet pit V4 No 1.png-0a17b020b5bc643f31780c12dd4e5ca2.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/GUI/pumpkin.png"
-dest_files=[ "res://.import/pumpkin.png-809890197536191f61efc1ccc77e82de.stex" ]
+source_file="res://Assets/Halloween 2020/Sweet pit V4 No 1.png"
+dest_files=[ "res://.import/Sweet pit V4 No 1.png-0a17b020b5bc643f31780c12dd4e5ca2.stex" ]
 
 [params]
 

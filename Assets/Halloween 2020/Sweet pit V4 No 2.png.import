@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Spiderweb corner V1.png-e8666873de745039da0ac80e8b5c53e2.stex"
+path="res://.import/Sweet pit V4 No 2.png-a2731cbd114e374911c9c3e08d39c904.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Halloween 2020/Spiderweb corner V1.png"
-dest_files=[ "res://.import/Spiderweb corner V1.png-e8666873de745039da0ac80e8b5c53e2.stex" ]
+source_file="res://Assets/Halloween 2020/Sweet pit V4 No 2.png"
+dest_files=[ "res://.import/Sweet pit V4 No 2.png-a2731cbd114e374911c9c3e08d39c904.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=true
+flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2

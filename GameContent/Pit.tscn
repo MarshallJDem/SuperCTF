@@ -9,6 +9,7 @@ extents = Vector2( 90.9302, 90.6243 )
 extents = Vector2( 69.0298, 72.0223 )
 
 [node name="Pit" type="KinematicBody2D"]
+position = Vector2( 0.926575, 0 )
 collision_layer = 32
 collision_mask = 0
 
