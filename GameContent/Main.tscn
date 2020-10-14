@@ -544,25 +544,6 @@ one_shot = true
 wait_time = 0.5
 one_shot = true
 
-[node name="Cancel_Button" type="Button" parent="UI_Layer"]
-visible = false
-anchor_top = 1.0
-anchor_bottom = 1.0
-margin_left = 34.2733
-margin_top = -93.9291
-margin_right = 160.273
-margin_bottom = -26.9291
-rect_scale = Vector2( 0.5, 0.5 )
-custom_styles/hover = ExtResource( 9 )
-custom_styles/pressed = ExtResource( 10 )
-custom_styles/normal = ExtResource( 11 )
-custom_fonts/font = SubResource( 5 )
-custom_colors/font_color = Color( 0.172549, 0.172549, 0.172549, 1 )
-text = "Cancel"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="Move_Stick" type="Button" parent="UI_Layer"]
 anchor_right = 0.5
 anchor_bottom = 1.0
@@ -641,6 +622,24 @@ custom_fonts/font = SubResource( 16 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "FORCEFIELD"
 align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Cancel_Button" type="Button" parent="UI_Layer"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 34.2733
+margin_top = -93.9291
+margin_right = 160.273
+margin_bottom = -26.9291
+rect_scale = Vector2( 0.5, 0.5 )
+custom_styles/hover = ExtResource( 9 )
+custom_styles/pressed = ExtResource( 10 )
+custom_styles/normal = ExtResource( 11 )
+custom_fonts/font = SubResource( 5 )
+custom_colors/font_color = Color( 0.172549, 0.172549, 0.172549, 1 )
+text = "Cancel"
 __meta__ = {
 "_edit_use_anchors_": false
 }
