@@ -130,7 +130,7 @@ func check_for_explosion(collision) -> bool:
 		if Globals.testing:
 			fizout();
 		else:
-			rpc("fizout", true);
+			rpc("fizout");
 		return true;
 	return false;
 remotesync func fizout():
