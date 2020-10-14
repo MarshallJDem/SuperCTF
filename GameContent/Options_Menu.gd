@@ -5,6 +5,7 @@ func _ready():
 	$CanvasLayer/Control/MasterVolume_Slider.connect("value_changed", self, "_master_volume_slider_changed");
 	$CanvasLayer/Control/MusicVolume_Slider.connect("value_changed", self, "_music_volume_slider_changed");
 	$CanvasLayer/Control/Close_Button.connect("button_up", self, "_close_button_pressed");
+	$CanvasLayer/Control/Fullscreen_Button.connect("button_up", self, "_fullscreen_button_pressed");
 	$CanvasLayer/Control/MasterVolume_Slider.value = Globals.volume_sliders.x;
 	$CanvasLayer/Control/MusicVolume_Slider.value = Globals.volume_sliders.y;
 	get_tree().connect("screen_resized", self, "_screen_resized");
@@ -24,7 +25,8 @@ func _screen_resized():
 
 func _close_button_pressed():
 	Globals.toggle_options_menu();
-
+func _fullscreen_button_pressed():
+	OS.window_fullscreen = !OS.window_fullscreen;
 func _master_volume_slider_changed(v):
 	var value = float(v)/100.0;
 	

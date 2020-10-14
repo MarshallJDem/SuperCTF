@@ -555,6 +555,7 @@ action_mode = 0
 keep_pressed_outside = true
 script = ExtResource( 30 )
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -570,6 +571,7 @@ action_mode = 0
 keep_pressed_outside = true
 script = ExtResource( 30 )
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 is_move = false

@@ -104,6 +104,7 @@ text = ".com
 "
 scroll_active = false
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -188,10 +189,10 @@ __meta__ = {
 }
 
 [node name="RichTextLabel5" type="RichTextLabel" parent="CanvasLayer/Control"]
-margin_left = 195.47
-margin_top = -180.831
-margin_right = 1478.47
-margin_bottom = 653.17
+margin_left = 205.458
+margin_top = -140.048
+margin_right = 1488.46
+margin_bottom = 693.953
 custom_fonts/normal_font = ExtResource( 4 )
 bbcode_enabled = true
 bbcode_text = "[color=white]Master Volume
@@ -210,6 +211,7 @@ Music Volume
 "
 scroll_active = false
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -229,6 +231,7 @@ text = "Made in Godot
 "
 scroll_active = false
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -248,6 +251,7 @@ text = "OPTIONS
 "
 scroll_active = false
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -273,6 +277,24 @@ custom_styles/slider = SubResource( 1 )
 custom_styles/grabber_area = SubResource( 2 )
 value = 50.0
 rounded = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Fullscreen_Button" type="Button" parent="CanvasLayer/Control"]
+margin_left = 320.266
+margin_top = 45.3416
+margin_right = 668.266
+margin_bottom = 130.342
+custom_styles/hover = ExtResource( 1 )
+custom_styles/pressed = ExtResource( 3 )
+custom_styles/normal = ExtResource( 2 )
+custom_fonts/font = ExtResource( 4 )
+custom_colors/font_color_disabled = Color( 0, 0, 0, 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
+custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
+text = "Fullscreen"
 __meta__ = {
 "_edit_use_anchors_": false
 }

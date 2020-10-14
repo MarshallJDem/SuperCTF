@@ -1,4 +1,4 @@
-[gd_scene load_steps=54 format=2]
+[gd_scene load_steps=55 format=2]
 
 [ext_resource path="res://TitleScreen.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Items/flags.png" type="Texture" id=2]
@@ -22,6 +22,7 @@
 [ext_resource path="res://Chat_Text.tres" type="RichTextEffect" id=20]
 [ext_resource path="res://Assets/Halloween 2020/Spiderweb corner black V1.png" type="Texture" id=21]
 [ext_resource path="res://Assets/Halloween 2020/Pumpkin U V1.png" type="Texture" id=22]
+[ext_resource path="res://Assets/GUI/fullscreen.png" type="Texture" id=23]
 [ext_resource path="res://Assets/Halloween 2020/Snake S V1.png" type="Texture" id=24]
 [ext_resource path="res://Assets/Halloween 2020/Zombie F V1.png" type="Texture" id=25]
 [ext_resource path="res://Assets/Halloween 2020/Pitchfork E V1.png" type="Texture" id=26]
@@ -554,6 +555,20 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Fullscreen_Button" type="TextureButton" parent="UI_Layer"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -935.177
+margin_top = -452.182
+margin_right = -862.177
+margin_bottom = -373.182
+rect_scale = Vector2( 0.742863, 0.742863 )
+texture_normal = ExtResource( 23 )
+expand = true
+stretch_mode = 5
+
 [node name="SplashStartButton" type="Button" parent="UI_Layer"]
 visible = false
 anchor_left = 0.5
@@ -738,13 +753,14 @@ visible = false
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 14 )
-frame = 1
+frame = 3
 playing = true
 
 [node name="Red_Sprite" type="AnimatedSprite" parent="UI_Layer/Flags/Flag"]
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 19 )
+frame = 2
 playing = true
 
 [node name="Area2D" type="Area2D" parent="UI_Layer/Flags/Flag" groups=[
@@ -772,7 +788,7 @@ __meta__ = {
 position = Vector2( 10, -14 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 8 )
-frame = 1
+frame = 3
 playing = true
 
 [node name="Area2D" type="Area2D" parent="UI_Layer/Flags/Flag2" groups=[

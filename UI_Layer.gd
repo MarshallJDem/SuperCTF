@@ -21,6 +21,7 @@ func _ready():
 	$Searching_Text_Timer.connect("timeout", self, "_searching_text_timer_ended");
 	$MOTDText.connect("meta_clicked", self, "_MOTD_meta_clicked");
 	$Options_Button.connect("button_up", self, "_options_button_clicked");
+	$Fullscreen_Button.connect("button_up", self, "_fullscreen_button_clicked");
 	$HTTPRequest_LeaveParty.connect("request_completed", self, "_HTTP_LeaveParty_Completed");
 	disable_buttons();
 
@@ -40,6 +41,8 @@ func _searching_text_timer_ended():
 func _options_button_clicked():
 	Globals.toggle_options_menu();
 	$Options_Button.release_focus();
+func _fullscreen_button_clicked():
+	OS.window_fullscreen = !OS.window_fullscreen;
 
 var current_color = 0;
 # Called every frame by Titlescreen with the latest playback position
@@ -158,6 +161,8 @@ func _logout_pressed():
 	get_parent().logout();
 func _splash_start_pressed():
 	get_parent().start();
+	if Globals.control_scheme == Globals.Control_Schemes.touchscreen:
+		OS.window_fullscreen = true;
 
 func _join_party_pressed():
 	if Globals.player_party_data.players.size() > 1:
