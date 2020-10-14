@@ -69,7 +69,7 @@ var leaderboard_parent;
 func load_leaderboard(leaderboard_data):
 	var origin = Vector2(136,213);
 	if leaderboard_parent:
-		leaderboard_parent.call_deferred("queue_free");
+		leaderboard_parent.call_deferred("free");
 	leaderboard_parent = Node2D.new();
 	leaderboard_parent.position = origin;
 	$UI_Layer/Leaderboard.call_deferred("add_child", leaderboard_parent);

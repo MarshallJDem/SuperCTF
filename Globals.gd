@@ -30,6 +30,9 @@ var player_party_data;
 var player_uid;
 var knownPartyData;
 
+enum Control_Schemes { touchscreen, keyboard, controller};
+var control_scheme = Control_Schemes.keyboard;
+
 # At the end of a match its hard to tell whether the current stored data for player MMR
 # is from before or after the match results. This keeps track of what it was before.
 var player_old_MMR = -1;
@@ -70,10 +73,10 @@ var displaying_loadout = false;
 
 # ----- Constants -----
 const game_var_defaults = {"playerSpeed" : 200, "playerLagTime" : 50,
-	"bulletSpeed" : 350, "bulletCooldown" : 400, 
+	"bulletSpeed" : 350, "bulletCooldown" : 350, 
 	"laserChargeTime" : 650, "laserCooldown" : 500, 
 	"laserWidth" :15, "laserLength" : 1300,
-	"dashDistance" : 3000, "dashCooldown" : 3000, 
+	"dashDistance" : 5000, "dashCooldown" : 3000, 
 	"forcefieldCooldown" : 8000,
 	"scoreLimit" : 2,
 	"grenadeRadius" : 50,"grenadeCooldown":5000,
@@ -110,7 +113,7 @@ var HTTPRequest_Logout = HTTPRequest.new();
 onready var viewport = get_viewport()
 
 func test():
-	HTTPRequest_ConfirmClientConnection.queue_free();
+	HTTPRequest_ConfirmClientConnection.call_deferred("free");
 	HTTPRequest_ConfirmClientConnection = HTTPRequest.new();
 	add_child(HTTPRequest_ConfirmClientConnection);
 
@@ -129,7 +132,7 @@ func _enter_tree():
 	if arguments.has("isServer"):
 		isServer = true if arguments["isServer"] == "true" else false;
 	if OS.has_feature("editor"):
-		testing = true;
+		testing = false;
 	experimental =  false;#OS.has_feature("debug") and !OS.has_feature("editor");
 	if experimental:
 		get_tree().change_scene("res://GameContent/Main.tscn");
@@ -145,7 +148,8 @@ func _ready():
 	HTTPRequest_GetMatchData.connect("request_completed", self, "_HTTP_GetMatchData_Completed");
 	HTTPRequest_CancelQueue.connect("request_completed", self, "_HTTP_CancelQueue_Completed");
 	HTTPRequest_Logout.connect("request_completed", self, "_HTTPRequest_Logout_Completed");
-
+	if OS.has_touchscreen_ui_hint():
+		control_scheme = Control_Schemes.touchscreen;
 func _process(delta):
 	if get_tree().get_root().has_node("MainScene/NetworkController"):
 		Globals.player_lerp_time = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("playerLagTime");
@@ -157,7 +161,7 @@ func _process(delta):
 var volume_sliders = Vector2(50,50);
 func toggle_options_menu():
 	if get_tree().get_root().has_node("Options_Menu"):
-		get_tree().get_root().get_node("Options_Menu").call_deferred("queue_free");
+		get_tree().get_root().get_node("Options_Menu").call_deferred("free");
 		write_save_data();
 	else:
 		load_save_data();
@@ -194,16 +198,16 @@ func logout(reload = false):
 	knownPartyData = null;
 	player_old_MMR = -1;
 	
-	HTTPRequest_PollPlayerStatus.queue_free();
+	HTTPRequest_PollPlayerStatus.call_deferred("free");
 	HTTPRequest_PollPlayerStatus = HTTPRequest.new();
 	add_child(HTTPRequest_PollPlayerStatus);
-	HTTPRequest_GetMatchData.queue_free();
+	HTTPRequest_GetMatchData.call_deferred("free");
 	HTTPRequest_GetMatchData = HTTPRequest.new();
 	add_child(HTTPRequest_GetMatchData);
-	HTTPRequest_CancelQueue.queue_free();
+	HTTPRequest_CancelQueue.call_deferred("free");
 	HTTPRequest_CancelQueue = HTTPRequest.new();
 	add_child(HTTPRequest_CancelQueue);
-	HTTPRequest_ConfirmClientConnection.queue_free();
+	HTTPRequest_ConfirmClientConnection.call_deferred("free");
 	HTTPRequest_ConfirmClientConnection = HTTPRequest.new();
 	add_child(HTTPRequest_ConfirmClientConnection);
 	

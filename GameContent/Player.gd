@@ -71,15 +71,17 @@ func _input(event):
 				get_tree().get_root().get_node("MainScene/NetworkController").rpc("test_ping");
 			if event.scancode == KEY_CONTROL:
 				if !has_flag():
-					sprintEnabled = !sprintEnabled;
+					pass;
+					#printEnabled = !sprintEnabled;
 			if event.scancode == KEY_SPACE:
 				#Attempt a teleport
 				# Re-enable line below to prevent telporting while you have flag
-				# if $Flag_Holder.get_child_count() == 0:
-				if $Teleport_Timer.time_left == 0 and $Weapon_Node/Laser_Timer.time_left == 0:
-					move_on_inputs(true);
-					camera_ref.lag_smooth();
-					$Teleport_Timer.start();
+				teleport_pressed();
+func teleport_pressed():
+	if $Teleport_Timer.time_left == 0 and $Weapon_Node/Laser_Timer.time_left == 0:
+		move_on_inputs(true);
+		camera_ref.lag_smooth();
+		$Teleport_Timer.start();
 
 func _process(delta):
 	BASE_SPEED = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("playerSpeed");
@@ -118,7 +120,7 @@ func _process(delta):
 	
 	# Animation
 	var diff = last_position - position;
-	if sqrt(pow(diff.x, 2) + pow(diff.y, 2)) < 1:
+	if sqrt(pow(diff.x, 2) + pow(diff.y, 2)) < 0.1:
 		# Idle
 		if team_id == 1:
 			#$Sprite_Top.set_texture(idle_top_atlas_red);
@@ -224,9 +226,12 @@ remotesync func teleport(start, end):
 # Checks the current pressed keys and calculates a new player position using the KinematicBody2D
 func move_on_inputs(teleport = false):
 	var input = Vector2(0,0);
-	input.x = (1 if Input.is_key_pressed(KEY_D) else 0) - (1 if Input.is_key_pressed(KEY_A) else 0)
-	input.y = (1 if Input.is_key_pressed(KEY_S) else 0) - (1 if Input.is_key_pressed(KEY_W) else 0)
-	input = input.normalized();
+	if Globals.control_scheme == Globals.Control_Schemes.touchscreen:
+		input = get_tree().get_root().get_node("MainScene/UI_Layer/Move_Stick").stick_vector / get_tree().get_root().get_node("MainScene/UI_Layer/Move_Stick").radius_big;
+	else:
+		input.x = (1 if Input.is_key_pressed(KEY_D) else 0) - (1 if Input.is_key_pressed(KEY_A) else 0)
+		input.y = (1 if Input.is_key_pressed(KEY_S) else 0) - (1 if Input.is_key_pressed(KEY_W) else 0)
+		input = input.normalized();
 	last_movement_input = input;
 	if teleport or (input.x != 0 or input.y != 0):
 		has_moved_after_respawn = true;
@@ -302,10 +307,17 @@ func stop_powerups():
 
 	
 # Changes the sprite's frame to make it "look" at the mouse
-var previous_look_input = Vector2(0,0);
+var previous_dist = Vector2(0,0);
 func update_look_direction():
 	var pos = get_global_mouse_position();
 	var dist = pos - position;
+	if Globals.control_scheme == Globals.Control_Schemes.touchscreen:
+		dist = get_tree().get_root().get_node("MainScene/UI_Layer/Shoot_Stick").stick_vector;
+		if dist == Vector2.ZERO:
+			dist = get_tree().get_root().get_node("MainScene/UI_Layer/Move_Stick").stick_vector;
+			if dist == Vector2.ZERO:
+				dist = previous_dist;
+	previous_dist = dist;
 	var angle = get_vector_angle(dist);
 	var adjustedAngle = -1 * (angle + (PI/8));
 	var octant = (adjustedAngle / (2 * PI)) * 8

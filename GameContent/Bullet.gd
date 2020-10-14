@@ -75,7 +75,7 @@ func die():
 	#Only show particles if we havn't already done so from a preliminary death
 	if show_death_particles:
 		spawn_death_particles();
-	call_deferred("queue_free");
+	call_deferred("free");
 
 var should_die = false;
 # Called when the death timer finishes

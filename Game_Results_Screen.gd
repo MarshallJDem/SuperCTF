@@ -54,13 +54,13 @@ func _rematch_pressed():
 	get_tree().get_root().get_node("MainScene/NetworkController").rpc_id(1, "change_DD_vote", !current_vote);
 
 func setup_stats_visuals():
-	if Globals.testing:
+	if Globals.testing: 
 		return;
 	$CanvasLayer/Control/Main_View/Text_KDC.bbcode_text = "[center]" + str(stats[Globals.localPlayerID]['kills']) + " : " + str(stats[Globals.localPlayerID]['deaths']) + " : " + str(stats[Globals.localPlayerID]['captures'])
 	var count = 0;
 	for player_id in stats:
 		count += 1; # Theres probably a better way to get this number lol
-	var spread = 250 * count; # The total spread of the cells
+	var spread = 200 * count; # The total spread of the cells
 	var start_pos = -(spread/2);
 	var y_offset = -300;
 	var i = 0
@@ -89,7 +89,6 @@ func switch_views():
 		$View_Animation_Timer.start();
 
 func _view_animation_timer_ended():
-	print(OS.get_window_size().x);
 	if view == 0:
 		$CanvasLayer/Control/Main_View.position.x = 0;
 		$CanvasLayer/Control/Stats_View.position.x = OS.get_window_size().x / $CanvasLayer/Control.rect_scale.x;

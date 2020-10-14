@@ -216,7 +216,7 @@ func updateGameServerStatus(status = null):
 # Joins a server
 func join_server():
 	client = WebSocketClient.new();
-	
+	client.verify_ssl = false;
 	var url = "ws://" + Globals.serverIP;
 	if Globals.useSecure:
 		url = "wss://" + Globals.serverIP;
@@ -227,10 +227,15 @@ func join_server():
 	if error == 0:
 		get_tree().set_network_peer(client);
 	else:
+		print("ERROR CONNECTING TO SERVER");
 		print(error);
-		# Infinetely attempt to reconnect
+		# Attempt one more connection
 		yield(get_tree().create_timer(1.0), "timeout");
-		join_server();
+		error = client.connect_to_url(url, PoolStringArray(), true);
+		if error == 0:
+			get_tree().set_network_peer(client);
+		else:
+			leave_match();
 
 # Starts the match
 func start_match():
@@ -276,8 +281,7 @@ func _connection_ok():
 	rpc_id(1, "user_ready", get_tree().get_network_unique_id(), Globals.userToken);
 
 func _connection_failed():
-	# Try again cuz this is probably a 1 off issue
-	join_server();
+	leave_match();
 
 func update_player_objects():
 	# Delete players that have left and spawn new players
@@ -287,7 +291,7 @@ func update_player_objects():
 		name.erase(0,1);
 		if !players.has(int(name)):
 			player.drop_current_flag();
-			player.queue_free();
+			player.call_deferred("free");
 	# For every new player
 	for player in players:
 		if !get_tree().get_root().get_node("MainScene/Players").has_node("P" + str(player)):
@@ -404,20 +408,27 @@ remote func user_ready(id, userToken):
 	print("User Ready");
 	# Now if we are the server we will add this player to the queue of players to be checked
 	if get_tree().is_network_server():
-		
+		var net_id = get_tree().get_rpc_sender_id();
+		var repeats = 0;
 		# Wait for match data to come in if this isn't a skirmish
 		if(!isSkirmish):
 			while(true):
+				# If we've tried for too long without success, kick this player
+				if repeats > 5:
+					server.disconnect_peer(net_id, 1000, "Unavailable");
+					print("Giving up on player " + str(net_id));
+					return;
 				if(Globals.allowedPlayers != []):
 					break;
-				print("Waiting for allowed match data to download");
+				print("Player " + str(net_id) + " connnected while there was no match data");
 				yield(get_tree().create_timer(0.5), "timeout");
+				repeats += 1;
 		var http = HTTPRequest.new()
 		add_child(http);
 		http.connect("request_completed", self, "_HTTP_GameServerCheckUser_Completed")
 		http.request(Globals.mainServerIP + "gameServerCheckUser?" + "userToken=" + str(userToken) + "&networkID=" + str(id), ["authorization: Bearer " + Globals.serverPrivateToken], false);
 		yield(http, "request_completed");
-		http.call_deferred("queue_free");
+		http.call_deferred("free");
 
 # A test function for sending a ping
 remotesync func test_ping():
@@ -440,7 +451,7 @@ func spawn_player(id):
 		player.activate_camera();
 	if get_tree().get_root().get_node("MainScene/Players").has_node("P" + str(id)):
 		get_tree().get_root().get_node("MainScene/Players/P" + str(id)).set_name("P" + str(id) + "DELETED");
-		get_tree().get_root().get_node("MainScene/Players/P" + str(id)).queue_free();
+		get_tree().get_root().get_node("MainScene/Players/P" + str(id)).call_deferred("free");
 	get_tree().get_root().get_node("MainScene/Players").call_deferred("add_child",player);
 	
 
@@ -488,10 +499,9 @@ func _client_disconnected(id):
 # Goes back to title screen and drops the socket connection and resets the game
 func leave_match():
 	print("Leave Match");
-	get_tree().set_network_peer(null);
-	client = null;
-	reset_game()
 	get_tree().change_scene("res://TitleScreen.tscn");
+	get_tree().call_deferred("set_network_peer", null);
+	call_deferred("free");
 
 # Called when this client disconnects from the server
 func server_disconnect():
@@ -542,19 +552,19 @@ func reset_game_objects(kill_players = false):
 		if player.player_id == Globals.localPlayerID:
 			player.activate_camera();
 		if kill_players:
-			player.queue_free();
+			player.call_deferred("free");
 	# Remove any old flags
 	for flag in get_tree().get_nodes_in_group("Flags"):
 		flag.set_name(flag.name + "DELETING");
-		flag.queue_free();
+		flag.call_deferred("free");
 	# Remove any old projectiles
 	for projectile in get_tree().get_nodes_in_group("Projectiles"):
 		projectile.set_name(projectile.name + "DELETING");
-		projectile.queue_free();
+		projectile.call_deferred("free");
 	# Remove any old forcefields
 	for forcefield in get_tree().get_nodes_in_group("Forcefields"):
 		forcefield.set_name(forcefield.name + "DELETING");
-		forcefield.queue_free();
+		forcefield.call_deferred("free");
 	# Remove any old landmines
 	for mine in get_tree().get_nodes_in_group("Landmines"):
 		mine.set_name(mine.name + "DELETING");
@@ -768,7 +778,7 @@ remotesync func start_rematch():
 		$Match_End_Timer.stop();
 	else:
 		if get_tree().get_root().has_node("MainScene/Game_Results_Screen"):
-			get_tree().get_root().get_node("MainScene/Game_Results_Screen").call_deferred("queue_free");
+			get_tree().get_root().get_node("MainScene/Game_Results_Screen").call_deferred("free");
 			get_tree().get_root().get_node("MainScene/UI_Layer").appear();
 
 # Temporary storage of the winning_team_id to use since the call GameServerEndMatch may require multiple calls if it fails

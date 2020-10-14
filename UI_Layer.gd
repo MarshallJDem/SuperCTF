@@ -140,7 +140,7 @@ func _process(delta):
 	
 	
 
-func _HTTP_LeaveParty_Completed(result, response_code, headers, body):
+func _HTTP_LeaveParty_Completed(_result, _response_code, _headers, _body):
 	# Do notihng cuz the results are reflected in poll player status
 	return;
 

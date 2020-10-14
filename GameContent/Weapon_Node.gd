@@ -134,13 +134,15 @@ func shoot_on_inputs():
 		return;
 	player.has_moved_after_respawn = true;
 	# Check for mouse input
-	if Input.is_action_pressed("clickL"):
+	if (Globals.control_scheme == Globals.Control_Schemes.keyboard and Input.is_action_pressed("clickL")) or (Globals.control_scheme == Globals.Control_Schemes.touchscreen and get_tree().get_root().get_node("MainScene/UI_Layer/Shoot_Stick").stick_vector != Vector2(0,0)):
+		var direction = ((get_global_mouse_position() - global_position).normalized());
+		if Globals.control_scheme == Globals.Control_Schemes.touchscreen:
+			direction = get_tree().get_root().get_node("MainScene/UI_Layer/Shoot_Stick").stick_vector.normalized();
 		# Only accepts clicks if we're not aiming a laser
 		if $Laser_Timer.time_left == 0:
 			if !player.attempt_drop_flag():
 				if Globals.current_class == Globals.Classes.Bullet:
 					if $Cooldown_Timer.time_left == 0:
-						var direction = ((get_global_mouse_position() - global_position).normalized());
 						var angle = PI / 16.0;
 						var direction2 = Vector2((cos(angle) * direction.x) - (sin(angle) * direction.y),(sin(angle) * direction.x) + (cos(angle) * direction.y));
 						var direction3 = Vector2((cos(-angle) * direction.x) - (sin(-angle) * direction.y),(sin(-angle) * direction.x) + (cos(-angle) * direction.y));
@@ -150,14 +152,12 @@ func shoot_on_inputs():
 							shoot_bullet(direction3);
 				elif Globals.current_class == Globals.Classes.Laser:
 					if $Cooldown_Timer.time_left == 0:
-						var direction = (get_global_mouse_position() - player.position).normalized();
 						if ult_active:
 							shoot_laser(direction, 60);
 						else:
 							shoot_laser(direction, 15);
 				elif Globals.current_class == Globals.Classes.Demo:
 					if $Cooldown_Timer.time_left == 0:
-						var direction = (get_global_mouse_position() - global_position).normalized();
 						
 						# Test to see if demo is spawning inside of forcefield
 						$CollisionTester.position = get_node("Bullet_Starts/" + String(player.look_direction)).position;
@@ -238,7 +238,6 @@ func shoot_bullet(d):
 	var bullet_name = "Bullet"+ "-" + str(player.player_id) + "-" + str(bullets_shot);
 	#player.camera_ref.shake();
 	$Shoot_Animation_Timer.start();
-	print(collision_tester_length);
 	# If we are too close to a wall, shoot a blank
 	if(collision_tester_length < 10):
 		spawn_bullet(bullet_start, 0 if Globals.testing else player.player_id, direction, time, bullet_name, true);
@@ -266,7 +265,7 @@ remotesync func spawn_bullet(pos, player_id, direction, time_shot, bullet_name, 
 		self.add_child(t);
 		t.start();
 		yield(t, "timeout");
-		t.queue_free();
+		t.call_deferred("free");
 	
 	# Initialize Bullet
 	var bullet = Bullet.instance();

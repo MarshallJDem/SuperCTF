@@ -21,7 +21,7 @@ func _JoinParty_HTTP_Completed(result, response_code, headers, body):
 		var json = JSON.parse(body.get_string_from_utf8())
 		$Control/TitleText.bbcode_text = "[color=green][center]Joined Party!";
 		yield(get_tree().create_timer(0.5), "timeout");
-		self.call_deferred("queue_free");
+		self.call_deferred("free");
 		return;
 	elif response_code == 404:
 		$Control/TitleText.bbcode_text = "[color=red][center]Invalid Party Code";
@@ -44,4 +44,4 @@ func _process(delta):
 		$Control/LineEdit.append_at_cursor(txt);
 
 func _cancel_pressed():
-	call_deferred("queue_free");
+	call_deferred("free");

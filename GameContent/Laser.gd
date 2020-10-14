@@ -24,7 +24,6 @@ func _ready():
 	$Area2D.rotation = Vector2(0,0).angle_to_point(target_pos) + PI/2;
 	$Area2D/CollisionShape2D.shape.set_extents(Vector2(size/2, Vector2(0,0).distance_to(target_pos)/2));
 	$Area2D/CollisionShape2D.position.y = Vector2(0,0).distance_to(target_pos)/2;
-	print(is_blank);
 	
 func _physics_process(delta):
 	update();
@@ -54,4 +53,4 @@ func _draw():
 # Called when the death timer ends;
 func _death_timer_ended():
 	get_parent().remove_child(self);
-	queue_free();
+	call_deferred("free");

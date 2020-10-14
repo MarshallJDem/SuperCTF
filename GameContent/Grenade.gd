@@ -72,7 +72,7 @@ func explode():
 	explosion.team_id = team_id;
 	explosion.player_id = player_id;
 	get_tree().get_root().get_node("MainScene").call_deferred("add_child", explosion);
-	call_deferred("queue_free");
+	call_deferred("free");
 		
 # Called when the death timer finishes
 # NOTE- we can trust each client to handle it's own grenade deaths because the server detects collisions anyways

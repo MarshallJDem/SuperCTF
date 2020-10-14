@@ -26,7 +26,7 @@ func _ready():
 		else:
 			puppet_state = Puppet_State.Puppet;
 			if (puppet_time_shot-original_time_shot)/1000.0 > $Detonation_Timer.wait_time:
-				call_deferred("queue_free");
+				call_deferred("free");
 				return;
 			$Detonation_Timer.wait_time += -(puppet_time_shot-original_time_shot)/1000.0;
 	if puppet_state == Puppet_State.Master:
@@ -52,7 +52,7 @@ remotesync func detonate(from_remote = false):
 		self.add_child(t);
 		t.start();
 		yield(t, "timeout");
-		t.queue_free();
+		t.call_deferred("free");
 		print("Waited for detonation");
 
 	$Detonation_Timer.stop();
@@ -70,7 +70,7 @@ func _death_timer_ended():
 	$Area2D2.monitoring = false;
 	visible = false;
 	yield(get_tree().create_timer(1), "timeout");
-	call_deferred("queue_free");
+	call_deferred("free");
 func _process(delta):
 	if $Death_Timer.time_left > 0:
 		var progress = 1.0 - $Death_Timer.time_left/$Death_Timer.wait_time;

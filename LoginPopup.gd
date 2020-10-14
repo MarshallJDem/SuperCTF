@@ -44,7 +44,7 @@ func _Login_HTTP_Completed(result, response_code, headers, body):
 		else:
 			$Control/Warning_Text2.bbcode_text = "[color=red][center]A serious error(9296) occurred. Please tell us on discord";
 		yield(get_tree().create_timer(0.5), "timeout");
-		self.call_deferred("queue_free");
+		self.call_deferred("free");
 		return;
 	elif response_code == 404:
 		$Control/Warning_Text2.bbcode_text = "[color=red][center]Invalid username/password";
@@ -53,4 +53,4 @@ func _Login_HTTP_Completed(result, response_code, headers, body):
 	return;
 
 func _cancel_pressed():
-	call_deferred("queue_free");
+	call_deferred("free");

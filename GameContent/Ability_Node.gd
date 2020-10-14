@@ -43,23 +43,26 @@ func _input(event):
 	if player.control:
 		if event is InputEventKey and event.pressed:
 			if event.scancode == KEY_E:
-				if $Cooldown_Timer.time_left == 0 || ability_stacks > 0:
-					if $Cooldown_Timer.time_left != 0 && ability_stacks > 0:
-						ability_stacks += -1;
-					if Globals.current_ability == Globals.Abilities.Forcefield:
-						place_forcefield();
-					elif Globals.current_ability == Globals.Abilities.Camo:
-						activate_camo();
+				ability_pressed();
 			if event.scancode == KEY_Q:
-				if ult_charge >= 100:
-					$Ult_Timer.start();
-					ult_charge = 0;
-					player.get_node("Weapon_Node").ult_active = true;
+				ult_pressed();
 			if event.scancode == KEY_P and Globals.testing:
 				$Ult_Timer.start();
 				ult_charge = 0;
 				player.get_node("Weapon_Node").ult_active = true;
-
+func ability_pressed():
+	if $Cooldown_Timer.time_left == 0 || ability_stacks > 0:
+		if $Cooldown_Timer.time_left != 0 && ability_stacks > 0:
+			ability_stacks += -1;
+		if Globals.current_ability == Globals.Abilities.Forcefield:
+			place_forcefield();
+		elif Globals.current_ability == Globals.Abilities.Camo:
+			activate_camo();
+func ult_pressed():
+	if ult_charge >= 100:
+		$Ult_Timer.start();
+		ult_charge = 0;
+		player.get_node("Weapon_Node").ult_active = true;
 
 func _ult_charge_timer_ended():
 	var previous_charge = ult_charge;
