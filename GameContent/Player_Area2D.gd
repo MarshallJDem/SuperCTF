@@ -134,8 +134,13 @@ func collided_with_demo_body(demo_parent):
 	# If this player is invincible, dont get hit
 	if player.invincible:
 		return;
+	for area in get_overlapping_areas():
+		# If we're currently in a forcefield, ignore it
+		if area.is_in_group("Forcefield_Bodies"):
+			return;
 	# Otherwise receive a hit from the grenade
 	player.rpc("receive_hit", demo_parent.player_id, 3);
+	
 func collided_with_powerup_body(powerup_parent):
 	if get_tree().get_root().get_node("MainScene/NetworkController").round_is_ended: return;
 	var player = get_parent();
