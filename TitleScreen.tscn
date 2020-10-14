@@ -382,7 +382,9 @@ custom_colors/default_color = Color( 0.368627, 0.368627, 0.368627, 1 )
 bbcode_enabled = true
 bbcode_text = "[color=black]NEWS:
 
-The game is planned to release approx  [rainbow]Oct 1st![/rainbow] Any final feature suggestions or bugs should be reported onto the discord ASAP!
+Happy  [color=#ff8819]O[color=purple]c[color=#ff8819]t[color=purple]o[color=#ff8819]b[color=purple]e[color=#ff8819]r[color=black]!! This is launch month for SuperCTF! 
+
+We are hosting play sessions [rainbow]EVERY WEDNESDAY [/rainbow]at 7PM PST and at 7PM BST! Join the Discord for more information:
 
 Discord Link:[color=blue] [url]https://discord.gg/D3Ban34[/url][color=black]
 Twitter:[color=blue] [url]https://twitter.com/SuperCTFGame[/url][color=black]
@@ -392,7 +394,9 @@ We are looking for people to get involved and make suggestions or help build the
 - Carshalljd (add me on discord [color=black]carshalljd#4808[color=black] or email me at [color=black]marshalljdem@gmail.com[color=black])"
 text = "NEWS:
 
-The game is planned to release approx  Oct 1st! Any final feature suggestions or bugs should be reported onto the discord ASAP!
+Happy  October!! This is launch month for SuperCTF! 
+
+We are hosting play sessions EVERY WEDNESDAY at 7PM PST and at 7PM BST! Join the Discord for more information:
 
 Discord Link: https://discord.gg/D3Ban34
 Twitter: https://twitter.com/SuperCTFGame
@@ -734,13 +738,13 @@ visible = false
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 14 )
+frame = 1
 playing = true
 
 [node name="Red_Sprite" type="AnimatedSprite" parent="UI_Layer/Flags/Flag"]
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 19 )
-frame = 3
 playing = true
 
 [node name="Area2D" type="Area2D" parent="UI_Layer/Flags/Flag" groups=[
@@ -768,6 +772,7 @@ __meta__ = {
 position = Vector2( 10, -14 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 8 )
+frame = 1
 playing = true
 
 [node name="Area2D" type="Area2D" parent="UI_Layer/Flags/Flag2" groups=[
