@@ -1,7 +1,13 @@
-[gd_scene load_steps=43 format=2]
+[gd_scene load_steps=54 format=2]
 
 [ext_resource path="res://TitleScreen.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Items/flags.png" type="Texture" id=2]
+[ext_resource path="res://GameContent/Flag.gd" type="Script" id=3]
+[ext_resource path="res://flag_frames/flagBlue1.png" type="Texture" id=4]
+[ext_resource path="res://flag_frames/flagBlue2.png" type="Texture" id=5]
+[ext_resource path="res://flag_frames/flagBlue3.png" type="Texture" id=6]
+[ext_resource path="res://flag_frames/flagBlue4.png" type="Texture" id=7]
+[ext_resource path="res://GameContent/Flag_Area2D.gd" type="Script" id=8]
 [ext_resource path="res://UI_Layer.gd" type="Script" id=9]
 [ext_resource path="res://fonts/Pixel_Title.tres" type="DynamicFont" id=10]
 [ext_resource path="res://fonts/Pixel_Chat.tres" type="DynamicFont" id=11]
@@ -68,53 +74,67 @@ border_color = Color( 0, 0, 0, 1 )
 outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
 font_data = ExtResource( 18 )
 
-[sub_resource type="AtlasTexture" id=8]
+[sub_resource type="AtlasTexture" id=10]
 atlas = ExtResource( 2 )
 region = Rect2( 0, 32, 16, 16 )
 
-[sub_resource type="AtlasTexture" id=9]
+[sub_resource type="AtlasTexture" id=11]
 atlas = ExtResource( 2 )
 region = Rect2( 16, 32, 16, 16 )
 
-[sub_resource type="AtlasTexture" id=10]
+[sub_resource type="AtlasTexture" id=12]
 atlas = ExtResource( 2 )
 region = Rect2( 32, 32, 16, 16 )
 
-[sub_resource type="AtlasTexture" id=11]
+[sub_resource type="AtlasTexture" id=13]
 atlas = ExtResource( 2 )
 region = Rect2( 48, 32, 16, 16 )
 
-[sub_resource type="SpriteFrames" id=12]
+[sub_resource type="SpriteFrames" id=14]
 animations = [ {
-"frames": [ SubResource( 8 ), SubResource( 9 ), SubResource( 10 ), SubResource( 11 ) ],
+"frames": [ SubResource( 10 ), SubResource( 11 ), SubResource( 12 ), SubResource( 13 ) ],
 "loop": true,
 "name": "default",
 "speed": 7.0
 } ]
-
-[sub_resource type="AtlasTexture" id=13]
-atlas = ExtResource( 2 )
-region = Rect2( 0, 16, 16, 16 )
-
-[sub_resource type="AtlasTexture" id=14]
-atlas = ExtResource( 2 )
-region = Rect2( 16, 16, 16, 16 )
 
 [sub_resource type="AtlasTexture" id=15]
 atlas = ExtResource( 2 )
-region = Rect2( 32, 16, 16, 16 )
+region = Rect2( 0, 16, 16, 16 )
 
 [sub_resource type="AtlasTexture" id=16]
 atlas = ExtResource( 2 )
+region = Rect2( 16, 16, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=17]
+atlas = ExtResource( 2 )
+region = Rect2( 32, 16, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=18]
+atlas = ExtResource( 2 )
 region = Rect2( 48, 16, 16, 16 )
 
-[sub_resource type="SpriteFrames" id=17]
+[sub_resource type="SpriteFrames" id=19]
 animations = [ {
-"frames": [ SubResource( 13 ), SubResource( 14 ), SubResource( 15 ), SubResource( 16 ) ],
+"frames": [ SubResource( 15 ), SubResource( 16 ), SubResource( 17 ), SubResource( 18 ) ],
 "loop": true,
 "name": "default",
 "speed": 7.0
 } ]
+
+[sub_resource type="ConvexPolygonShape2D" id=20]
+points = PoolVector2Array( -10, -9.171, 23.751, -8.802, 23.926, 33.35, -10, 33.419 )
+
+[sub_resource type="SpriteFrames" id=8]
+animations = [ {
+"frames": [ ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ) ],
+"loop": true,
+"name": "default",
+"speed": 7.0
+} ]
+
+[sub_resource type="ConvexPolygonShape2D" id=9]
+points = PoolVector2Array( 0, 0, 18.693, 3.609, 18.937, 14.698, 0, 28.805 )
 
 [node name="TitleScreen" type="Node2D"]
 script = ExtResource( 1 )
@@ -362,26 +382,24 @@ custom_colors/default_color = Color( 0.368627, 0.368627, 0.368627, 1 )
 bbcode_enabled = true
 bbcode_text = "[color=black]NEWS:
 
-The game is now [rainbow]OFFICIALLY RELEASED[/rainbow] as of Oct 1st! Welcome to Super[color=red]CTF[color=black]!
-
-Tournaments hosted every Wednesday at 7PM PST and also at 7PM BST. Join the discord for more info.
+The game is planned to release approx  [rainbow]Oct 1st![/rainbow] Any final feature suggestions or bugs should be reported onto the discord ASAP!
 
 Discord Link:[color=blue] [url]https://discord.gg/D3Ban34[/url][color=black]
 Twitter:[color=blue] [url]https://twitter.com/SuperCTFGame[/url][color=black]
 
 We are looking for people to get involved and make suggestions or help build the game. Join our discord or email me to get involved!
-- Carshalljd (Discord [color=black]carshalljd#4808[color=black] or Email [color=black]marshall@superctf.com[color=black])"
+
+- Carshalljd (add me on discord [color=black]carshalljd#4808[color=black] or email me at [color=black]marshalljdem@gmail.com[color=black])"
 text = "NEWS:
 
-The game is now OFFICIALLY RELEASED as of Oct 1st! Welcome to SuperCTF!
-
-Tournaments hosted every Wednesday at 7PM PST and also at 7PM BST. Join the discord for more info.
+The game is planned to release approx  Oct 1st! Any final feature suggestions or bugs should be reported onto the discord ASAP!
 
 Discord Link: https://discord.gg/D3Ban34
 Twitter: https://twitter.com/SuperCTFGame
 
 We are looking for people to get involved and make suggestions or help build the game. Join our discord or email me to get involved!
-- Carshalljd (Discord carshalljd#4808 or Email marshall@superctf.com)"
+
+- Carshalljd (add me on discord carshalljd#4808 or email me at marshalljdem@gmail.com)"
 scroll_active = false
 selection_enabled = true
 custom_effects = [ ExtResource( 20 ) ]
@@ -709,25 +727,60 @@ __meta__ = {
 position = Vector2( 1581.88, 123 )
 scale = Vector2( 4, 3.04 )
 z_as_relative = false
-
 script = ExtResource( 3 )
-__meta__ = {
-"_edit_lock_": true
-}
 
 [node name="Blue_Sprite" type="AnimatedSprite" parent="UI_Layer/Flags/Flag"]
-position = Vector2( -308.114, -16 )
+visible = false
+position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
-frames = SubResource( 12 )
+frames = SubResource( 14 )
 frame = 2
 playing = true
 
 [node name="Red_Sprite" type="AnimatedSprite" parent="UI_Layer/Flags/Flag"]
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
-frames = SubResource( 17 )
+frames = SubResource( 19 )
 frame = 1
 playing = true
+
+[node name="Area2D" type="Area2D" parent="UI_Layer/Flags/Flag" groups=[
+"Flag_Bodies",
+]]
+position = Vector2( 20.7922, -30.4714 )
+script = ExtResource( 8 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="UI_Layer/Flags/Flag/Area2D"]
+position = Vector2( -20.7247, 2.43704 )
+shape = SubResource( 20 )
+
+[node name="Flag2" type="Node2D" parent="UI_Layer/Flags" groups=[
+"Flags",
+]]
+position = Vector2( 292.86, 123 )
+scale = Vector2( 4, 3.04 )
+z_as_relative = false
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Blue_Sprite" type="AnimatedSprite" parent="UI_Layer/Flags/Flag2"]
+position = Vector2( 10, -14 )
+scale = Vector2( 2, 2 )
+frames = SubResource( 8 )
+frame = 2
+playing = true
+
+[node name="Area2D" type="Area2D" parent="UI_Layer/Flags/Flag2" groups=[
+"Flag_Bodies",
+]]
+position = Vector2( 20.7922, -30.4714 )
+script = ExtResource( 8 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="UI_Layer/Flags/Flag2/Area2D"]
+position = Vector2( -20.7247, 2.43704 )
+shape = SubResource( 9 )
 
 [node name="Halloween 2020 Centre" type="Control" parent="UI_Layer"]
 anchor_left = 0.5
