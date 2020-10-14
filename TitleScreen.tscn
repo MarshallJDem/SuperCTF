@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=2]
+[gd_scene load_steps=43 format=2]
 
 [ext_resource path="res://TitleScreen.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Items/flags.png" type="Texture" id=2]
@@ -14,7 +14,19 @@
 [ext_resource path="res://fonts/pixel.TTF" type="DynamicFontData" id=18]
 [ext_resource path="res://Assets/Sound/CTFTitlescreen.ogg" type="AudioStream" id=19]
 [ext_resource path="res://Chat_Text.tres" type="RichTextEffect" id=20]
-[ext_resource path="res://Assets/GUI/pumpkin.png" type="Texture" id=21]
+[ext_resource path="res://Assets/Halloween 2020/Spiderweb corner black V1.png" type="Texture" id=21]
+[ext_resource path="res://Assets/Halloween 2020/Pumpkin U V1.png" type="Texture" id=22]
+[ext_resource path="res://Assets/Halloween 2020/Snake S V1.png" type="Texture" id=24]
+[ext_resource path="res://Assets/Halloween 2020/Zombie F V1.png" type="Texture" id=25]
+[ext_resource path="res://Assets/Halloween 2020/Pitchfork E V1.png" type="Texture" id=26]
+[ext_resource path="res://Assets/Halloween 2020/Monster R V1.png" type="Texture" id=27]
+[ext_resource path="res://Assets/Halloween 2020/Fence M V2.png" type="Texture" id=28]
+[ext_resource path="res://Assets/Halloween 2020/Axe P V4.png" type="Texture" id=29]
+[ext_resource path="res://Assets/Halloween 2020/Monster C V1.png" type="Texture" id=30]
+[ext_resource path="res://Assets/Halloween 2020/Tombstone T V2.png" type="Texture" id=32]
+[ext_resource path="res://Assets/Halloween 2020/Skull dot V1.png" type="Texture" id=33]
+[ext_resource path="res://Assets/Halloween 2020/Gravestone O V1.png" type="Texture" id=34]
+[ext_resource path="res://Assets/Halloween 2020/Monster blue C V1.png" type="Texture" id=35]
 
 [sub_resource type="DynamicFont" id=1]
 size = 8
@@ -108,6 +120,7 @@ animations = [ {
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_horizontal_guides_": [ 1001.32 ],
+"_edit_lock_": true,
 "_edit_vertical_guides_": [ 959.427 ]
 }
 
@@ -156,6 +169,7 @@ scroll_active = false
 selection_enabled = true
 custom_effects = [ ExtResource( 20 ) ]
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -196,6 +210,7 @@ __meta__ = {
 }
 
 [node name="Title" type="RichTextLabel" parent="UI_Layer"]
+visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -217,6 +232,7 @@ bbcode_text = "[center]SUPERCTF.COM"
 text = "SUPERCTF.COM"
 scroll_active = false
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -238,6 +254,7 @@ bbcode_text = "[center]RANKED MULTIPLAYER CAPTURE THE FLAG"
 text = "RANKED MULTIPLAYER CAPTURE THE FLAG"
 scroll_active = false
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -259,6 +276,7 @@ bbcode_text = "[center][color=green]-"
 text = "-"
 scroll_active = false
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -280,6 +298,7 @@ bbcode_text = "[center][color=green]-"
 text = "-"
 scroll_active = false
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -367,6 +386,7 @@ scroll_active = false
 selection_enabled = true
 custom_effects = [ ExtResource( 20 ) ]
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -426,6 +446,7 @@ custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color = Color( 0.109804, 0.109804, 0.109804, 1 )
 text = "Play as Guest"
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -445,6 +466,7 @@ custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color = Color( 0.109804, 0.109804, 0.109804, 1 )
 text = "Create Acccount"
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -464,6 +486,7 @@ custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color = Color( 0.109804, 0.109804, 0.109804, 1 )
 text = "Login"
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -484,6 +507,7 @@ custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "LOGOUT"
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -504,6 +528,7 @@ custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Options"
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -569,6 +594,7 @@ scroll_active = false
 selection_enabled = true
 custom_effects = [ ExtResource( 20 ) ]
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -585,6 +611,7 @@ custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Searching"
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -603,6 +630,7 @@ margin_right = 824.0
 margin_bottom = -325.0
 color = Color( 0, 0, 0, 1 )
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -657,6 +685,7 @@ margin_top = -540.0
 margin_right = -920.0
 margin_bottom = -500.0
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -670,6 +699,7 @@ margin_top = -540.0
 margin_right = -920.0
 margin_bottom = -500.0
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -679,6 +709,11 @@ __meta__ = {
 position = Vector2( 1581.88, 123 )
 scale = Vector2( 4, 3.04 )
 z_as_relative = false
+
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="Blue_Sprite" type="AnimatedSprite" parent="UI_Layer/Flags/Flag"]
 position = Vector2( -308.114, -16 )
@@ -694,6 +729,135 @@ frames = SubResource( 17 )
 frame = 1
 playing = true
 
+[node name="Halloween 2020 Centre" type="Control" parent="UI_Layer"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -20.0
+margin_top = -20.0
+margin_right = 20.0
+margin_bottom = 20.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Pumkin U (Halloween 2020)" type="Sprite" parent="UI_Layer/Halloween 2020 Centre"]
+position = Vector2( -324.817, -452.827 )
+scale = Vector2( 5.542, 5.542 )
+texture = ExtResource( 22 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Snake S (Halloween 2020)" type="Sprite" parent="UI_Layer/Halloween 2020 Centre"]
+position = Vector2( -394.081, -454.265 )
+scale = Vector2( 5.542, 5.542 )
+texture = ExtResource( 24 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Axe P (Halloween 2020)" type="Sprite" parent="UI_Layer/Halloween 2020 Centre"]
+position = Vector2( -234.043, -455.408 )
+scale = Vector2( 5.542, 5.542 )
+texture = ExtResource( 29 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Monster C (Halloween 2020)" type="Sprite" parent="UI_Layer/Halloween 2020 Centre"]
+position = Vector2( -10.762, -456.198 )
+scale = Vector2( 5.542, 5.542 )
+texture = ExtResource( 30 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Monster R (Halloween 2020)" type="Sprite" parent="UI_Layer/Halloween 2020 Centre"]
+position = Vector2( -89.773, -444.44 )
+scale = Vector2( 5.542, 5.542 )
+texture = ExtResource( 27 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Tombstone T (Halloween 2020)" type="Sprite" parent="UI_Layer/Halloween 2020 Centre"]
+position = Vector2( 51.405, -450.761 )
+scale = Vector2( 5.542, 5.542 )
+texture = ExtResource( 32 )
+
+[node name="Pitchfork E (Halloween 2020)" type="Sprite" parent="UI_Layer/Halloween 2020 Centre"]
+position = Vector2( -169.622, -453.294 )
+scale = Vector2( 5.542, 5.542 )
+texture = ExtResource( 26 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Zombie F (Halloween 2020)" type="Sprite" parent="UI_Layer/Halloween 2020 Centre"]
+position = Vector2( 149.41, -454.175 )
+scale = Vector2( 5.542, 5.542 )
+texture = ExtResource( 25 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Skull dot (Halloween 2020)" type="Sprite" parent="UI_Layer/Halloween 2020 Centre"]
+position = Vector2( 176.05, -398.96 )
+scale = Vector2( 5.542, 5.542 )
+texture = ExtResource( 33 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Monster C (Halloween 2020)2" type="Sprite" parent="UI_Layer/Halloween 2020 Centre"]
+position = Vector2( 246.99, -454.093 )
+scale = Vector2( 5.542, 5.542 )
+texture = ExtResource( 35 )
+
+[node name="Tombstone O (Halloween 2020)" type="Sprite" parent="UI_Layer/Halloween 2020 Centre"]
+position = Vector2( 320.68, -461.462 )
+scale = Vector2( 5.542, 5.542 )
+texture = ExtResource( 34 )
+
+[node name="Fence M (Halloween 2020)" type="Sprite" parent="UI_Layer/Halloween 2020 Centre"]
+position = Vector2( 411.2, -456.198 )
+scale = Vector2( 5.542, 5.542 )
+texture = ExtResource( 28 )
+
+[node name="Halloween 2020 Top Right" type="Control" parent="UI_Layer"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Spider web (Halloween 2020)" type="Sprite" parent="UI_Layer/Halloween 2020 Top Right"]
+position = Vector2( -88.1801, 127.786 )
+scale = Vector2( 8, 8 )
+texture = ExtResource( 21 )
+
+[node name="Halloween 2020 Bottom Left" type="Control" parent="UI_Layer"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_top = -40.0
+margin_right = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Spider web (Halloween 2020)2" type="Sprite" parent="UI_Layer/Halloween 2020 Bottom Left"]
+position = Vector2( 128.209, -83.328 )
+rotation = 3.14159
+scale = Vector2( 8, 8 )
+texture = ExtResource( 21 )
+__meta__ = {
+"_edit_lock_": true
+}
+
 [node name="Titlemusic_Audio" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 19 )
 bus = "MusicBus"
@@ -705,8 +869,3 @@ autostart = true
 [node name="Headline_Update_Timer" type="Timer" parent="."]
 wait_time = 0.1
 autostart = true
-
-[node name="Sprite" type="Sprite" parent="."]
-visible = false
-position = Vector2( 1753.17, 689.402 )
-texture = ExtResource( 21 )
