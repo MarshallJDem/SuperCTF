@@ -21,12 +21,14 @@ func update_camera_offset_from_mouse():
 	var mpos2 = get_viewport().get_mouse_position();
 	var distance = sqrt(pow(mpos2.x - get_viewport_rect().size.x/2,2) + pow(mpos2.y - get_viewport_rect().size.y/2,2));
 	var modifier = 0.03;
+	if Globals.control_scheme == Globals.Control_Schemes.touchscreen:
+		distance = 0.0;
 	$'..'.camera_ref.smoothing_speed = 10;
 	if !Globals.is_typing_in_chat and Input.is_key_pressed(KEY_SHIFT):
 		$'..'.camera_ref.smoothing_speed = 5;
 		modifier *= 8;
 	$'..'.camera_ref.position.x = distance * modifier;
-	
+
 func update_camera_offset_from_arrow_keys():
 	var input = Vector2(0,0);
 	input.x = (1 if Input.is_key_pressed(KEY_RIGHT) else 0) - (1 if Input.is_key_pressed(KEY_LEFT) else 0)
