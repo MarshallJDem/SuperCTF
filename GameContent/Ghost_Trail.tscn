@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Ghost_Trail.gd" type="Script" id=1]
-[ext_resource path="res://flag_frames/flagBlue1.png" type="Texture" id=2]
-[ext_resource path="res://flag_frames/flagRed1.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Items/flags.png" type="Texture" id=2]
 
 [node name="Ghost_Trail" type="Node2D"]
 script = ExtResource( 1 )
@@ -26,12 +25,18 @@ hframes = 8
 
 [node name="Sprite_Flag_B" type="Sprite" parent="."]
 visible = false
-position = Vector2( 9.24448, -14.2918 )
+position = Vector2( 13.3467, -16.3429 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 2 )
+vframes = 3
+hframes = 4
+frame = 8
 
 [node name="Sprite_Flag_R" type="Sprite" parent="."]
 visible = false
-position = Vector2( 9.24448, -14.2918 )
+position = Vector2( 13.3467, -16.3429 )
 scale = Vector2( 2, 2 )
-texture = ExtResource( 3 )
+texture = ExtResource( 2 )
+vframes = 3
+hframes = 4
+frame = 4

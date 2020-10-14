@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=2]
+[gd_scene load_steps=46 format=2]
 
 [ext_resource path="res://GameContent/Main.gd" type="Script" id=1]
 [ext_resource path="res://GameContent/Player.tscn" type="PackedScene" id=2]
@@ -28,7 +28,6 @@
 [ext_resource path="res://GameContent/Loadout_Menu.tscn" type="PackedScene" id=26]
 [ext_resource path="res://GameContent/PowerupGUIParticles.tscn" type="PackedScene" id=27]
 [ext_resource path="res://Assets/GUI/Q-Key-GUI.png" type="Texture" id=28]
-[ext_resource path="res://Assets/GUI/blur.png" type="Texture" id=29]
 [ext_resource path="res://GameContent/Move_Stick.gd" type="Script" id=30]
 
 [sub_resource type="StyleBoxFlat" id=1]
@@ -294,18 +293,6 @@ anchor_right = 0.5
 anchor_bottom = 1.0
 margin_top = -81.0
 rect_scale = Vector2( 1.5, 1.5 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="TextureRect" type="TextureRect" parent="UI_Layer/Input_GUIs"]
-visible = false
-margin_left = -653.0
-margin_top = -675.0
-margin_right = 649.0
-margin_bottom = 69.0
-texture = ExtResource( 29 )
-expand = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
