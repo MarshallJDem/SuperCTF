@@ -376,7 +376,6 @@ Discord Link:[color=blue] [url]https://discord.gg/D3Ban34[/url][color=black]
 Twitter:[color=blue] [url]https://twitter.com/SuperCTFGame[/url][color=black]
 
 We are looking for people to get involved and make suggestions or help build the game. Join our discord or email me to get involved!
-
 - Carshalljd (add me on discord [color=black]carshalljd#4808[color=black] or email me at [color=black]marshalljdem@gmail.com[color=black])"
 text = "NEWS:
 
@@ -388,7 +387,6 @@ Discord Link: https://discord.gg/D3Ban34
 Twitter: https://twitter.com/SuperCTFGame
 
 We are looking for people to get involved and make suggestions or help build the game. Join our discord or email me to get involved!
-
 - Carshalljd (add me on discord carshalljd#4808 or email me at marshalljdem@gmail.com)"
 scroll_active = false
 selection_enabled = true
@@ -738,13 +736,14 @@ visible = false
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 12 )
+frame = 2
 playing = true
 
 [node name="Red_Sprite" type="AnimatedSprite" parent="UI_Layer/Flags/Flag"]
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 17 )
-frame = 3
+frame = 1
 playing = true
 
 [node name="Area2D" type="Area2D" parent="UI_Layer/Flags/Flag" groups=[
@@ -769,7 +768,7 @@ script = ExtResource( 3 )
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 12 )
-frame = 3
+frame = 1
 playing = true
 
 [node name="Red_Sprite" type="AnimatedSprite" parent="UI_Layer/Flags/Flag3"]
@@ -777,7 +776,6 @@ visible = false
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 17 )
-frame = 2
 playing = true
 
 [node name="Area2D" type="Area2D" parent="UI_Layer/Flags/Flag3" groups=[
