@@ -3,7 +3,7 @@ extends Button
 var radius_big = 125;
 var radius_small = 50;
 var origin = Vector2(0,0);
-var margin = Vector2(275,200);
+var margin = Vector2(180,120);
 export var is_move = true;
 # This is the input vector of the stick
 # Its max magnitude is radius_big
