@@ -102,6 +102,10 @@ func collided_with_laser_body(laser_parent):
 	# If this player is invincible, dont get hit
 	if player.invincible:
 		return;
+	for area in get_overlapping_areas():
+		# If we're currently in a forcefield, ignore it
+		if area.is_in_group("Forcefield_Bodies"):
+			return;
 	# Otherwise receive a hit from the laser
 	player.rpc("receive_hit", laser_parent.player_id, 1);
 # Called when this player collides with a grenade
