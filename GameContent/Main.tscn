@@ -184,11 +184,13 @@ grow_horizontal = 0
 grow_vertical = 0
 rect_scale = Vector2( 0.5, 0.5 )
 rect_pivot_offset = Vector2( 5.308, 0 )
+focus_mode = 0
 custom_styles/hover = ExtResource( 9 )
 custom_styles/pressed = ExtResource( 10 )
 custom_styles/normal = ExtResource( 11 )
 custom_fonts/font = SubResource( 5 )
 custom_colors/font_color = Color( 0.172549, 0.172549, 0.172549, 1 )
+enabled_focus_mode = 0
 text = "Options"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -279,11 +281,13 @@ margin_left = -160.724
 margin_top = 154.465
 margin_right = 161.276
 margin_bottom = 221.465
+focus_mode = 0
 custom_styles/hover = ExtResource( 9 )
 custom_styles/pressed = ExtResource( 10 )
 custom_styles/normal = ExtResource( 11 )
 custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color = Color( 0.172549, 0.172549, 0.172549, 1 )
+enabled_focus_mode = 0
 text = "Leave Match"
 
 [node name="Input_GUIs" type="Control" parent="UI_Layer"]
@@ -623,11 +627,13 @@ margin_top = -93.9291
 margin_right = 160.273
 margin_bottom = -26.9291
 rect_scale = Vector2( 0.5, 0.5 )
+focus_mode = 0
 custom_styles/hover = ExtResource( 9 )
 custom_styles/pressed = ExtResource( 10 )
 custom_styles/normal = ExtResource( 11 )
 custom_fonts/font = SubResource( 5 )
 custom_colors/font_color = Color( 0.172549, 0.172549, 0.172549, 1 )
+enabled_focus_mode = 0
 text = "Cancel"
 __meta__ = {
 "_edit_use_anchors_": false
