@@ -290,10 +290,10 @@ __meta__ = {
 [node name="Ability_Button" type="Button" parent="CanvasLayer/Control/ColorRect"]
 anchor_left = 0.000634833
 anchor_right = 0.000634833
-margin_left = 611.266
-margin_top = 264.966
-margin_right = 965.266
-margin_bottom = 380.966
+margin_left = 591.998
+margin_top = 130.0
+margin_right = 970.998
+margin_bottom = 617.0
 focus_mode = 0
 mouse_default_cursor_shape = 2
 custom_styles/hover = SubResource( 3 )
@@ -307,10 +307,10 @@ __meta__ = {
 }
 
 [node name="Utility_Button" type="Button" parent="CanvasLayer/Control/ColorRect"]
-margin_left = 1156.63
-margin_top = 295.159
-margin_right = 1510.63
-margin_bottom = 398.159
+margin_left = 1133.0
+margin_top = 129.0
+margin_right = 1511.0
+margin_bottom = 624.0
 focus_mode = 0
 mouse_default_cursor_shape = 2
 custom_styles/hover = SubResource( 3 )
