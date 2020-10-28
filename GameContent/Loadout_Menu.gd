@@ -26,15 +26,19 @@ var hidden = false;
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	Menu.get_node("Weapon_Button").connect("button_up", self, "set_weapon_selection");
-	Menu.get_node("Ability_Button").connect("button_up", self, "set_ability_selection");
-	Menu.get_node("Utility_Button").connect("button_up", self, "set_utility_selection");
+	Menu.get_node("Weapon_Button_1").connect("button_up", self, "set_weapon_selection", [1]);
+	Menu.get_node("Weapon_Button_2").connect("button_up", self, "set_weapon_selection", [2]);
+	Menu.get_node("Weapon_Button_3").connect("button_up", self, "set_weapon_selection", [3]);
+	Menu.get_node("Ability_Button_1").connect("button_up", self, "set_ability_selection", [1]);
+	Menu.get_node("Ability_Button_2").connect("button_up", self, "set_ability_selection", [2]);
+	Menu.get_node("Utility_Button_1").connect("button_up", self, "set_utility_selection", [1]);
+	Menu.get_node("Utility_Button_2").connect("button_up", self, "set_utility_selection", [2]);
 	
 	get_tree().connect("screen_resized", self, "_screen_resized");
 	_screen_resized();
-	set_weapon_selection();
-	set_ability_selection();
-	set_utility_selection();
+	set_weapon_selection(1);
+	set_ability_selection(1);
+	set_utility_selection(1);
 
 func _process(delta):
 	if Globals.localPlayerTeamID == 0:
@@ -57,46 +61,40 @@ func _process(delta):
 	$CanvasLayer/Control.visible = !hidden and (Globals.displaying_loadout or Globals.testing);
 	
 
-var current_weapon = 0;
 
-func set_weapon_selection():
-	current_weapon = (current_weapon + 1) % 3
-	Menu.get_node("Weapon1").visible = false;
-	Menu.get_node("Weapon2").visible = false;
-	Menu.get_node("Weapon3").visible = false;
-	Menu.get_node("Weapon" + str(current_weapon + 1)).visible = true;
-	if current_weapon == 0:
+func set_weapon_selection(w):
+	Menu.get_node("Weapon_Selection_1").visible = false;
+	Menu.get_node("Weapon_Selection_2").visible = false;
+	Menu.get_node("Weapon_Selection_3").visible = false;
+	Menu.get_node("Weapon_Selection_" + str(w)).visible = true;
+	if w == 1:
 		Globals.current_class = Globals.Classes.Bullet;
-	elif current_weapon == 1:
+	elif w == 2:
 		Globals.current_class = Globals.Classes.Laser;
-	elif current_weapon == 2:
+	elif w == 3:
 		Globals.current_class = Globals.Classes.Demo;
 	if !Globals.testing:
 		if get_tree().network_peer != null:
 			get_tree().get_root().get_node("MainScene/NetworkController").rpc_id(1, "player_class_changed", Globals.current_class);
 	Globals.emit_signal("class_changed");
 
-var current_ability = 0;
-func set_ability_selection():
-	current_ability = (current_ability + 1) % 2
-	Menu.get_node("Ability1").visible = false;
-	Menu.get_node("Ability2").visible = false;
-	Menu.get_node("Ability" + str(current_ability + 1)).visible = true;
-	if current_ability == 0:
+func set_ability_selection(w):
+	Menu.get_node("Ability_Selection_1").visible = false;
+	Menu.get_node("Ability_Selection_2").visible = false;
+	Menu.get_node("Ability_Selection_" + str(w)).visible = true;
+	if w == 1:
 		Globals.current_ability = Globals.Abilities.Forcefield;
-	elif current_ability == 1:
+	elif w == 2:
 		Globals.current_ability = Globals.Abilities.Camo;
 	Globals.emit_signal("ability_changed");
 
-var current_utility = 0;
-func set_utility_selection():
-	current_utility = (current_utility + 1) % 2
-	Menu.get_node("Utility1").visible = false;
-	Menu.get_node("Utility2").visible = false;
-	Menu.get_node("Utility" + str(current_utility + 1)).visible = true;
-	if current_utility == 0:
+func set_utility_selection(w):
+	Menu.get_node("Utility_Selection_1").visible = false;
+	Menu.get_node("Utility_Selection_2").visible = false;
+	Menu.get_node("Utility_Selection_" + str(w)).visible = true;
+	if w == 1:
 		Globals.current_utility = Globals.Utilities.Grenade;
-	elif current_utility == 1:
+	elif w == 2:
 		Globals.current_utility = Globals.Utilities.Landmine;
 	Globals.emit_signal("utility_changed");
 

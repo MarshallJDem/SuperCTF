@@ -64,9 +64,9 @@ __meta__ = {
 }
 
 [node name="Label" type="RichTextLabel" parent="CanvasLayer/Control/ColorRect"]
-margin_left = 59.8657
+margin_left = 77.1736
 margin_top = 553.6
-margin_right = 419.866
+margin_right = 437.174
 margin_bottom = 616.6
 rect_clip_content = false
 custom_fonts/normal_font = SubResource( 2 )
@@ -92,9 +92,9 @@ __meta__ = {
 }
 
 [node name="Label4" type="RichTextLabel" parent="CanvasLayer/Control/ColorRect"]
-margin_left = 394.497
+margin_left = 388.421
 margin_top = 44.0
-margin_right = 1191.5
+margin_right = 1185.42
 margin_bottom = 107.0
 rect_clip_content = false
 custom_fonts/normal_font = SubResource( 8 )
@@ -164,117 +164,243 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ColorRect5" type="ColorRect" parent="CanvasLayer/Control/ColorRect"]
-anchor_bottom = 1.0
-margin_left = 70.0
-margin_top = 140.0
-margin_right = 412.0
-margin_bottom = -136.0
-color = Color( 0, 0, 0, 1 )
+[node name="Weapon_Selection_1" type="ColorRect" parent="CanvasLayer/Control/ColorRect"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -711.96
+margin_top = -186.872
+margin_right = -347.96
+margin_bottom = -62.8722
+rect_pivot_offset = Vector2( 0.754929, 1.29654 )
+color = Color( 0.196078, 0.780392, 0.176471, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ColorRect6" type="ColorRect" parent="CanvasLayer/Control/ColorRect"]
+[node name="ColorRect6" type="ColorRect" parent="CanvasLayer/Control/ColorRect/Weapon_Selection_1"]
+anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 75.0
-margin_top = 145.0
-margin_right = 407.0
-margin_bottom = -141.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = -4.0
+margin_bottom = -4.0
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Weapon_Selection_2" type="ColorRect" parent="CanvasLayer/Control/ColorRect"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -711.96
+margin_top = -56.3075
+margin_right = -347.96
+margin_bottom = 67.6925
+rect_pivot_offset = Vector2( 0.754929, 1.29654 )
+color = Color( 0.196078, 0.780392, 0.176471, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ColorRect8" type="ColorRect" parent="CanvasLayer/Control/ColorRect"]
+[node name="ColorRect6" type="ColorRect" parent="CanvasLayer/Control/ColorRect/Weapon_Selection_2"]
+anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 614.304
-margin_top = 140.0
-margin_right = 956.304
-margin_bottom = -136.0
-color = Color( 0, 0, 0, 1 )
+margin_left = 4.0
+margin_top = 4.0
+margin_right = -4.0
+margin_bottom = -4.0
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Weapon_Selection_3" type="ColorRect" parent="CanvasLayer/Control/ColorRect"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -711.96
+margin_top = 74.2572
+margin_right = -347.96
+margin_bottom = 198.257
+rect_pivot_offset = Vector2( 0.754929, 1.29654 )
+color = Color( 0.196078, 0.780392, 0.176471, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ColorRect7" type="ColorRect" parent="CanvasLayer/Control/ColorRect"]
+[node name="ColorRect6" type="ColorRect" parent="CanvasLayer/Control/ColorRect/Weapon_Selection_3"]
+anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 619.304
-margin_top = 145.0
-margin_right = 951.304
-margin_bottom = -141.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = -4.0
+margin_bottom = -4.0
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Ability_Selection_1" type="ColorRect" parent="CanvasLayer/Control/ColorRect"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -83.8009
+margin_top = -166.398
+margin_right = 82.1991
+margin_bottom = -0.398346
+rect_pivot_offset = Vector2( 0.754929, 1.29654 )
+color = Color( 0.196078, 0.780392, 0.176471, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ColorRect10" type="ColorRect" parent="CanvasLayer/Control/ColorRect"]
+[node name="ColorRect6" type="ColorRect" parent="CanvasLayer/Control/ColorRect/Ability_Selection_1"]
+anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 1154.41
-margin_top = 140.0
-margin_right = 1496.41
-margin_bottom = -136.0
-color = Color( 0, 0, 0, 1 )
+margin_left = 4.0
+margin_top = 4.0
+margin_right = -4.0
+margin_bottom = -4.0
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Ability_Selection_2" type="ColorRect" parent="CanvasLayer/Control/ColorRect"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -83.8009
+margin_top = 6.0322
+margin_right = 82.1991
+margin_bottom = 172.032
+rect_pivot_offset = Vector2( 0.754929, 1.29654 )
+color = Color( 0.196078, 0.780392, 0.176471, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ColorRect9" type="ColorRect" parent="CanvasLayer/Control/ColorRect"]
+[node name="ColorRect6" type="ColorRect" parent="CanvasLayer/Control/ColorRect/Ability_Selection_2"]
+anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 1159.41
-margin_top = 145.0
-margin_right = 1491.41
-margin_bottom = -141.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = -4.0
+margin_bottom = -4.0
 __meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Utility_Selection_1" type="ColorRect" parent="CanvasLayer/Control/ColorRect"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 453.572
+margin_top = -166.398
+margin_right = 619.572
+margin_bottom = -0.398346
+rect_pivot_offset = Vector2( 0.754929, 1.29654 )
+color = Color( 0.196078, 0.780392, 0.176471, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect6" type="ColorRect" parent="CanvasLayer/Control/ColorRect/Utility_Selection_1"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = -4.0
+margin_bottom = -4.0
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Utility_Selection_2" type="ColorRect" parent="CanvasLayer/Control/ColorRect"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 453.572
+margin_top = 6.0322
+margin_right = 619.572
+margin_bottom = 172.032
+rect_pivot_offset = Vector2( 0.754929, 1.29654 )
+color = Color( 0.196078, 0.780392, 0.176471, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect6" type="ColorRect" parent="CanvasLayer/Control/ColorRect/Utility_Selection_2"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = -4.0
+margin_bottom = -4.0
+__meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
 [node name="Weapon1" type="Sprite" parent="CanvasLayer/Control/ColorRect"]
-position = Vector2( 203.759, 286.047 )
+position = Vector2( 189.021, 150.727 )
 scale = Vector2( 8, 8 )
 texture = ExtResource( 3 )
 hframes = 8
 frame = 2
 
 [node name="Weapon2" type="Sprite" parent="CanvasLayer/Control/ColorRect"]
-position = Vector2( 166.56, 285.581 )
+position = Vector2( 166.415, 282.414 )
 scale = Vector2( 8, 8 )
 texture = ExtResource( 5 )
 hframes = 8
 frame = 2
 
 [node name="Weapon3" type="Sprite" parent="CanvasLayer/Control/ColorRect"]
-position = Vector2( 181.715, 288.968 )
+position = Vector2( 173.676, 408.151 )
 scale = Vector2( 8, 8 )
 texture = ExtResource( 4 )
 hframes = 8
 frame = 2
 
 [node name="Ability1" type="Sprite" parent="CanvasLayer/Control/ColorRect"]
-position = Vector2( 789.206, 328.053 )
+position = Vector2( 789.206, 241.211 )
 scale = Vector2( 8, 8 )
 texture = ExtResource( 9 )
 
 [node name="Ability2" type="Sprite" parent="CanvasLayer/Control/ColorRect"]
-position = Vector2( 795.297, 338.857 )
-scale = Vector2( 4.84893, 4.84893 )
+position = Vector2( 789.806, 421.151 )
+scale = Vector2( 5.88637, 5.88637 )
 texture = ExtResource( 8 )
 
 [node name="Utility1" type="Sprite" parent="CanvasLayer/Control/ColorRect"]
-position = Vector2( 1326.71, 331.18 )
+position = Vector2( 1327.82, 240.947 )
 scale = Vector2( 5.62752, 5.62752 )
 texture = ExtResource( 7 )
 
 [node name="Utility2" type="Sprite" parent="CanvasLayer/Control/ColorRect"]
-position = Vector2( 1324.75, 337.627 )
+position = Vector2( 1326.42, 416.915 )
 scale = Vector2( 8, 8 )
 texture = ExtResource( 6 )
 hframes = 2
 frame = 1
 
-[node name="Weapon_Button" type="Button" parent="CanvasLayer/Control/ColorRect"]
-margin_left = 22.8212
-margin_top = 99.2854
-margin_right = 436.821
-margin_bottom = 617.285
+[node name="Weapon_Button_1" type="Button" parent="CanvasLayer/Control/ColorRect"]
+margin_left = 78.0
+margin_top = 140.0
+margin_right = 440.0
+margin_bottom = 262.0
 focus_mode = 0
 mouse_default_cursor_shape = 2
 custom_styles/hover = SubResource( 3 )
@@ -287,13 +413,47 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Ability_Button" type="Button" parent="CanvasLayer/Control/ColorRect"]
+[node name="Weapon_Button_2" type="Button" parent="CanvasLayer/Control/ColorRect"]
+margin_left = 78.0
+margin_top = 270.147
+margin_right = 440.0
+margin_bottom = 392.147
+focus_mode = 0
+mouse_default_cursor_shape = 2
+custom_styles/hover = SubResource( 3 )
+custom_styles/pressed = SubResource( 4 )
+custom_styles/focus = SubResource( 5 )
+custom_styles/disabled = SubResource( 6 )
+custom_styles/normal = SubResource( 7 )
+enabled_focus_mode = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Weapon_Button_3" type="Button" parent="CanvasLayer/Control/ColorRect"]
+margin_left = 78.0
+margin_top = 401.392
+margin_right = 440.0
+margin_bottom = 523.391
+focus_mode = 0
+mouse_default_cursor_shape = 2
+custom_styles/hover = SubResource( 3 )
+custom_styles/pressed = SubResource( 4 )
+custom_styles/focus = SubResource( 5 )
+custom_styles/disabled = SubResource( 6 )
+custom_styles/normal = SubResource( 7 )
+enabled_focus_mode = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Ability_Button_1" type="Button" parent="CanvasLayer/Control/ColorRect"]
 anchor_left = 0.000634833
 anchor_right = 0.000634833
-margin_left = 591.998
-margin_top = 130.0
-margin_right = 970.998
-margin_bottom = 617.0
+margin_left = 705.998
+margin_top = 160.448
+margin_right = 869.998
+margin_bottom = 324.448
 focus_mode = 0
 mouse_default_cursor_shape = 2
 custom_styles/hover = SubResource( 3 )
@@ -306,11 +466,51 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Utility_Button" type="Button" parent="CanvasLayer/Control/ColorRect"]
-margin_left = 1133.0
-margin_top = 129.0
-margin_right = 1511.0
-margin_bottom = 624.0
+[node name="Ability_Button_2" type="Button" parent="CanvasLayer/Control/ColorRect"]
+anchor_left = 0.000634833
+anchor_right = 0.000634833
+margin_left = 705.998
+margin_top = 333.062
+margin_right = 869.998
+margin_bottom = 497.062
+focus_mode = 0
+mouse_default_cursor_shape = 2
+custom_styles/hover = SubResource( 3 )
+custom_styles/pressed = SubResource( 4 )
+custom_styles/focus = SubResource( 5 )
+custom_styles/disabled = SubResource( 6 )
+custom_styles/normal = SubResource( 7 )
+enabled_focus_mode = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Utility_Button_1" type="Button" parent="CanvasLayer/Control/ColorRect"]
+anchor_left = 0.000634833
+anchor_right = 0.000634833
+margin_left = 1242.61
+margin_top = 160.448
+margin_right = 1406.61
+margin_bottom = 324.448
+focus_mode = 0
+mouse_default_cursor_shape = 2
+custom_styles/hover = SubResource( 3 )
+custom_styles/pressed = SubResource( 4 )
+custom_styles/focus = SubResource( 5 )
+custom_styles/disabled = SubResource( 6 )
+custom_styles/normal = SubResource( 7 )
+enabled_focus_mode = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Utility_Button_2" type="Button" parent="CanvasLayer/Control/ColorRect"]
+anchor_left = 0.000634833
+anchor_right = 0.000634833
+margin_left = 1242.61
+margin_top = 333.062
+margin_right = 1406.61
+margin_bottom = 497.062
 focus_mode = 0
 mouse_default_cursor_shape = 2
 custom_styles/hover = SubResource( 3 )
