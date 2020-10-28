@@ -59,6 +59,7 @@ margin_right = 789.5
 margin_bottom = 734.808
 theme = SubResource( 1 )
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -73,6 +74,7 @@ bbcode_enabled = true
 bbcode_text = "[center][color=black]Weapons"
 text = "Weapons"
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -87,6 +89,7 @@ bbcode_enabled = true
 bbcode_text = "[center][color=black]Abilities"
 text = "Abilities"
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -102,6 +105,7 @@ bbcode_text = "[center][color=black]CLICK TO CHANGE"
 text = "CLICK TO CHANGE"
 scroll_active = false
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -116,6 +120,7 @@ bbcode_enabled = true
 bbcode_text = "[center][color=black]Utilities"
 text = "Utilities"
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -126,6 +131,7 @@ margin_top = -4.0
 margin_bottom = 4.0
 color = Color( 0, 0, 0, 1 )
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -138,6 +144,7 @@ margin_right = 4.0
 margin_bottom = 4.0
 color = Color( 0, 0, 0, 1 )
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -148,6 +155,7 @@ margin_top = -4.0
 margin_right = 4.0
 color = Color( 0, 0, 0, 1 )
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -160,6 +168,7 @@ margin_right = 4.0
 margin_bottom = 4.0
 color = Color( 0, 0, 0, 1 )
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -175,6 +184,7 @@ margin_bottom = -62.8722
 rect_pivot_offset = Vector2( 0.754929, 1.29654 )
 color = Color( 0.196078, 0.780392, 0.176471, 1 )
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -202,6 +212,7 @@ margin_bottom = 67.6925
 rect_pivot_offset = Vector2( 0.754929, 1.29654 )
 color = Color( 0.196078, 0.780392, 0.176471, 1 )
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -229,6 +240,7 @@ margin_bottom = 198.257
 rect_pivot_offset = Vector2( 0.754929, 1.29654 )
 color = Color( 0.196078, 0.780392, 0.176471, 1 )
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -256,6 +268,7 @@ margin_bottom = -0.398346
 rect_pivot_offset = Vector2( 0.754929, 1.29654 )
 color = Color( 0.196078, 0.780392, 0.176471, 1 )
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -283,6 +296,7 @@ margin_bottom = 172.032
 rect_pivot_offset = Vector2( 0.754929, 1.29654 )
 color = Color( 0.196078, 0.780392, 0.176471, 1 )
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -310,6 +324,7 @@ margin_bottom = -0.398346
 rect_pivot_offset = Vector2( 0.754929, 1.29654 )
 color = Color( 0.196078, 0.780392, 0.176471, 1 )
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -337,6 +352,7 @@ margin_bottom = 172.032
 rect_pivot_offset = Vector2( 0.754929, 1.29654 )
 color = Color( 0.196078, 0.780392, 0.176471, 1 )
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -358,6 +374,9 @@ scale = Vector2( 8, 8 )
 texture = ExtResource( 3 )
 hframes = 8
 frame = 2
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="Weapon2" type="Sprite" parent="CanvasLayer/Control/ColorRect"]
 position = Vector2( 166.415, 282.414 )
@@ -365,6 +384,9 @@ scale = Vector2( 8, 8 )
 texture = ExtResource( 5 )
 hframes = 8
 frame = 2
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="Weapon3" type="Sprite" parent="CanvasLayer/Control/ColorRect"]
 position = Vector2( 173.676, 408.151 )
@@ -372,21 +394,33 @@ scale = Vector2( 8, 8 )
 texture = ExtResource( 4 )
 hframes = 8
 frame = 2
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="Ability1" type="Sprite" parent="CanvasLayer/Control/ColorRect"]
 position = Vector2( 789.206, 241.211 )
 scale = Vector2( 8, 8 )
 texture = ExtResource( 9 )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="Ability2" type="Sprite" parent="CanvasLayer/Control/ColorRect"]
 position = Vector2( 789.806, 421.151 )
 scale = Vector2( 5.88637, 5.88637 )
 texture = ExtResource( 8 )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="Utility1" type="Sprite" parent="CanvasLayer/Control/ColorRect"]
 position = Vector2( 1327.82, 240.947 )
 scale = Vector2( 5.62752, 5.62752 )
 texture = ExtResource( 7 )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="Utility2" type="Sprite" parent="CanvasLayer/Control/ColorRect"]
 position = Vector2( 1326.42, 416.915 )
@@ -394,6 +428,9 @@ scale = Vector2( 8, 8 )
 texture = ExtResource( 6 )
 hframes = 2
 frame = 1
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="Weapon_Button_1" type="Button" parent="CanvasLayer/Control/ColorRect"]
 margin_left = 78.0
@@ -409,6 +446,7 @@ custom_styles/disabled = SubResource( 6 )
 custom_styles/normal = SubResource( 7 )
 enabled_focus_mode = 0
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -426,6 +464,7 @@ custom_styles/disabled = SubResource( 6 )
 custom_styles/normal = SubResource( 7 )
 enabled_focus_mode = 0
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -443,6 +482,7 @@ custom_styles/disabled = SubResource( 6 )
 custom_styles/normal = SubResource( 7 )
 enabled_focus_mode = 0
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -462,6 +502,7 @@ custom_styles/disabled = SubResource( 6 )
 custom_styles/normal = SubResource( 7 )
 enabled_focus_mode = 0
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -481,6 +522,7 @@ custom_styles/disabled = SubResource( 6 )
 custom_styles/normal = SubResource( 7 )
 enabled_focus_mode = 0
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -500,6 +542,7 @@ custom_styles/disabled = SubResource( 6 )
 custom_styles/normal = SubResource( 7 )
 enabled_focus_mode = 0
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -519,5 +562,6 @@ custom_styles/disabled = SubResource( 6 )
 custom_styles/normal = SubResource( 7 )
 enabled_focus_mode = 0
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
