@@ -370,7 +370,7 @@ bbcode_text = "[color=black]NEWS:
 
 Happy  [color=#ff8819]O[color=purple]c[color=#ff8819]t[color=purple]o[color=#ff8819]b[color=purple]e[color=#ff8819]r[color=black]!! This is launch month for SuperCTF! 
 
-We are hosting play sessions [rainbow]EVERY WEDNESDAY [/rainbow]at 7PM PST and at 7PM BST! Join the Discord for more information:
+We are hosting play sessions [rainbow]EVERY WEDNESDAY [/rainbow]at 7PM PST and at 7PM GMT! Join the Discord for more information:
 
 Discord Link:[color=blue] [url]https://discord.gg/D3Ban34[/url][color=black]
 Twitter:[color=blue] [url]https://twitter.com/SuperCTFGame[/url][color=black]
@@ -381,7 +381,7 @@ text = "NEWS:
 
 Happy  October!! This is launch month for SuperCTF! 
 
-We are hosting play sessions EVERY WEDNESDAY at 7PM PST and at 7PM BST! Join the Discord for more information:
+We are hosting play sessions EVERY WEDNESDAY at 7PM PST and at 7PM GMT! Join the Discord for more information:
 
 Discord Link: https://discord.gg/D3Ban34
 Twitter: https://twitter.com/SuperCTFGame
@@ -736,13 +736,14 @@ visible = false
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 12 )
+frame = 3
 playing = true
 
 [node name="Red_Sprite" type="AnimatedSprite" parent="UI_Layer/Flags/Flag"]
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 17 )
-frame = 3
+frame = 2
 playing = true
 
 [node name="Area2D" type="Area2D" parent="UI_Layer/Flags/Flag" groups=[
@@ -767,7 +768,7 @@ script = ExtResource( 3 )
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 12 )
-frame = 3
+frame = 2
 playing = true
 
 [node name="Red_Sprite" type="AnimatedSprite" parent="UI_Layer/Flags/Flag3"]
@@ -775,7 +776,7 @@ visible = false
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 17 )
-frame = 2
+frame = 1
 playing = true
 
 [node name="Area2D" type="Area2D" parent="UI_Layer/Flags/Flag3" groups=[
