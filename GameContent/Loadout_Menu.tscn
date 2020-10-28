@@ -58,7 +58,6 @@ margin_top = 83.8082
 margin_right = 789.5
 margin_bottom = 734.808
 theme = SubResource( 1 )
-color = Color( 1, 1, 1, 0.92549 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
