@@ -91,7 +91,7 @@ func _process(delta):
 	if !get_tree().get_root().get_node("MainScene/NetworkController").round_is_running:
 		has_moved_after_respawn = false;
 	if !Globals.testing and is_network_master():
-		Globals.displaying_loadout = !alive or !has_moved_after_respawn;
+		Globals.displaying_loadout = !has_moved_after_respawn and control;
 	if control:
 		activate_camera();
 		# Don't look around if we're shooting a laser
