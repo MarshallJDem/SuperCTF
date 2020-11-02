@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=30 format=2]
 
 [ext_resource path="res://GameContent/Player.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Player/gunner_gun_B.png" type="Texture" id=2]
@@ -21,6 +21,8 @@
 [ext_resource path="res://GameContent/Weapon_Node.gd" type="Script" id=19]
 [ext_resource path="res://GameContent/PowerupGUIParticles.tscn" type="PackedScene" id=20]
 [ext_resource path="res://Assets/Sound/Powerup.wav" type="AudioStream" id=21]
+[ext_resource path="res://Assets/Shaders/Vignette_Red.shader" type="Shader" id=22]
+[ext_resource path="res://Assets/Shaders/Vignette_Blue.shader" type="Shader" id=23]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 5.0
@@ -29,11 +31,17 @@ radius = 5.0
 max_value = 630.66
 _data = [ Vector2( 0.791667, 4.71545 ), 0.0, 0.0, 0, 0, Vector2( 1, 334.25 ), 3776.08, 0.0, 0, 0 ]
 
-[sub_resource type="CapsuleShape2D" id=3]
+[sub_resource type="ShaderMaterial" id=3]
+shader = ExtResource( 22 )
+
+[sub_resource type="ShaderMaterial" id=6]
+shader = ExtResource( 23 )
+
+[sub_resource type="CapsuleShape2D" id=4]
 radius = 8.67661
 height = 13.2677
 
-[sub_resource type="CapsuleShape2D" id=4]
+[sub_resource type="CapsuleShape2D" id=5]
 radius = 2.37617
 height = 5.37553
 
@@ -220,6 +228,28 @@ one_shot = true
 wait_time = 2.0
 one_shot = true
 
+[node name="Canvas_Layer" type="CanvasLayer" parent="Center_Pivot/Camera"]
+
+[node name="Vignette_Red" type="ColorRect" parent="Center_Pivot/Camera/Canvas_Layer"]
+visible = false
+material = SubResource( 3 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 1, 0.00392157, 0.00392157, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Vignette_Blue" type="ColorRect" parent="Center_Pivot/Camera/Canvas_Layer"]
+visible = false
+material = SubResource( 6 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 1, 0.00392157, 0.00392157, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Area2D" type="Area2D" parent="." groups=[
 "Player_Bodies",
 ]]
@@ -227,7 +257,7 @@ script = ExtResource( 6 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2( 0.0646133, 3.80024 )
-shape = SubResource( 3 )
+shape = SubResource( 4 )
 __meta__ = {
 "_edit_lock_": true
 }
@@ -260,7 +290,7 @@ one_shot = true
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0.0144213, 13.2055 )
 rotation = 1.5708
-shape = SubResource( 4 )
+shape = SubResource( 5 )
 
 [node name="Death_Audio" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 7 )
