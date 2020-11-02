@@ -34,14 +34,14 @@ _data = [ Vector2( 0.791667, 4.71545 ), 0.0, 0.0, 0, 0, Vector2( 1, 334.25 ), 37
 [sub_resource type="ShaderMaterial" id=3]
 shader = ExtResource( 22 )
 
-[sub_resource type="ShaderMaterial" id=6]
+[sub_resource type="ShaderMaterial" id=4]
 shader = ExtResource( 23 )
 
-[sub_resource type="CapsuleShape2D" id=4]
+[sub_resource type="CapsuleShape2D" id=5]
 radius = 8.67661
 height = 13.2677
 
-[sub_resource type="CapsuleShape2D" id=5]
+[sub_resource type="CapsuleShape2D" id=6]
 radius = 2.37617
 height = 5.37553
 
@@ -242,7 +242,7 @@ __meta__ = {
 
 [node name="Vignette_Blue" type="ColorRect" parent="Center_Pivot/Camera/Canvas_Layer"]
 visible = false
-material = SubResource( 6 )
+material = SubResource( 4 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 color = Color( 1, 0.00392157, 0.00392157, 1 )
@@ -257,7 +257,7 @@ script = ExtResource( 6 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2( 0.0646133, 3.80024 )
-shape = SubResource( 4 )
+shape = SubResource( 5 )
 __meta__ = {
 "_edit_lock_": true
 }
@@ -290,7 +290,7 @@ one_shot = true
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0.0144213, 13.2055 )
 rotation = 1.5708
-shape = SubResource( 5 )
+shape = SubResource( 6 )
 
 [node name="Death_Audio" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 7 )
