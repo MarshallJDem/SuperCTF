@@ -62,12 +62,6 @@ func _ready():
 	lerp_start_pos = position;
 	lerp_end_pos = position;
 	
-	if team_id == 1:
-		set_collision_mask_bit(18, true);
-		set_collision_mask_bit(19, false);
-	else:
-		set_collision_mask_bit(18, false);
-		set_collision_mask_bit(19, true);
 
 func _input(event):
 	if Globals.is_typing_in_chat:
