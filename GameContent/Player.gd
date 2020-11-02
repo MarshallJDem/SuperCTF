@@ -98,7 +98,8 @@ func _process(delta):
 	if !get_tree().get_root().get_node("MainScene/NetworkController").round_is_running:
 		has_moved_after_respawn = false;
 	if !Globals.testing and is_network_master():
-		Globals.player_active_after_respawn = !has_moved_after_respawn and control;
+		Globals.player_active_after_respawn = has_moved_after_respawn and control;
+		
 		if $Area2D.in_spawns > 0 and control:
 			var is_in_own_spawn = false;
 			var own_spawn = "Red" if team_id == 1 else "Blue";

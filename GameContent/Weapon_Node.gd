@@ -101,8 +101,6 @@ func _process(delta):
 	
 	update();
 
-
-
 func _draw():
 	if $Laser_Timer.time_left > 0:
 		var size;
@@ -130,7 +128,7 @@ func _draw():
 
 
 func shoot_on_inputs():
-	if Globals.is_typing_in_chat:
+	if Globals.is_typing_in_chat or !Globals.player_active_after_respawn:
 		return;
 	player.has_moved_after_respawn = true;
 	# Check for mouse input	

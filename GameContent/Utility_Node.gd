@@ -49,7 +49,7 @@ func _process(delta):
 	if !player.control:
 		return;
 	update();
-	if Globals.is_typing_in_chat:
+	if Globals.is_typing_in_chat or !Globals.player_active_after_respawn:
 		return;
 	if Input.is_action_just_pressed("clickR"):
 		utility_pressed();
