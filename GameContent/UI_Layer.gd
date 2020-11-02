@@ -25,7 +25,7 @@ func _process(delta):
 	if Globals.isServer:
 		return;
 	# Show / Hide move gui depending on whether loadout is visible
-	if Globals.displaying_loadout:
+	if Globals.player_active_after_respawn:
 		show_move_gui = true;
 	elif show_move_gui == true:
 		show_move_gui = false;

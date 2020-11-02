@@ -130,7 +130,7 @@ func _draw():
 
 
 func shoot_on_inputs():
-	if Globals.is_typing_in_chat or Globals.displaying_loadout:
+	if Globals.is_typing_in_chat:
 		return;
 	player.has_moved_after_respawn = true;
 	# Check for mouse input	
