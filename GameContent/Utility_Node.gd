@@ -49,7 +49,7 @@ func _process(delta):
 	if !player.control:
 		return;
 	update();
-	if Globals.is_typing_in_chat or Globals.displaying_loadout:
+	if Globals.is_typing_in_chat or !Globals.player_active_after_respawn:
 		return;
 	if Input.is_action_just_pressed("clickR"):
 		utility_pressed();
@@ -58,7 +58,7 @@ func _process(delta):
 	if Input.is_action_just_released("clickR"):
 		utility_released(get_global_mouse_position());
 func _draw():
-	if aiming_grenade:
+	if aiming_grenade and Globals.control_scheme != Globals.Control_Schemes.touchscreen:
 		draw_circle(get_local_mouse_position(), get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("grenadeRadius"), Color(0,0,0,0.2));
 		draw_circle(get_local_mouse_position(), get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("grenadeRadius")/10, Color(0,0,0,0.2));
 

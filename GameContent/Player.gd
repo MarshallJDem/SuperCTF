@@ -61,6 +61,13 @@ func _ready():
 	$Teleport_Invincibility_Timer.connect("timeout", self, "_teleport_invincibility_timer_ended");
 	lerp_start_pos = position;
 	lerp_end_pos = position;
+	
+	if team_id == 1:
+		set_collision_mask_bit(18, true);
+		set_collision_mask_bit(19, false);
+	else:
+		set_collision_mask_bit(18, false);
+		set_collision_mask_bit(19, true);
 
 func _input(event):
 	if Globals.is_typing_in_chat:
@@ -82,7 +89,13 @@ func teleport_pressed():
 		move_on_inputs(true);
 		camera_ref.lag_smooth();
 		$Teleport_Timer.start();
-
+func is_in_own_spawn() -> bool:
+	var is_in_own_spawn = false;
+	var own_spawn = "Red" if team_id == 1 else "Blue";
+	for area in $Area2D.get_overlapping_areas():
+		if area.is_in_group(str(own_spawn) +  "_Spawn"):
+			is_in_own_spawn = true;
+	return is_in_own_spawn;
 func _process(delta):
 	BASE_SPEED = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("playerSpeed");
 	
@@ -91,7 +104,12 @@ func _process(delta):
 	if !get_tree().get_root().get_node("MainScene/NetworkController").round_is_running:
 		has_moved_after_respawn = false;
 	if !Globals.testing and is_network_master():
-		Globals.displaying_loadout = !alive or !has_moved_after_respawn;
+		Globals.player_active_after_respawn = has_moved_after_respawn and control;
+		
+		if $Area2D.in_spawns > 0 and control:
+			Globals.displaying_loadout = is_in_own_spawn();
+		else:
+			Globals.displaying_loadout = false;
 	if control:
 		activate_camera();
 		# Don't look around if we're shooting a laser
@@ -100,6 +118,7 @@ func _process(delta):
 		# Move around as long as we aren't typing in chat
 		if !Globals.is_typing_in_chat:
 			move_on_inputs();
+	
 	
 	update();
 	
@@ -178,12 +197,16 @@ func has_flag() -> bool:
 	return $Flag_Holder.get_child_count() != 0;
 
 # Attempts to drop the flag the player is potentially holding. Returns true if there was a flag to drop false otherwise
-func attempt_drop_flag() -> bool:
+func attempt_drop_flag(given_pos = null, ignore_drop_buffer = true) -> bool:
 	if !has_flag():
 		return false;
 	else: # Otherwise drop our flag
-		drop_current_flag($Flag_Holder.get_global_position());
-		rpc_id(1, "send_drop_flag", $Flag_Holder.get_global_position());
+		var pos = given_pos;
+		if given_pos == null:
+			pos = $Flag_Holder.get_global_position();
+		
+		drop_current_flag(pos, ignore_drop_buffer);
+		rpc_id(1, "send_drop_flag", pos, ignore_drop_buffer);
 		return true;
 
 # A vector 2D representing the last movement key directions pressed
@@ -484,7 +507,7 @@ func take_flag(flag_id):
 	
 
 # Drops the currently held flag (If there is one)
-func drop_current_flag(flag_position = $Flag_Holder.get_global_position()):
+func drop_current_flag(flag_position = $Flag_Holder.get_global_position(), ignore_buffer_reset = true):
 	# Only run if there is a flag in the Flag_Holder
 	if has_flag():
 		if Globals.testing or is_network_master():
@@ -493,7 +516,7 @@ func drop_current_flag(flag_position = $Flag_Holder.get_global_position()):
 		# Just get the first flag because there should only ever be one
 		var flag = $Flag_Holder.get_children()[0];
 		flag.get_node("Area2D").player_id_drop_buffer = player_id;
-		flag.get_node("Area2D").ignore_next_buffer_reset = true;
+		flag.get_node("Area2D").ignore_next_buffer_reset = ignore_buffer_reset;
 		flag.re_parent(get_tree().get_root().get_node("MainScene"));
 		flag.position = flag_position;
 		#$Weapon_Node/Cooldown_Timer.start();
@@ -535,17 +558,17 @@ remotesync func receive_take_flag(flag_id):
 	take_flag(flag_id);
 
 # Client tells server that it is dropping the flag
-remote func send_drop_flag(flag_position):
+remote func send_drop_flag(flag_position,ignore_drop_buffer):
 	if get_tree().is_network_server():# Only run if it's the server
 		var clients = get_tree().get_network_connected_peers();
 		for i in clients: # For each connected client
 			if i != get_tree().get_rpc_sender_id(): # Don't do it for the player who sent it
-				rpc_id(i, "receive_drop_flag", flag_position);
-		drop_current_flag(flag_position); # Also call it locally for the server
+				rpc_id(i, "receive_drop_flag", flag_position, ignore_drop_buffer);
+		drop_current_flag(flag_position, ignore_drop_buffer); # Also call it locally for the server
 
 # Sent by server to tell clients that this player dropped its flag at the given position
-remote func receive_drop_flag(flag_position):
-	drop_current_flag(flag_position);
+remote func receive_drop_flag(flag_position, ignore_drop_buffer):
+	drop_current_flag(flag_position, ignore_drop_buffer);
 
 # Receives notification from the server to respawn this player
 remotesync func receive_respawn():

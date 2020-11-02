@@ -1,10 +1,29 @@
 extends Area2D
 
+var p;
+
+var in_spawns = 0;
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	self.connect("area_entered",self, "_area_entered");
+	self.connect("area_exited",self, "_area_exited");
+	p = get_parent();
+	
+func _process(delta):
+	if p.has_flag():
+		if in_spawns > 0:
+			var pos = p.get_global_position();
+			if pos.y > 0:
+				pos.y = 215;
+			else:
+				pos.y = -175;
+			p.attempt_drop_flag(pos,  false);
 
+func _area_exited(body):
+	if body.is_in_group("Blue_Spawn") or body.is_in_group("Red_Spawn"):
+		in_spawns -= 1;
+	
 # Called when this area enters another area
 func _area_entered(body):
 	# Ignore collisons after the round ends
@@ -16,11 +35,19 @@ func _area_entered(body):
 	if body.is_in_group("Flag_Home_Bodies"):
 		collided_with_flag_home(body.get_parent());	
 	
+	if body.is_in_group("Blue_Spawn") or body.is_in_group("Red_Spawn"):
+		in_spawns += 1;
+		collided_with_spawn(body);
+	
 	if Globals.testing or get_tree().is_network_server():
 		if body.is_in_group("Powerup_Bodies"):
 			collided_with_powerup_body(body.get_parent());
 	# Only detect collisions for these cases if we are the server and not testing
 	if !Globals.testing and get_tree().is_network_server():
+		# Ignore deadly objects if were in our spawn
+		if in_spawns > 0:
+			if p.is_in_own_spawn():
+				return;
 		if body.is_in_group("Bullet_Bodies"):
 			collided_with_bullet(body.get_parent());
 		if body.is_in_group("Laser_Bodies"):
@@ -29,7 +56,16 @@ func _area_entered(body):
 			collided_with_grenade_body(body.get_parent());
 		if body.is_in_group("Demo_Bodies"):
 			collided_with_demo_body(body.get_parent());
-
+func  collided_with_spawn(spawn_body):
+	return;
+	var player = get_parent();
+	if player.has_flag():
+		var pos = player.get_global_position();
+		if pos.y > 0:
+			pos.y = 185;
+		else:
+			pos.y = -135;
+		player.attempt_drop_flag(pos);
 # Called when this player collides with a bullet
 func collided_with_bullet(bullet):
 	# Ignore collisons after the round ends
@@ -102,6 +138,10 @@ func collided_with_laser_body(laser_parent):
 	# If this player is invincible, dont get hit
 	if player.invincible:
 		return;
+	for area in get_overlapping_areas():
+		# If we're currently in a forcefield, ignore it
+		if area.is_in_group("Forcefield_Bodies"):
+			return;
 	# Otherwise receive a hit from the laser
 	player.rpc("receive_hit", laser_parent.player_id, 1);
 # Called when this player collides with a grenade
@@ -134,8 +174,13 @@ func collided_with_demo_body(demo_parent):
 	# If this player is invincible, dont get hit
 	if player.invincible:
 		return;
+	for area in get_overlapping_areas():
+		# If we're currently in a forcefield, ignore it
+		if area.is_in_group("Forcefield_Bodies"):
+			return;
 	# Otherwise receive a hit from the grenade
 	player.rpc("receive_hit", demo_parent.player_id, 3);
+	
 func collided_with_powerup_body(powerup_parent):
 	if get_tree().get_root().get_node("MainScene/NetworkController").round_is_ended: return;
 	var player = get_parent();

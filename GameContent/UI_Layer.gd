@@ -25,7 +25,8 @@ func _process(delta):
 	if Globals.isServer:
 		return;
 	# Show / Hide move gui depending on whether loadout is visible
-	if Globals.displaying_loadout:
+	print(Globals.player_active_after_respawn)
+	if !Globals.player_active_after_respawn:
 		show_move_gui = true;
 	elif show_move_gui == true:
 		show_move_gui = false;
@@ -169,6 +170,10 @@ func _screen_resized():
 	$"../Chat_Layer/Kill_Feed".get_font("normal_font").size = 16;
 	$"../Chat_Layer/Options_Button".rect_scale = Vector2(0.5,0.5);
 	$Cancel_Button.rect_scale = Vector2(0.5,0.5);
+	if Globals.control_scheme == Globals.Control_Schemes.touchscreen:
+		$"../Chat_Layer/Chat_Box".margin_top = 103;
+		$"../Chat_Layer/Options_Button".rect_scale = Vector2(1,1);
+		$Cancel_Button.rect_scale = Vector2(1,1);
 	if window_size.x < 500 or window_size.y < 200:
 		$Input_GUIs.rect_scale = Vector2(0.5,0.5);
 		$Input_GUIs.margin_top = -40;
@@ -191,6 +196,9 @@ func _screen_resized():
 		$"../Chat_Layer/Line_Edit".rect_scale = Vector2(2,2);
 		$"../Chat_Layer/Options_Button".rect_scale = Vector2(1,1);
 		$Cancel_Button.rect_scale = Vector2(1,1);
+		if Globals.control_scheme == Globals.Control_Schemes.touchscreen:
+			$"../Chat_Layer/Options_Button".rect_scale = Vector2(2,2);
+			$Cancel_Button.rect_scale = Vector2(2,2);
 		$"../Chat_Layer/Chat_Box".margin_top = 160;
 		
 	var size = $"../Chat_Layer/Line_Edit".rect_size.y;

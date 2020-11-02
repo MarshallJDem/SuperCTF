@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=2]
+[gd_scene load_steps=46 format=2]
 
 [ext_resource path="res://GameContent/Main.gd" type="Script" id=1]
 [ext_resource path="res://GameContent/Player.tscn" type="PackedScene" id=2]
@@ -28,7 +28,6 @@
 [ext_resource path="res://GameContent/Loadout_Menu.tscn" type="PackedScene" id=26]
 [ext_resource path="res://GameContent/PowerupGUIParticles.tscn" type="PackedScene" id=27]
 [ext_resource path="res://Assets/GUI/Q-Key-GUI.png" type="Texture" id=28]
-[ext_resource path="res://Assets/GUI/blur.png" type="Texture" id=29]
 [ext_resource path="res://GameContent/Move_Stick.gd" type="Script" id=30]
 
 [sub_resource type="StyleBoxFlat" id=1]
@@ -185,11 +184,13 @@ grow_horizontal = 0
 grow_vertical = 0
 rect_scale = Vector2( 0.5, 0.5 )
 rect_pivot_offset = Vector2( 5.308, 0 )
+focus_mode = 0
 custom_styles/hover = ExtResource( 9 )
 custom_styles/pressed = ExtResource( 10 )
 custom_styles/normal = ExtResource( 11 )
 custom_fonts/font = SubResource( 5 )
 custom_colors/font_color = Color( 0.172549, 0.172549, 0.172549, 1 )
+enabled_focus_mode = 0
 text = "Options"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -280,11 +281,13 @@ margin_left = -160.724
 margin_top = 154.465
 margin_right = 161.276
 margin_bottom = 221.465
+focus_mode = 0
 custom_styles/hover = ExtResource( 9 )
 custom_styles/pressed = ExtResource( 10 )
 custom_styles/normal = ExtResource( 11 )
 custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color = Color( 0.172549, 0.172549, 0.172549, 1 )
+enabled_focus_mode = 0
 text = "Leave Match"
 
 [node name="Input_GUIs" type="Control" parent="UI_Layer"]
@@ -294,18 +297,6 @@ anchor_right = 0.5
 anchor_bottom = 1.0
 margin_top = -81.0
 rect_scale = Vector2( 1.5, 1.5 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="TextureRect" type="TextureRect" parent="UI_Layer/Input_GUIs"]
-visible = false
-margin_left = -653.0
-margin_top = -675.0
-margin_right = 649.0
-margin_bottom = 69.0
-texture = ExtResource( 29 )
-expand = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -544,25 +535,6 @@ one_shot = true
 wait_time = 0.5
 one_shot = true
 
-[node name="Cancel_Button" type="Button" parent="UI_Layer"]
-visible = false
-anchor_top = 1.0
-anchor_bottom = 1.0
-margin_left = 34.2733
-margin_top = -93.9291
-margin_right = 160.273
-margin_bottom = -26.9291
-rect_scale = Vector2( 0.5, 0.5 )
-custom_styles/hover = ExtResource( 9 )
-custom_styles/pressed = ExtResource( 10 )
-custom_styles/normal = ExtResource( 11 )
-custom_fonts/font = SubResource( 5 )
-custom_colors/font_color = Color( 0.172549, 0.172549, 0.172549, 1 )
-text = "Cancel"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="Move_Stick" type="Button" parent="UI_Layer"]
 anchor_right = 0.5
 anchor_bottom = 1.0
@@ -574,6 +546,7 @@ action_mode = 0
 keep_pressed_outside = true
 script = ExtResource( 30 )
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -589,6 +562,7 @@ action_mode = 0
 keep_pressed_outside = true
 script = ExtResource( 30 )
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 is_move = false
@@ -641,6 +615,26 @@ custom_fonts/font = SubResource( 16 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "FORCEFIELD"
 align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Cancel_Button" type="Button" parent="UI_Layer"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 34.2733
+margin_top = -93.9291
+margin_right = 160.273
+margin_bottom = -26.9291
+rect_scale = Vector2( 0.5, 0.5 )
+focus_mode = 0
+custom_styles/hover = ExtResource( 9 )
+custom_styles/pressed = ExtResource( 10 )
+custom_styles/normal = ExtResource( 11 )
+custom_fonts/font = SubResource( 5 )
+custom_colors/font_color = Color( 0.172549, 0.172549, 0.172549, 1 )
+enabled_focus_mode = 0
+text = "Cancel"
 __meta__ = {
 "_edit_use_anchors_": false
 }

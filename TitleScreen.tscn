@@ -1,12 +1,8 @@
-[gd_scene load_steps=54 format=2]
+[gd_scene load_steps=36 format=2]
 
 [ext_resource path="res://TitleScreen.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Items/flags.png" type="Texture" id=2]
 [ext_resource path="res://GameContent/Flag.gd" type="Script" id=3]
-[ext_resource path="res://flag_frames/flagBlue1.png" type="Texture" id=4]
-[ext_resource path="res://flag_frames/flagBlue2.png" type="Texture" id=5]
-[ext_resource path="res://flag_frames/flagBlue3.png" type="Texture" id=6]
-[ext_resource path="res://flag_frames/flagBlue4.png" type="Texture" id=7]
 [ext_resource path="res://GameContent/Flag_Area2D.gd" type="Script" id=8]
 [ext_resource path="res://UI_Layer.gd" type="Script" id=9]
 [ext_resource path="res://fonts/Pixel_Title.tres" type="DynamicFont" id=10]
@@ -20,19 +16,7 @@
 [ext_resource path="res://fonts/pixel.TTF" type="DynamicFontData" id=18]
 [ext_resource path="res://Assets/Sound/CTFTitlescreen.ogg" type="AudioStream" id=19]
 [ext_resource path="res://Chat_Text.tres" type="RichTextEffect" id=20]
-[ext_resource path="res://Assets/Halloween 2020/Spiderweb corner black V1.png" type="Texture" id=21]
-[ext_resource path="res://Assets/Halloween 2020/Pumpkin U V1.png" type="Texture" id=22]
-[ext_resource path="res://Assets/Halloween 2020/Snake S V1.png" type="Texture" id=24]
-[ext_resource path="res://Assets/Halloween 2020/Zombie F V1.png" type="Texture" id=25]
-[ext_resource path="res://Assets/Halloween 2020/Pitchfork E V1.png" type="Texture" id=26]
-[ext_resource path="res://Assets/Halloween 2020/Monster R V1.png" type="Texture" id=27]
-[ext_resource path="res://Assets/Halloween 2020/Fence M V2.png" type="Texture" id=28]
-[ext_resource path="res://Assets/Halloween 2020/Axe P V4.png" type="Texture" id=29]
-[ext_resource path="res://Assets/Halloween 2020/Monster C V1.png" type="Texture" id=30]
-[ext_resource path="res://Assets/Halloween 2020/Tombstone T V2.png" type="Texture" id=32]
-[ext_resource path="res://Assets/Halloween 2020/Skull dot V1.png" type="Texture" id=33]
-[ext_resource path="res://Assets/Halloween 2020/Gravestone O V1.png" type="Texture" id=34]
-[ext_resource path="res://Assets/Halloween 2020/Monster blue C V1.png" type="Texture" id=35]
+[ext_resource path="res://Assets/GUI/fullscreen.png" type="Texture" id=23]
 
 [sub_resource type="DynamicFont" id=1]
 size = 8
@@ -124,17 +108,6 @@ animations = [ {
 
 [sub_resource type="ConvexPolygonShape2D" id=18]
 points = PoolVector2Array( -10, -9.171, 23.751, -8.802, 23.926, 33.35, -10, 33.419 )
-
-[sub_resource type="SpriteFrames" id=19]
-animations = [ {
-"frames": [ ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ) ],
-"loop": true,
-"name": "default",
-"speed": 7.0
-} ]
-
-[sub_resource type="ConvexPolygonShape2D" id=20]
-points = PoolVector2Array( 0, 0, 18.693, 3.609, 18.937, 14.698, 0, 28.805 )
 
 [node name="TitleScreen" type="Node2D"]
 script = ExtResource( 1 )
@@ -230,7 +203,6 @@ __meta__ = {
 }
 
 [node name="Title" type="RichTextLabel" parent="UI_Layer"]
-visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -382,23 +354,25 @@ custom_colors/default_color = Color( 0.368627, 0.368627, 0.368627, 1 )
 bbcode_enabled = true
 bbcode_text = "[color=black]NEWS:
 
-The game is planned to release approx  [rainbow]Oct 1st![/rainbow] Any final feature suggestions or bugs should be reported onto the discord ASAP!
+Happy November!
+
+We are hosting play sessions [rainbow]EVERY WEDNESDAY [/rainbow]at 7PM PST and at 7PM GMT! Join the Discord for more information:
 
 Discord Link:[color=blue] [url]https://discord.gg/D3Ban34[/url][color=black]
 Twitter:[color=blue] [url]https://twitter.com/SuperCTFGame[/url][color=black]
 
 We are looking for people to get involved and make suggestions or help build the game. Join our discord or email me to get involved!
-
 - Carshalljd (add me on discord [color=black]carshalljd#4808[color=black] or email me at [color=black]marshalljdem@gmail.com[color=black])"
 text = "NEWS:
 
-The game is planned to release approx  Oct 1st! Any final feature suggestions or bugs should be reported onto the discord ASAP!
+Happy November!
+
+We are hosting play sessions EVERY WEDNESDAY at 7PM PST and at 7PM GMT! Join the Discord for more information:
 
 Discord Link: https://discord.gg/D3Ban34
 Twitter: https://twitter.com/SuperCTFGame
 
 We are looking for people to get involved and make suggestions or help build the game. Join our discord or email me to get involved!
-
 - Carshalljd (add me on discord carshalljd#4808 or email me at marshalljdem@gmail.com)"
 scroll_active = false
 selection_enabled = true
@@ -549,6 +523,20 @@ __meta__ = {
 "_edit_lock_": true,
 "_edit_use_anchors_": false
 }
+
+[node name="Fullscreen_Button" type="TextureButton" parent="UI_Layer"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -935.177
+margin_top = -452.182
+margin_right = -862.177
+margin_bottom = -373.182
+rect_scale = Vector2( 0.742863, 0.742863 )
+texture_normal = ExtResource( 23 )
+expand = true
+stretch_mode = 5
 
 [node name="SplashStartButton" type="Button" parent="UI_Layer"]
 visible = false
@@ -734,13 +722,14 @@ visible = false
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 12 )
+frame = 2
 playing = true
 
 [node name="Red_Sprite" type="AnimatedSprite" parent="UI_Layer/Flags/Flag"]
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 17 )
-frame = 3
+frame = 1
 playing = true
 
 [node name="Area2D" type="Area2D" parent="UI_Layer/Flags/Flag" groups=[
@@ -753,161 +742,37 @@ script = ExtResource( 8 )
 position = Vector2( -20.7247, 2.43704 )
 shape = SubResource( 18 )
 
-[node name="Flag2" type="Node2D" parent="UI_Layer/Flags" groups=[
+[node name="Flag3" type="Node2D" parent="UI_Layer/Flags" groups=[
 "Flags",
 ]]
-position = Vector2( 292.86, 123 )
+position = Vector2( 293.104, 123 )
 scale = Vector2( 4, 3.04 )
 z_as_relative = false
 script = ExtResource( 3 )
-__meta__ = {
-"_edit_lock_": true
-}
 
-[node name="Blue_Sprite" type="AnimatedSprite" parent="UI_Layer/Flags/Flag2"]
-position = Vector2( 10, -14 )
+[node name="Blue_Sprite" type="AnimatedSprite" parent="UI_Layer/Flags/Flag3"]
+position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
-frames = SubResource( 19 )
+frames = SubResource( 12 )
+frame = 1
 playing = true
 
-[node name="Area2D" type="Area2D" parent="UI_Layer/Flags/Flag2" groups=[
+[node name="Red_Sprite" type="AnimatedSprite" parent="UI_Layer/Flags/Flag3"]
+visible = false
+position = Vector2( 14, -16 )
+scale = Vector2( 2, 2 )
+frames = SubResource( 17 )
+playing = true
+
+[node name="Area2D" type="Area2D" parent="UI_Layer/Flags/Flag3" groups=[
 "Flag_Bodies",
 ]]
 position = Vector2( 20.7922, -30.4714 )
 script = ExtResource( 8 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="UI_Layer/Flags/Flag2/Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="UI_Layer/Flags/Flag3/Area2D"]
 position = Vector2( -20.7247, 2.43704 )
-shape = SubResource( 20 )
-
-[node name="Halloween 2020 Centre" type="Control" parent="UI_Layer"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -20.0
-margin_top = -20.0
-margin_right = 20.0
-margin_bottom = 20.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Pumkin U (Halloween 2020)" type="Sprite" parent="UI_Layer/Halloween 2020 Centre"]
-position = Vector2( -324.817, -452.827 )
-scale = Vector2( 5.542, 5.542 )
-texture = ExtResource( 22 )
-__meta__ = {
-"_edit_lock_": true
-}
-
-[node name="Snake S (Halloween 2020)" type="Sprite" parent="UI_Layer/Halloween 2020 Centre"]
-position = Vector2( -394.081, -454.265 )
-scale = Vector2( 5.542, 5.542 )
-texture = ExtResource( 24 )
-__meta__ = {
-"_edit_lock_": true
-}
-
-[node name="Axe P (Halloween 2020)" type="Sprite" parent="UI_Layer/Halloween 2020 Centre"]
-position = Vector2( -234.043, -455.408 )
-scale = Vector2( 5.542, 5.542 )
-texture = ExtResource( 29 )
-__meta__ = {
-"_edit_lock_": true
-}
-
-[node name="Monster C (Halloween 2020)" type="Sprite" parent="UI_Layer/Halloween 2020 Centre"]
-position = Vector2( -10.762, -456.198 )
-scale = Vector2( 5.542, 5.542 )
-texture = ExtResource( 30 )
-__meta__ = {
-"_edit_lock_": true
-}
-
-[node name="Monster R (Halloween 2020)" type="Sprite" parent="UI_Layer/Halloween 2020 Centre"]
-position = Vector2( -89.773, -444.44 )
-scale = Vector2( 5.542, 5.542 )
-texture = ExtResource( 27 )
-__meta__ = {
-"_edit_lock_": true
-}
-
-[node name="Tombstone T (Halloween 2020)" type="Sprite" parent="UI_Layer/Halloween 2020 Centre"]
-position = Vector2( 51.405, -450.761 )
-scale = Vector2( 5.542, 5.542 )
-texture = ExtResource( 32 )
-
-[node name="Pitchfork E (Halloween 2020)" type="Sprite" parent="UI_Layer/Halloween 2020 Centre"]
-position = Vector2( -169.622, -453.294 )
-scale = Vector2( 5.542, 5.542 )
-texture = ExtResource( 26 )
-__meta__ = {
-"_edit_lock_": true
-}
-
-[node name="Zombie F (Halloween 2020)" type="Sprite" parent="UI_Layer/Halloween 2020 Centre"]
-position = Vector2( 149.41, -454.175 )
-scale = Vector2( 5.542, 5.542 )
-texture = ExtResource( 25 )
-__meta__ = {
-"_edit_lock_": true
-}
-
-[node name="Skull dot (Halloween 2020)" type="Sprite" parent="UI_Layer/Halloween 2020 Centre"]
-position = Vector2( 176.05, -398.96 )
-scale = Vector2( 5.542, 5.542 )
-texture = ExtResource( 33 )
-__meta__ = {
-"_edit_lock_": true
-}
-
-[node name="Monster C (Halloween 2020)2" type="Sprite" parent="UI_Layer/Halloween 2020 Centre"]
-position = Vector2( 246.99, -454.093 )
-scale = Vector2( 5.542, 5.542 )
-texture = ExtResource( 35 )
-
-[node name="Tombstone O (Halloween 2020)" type="Sprite" parent="UI_Layer/Halloween 2020 Centre"]
-position = Vector2( 320.68, -461.462 )
-scale = Vector2( 5.542, 5.542 )
-texture = ExtResource( 34 )
-
-[node name="Fence M (Halloween 2020)" type="Sprite" parent="UI_Layer/Halloween 2020 Centre"]
-position = Vector2( 411.2, -456.198 )
-scale = Vector2( 5.542, 5.542 )
-texture = ExtResource( 28 )
-
-[node name="Halloween 2020 Top Right" type="Control" parent="UI_Layer"]
-anchor_left = 1.0
-anchor_right = 1.0
-margin_left = -40.0
-margin_bottom = 40.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Spider web (Halloween 2020)" type="Sprite" parent="UI_Layer/Halloween 2020 Top Right"]
-position = Vector2( -88.1801, 127.786 )
-scale = Vector2( 8, 8 )
-texture = ExtResource( 21 )
-
-[node name="Halloween 2020 Bottom Left" type="Control" parent="UI_Layer"]
-anchor_top = 1.0
-anchor_bottom = 1.0
-margin_top = -40.0
-margin_right = 40.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Spider web (Halloween 2020)2" type="Sprite" parent="UI_Layer/Halloween 2020 Bottom Left"]
-position = Vector2( 128.209, -83.328 )
-rotation = 3.14159
-scale = Vector2( 8, 8 )
-texture = ExtResource( 21 )
-__meta__ = {
-"_edit_lock_": true
-}
+shape = SubResource( 18 )
 
 [node name="Titlemusic_Audio" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 19 )

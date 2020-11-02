@@ -3,7 +3,7 @@ extends Button
 var radius_big = 125;
 var radius_small = 50;
 var origin = Vector2(0,0);
-var margin = Vector2(275,200);
+var margin = Vector2(180,120);
 export var is_move = true;
 # This is the input vector of the stick
 # Its max magnitude is radius_big
@@ -116,6 +116,12 @@ func _process(_delta):
 			if progress == 1.0:
 				$Ult.modulate = Color(1,1,1,1);
 				ult_color = Color(0.5,0.5,0.5,0.4);
+	
+	if !is_move and local_player != null and local_player.get_node("Utility_Node").aiming_grenade:
+		$Ability.modulate = Color(0,0,0,0);
+		$Ult.modulate = Color(0,0,0,0);
+		$Dash.modulate = Color(0,0,0,0);
+		$Utility.text = "PRESS ANY LOCATION TO THROW GRENADE"
 	update();
 	
 var ability_color = Color(0.5,0.5,0.5,0.4);
@@ -123,6 +129,8 @@ var utility_color = Color(0.5,0.5,0.5,0.4);
 var dash_color = Color(0.5,0.5,0.5,0.4);
 var ult_color = Color(0.5,0.5,0.5,0.4);
 func _draw():
+	if !is_move and local_player != null and local_player.get_node("Utility_Node").aiming_grenade:
+		return;
 	draw_circle(origin,radius_big,Color(0.5,0.5,0.5,0.4));
 	draw_circle(origin + stick_vector,radius_small,Color(0.5,0.5,0.5,0.4));
 	if !is_move:

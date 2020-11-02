@@ -38,7 +38,7 @@ func _process(delta):
 		ult_charge = 100;
 
 func _input(event):
-	if Globals.is_typing_in_chat or Globals.displaying_loadout:
+	if Globals.is_typing_in_chat or !Globals.player_active_after_respawn:
 		return;
 	if player.control:
 		if event is InputEventKey and event.pressed:

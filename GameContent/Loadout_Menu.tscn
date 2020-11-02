@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://GameContent/Loadout_Menu.gd" type="Script" id=1]
 [ext_resource path="res://fonts/pixel.TTF" type="DynamicFontData" id=2]
@@ -12,12 +12,21 @@
 
 [sub_resource type="Theme" id=1]
 
-[sub_resource type="DynamicFont" id=2]
-size = 32
+[sub_resource type="DynamicFont" id=10]
+size = 26
 extra_spacing_top = 10
 font_data = ExtResource( 2 )
 
-[sub_resource type="StyleBoxEmpty" id=3]
+[sub_resource type="DynamicFont" id=11]
+size = 26
+extra_spacing_top = 10
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=9]
+size = 25
+extra_spacing_top = 10
+extra_spacing_char = 5
+font_data = ExtResource( 2 )
 
 [sub_resource type="StyleBoxEmpty" id=4]
 
@@ -27,43 +36,44 @@ font_data = ExtResource( 2 )
 
 [sub_resource type="StyleBoxEmpty" id=7]
 
+[sub_resource type="StyleBoxEmpty" id=8]
+
 [node name="Loadout_Menu" type="Node2D"]
 script = ExtResource( 1 )
 __meta__ = {
-"_edit_horizontal_guides_": [ 389.749 ],
-"_edit_vertical_guides_": [ 1474.44, 1708.57 ]
+"_edit_horizontal_guides_": [ 421.631, 670.01 ],
+"_edit_vertical_guides_": [ 1496.93, 1708.57, 959.446 ]
 }
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 layer = 3
 
 [node name="Control" type="Control" parent="CanvasLayer"]
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
+anchor_left = 0.5
+anchor_right = 0.5
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer/Control"]
-margin_left = -391.0
-margin_top = -509.0
-margin_right = -27.0
-margin_bottom = 525.0
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -632.0
+margin_top = 16.0
+margin_right = 635.0
+margin_bottom = 393.0
 theme = SubResource( 1 )
-color = Color( 1, 1, 1, 0.443137 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Label" type="RichTextLabel" parent="CanvasLayer/Control/ColorRect"]
-margin_left = 2.0
-margin_top = 13.0
-margin_right = 362.0
-margin_bottom = 76.0
+margin_left = 66.7758
+margin_top = 322.57
+margin_right = 426.776
+margin_bottom = 385.57
 rect_clip_content = false
-custom_fonts/normal_font = SubResource( 2 )
+custom_fonts/normal_font = SubResource( 10 )
 bbcode_enabled = true
 bbcode_text = "[center][color=black]Weapons"
 text = "Weapons"
@@ -72,12 +82,14 @@ __meta__ = {
 }
 
 [node name="Label2" type="RichTextLabel" parent="CanvasLayer/Control/ColorRect"]
-margin_left = 14.0
-margin_top = 363.0
-margin_right = 356.0
-margin_bottom = 426.0
+anchor_top = -0.00214789
+anchor_bottom = -0.00214789
+margin_left = 461.396
+margin_top = 101.708
+margin_right = 803.396
+margin_bottom = 164.708
 rect_clip_content = false
-custom_fonts/normal_font = SubResource( 2 )
+custom_fonts/normal_font = SubResource( 11 )
 bbcode_enabled = true
 bbcode_text = "[center][color=black]Abilities"
 text = "Abilities"
@@ -86,15 +98,30 @@ __meta__ = {
 }
 
 [node name="Label3" type="RichTextLabel" parent="CanvasLayer/Control/ColorRect"]
-margin_left = 7.0
-margin_top = 716.0
-margin_right = 358.0
-margin_bottom = 779.0
+margin_left = 455.549
+margin_top = 262.023
+margin_right = 806.553
+margin_bottom = 325.023
 rect_clip_content = false
-custom_fonts/normal_font = SubResource( 2 )
+custom_fonts/normal_font = SubResource( 11 )
 bbcode_enabled = true
 bbcode_text = "[center][color=black]Utilities"
 text = "Utilities"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label4" type="RichTextLabel" parent="CanvasLayer/Control/ColorRect"]
+margin_left = 234.069
+margin_top = 11.5929
+margin_right = 1031.07
+margin_bottom = 74.5929
+rect_clip_content = false
+custom_fonts/normal_font = SubResource( 9 )
+bbcode_enabled = true
+bbcode_text = "[center][color=black]CLICK TO CHANGE"
+text = "CLICK TO CHANGE"
+scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -143,201 +170,362 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Weapon_Selection_1" type="ColorRect" parent="CanvasLayer/Control/ColorRect"]
+anchor_left = 0.5
+anchor_top = 0.498395
+anchor_right = 0.5
+anchor_bottom = 0.498395
+margin_left = -568.823
+margin_top = -174.244
+margin_right = -204.823
+margin_bottom = -74.2436
+rect_pivot_offset = Vector2( 0.754929, 1.29654 )
+color = Color( 0.196078, 0.780392, 0.176471, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect6" type="ColorRect" parent="CanvasLayer/Control/ColorRect/Weapon_Selection_1"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = -4.0
+margin_bottom = -4.0
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Weapon_Selection_2" type="ColorRect" parent="CanvasLayer/Control/ColorRect"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -568.823
+margin_top = -70.7489
+margin_right = -204.823
+margin_bottom = 29.2511
+rect_pivot_offset = Vector2( 0.754929, 1.29654 )
+color = Color( 0.196078, 0.780392, 0.176471, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect6" type="ColorRect" parent="CanvasLayer/Control/ColorRect/Weapon_Selection_2"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = -4.0
+margin_bottom = -4.0
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Weapon_Selection_3" type="ColorRect" parent="CanvasLayer/Control/ColorRect"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -568.823
+margin_top = 33.2665
+margin_right = -204.823
+margin_bottom = 133.266
+rect_pivot_offset = Vector2( 0.754929, 1.29654 )
+color = Color( 0.196078, 0.780392, 0.176471, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect6" type="ColorRect" parent="CanvasLayer/Control/ColorRect/Weapon_Selection_3"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = -4.0
+margin_bottom = -4.0
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Ability_Selection_1" type="ColorRect" parent="CanvasLayer/Control/ColorRect"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 161.655
+margin_top = -126.901
+margin_right = 301.655
+margin_bottom = 13.0995
+rect_pivot_offset = Vector2( 0.754929, 1.29654 )
+color = Color( 0.196078, 0.780392, 0.176471, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect6" type="ColorRect" parent="CanvasLayer/Control/ColorRect/Ability_Selection_1"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = -4.0
+margin_bottom = -4.0
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Ability_Selection_2" type="ColorRect" parent="CanvasLayer/Control/ColorRect"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 320.675
+margin_top = -126.809
+margin_right = 460.675
+margin_bottom = 13.191
+rect_pivot_offset = Vector2( 0.754929, 1.29654 )
+color = Color( 0.196078, 0.780392, 0.176471, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect6" type="ColorRect" parent="CanvasLayer/Control/ColorRect/Ability_Selection_2"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = -4.0
+margin_bottom = -4.0
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Utility_Selection_1" type="ColorRect" parent="CanvasLayer/Control/ColorRect"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 163.041
+margin_top = 34.1781
+margin_right = 303.041
+margin_bottom = 174.178
+rect_pivot_offset = Vector2( 0.754929, 1.29654 )
+color = Color( 0.196078, 0.780392, 0.176471, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect6" type="ColorRect" parent="CanvasLayer/Control/ColorRect/Utility_Selection_1"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = -4.0
+margin_bottom = -4.0
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Utility_Selection_2" type="ColorRect" parent="CanvasLayer/Control/ColorRect"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 321.642
+margin_top = 31.1256
+margin_right = 461.642
+margin_bottom = 171.126
+rect_pivot_offset = Vector2( 0.754929, 1.29654 )
+color = Color( 0.196078, 0.780392, 0.176471, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect6" type="ColorRect" parent="CanvasLayer/Control/ColorRect/Utility_Selection_2"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = -4.0
+margin_bottom = -4.0
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
 [node name="Weapon1" type="Sprite" parent="CanvasLayer/Control/ColorRect"]
-position = Vector2( 120, 64.8742 )
+position = Vector2( 178.519, 10.6554 )
 scale = Vector2( 8, 8 )
 texture = ExtResource( 3 )
 hframes = 8
 frame = 2
 
 [node name="Weapon2" type="Sprite" parent="CanvasLayer/Control/ColorRect"]
-position = Vector2( 120, 153.963 )
+position = Vector2( 162.436, 120.598 )
 scale = Vector2( 8, 8 )
 texture = ExtResource( 5 )
 hframes = 8
 frame = 2
 
 [node name="Weapon3" type="Sprite" parent="CanvasLayer/Control/ColorRect"]
-position = Vector2( 120, 248.281 )
+position = Vector2( 171.147, 222.417 )
 scale = Vector2( 8, 8 )
 texture = ExtResource( 4 )
 hframes = 8
 frame = 2
 
 [node name="Ability1" type="Sprite" parent="CanvasLayer/Control/ColorRect"]
-position = Vector2( 182.333, 507.217 )
-scale = Vector2( 8, 8 )
+position = Vector2( 868.074, 131.182 )
+scale = Vector2( 5.70964, 5.70964 )
 texture = ExtResource( 9 )
 
 [node name="Ability2" type="Sprite" parent="CanvasLayer/Control/ColorRect"]
-position = Vector2( 184.292, 642.019 )
-scale = Vector2( 4.84893, 4.84893 )
+position = Vector2( 1023.4, 135.754 )
+scale = Vector2( 4.15828, 4.15828 )
 texture = ExtResource( 8 )
 
 [node name="Utility1" type="Sprite" parent="CanvasLayer/Control/ColorRect"]
-position = Vector2( 181.252, 851.958 )
+position = Vector2( 870.001, 291.101 )
 scale = Vector2( 5.62752, 5.62752 )
 texture = ExtResource( 7 )
 
 [node name="Utility2" type="Sprite" parent="CanvasLayer/Control/ColorRect"]
-position = Vector2( 179.29, 947.959 )
+position = Vector2( 1024.84, 294.179 )
 scale = Vector2( 8, 8 )
 texture = ExtResource( 6 )
 hframes = 2
 frame = 1
 
-[node name="Weapon1_Indicator" type="ColorRect" parent="CanvasLayer/Control/ColorRect"]
-margin_left = 26.1272
-margin_top = 94.3477
-margin_right = 66.1272
-margin_bottom = 134.348
-color = Color( 0.352941, 0.796078, 0.317647, 1 )
-
-[node name="Weapon2_Indicator" type="ColorRect" parent="CanvasLayer/Control/ColorRect"]
-margin_left = 26.1272
-margin_top = 184.137
-margin_right = 66.1272
-margin_bottom = 224.137
-color = Color( 0.352941, 0.796078, 0.317647, 1 )
-
-[node name="Weapon3_Indicator" type="ColorRect" parent="CanvasLayer/Control/ColorRect"]
-margin_left = 26.1272
-margin_top = 278.314
-margin_right = 66.1272
-margin_bottom = 318.314
-color = Color( 0.352941, 0.796078, 0.317647, 1 )
-
-[node name="Ability1_Indicator" type="ColorRect" parent="CanvasLayer/Control/ColorRect"]
-margin_left = 26.1272
-margin_top = 485.538
-margin_right = 66.1272
-margin_bottom = 525.538
-color = Color( 0.352941, 0.796078, 0.317647, 1 )
-
-[node name="Ability2_Indicator" type="ColorRect" parent="CanvasLayer/Control/ColorRect"]
-margin_left = 26.1272
-margin_top = 615.994
-margin_right = 66.1272
-margin_bottom = 655.994
-color = Color( 0.352941, 0.796078, 0.317647, 1 )
-
-[node name="Utility1_Indicator" type="ColorRect" parent="CanvasLayer/Control/ColorRect"]
-margin_left = 26.1272
-margin_top = 827.767
-margin_right = 66.1272
-margin_bottom = 867.767
-color = Color( 0.352941, 0.796078, 0.317647, 1 )
-
-[node name="Utility2_Indicator" type="ColorRect" parent="CanvasLayer/Control/ColorRect"]
-margin_left = 26.1272
-margin_top = 924.892
-margin_right = 66.1272
-margin_bottom = 964.892
-color = Color( 0.352941, 0.796078, 0.317647, 1 )
-
-[node name="Weapon1_Button" type="Button" parent="CanvasLayer/Control/ColorRect"]
-margin_left = 2.0
-margin_top = 69.0
-margin_right = 323.0
-margin_bottom = 155.0
+[node name="Weapon_Button_1" type="Button" parent="CanvasLayer/Control/ColorRect"]
+margin_left = 67.0
+margin_top = 15.0
+margin_right = 429.0
+margin_bottom = 142.0
+rect_scale = Vector2( 1, 0.76 )
+focus_mode = 0
 mouse_default_cursor_shape = 2
-custom_styles/hover = SubResource( 3 )
-custom_styles/pressed = SubResource( 4 )
-custom_styles/focus = SubResource( 5 )
-custom_styles/disabled = SubResource( 6 )
-custom_styles/normal = SubResource( 7 )
+custom_styles/hover = SubResource( 4 )
+custom_styles/pressed = SubResource( 5 )
+custom_styles/focus = SubResource( 6 )
+custom_styles/disabled = SubResource( 7 )
+custom_styles/normal = SubResource( 8 )
+enabled_focus_mode = 0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Weapon2_Button" type="Button" parent="CanvasLayer/Control/ColorRect"]
-margin_left = 2.0
-margin_top = 160.103
-margin_right = 323.0
-margin_bottom = 246.103
+[node name="Weapon_Button_2" type="Button" parent="CanvasLayer/Control/ColorRect"]
+margin_left = 64.0
+margin_top = 118.0
+margin_right = 427.0
+margin_bottom = 215.0
+focus_mode = 0
 mouse_default_cursor_shape = 2
-custom_styles/hover = SubResource( 3 )
-custom_styles/pressed = SubResource( 4 )
-custom_styles/focus = SubResource( 5 )
-custom_styles/disabled = SubResource( 6 )
-custom_styles/normal = SubResource( 7 )
+custom_styles/hover = SubResource( 4 )
+custom_styles/pressed = SubResource( 5 )
+custom_styles/focus = SubResource( 6 )
+custom_styles/disabled = SubResource( 7 )
+custom_styles/normal = SubResource( 8 )
+enabled_focus_mode = 0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Weapon3_Button" type="Button" parent="CanvasLayer/Control/ColorRect"]
-margin_left = 2.0
-margin_top = 257.965
-margin_right = 323.0
-margin_bottom = 343.965
+[node name="Weapon_Button_3" type="Button" parent="CanvasLayer/Control/ColorRect"]
+margin_left = 62.0
+margin_top = 221.0
+margin_right = 430.0
+margin_bottom = 322.0
+focus_mode = 0
 mouse_default_cursor_shape = 2
-custom_styles/hover = SubResource( 3 )
-custom_styles/pressed = SubResource( 4 )
-custom_styles/focus = SubResource( 5 )
-custom_styles/disabled = SubResource( 6 )
-custom_styles/normal = SubResource( 7 )
+custom_styles/hover = SubResource( 4 )
+custom_styles/pressed = SubResource( 5 )
+custom_styles/focus = SubResource( 6 )
+custom_styles/disabled = SubResource( 7 )
+custom_styles/normal = SubResource( 8 )
+enabled_focus_mode = 0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Ability1_Button" type="Button" parent="CanvasLayer/Control/ColorRect"]
+[node name="Ability_Button_1" type="Button" parent="CanvasLayer/Control/ColorRect"]
 anchor_left = 0.000634833
 anchor_right = 0.000634833
-margin_left = 2.0
-margin_top = 441.0
-margin_right = 356.0
-margin_bottom = 557.0
+margin_left = 795.196
+margin_top = 67.0
+margin_right = 929.196
+margin_bottom = 200.0
+focus_mode = 0
 mouse_default_cursor_shape = 2
-custom_styles/hover = SubResource( 3 )
-custom_styles/pressed = SubResource( 4 )
-custom_styles/focus = SubResource( 5 )
-custom_styles/disabled = SubResource( 6 )
-custom_styles/normal = SubResource( 7 )
+custom_styles/hover = SubResource( 4 )
+custom_styles/pressed = SubResource( 5 )
+custom_styles/focus = SubResource( 6 )
+custom_styles/disabled = SubResource( 7 )
+custom_styles/normal = SubResource( 8 )
+enabled_focus_mode = 0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Ability2_Button" type="Button" parent="CanvasLayer/Control/ColorRect"]
-margin_left = 2.0
-margin_top = 565.0
-margin_right = 356.0
-margin_bottom = 701.0
+[node name="Ability_Button_2" type="Button" parent="CanvasLayer/Control/ColorRect"]
+anchor_left = 0.000634833
+anchor_right = 0.000634833
+margin_left = 952.196
+margin_top = 66.0
+margin_right = 1091.2
+margin_bottom = 201.0
+focus_mode = 0
 mouse_default_cursor_shape = 2
-custom_styles/hover = SubResource( 3 )
-custom_styles/pressed = SubResource( 4 )
-custom_styles/focus = SubResource( 5 )
-custom_styles/disabled = SubResource( 6 )
-custom_styles/normal = SubResource( 7 )
+custom_styles/hover = SubResource( 4 )
+custom_styles/pressed = SubResource( 5 )
+custom_styles/focus = SubResource( 6 )
+custom_styles/disabled = SubResource( 7 )
+custom_styles/normal = SubResource( 8 )
+enabled_focus_mode = 0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Utility1_Button" type="Button" parent="CanvasLayer/Control/ColorRect"]
-margin_left = 2.0
-margin_top = 794.868
-margin_right = 356.0
-margin_bottom = 897.868
+[node name="Utility_Button_1" type="Button" parent="CanvasLayer/Control/ColorRect"]
+anchor_left = 0.000634833
+anchor_right = 0.000634833
+margin_left = 796.196
+margin_top = 223.0
+margin_right = 935.196
+margin_bottom = 363.0
+focus_mode = 0
 mouse_default_cursor_shape = 2
-custom_styles/hover = SubResource( 3 )
-custom_styles/pressed = SubResource( 4 )
-custom_styles/focus = SubResource( 5 )
-custom_styles/disabled = SubResource( 6 )
-custom_styles/normal = SubResource( 7 )
+custom_styles/hover = SubResource( 4 )
+custom_styles/pressed = SubResource( 5 )
+custom_styles/focus = SubResource( 6 )
+custom_styles/disabled = SubResource( 7 )
+custom_styles/normal = SubResource( 8 )
+enabled_focus_mode = 0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Utility2_Button" type="Button" parent="CanvasLayer/Control/ColorRect"]
-margin_left = 2.0
-margin_top = 897.961
-margin_right = 356.0
-margin_bottom = 1000.96
+[node name="Utility_Button_2" type="Button" parent="CanvasLayer/Control/ColorRect"]
+anchor_left = 0.000634833
+anchor_right = 0.000634833
+margin_left = 952.196
+margin_top = 217.0
+margin_right = 1091.2
+margin_bottom = 359.0
+focus_mode = 0
 mouse_default_cursor_shape = 2
-custom_styles/hover = SubResource( 3 )
-custom_styles/pressed = SubResource( 4 )
-custom_styles/focus = SubResource( 5 )
-custom_styles/disabled = SubResource( 6 )
-custom_styles/normal = SubResource( 7 )
+custom_styles/hover = SubResource( 4 )
+custom_styles/pressed = SubResource( 5 )
+custom_styles/focus = SubResource( 6 )
+custom_styles/disabled = SubResource( 7 )
+custom_styles/normal = SubResource( 8 )
+enabled_focus_mode = 0
 __meta__ = {
 "_edit_use_anchors_": false
 }

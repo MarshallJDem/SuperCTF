@@ -101,8 +101,6 @@ func _process(delta):
 	
 	update();
 
-
-
 func _draw():
 	if $Laser_Timer.time_left > 0:
 		var size;
@@ -130,10 +128,10 @@ func _draw():
 
 
 func shoot_on_inputs():
-	if Globals.is_typing_in_chat or Globals.displaying_loadout:
+	if Globals.is_typing_in_chat or !Globals.player_active_after_respawn:
 		return;
 	player.has_moved_after_respawn = true;
-	# Check for mouse input
+	# Check for mouse input	
 	if (Globals.control_scheme == Globals.Control_Schemes.keyboard and Input.is_action_pressed("clickL")) or (Globals.control_scheme == Globals.Control_Schemes.touchscreen and get_tree().get_root().get_node("MainScene/UI_Layer/Shoot_Stick").stick_vector != Vector2(0,0)):
 		var direction = ((get_global_mouse_position() - global_position).normalized());
 		if Globals.control_scheme == Globals.Control_Schemes.touchscreen:

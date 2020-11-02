@@ -128,11 +128,11 @@ func check_for_explosion(collision) -> bool:
 		return false;
 	if collision.collider.is_in_group("Forcefield_Bodies"):
 		if Globals.testing:
-			detonate(false);
+			fizout();
 		else:
-			rpc("detonate", true);
+			rpc("fizout");
 		return true;
 	return false;
-func fizout():
+remotesync func fizout():
 	$Death_Timer.start();
 	is_blank = true;

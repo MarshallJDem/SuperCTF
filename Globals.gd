@@ -70,6 +70,7 @@ var active_landmines = 0;
 
 var options_menu_should_scale;
 var displaying_loadout = false;
+var player_active_after_respawn = false;
 
 # ----- Constants -----
 const game_var_defaults = {"playerSpeed" : 200, "playerLagTime" : 50,
