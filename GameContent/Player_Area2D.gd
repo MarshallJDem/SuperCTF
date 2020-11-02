@@ -2,7 +2,8 @@ extends Area2D
 
 var p;
 
-var in_spawns = 0;
+var is_in_blue_spawn  =  false;
+var is_in_red_spawn  =  false;
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -11,9 +12,11 @@ func _ready():
 	p = get_parent();
 
 func _area_exited(body):
-	if body.is_in_group("Blue_Spawn") or body.is_in_group("Red_Spawn"):
-		in_spawns -= 1;
-	
+	if body.is_in_group("Blue_Spawn"):
+		is_in_blue_spawn = false;
+	if body.is_in_group("Red_Spawn"):
+		is_in_red_spawn = false;
+
 # Called when this area enters another area
 func _area_entered(body):
 	# Ignore collisons after the round ends
@@ -25,8 +28,10 @@ func _area_entered(body):
 	if body.is_in_group("Flag_Home_Bodies"):
 		collided_with_flag_home(body.get_parent());	
 	
-	if body.is_in_group("Blue_Spawn") or body.is_in_group("Red_Spawn"):
-		in_spawns += 1;
+	if body.is_in_group("Blue_Spawn"):
+		is_in_blue_spawn = true;
+	if body.is_in_group("Red_Spawn"):
+		is_in_red_spawn = true;
 	
 	if Globals.testing or get_tree().is_network_server():
 		if body.is_in_group("Powerup_Bodies"):
