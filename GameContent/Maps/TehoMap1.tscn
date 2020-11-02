@@ -241,6 +241,7 @@ position = Vector2( -299, 9 )
 z_index = -1000
 
 [node name="Sweet Pit (Halloween 2020)" type="Sprite" parent="YSort/Pit"]
+visible = false
 position = Vector2( 0.0980225, 0 )
 scale = Vector2( 1.011, 1.011 )
 texture = ExtResource( 17 )
@@ -250,6 +251,7 @@ position = Vector2( 299, 9 )
 z_index = -1000
 
 [node name="Sweet Pit (Halloween 2020)2" type="Sprite" parent="YSort/Pit2"]
+visible = false
 position = Vector2( -0.0974121, -0.0518646 )
 scale = Vector2( 1.011, 1.011 )
 texture = ExtResource( 16 )
