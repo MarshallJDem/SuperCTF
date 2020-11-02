@@ -89,7 +89,13 @@ func teleport_pressed():
 		move_on_inputs(true);
 		camera_ref.lag_smooth();
 		$Teleport_Timer.start();
-
+func is_in_own_spawn() -> bool:
+	var is_in_own_spawn = false;
+	var own_spawn = "Red" if team_id == 1 else "Blue";
+	for area in $Area2D.get_overlapping_areas():
+		if area.is_in_group(str(own_spawn) +  "_Spawn"):
+			is_in_own_spawn = true;
+	return is_in_own_spawn;
 func _process(delta):
 	BASE_SPEED = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("playerSpeed");
 	
@@ -101,12 +107,7 @@ func _process(delta):
 		Globals.player_active_after_respawn = has_moved_after_respawn and control;
 		
 		if $Area2D.in_spawns > 0 and control:
-			var is_in_own_spawn = false;
-			var own_spawn = "Red" if team_id == 1 else "Blue";
-			for area in $Area2D.get_overlapping_areas():
-				if area.is_in_group(str(own_spawn) +  "_Spawn"):
-					is_in_own_spawn = true;
-			Globals.displaying_loadout = is_in_own_spawn;
+			Globals.displaying_loadout = is_in_own_spawn();
 		else:
 			Globals.displaying_loadout = false;
 	if control:

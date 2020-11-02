@@ -44,6 +44,10 @@ func _area_entered(body):
 			collided_with_powerup_body(body.get_parent());
 	# Only detect collisions for these cases if we are the server and not testing
 	if !Globals.testing and get_tree().is_network_server():
+		# Ignore deadly objects if were in our spawn
+		if in_spawns > 0:
+			if p.is_in_own_spawn():
+				return;
 		if body.is_in_group("Bullet_Bodies"):
 			collided_with_bullet(body.get_parent());
 		if body.is_in_group("Laser_Bodies"):
