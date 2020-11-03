@@ -113,7 +113,7 @@ func _process(delta):
 	
 	camera_ref.get_node("Canvas_Layer/Vignette_Blue").visible = false;
 	camera_ref.get_node("Canvas_Layer/Vignette_Red").visible = false;
-	if has_flag():
+	if control and has_flag():
 		if team_id == 1:
 			camera_ref.get_node("Canvas_Layer/Vignette_Red").visible = true;
 		else:
