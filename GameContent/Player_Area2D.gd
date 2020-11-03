@@ -19,6 +19,12 @@ func _area_exited(body):
 
 # Called when this area enters another area
 func _area_entered(body):
+	#Determine if player is in spawns
+	if body.is_in_group("Blue_Spawn"):
+		is_in_blue_spawn = true;
+	if body.is_in_group("Red_Spawn"):
+		is_in_red_spawn = true;
+		
 	# Ignore collisons after the round ends
 	if get_tree().get_root().get_node("MainScene/NetworkController").round_is_ended: 
 		return;
@@ -27,12 +33,7 @@ func _area_entered(body):
 		return;
 	if body.is_in_group("Flag_Home_Bodies"):
 		collided_with_flag_home(body.get_parent());	
-	
-	if body.is_in_group("Blue_Spawn"):
-		is_in_blue_spawn = true;
-	if body.is_in_group("Red_Spawn"):
-		is_in_red_spawn = true;
-	
+		
 	if Globals.testing or get_tree().is_network_server():
 		if body.is_in_group("Powerup_Bodies"):
 			collided_with_powerup_body(body.get_parent());
