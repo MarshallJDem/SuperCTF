@@ -111,13 +111,13 @@ func _process(delta):
 		if !Globals.is_typing_in_chat:
 			move_on_inputs();
 	
-	$Center_Pivot/Camera/Canvas_Layer/Vignette_Blue.visible = false;
-	$Center_Pivot/Camera/Canvas_Layer/Vignette_Red.visible = false;
+	camera_ref.get_node("Canvas_Layer/Vignette_Blue").visible = false;
+	camera_ref.get_node("Canvas_Layer/Vignette_Red").visible = false;
 	if has_flag():
 		if team_id == 1:
-			$Center_Pivot/Camera/Canvas_Layer/Vignette_Red.visible = true;
+			camera_ref.get_node("Canvas_Layer/Vignette_Red").visible = true;
 		else:
-			$Center_Pivot/Camera/Canvas_Layer/Vignette_Blue.visible = true;
+			camera_ref.get_node("Canvas_Layer/Vignette_Red").visible = true;
 	
 	update();
 	
