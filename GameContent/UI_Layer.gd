@@ -52,6 +52,8 @@ func _process(delta):
 		$Skirmish_Subtext.visible = true;
 		$Skirmish_Subtext.bbcode_text = "[center][color=black] This is a skirmish lobby for waiting in matchmaking queue."
 		$Cancel_Button.visible = true;
+	else:
+		$Cancel_Button.visible = false;
 	if get_tree().get_root().get_node("MainScene/NetworkController").isSuddenDeath:
 		$Score_Label.bbcode_text = "[center][color=red]SUDDEN DEATH";
 		$Time_Label.visible = false;
