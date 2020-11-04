@@ -353,7 +353,7 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 			# If the user is one of the players in the current match or this is a skirmish
 			if(Globals.allowedPlayers.has(str(user_id)) || isSkirmish):
 				var message = player_name + " connected to the server";
-				get_tree().get_root().get_node("MainScene/UI_Layer/LineEdit").rpc("receive_message", "[color=green]" + message +  "[/color]", -1);
+				get_tree().get_root().get_node("MainScene/Chat_Layer/LineEdit").rpc("receive_message", "[color=green]" + message +  "[/color]", -1);
 				if isSkirmish:
 					var team_id = 0;
 					var b=0; var r=0;
@@ -474,7 +474,7 @@ func _client_disconnected(id):
 	if get_tree().is_network_server():
 		var message = players[player_id]["name"];
 		message += " disconnected from the server";
-		get_tree().get_root().get_node("MainScene/UI_Layer/LineEdit").rpc("receive_message", "[color=red]" + message +  "[/color]", -1);
+		get_tree().get_root().get_node("MainScene/Chat_Layer/LineEdit").rpc("receive_message", "[color=red]" + message +  "[/color]", -1);
 		if isSkirmish:
 			players.erase(player_id);
 			if players.size() == 0:
