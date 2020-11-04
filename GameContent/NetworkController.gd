@@ -14,6 +14,8 @@ var isSkirmish = false;
 var isSuddenDeath = false;
 var isDD = false;
 
+var game_loaded = false;
+
 signal round_started();
 
 var round_is_ended = false;
@@ -577,6 +579,7 @@ func reset_game_objects(kill_players = false):
 # Loads up a new round but does not start it yet
 # WARNING - you will likely need to make these edits in "load_mid_round" too
 remotesync func load_new_round(suddenDeath = false):
+	game_loaded = true;
 	isSuddenDeath = suddenDeath;
 	if isSuddenDeath:
 		scores = [0,0];
@@ -613,8 +616,9 @@ remotesync func load_new_round(suddenDeath = false):
 # For when a player joins mid round
 remote func load_mid_round(players, scores, round_start_timer_timeleft, round_num, round_time_elapsed, flags_data, game_vars):
 	print("Loading in the middle of a round" + str(round_num));
+	game_loaded = true;
 	
-	# Wait till our player objects have initialized
+	# Wait til our player objects have initialized
 	while get_tree().get_root().get_node("MainScene/Players").get_child_count() == 0:
 		yield(get_tree().create_timer(0.1), "timeout");
 	
@@ -649,6 +653,12 @@ remote func load_mid_round(players, scores, round_start_timer_timeleft, round_nu
 
 # Starts the currently loaded round
 remotesync func start_round():
+	# If we haven't loaded the game yet, ignore the call.
+	# This can occasionally happen if a player somehow joins just at the right
+	# time that this function calls before they load in
+	if !game_loaded:
+		return;
+	
 	print("Starting Round");
 	round_is_running = true;
 	emit_signal("round_started");
