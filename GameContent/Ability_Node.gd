@@ -69,7 +69,8 @@ func _ult_charge_timer_ended():
 	ult_charge += 1;
 	if ult_charge >= 100:
 		if previous_charge < 100:
-			get_tree().get_root().get_node("MainScene/UI_Layer").set_alert_text("[center][rainbow]ULT READY");
+			if player.player_id == Globals.localPlayerID:
+				get_tree().get_root().get_node("MainScene/UI_Layer").set_alert_text("[center][rainbow]ULT READY");
 		ult_charge = 100;
 func _ult_timer_ended():
 	player.get_node("Weapon_Node").ult_active = false;
