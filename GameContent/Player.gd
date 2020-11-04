@@ -427,6 +427,7 @@ func die():
 	visible = false;
 	control = false;
 	alive = false;
+	$Weapon_Node.ult_active = false;
 	stats["deaths"] += 1;
 	$Ability_Node.ability_stacks = 0;
 	spawn_death_particles();
