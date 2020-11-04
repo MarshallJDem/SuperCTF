@@ -176,19 +176,20 @@ func _screen_resized():
 		$"../Chat_Layer/Options_Button".rect_scale = Vector2(1,1);
 		$Cancel_Button.rect_scale = Vector2(1,1);
 	if window_size.x < 500 or window_size.y < 200:
-		$Input_GUIs.rect_scale = Vector2(0.5,0.5);
-		$Input_GUIs.margin_top = -40;
+		$Input_GUIs.rect_scale = Vector2(0.75,0.75);
+		$Input_GUIs.margin_top = -60;
 		$Alert_Text.get_font("normal_font").size =12;
 		$Skirmish_Subtext.get_font("normal_font").size =12;
 		$Alert_Text.margin_top = $Skirmish_Subtext.margin_top + 35;
 	elif window_size.x <= 1920 or window_size.y <= 1080:
-		$Input_GUIs.rect_scale = Vector2(1,1);
+		$Input_GUIs.rect_scale = Vector2(1.5,1.5);
 		$Alert_Text.get_font("normal_font").size =16;
 		$Skirmish_Subtext.get_font("normal_font").size =24;
-		$Input_GUIs.margin_top = -80;
+		$Input_GUIs.margin_top = -120;
 		$Alert_Text.margin_top = $Skirmish_Subtext.margin_top + 70;
 	else:
-		$Input_GUIs.rect_scale = Vector2(2,2);
+		$Input_GUIs.rect_scale = Vector2(3,3);
+		$Input_GUIs.margin_top = -240;
 		$Alert_Text.get_font("normal_font").size =48;
 		$Skirmish_Subtext.get_font("normal_font").size =20;
 		$Alert_Text.margin_top = $Skirmish_Subtext.margin_top + 140;

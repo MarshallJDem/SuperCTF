@@ -307,6 +307,7 @@ scale = Vector2( 3, 3 )
 emitting = false
 
 [node name="Move_GUIs" type="Node2D" parent="UI_Layer/Input_GUIs"]
+scale = Vector2( 0.8, 0.8 )
 
 [node name="Move_GUI_Text" type="Label" parent="UI_Layer/Input_GUIs/Move_GUIs"]
 anchor_top = 0.00432434
