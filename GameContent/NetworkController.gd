@@ -214,7 +214,8 @@ func updateGameServerStatus(status = null):
 	if status != null:
 		Globals.gameserverStatus = status;
 	if $HTTPRequest_GameServerUpdateStatus.get_http_client_status() == 0:
-		$HTTPRequest_GameServerUpdateStatus.request(Globals.mainServerIP + "updateGameServerStatus?status=" + String(Globals.gameserverStatus), ["authorization: Bearer " + (Globals.serverPrivateToken)], false);
+		var ip = Globals.mainServerIP + "updateGameServerStatus?status=" + String(Globals.gameserverStatus);
+		$HTTPRequest_GameServerUpdateStatus.request(ip, ["authorization: Bearer " + (Globals.serverPrivateToken)], false);
 # Joins a server
 func join_server():
 	client = WebSocketClient.new();

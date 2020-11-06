@@ -91,9 +91,10 @@ func load_leaderboard(leaderboard_data):
 		leaderboard_parent.add_child(cell);
 
 func _HTTP_GetLeaderboard_Completed(result, response_code, headers, body):
-	var json = JSON.parse(body.get_string_from_utf8())
-	if(response_code == 200 and json.result):
-		load_leaderboard(json.result);
+	if(response_code == 200):
+		var json = JSON.parse(body.get_string_from_utf8())
+		if json.result:
+			load_leaderboard(json.result);
 
 func _Leaderboard_Refresh_Ended():
 	if $HTTPRequest_GetLeaderboard.get_http_client_status() == 0:
