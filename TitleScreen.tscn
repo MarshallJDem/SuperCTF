@@ -537,6 +537,9 @@ rect_scale = Vector2( 0.742863, 0.742863 )
 texture_normal = ExtResource( 23 )
 expand = true
 stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="SplashStartButton" type="Button" parent="UI_Layer"]
 visible = false

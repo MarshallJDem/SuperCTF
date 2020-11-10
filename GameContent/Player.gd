@@ -62,12 +62,6 @@ func _ready():
 	lerp_start_pos = position;
 	lerp_end_pos = position;
 	
-	if team_id == 1:
-		set_collision_mask_bit(18, true);
-		set_collision_mask_bit(19, false);
-	else:
-		set_collision_mask_bit(18, false);
-		set_collision_mask_bit(19, true);
 
 func _input(event):
 	if Globals.is_typing_in_chat:
@@ -90,12 +84,11 @@ func teleport_pressed():
 		camera_ref.lag_smooth();
 		$Teleport_Timer.start();
 func is_in_own_spawn() -> bool:
-	var is_in_own_spawn = false;
-	var own_spawn = "Red" if team_id == 1 else "Blue";
-	for area in $Area2D.get_overlapping_areas():
-		if area.is_in_group(str(own_spawn) +  "_Spawn"):
-			is_in_own_spawn = true;
-	return is_in_own_spawn;
+	if team_id == 1:
+		return $Area2D.is_in_red_spawn;
+	else:
+		return $Area2D.is_in_blue_spawn;
+
 func _process(delta):
 	BASE_SPEED = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("playerSpeed");
 	
@@ -105,11 +98,10 @@ func _process(delta):
 		has_moved_after_respawn = false;
 	if !Globals.testing and is_network_master():
 		Globals.player_active_after_respawn = has_moved_after_respawn and control;
-		
-		if $Area2D.in_spawns > 0 and control:
-			Globals.displaying_loadout = is_in_own_spawn();
-		else:
-			Globals.displaying_loadout = false;
+		Globals.displaying_loadout = is_in_own_spawn();
+	elif Globals.testing:
+		Globals.displaying_loadout = true;
+		Globals.player_active_after_respawn = true;
 	if control:
 		activate_camera();
 		# Don't look around if we're shooting a laser
@@ -119,6 +111,13 @@ func _process(delta):
 		if !Globals.is_typing_in_chat:
 			move_on_inputs();
 	
+	camera_ref.get_node("Canvas_Layer/Vignette_Blue").visible = false;
+	camera_ref.get_node("Canvas_Layer/Vignette_Red").visible = false;
+	if control and has_flag():
+		if team_id == 1:
+			camera_ref.get_node("Canvas_Layer/Vignette_Red").visible = true;
+		else:
+			camera_ref.get_node("Canvas_Layer/Vignette_Blue").visible = true;
 	
 	update();
 	
@@ -394,12 +393,12 @@ remotesync func update_position(new_pos):
 
 # Activates the camera on this player
 func activate_camera():
-	if camera_ref:
+	if camera_ref != null:
 		camera_ref.current = true;
 
 # De-activates the camera on this player
 func deactivate_camera():
-	if camera_ref:
+	if camera_ref != null:
 		camera_ref.current = false;
 
 # Called when this player is hit by a projectile
@@ -428,6 +427,7 @@ func die():
 	visible = false;
 	control = false;
 	alive = false;
+	$Weapon_Node.ult_active = false;
 	stats["deaths"] += 1;
 	$Ability_Node.ability_stacks = 0;
 	spawn_death_particles();

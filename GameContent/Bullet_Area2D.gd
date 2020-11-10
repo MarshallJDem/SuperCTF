@@ -44,6 +44,7 @@ func collided_with_laser(laser):
 	if laser.team_id == get_parent().team_id:
 		return;
 	if get_tree().is_network_server():
+		get_parent().rpc("receive_death");
 		flagged_for_death = true;
 	else:
 		get_parent().call_deferred("preliminary_death");

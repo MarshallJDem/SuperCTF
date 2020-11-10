@@ -14,6 +14,8 @@ var isSkirmish = false;
 var isSuddenDeath = false;
 var isDD = false;
 
+var game_loaded = false;
+
 signal round_started();
 
 var round_is_ended = false;
@@ -212,7 +214,8 @@ func updateGameServerStatus(status = null):
 	if status != null:
 		Globals.gameserverStatus = status;
 	if $HTTPRequest_GameServerUpdateStatus.get_http_client_status() == 0:
-		$HTTPRequest_GameServerUpdateStatus.request(Globals.mainServerIP + "updateGameServerStatus?status=" + String(Globals.gameserverStatus), ["authorization: Bearer " + (Globals.serverPrivateToken)], false);
+		var ip = Globals.mainServerIP + "updateGameServerStatus?status=" + String(Globals.gameserverStatus);
+		$HTTPRequest_GameServerUpdateStatus.request(ip, ["authorization: Bearer " + (Globals.serverPrivateToken)], false);
 # Joins a server
 func join_server():
 	client = WebSocketClient.new();
@@ -353,7 +356,7 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 			# If the user is one of the players in the current match or this is a skirmish
 			if(Globals.allowedPlayers.has(str(user_id)) || isSkirmish):
 				var message = player_name + " connected to the server";
-				get_tree().get_root().get_node("MainScene/UI_Layer/LineEdit").rpc("receive_message", "[color=green]" + message +  "[/color]", -1);
+				get_tree().get_root().get_node("MainScene/Chat_Layer/LineEdit").rpc("receive_message", "[color=green]" + message +  "[/color]", -1);
 				if isSkirmish:
 					var team_id = 0;
 					var b=0; var r=0;
@@ -474,7 +477,7 @@ func _client_disconnected(id):
 	if get_tree().is_network_server():
 		var message = players[player_id]["name"];
 		message += " disconnected from the server";
-		get_tree().get_root().get_node("MainScene/UI_Layer/LineEdit").rpc("receive_message", "[color=red]" + message +  "[/color]", -1);
+		get_tree().get_root().get_node("MainScene/Chat_Layer/LineEdit").rpc("receive_message", "[color=red]" + message +  "[/color]", -1);
 		if isSkirmish:
 			players.erase(player_id);
 			if players.size() == 0:
@@ -577,6 +580,7 @@ func reset_game_objects(kill_players = false):
 # Loads up a new round but does not start it yet
 # WARNING - you will likely need to make these edits in "load_mid_round" too
 remotesync func load_new_round(suddenDeath = false):
+	game_loaded = true;
 	isSuddenDeath = suddenDeath;
 	if isSuddenDeath:
 		scores = [0,0];
@@ -613,8 +617,9 @@ remotesync func load_new_round(suddenDeath = false):
 # For when a player joins mid round
 remote func load_mid_round(players, scores, round_start_timer_timeleft, round_num, round_time_elapsed, flags_data, game_vars):
 	print("Loading in the middle of a round" + str(round_num));
+	game_loaded = true;
 	
-	# Wait till our player objects have initialized
+	# Wait til our player objects have initialized
 	while get_tree().get_root().get_node("MainScene/Players").get_child_count() == 0:
 		yield(get_tree().create_timer(0.1), "timeout");
 	
@@ -649,6 +654,12 @@ remote func load_mid_round(players, scores, round_start_timer_timeleft, round_nu
 
 # Starts the currently loaded round
 remotesync func start_round():
+	# If we haven't loaded the game yet, ignore the call.
+	# This can occasionally happen if a player somehow joins just at the right
+	# time that this function calls before they load in
+	if !game_loaded:
+		return;
+	
 	print("Starting Round");
 	round_is_running = true;
 	emit_signal("round_started");
