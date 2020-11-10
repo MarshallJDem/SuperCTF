@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=2]
+[gd_scene load_steps=31 format=2]
 
 [ext_resource path="res://GameContent/Player.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Player/gunner_gun_B.png" type="Texture" id=2]
@@ -23,6 +23,7 @@
 [ext_resource path="res://Assets/Sound/Powerup.wav" type="AudioStream" id=21]
 [ext_resource path="res://Assets/Shaders/Vignette_Red.shader" type="Shader" id=22]
 [ext_resource path="res://Assets/Shaders/Vignette_Blue.shader" type="Shader" id=23]
+[ext_resource path="res://ScreenShake.tscn" type="PackedScene" id=24]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 5.0
@@ -220,6 +221,8 @@ drag_margin_right = 0.0
 drag_margin_bottom = 0.0
 editor_draw_drag_margin = true
 script = ExtResource( 5 )
+
+[node name="ScreenShake" parent="Center_Pivot/Camera" instance=ExtResource( 24 )]
 
 [node name="Shake_Timer" type="Timer" parent="Center_Pivot/Camera"]
 one_shot = true
