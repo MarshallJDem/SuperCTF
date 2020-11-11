@@ -16,6 +16,8 @@ const AIMING_SPEED = 15;
 
 var player;
 
+# Signal to shake the screen
+#signal shake
 # The direction the laser is firing at
 var laser_direction = Vector2(0,0);
 # The position the laser is firing from
@@ -181,6 +183,7 @@ func shoot_on_inputs():
 									shoot_demo(direction3,demos_shot,time_shot);
 
 remotesync func shoot_demo(d, shots, time_shot, is_blank = false):
+	#emit_signal("shake", 0.1, 20, 10, 2, Tween.TRANS_ELASTIC, Tween.EASE_IN_OUT)
 	$Cooldown_Timer.start();
 	$Shoot_Animation_Timer.start();
 	
@@ -236,6 +239,7 @@ func shoot_bullet(d):
 	var bullet_name = "Bullet"+ "-" + str(player.player_id) + "-" + str(bullets_shot);
 	#player.camera_ref.shake();
 	$Shoot_Animation_Timer.start();
+	
 	# If we are too close to a wall, shoot a blank
 	if(collision_tester_length < 10):
 		spawn_bullet(bullet_start, 0 if Globals.testing else player.player_id, direction, time, bullet_name, true);
@@ -337,6 +341,7 @@ func spawn_laser():
 	laser.size = laser_width;
 	get_tree().get_root().get_node("MainScene").add_child(laser);
 	$Laser_Fire_Audio.play();
+	#emit_signal("shake", 0.1, 30, 5*laser_width, 2, Tween.TRANS_CIRC, Tween.EASE_IN)
 	$Cooldown_Timer.start();
 	laser_is_blank = false;
 
