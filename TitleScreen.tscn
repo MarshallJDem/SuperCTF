@@ -354,7 +354,7 @@ custom_colors/default_color = Color( 0.368627, 0.368627, 0.368627, 1 )
 bbcode_enabled = true
 bbcode_text = "[color=black]NEWS:
 
-Happy November!
+Happy November, and welcome [url=https://itch.io]Itch.io[/url] and [url=https://iogames.space]iogames[/url] players! (And the rest of course)
 
 We are hosting play sessions [rainbow]EVERY WEDNESDAY [/rainbow]at 7PM PST and at 7PM GMT! Join the Discord for more information:
 
@@ -365,7 +365,7 @@ We are looking for people to get involved and make suggestions or help build the
 - Carshalljd (add me on discord [color=black]carshalljd#4808[color=black] or email me at [color=black]marshalljdem@gmail.com[color=black])"
 text = "NEWS:
 
-Happy November!
+Happy November, and welcome Itch.io and iogames players! (And the rest of course)
 
 We are hosting play sessions EVERY WEDNESDAY at 7PM PST and at 7PM GMT! Join the Discord for more information:
 
@@ -725,14 +725,14 @@ visible = false
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 12 )
-frame = 2
+frame = 3
 playing = true
 
 [node name="Red_Sprite" type="AnimatedSprite" parent="UI_Layer/Flags/Flag"]
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 17 )
-frame = 1
+frame = 2
 playing = true
 
 [node name="Area2D" type="Area2D" parent="UI_Layer/Flags/Flag" groups=[
@@ -757,7 +757,7 @@ script = ExtResource( 3 )
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 12 )
-frame = 1
+frame = 2
 playing = true
 
 [node name="Red_Sprite" type="AnimatedSprite" parent="UI_Layer/Flags/Flag3"]
@@ -765,6 +765,7 @@ visible = false
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 17 )
+frame = 1
 playing = true
 
 [node name="Area2D" type="Area2D" parent="UI_Layer/Flags/Flag3" groups=[

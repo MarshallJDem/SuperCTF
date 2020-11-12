@@ -164,8 +164,8 @@ margin_right = 615.37
 margin_bottom = 941.78
 custom_fonts/normal_font = ExtResource( 4 )
 bbcode_enabled = true
-bbcode_text = "[color=gray]You, the player			iogames
-themuffinman1999	  itch.io
+bbcode_text = "[color=gray]You, the player
+themuffinman1999
 Auxive
 r/starcraft
 Godot Engine
@@ -173,8 +173,8 @@ kabbage
 Kaeleeen
 Dunkey
 Spoonlord"
-text = "You, the player			iogames
-themuffinman1999	  itch.io
+text = "You, the player
+themuffinman1999
 Auxive
 r/starcraft
 Godot Engine
