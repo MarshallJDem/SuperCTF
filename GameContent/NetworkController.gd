@@ -159,7 +159,7 @@ func _HTTP_GameServerPollStatus_Completed(result, response_code, headers, body):
 			if Globals.matchID == matchID:
 				return;
 			Globals.matchID = matchID;
-			if matchID:
+			if matchID != null:
 				print("Getting Match Data for MatchID = " + str(matchID));
 				updateGameServerStatus(2);
 				$HTTPRequest_GetMatchData.request(Globals.mainServerIP + "getMatchData?matchID=" + str(matchID) + "&authority=gameServer", ["authorization: Bearer " + (Globals.serverPrivateToken)], false);
@@ -683,6 +683,7 @@ remotesync func end_match(winning_team_id):
 	$Match_End_Timer.start();
 	if !Globals.testing and get_tree().is_network_server():
 		yield(get_tree().create_timer(4.0), "timeout");
+		print("GETTING PREDICTED CHANGES WITH MATCHID : " + str(Globals.matchID));
 		$HTTPRequest_GetPredictedMMRChanges.request(Globals.mainServerIP + "gameServerGetPredictedMMRChanges?matchID=" + str(Globals.matchID) + "&winningTeamID=" + str(match_end_winning_team_id) + "&isDoubleDown=" + str(isDD), ["authorization: Bearer " + (Globals.serverPrivateToken)]);
 	else:
 		if !Globals.testing:
