@@ -353,21 +353,19 @@ custom_fonts/normal_font = ExtResource( 12 )
 custom_colors/default_color = Color( 0.368627, 0.368627, 0.368627, 1 )
 bbcode_enabled = true
 bbcode_text = "[color=black]NEWS:
-
 Happy November, and welcome [url=https://itch.io]Itch.io[/url] and [url=https://iogames.space]iogames[/url] players! (And the rest of course)
 
-We are hosting play sessions [rainbow]EVERY WEDNESDAY [/rainbow]at 7PM PST and at 7PM GMT! Join the Discord for more information:
-
+[color=red]We are experiencing a LOT more players than we are used to so please bear with us if the game isn't working! If you can't connect to a game please come join our discord or email me! (Details below)
+[color=black]
 Discord Link:[color=blue] [url]https://discord.gg/D3Ban34[/url][color=black]
 Twitter:[color=blue] [url]https://twitter.com/SuperCTFGame[/url][color=black]
 
 We are looking for people to get involved and make suggestions or help build the game. Join our discord or email me to get involved!
 - Carshalljd (add me on discord [color=black]carshalljd#4808[color=black] or email me at [color=black]marshalljdem@gmail.com[color=black])"
 text = "NEWS:
-
 Happy November, and welcome Itch.io and iogames players! (And the rest of course)
 
-We are hosting play sessions EVERY WEDNESDAY at 7PM PST and at 7PM GMT! Join the Discord for more information:
+We are experiencing a LOT more players than we are used to so please bear with us if the game isn't working! If you can't connect to a game please come join our discord or email me! (Details below)
 
 Discord Link: https://discord.gg/D3Ban34
 Twitter: https://twitter.com/SuperCTFGame
