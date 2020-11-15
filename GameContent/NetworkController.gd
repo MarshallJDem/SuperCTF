@@ -284,6 +284,7 @@ func _connection_ok():
 	rpc_id(1, "user_ready", get_tree().get_network_unique_id(), Globals.userToken);
 
 func _connection_failed():
+	print("Connection to serverfailed");
 	leave_match();
 
 func update_player_objects():
