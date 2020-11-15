@@ -631,7 +631,7 @@ remotesync func load_new_round(suddenDeath = false):
 	var home0 = get_tree().get_root().get_node("MainScene/Map/YSort/Flag_Home-" + str(0));
 	var home1 = get_tree().get_root().get_node("MainScene/Map/YSort/Flag_Home-" + str(1));
 	flags_data[str(0)] = {"holder_player_id" : -1, "position": Vector2.ZERO, "team_id" : 0};
-	flags_data[str(1)] = {"holder_player_id" : -1, "position": Vector2.ZERO, "team_id" : 0};
+	flags_data[str(1)] = {"holder_player_id" : -1, "position": Vector2.ZERO, "team_id" : 1};
 	if home0 != null:
 		flags_data[str(0)]["position"] = home0.position;
 	else:
