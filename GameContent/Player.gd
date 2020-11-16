@@ -393,12 +393,12 @@ remotesync func update_position(new_pos):
 
 # Activates the camera on this player
 func activate_camera():
-	if camera_ref != null:
+	if camera_ref != null and is_instance_valid(camera_ref):
 		camera_ref.current = true;
 
 # De-activates the camera on this player
 func deactivate_camera():
-	if camera_ref != null:
+	if camera_ref != null and is_instance_valid(camera_ref):
 		camera_ref.current = false;
 
 # Called when this player is hit by a projectile
