@@ -13,7 +13,7 @@ var serverPrivateToken;
 var isServer = false;
 var allowedPlayers = [];
 var matchID;
-var allowCommands = true;
+var allowCommands = false;
 var useSecure = true;
 var gameserverStatus = 0;
 
