@@ -52,7 +52,7 @@ func _detonation_timer_ended():
 	$Explosion_Area2D.monitorable = true;
 	$Death_Timer.start();
 func die():
-	if player_id == Globals.localPlayerID:
+	if player_id == Globals.localPlayerID or Globals.testing:
 		Globals.active_landmines -= 1;
 	call_deferred("free");
 func _death_timer_ended():
