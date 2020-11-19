@@ -74,7 +74,7 @@ var player_active_after_respawn = false;
 
 # ----- Constants -----
 const game_var_defaults = {"playerSpeed" : 200, "playerLagTime" : 50,
-	"bulletSpeed" : 350, "bulletCooldown" : 350, 
+	"bulletSpeed" : 450, "bulletCooldown" : 350, 
 	"laserChargeTime" : 650, "laserCooldown" : 500, 
 	"laserWidth" :15, "laserLength" : 1300,
 	"dashDistance" : 5000, "dashCooldown" : 3000, 
@@ -133,7 +133,7 @@ func _enter_tree():
 	if arguments.has("isServer"):
 		isServer = true if arguments["isServer"] == "true" else false;
 	if OS.has_feature("editor"):
-		testing = false;
+		testing = true;
 	experimental =  false;#OS.has_feature("debug") and !OS.has_feature("editor");
 	if experimental:
 		get_tree().change_scene("res://GameContent/Main.tscn");
