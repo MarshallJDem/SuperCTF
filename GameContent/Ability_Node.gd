@@ -23,9 +23,10 @@ func _process(delta):
 		$Cooldown_Timer.stop();
 	
 	if $Camo_Timer.time_left != 0:
+		# If this is our local, in control player
 		if player.control:
-			var m = (sin($Camo_Timer.time_left * 2 * PI * 6) + 1.0)/12.0;
-			m += 0.1;
+			var m = (sin($Camo_Timer.time_left * 2 * PI * 6) + 1.0)/24.0;
+			#m += 0.1;
 			player.modulate = Color(1,1,1,m);
 		var count = 4;
 		var spacing = $Camo_Timer.wait_time/count;
