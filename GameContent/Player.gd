@@ -266,13 +266,13 @@ func move_on_inputs(teleport = false):
 		speed += FLAG_SLOWDOWN_SPEED;
 	if sprintEnabled:
 		speed += SPRINT_SPEED;
-	if teleport:
-		speed = TELEPORT_SPEED;
 	var areas = $Area2D.get_overlapping_areas();
 	for i in range(areas.size()):
 		if areas[i].is_in_group("Landmine_Bodies") and areas[i].monitorable:
 			speed = speed / 2.0;
 			break;
+	if teleport:
+		speed = TELEPORT_SPEED;
 	var vec = (input * speed);
 	
 	var previous_pos = position;
