@@ -24,7 +24,7 @@ func update_camera_offset_from_mouse():
 	if Globals.control_scheme == Globals.Control_Schemes.touchscreen:
 		distance = 0.0;
 	$'..'.camera_ref.smoothing_speed = 10;
-	if !Globals.is_typing_in_chat and Input.is_key_pressed(KEY_SHIFT):
+	if extended:
 		$'..'.camera_ref.smoothing_speed = 5;
 		modifier *= 8;
 	$'..'.camera_ref.position.x = distance * modifier;
@@ -41,4 +41,12 @@ func update_camera_offset_from_arrow_keys():
 	
 	# Override just disable this feature:
 	$'..'.camera_ref.position.x = 0;
-	
+
+var extended = false;
+func _input(event):
+	if Globals.is_typing_in_chat:
+		return;
+	if !Globals.is_typing_in_chat:
+		if event is InputEventKey and event.pressed:
+			if event.scancode == KEY_SHIFT:
+				extended = !extended;
