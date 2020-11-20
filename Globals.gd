@@ -2,7 +2,7 @@ extends Node
 
 # Whether to run in testing mode (for development uses)
 var testing = false;
-var experimental = false;
+var experimental = true;
 
 #Game Servers (Both clients and servers use these vars, but in different ways. overlapping would not work)
 var serverIP = "";
@@ -134,8 +134,8 @@ func _enter_tree():
 		isServer = true if arguments["isServer"] == "true" else false;
 	if OS.has_feature("editor"):
 		testing = true;
-	testing = true;
-	experimental =  false;#OS.has_feature("debug") and !OS.has_feature("editor");
+	#testing = false;
+	#experimental = !OS.has_feature("editor");
 	if experimental:
 		get_tree().change_scene("res://GameContent/Main.tscn");
 
