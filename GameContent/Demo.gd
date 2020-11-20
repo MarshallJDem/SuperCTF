@@ -14,6 +14,7 @@ var stick_direction = Vector2.DOWN;
 var animation_progress = 0.0;
 var death_atlas_blue = preload("res://Assets/Weapons/bullet_death_B.png");
 var death_atlas_red = preload("res://Assets/Weapons/bullet_death_R.png");
+var has_been_stuck = false;
 
 func _ready():
 	$Detonation_Timer.connect("timeout", self, "_detonation_timer_ended");
@@ -49,7 +50,7 @@ remotesync func stick_to_player(p_id, stick_direction):
 	var p = get_tree().get_root().get_node_or_null("MainScene/Players/P" + str(p_id));
 	if Globals.testing:
 		p = get_tree().get_root().get_node("MainScene/Test_Player");
-	
+	has_been_stuck = true;
 	if p == null or !is_instance_valid(p):
 		print_stack();
 		return;
@@ -129,11 +130,15 @@ func _draw():
 		draw_circle(Vector2.ZERO,50,color);
 func _physics_process(delta):
 	if !is_blank:
-		if stuck_player == null or !is_instance_valid(stuck_player):
+		if !has_been_stuck:
 			move(delta);
-		else:
-			position = stuck_player.position + (10  * stick_direction);
-			z_index = stuck_player.z_index + 5;
+		if stuck_player != null and is_instance_valid(stuck_player):
+			# Detach from player if they die
+			if stuck_player.alive == false:
+				stuck_player = null;
+			else:
+				position = stuck_player.position + (10  * stick_direction);
+				z_index = stuck_player.z_index + 5;
 
 var previous_compensation_progress = 0.0;
 # Given an amount of delta time, moves the bullet in its trajectory direction using its speed
