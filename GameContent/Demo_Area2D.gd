@@ -26,7 +26,7 @@ func collided_with_player(player):
 	if get_parent().team_id == player.team_id:
 		return;
 	if get_tree().is_network_server():
-		get_parent().rpc("detonate", true);
+		get_parent().rpc("stick_to_player", player.player_id,  (get_parent().position - player.position).normalized());
 	else:
 		pass;
 		#get_parent().call_deferred("detonate");
