@@ -18,12 +18,16 @@ _global_script_class_icons={
 config/name="CTF"
 run/main_scene="res://TitleScreen.tscn"
 boot_splash/bg_color=Color( 1, 1, 1, 1 )
-config/icon="res://flag_frames/flagRed1.png"
+config/icon="res://icon.png"
 
 [autoload]
 
 Globals="*res://Globals.gd"
 Global_Overlay="*res://Global_Overlay.tscn"
+
+[debug]
+
+settings/stdout/verbose_stdout=true
 
 [display]
 
