@@ -25,8 +25,8 @@ func _area_entered(body):
 	if body.is_in_group("Red_Spawn"):
 		is_in_red_spawn = true;
 		
-	# Ignore collisons after the round ends
-	if get_tree().get_root().get_node("MainScene/NetworkController").round_is_ended: 
+	# Ignore collisons if the round isnt running
+	if !get_tree().get_root().get_node("MainScene/NetworkController").round_is_running: 
 		return;
 	# If this player is dead, ignore any collisions
 	if get_parent().alive == false:
