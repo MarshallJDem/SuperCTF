@@ -301,7 +301,7 @@ remotesync func enable_powerup(type):
 		$Ability_Node.ability_stacks += 1;
 		text = "[wave amp=50 freq=12][color=red]^^ +1 INSTANT ABILITY USE ^^";
 	elif type == 4:
-		DASH_COOLDOWN_PMODIFIER = -2.5;
+		DASH_COOLDOWN_PMODIFIER = -2.0;
 		$Powerup_Timer.wait_time = 10;
 		text = "[wave amp=50 freq=12][color=purple]˅˅˅˅˅˅^^ DASH RATE UP ^^";
 	if Globals.testing or is_network_master():

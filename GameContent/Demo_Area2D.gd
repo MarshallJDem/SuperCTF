@@ -17,6 +17,11 @@ func _area_entered(body):
 
 # Called when this node collides with a player
 func collided_with_player(player):
+	
+	if Globals.testing:
+		get_parent().stick_to_player(player.player_id,  (get_parent().position - player.position).normalized());
+		return;
+	
 	# If this bullet was shot by the same team, ignore it
 	if get_parent().team_id == player.team_id:
 		return;
