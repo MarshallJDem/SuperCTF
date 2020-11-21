@@ -2,7 +2,7 @@ extends Node
 
 # Whether to run in testing mode (for development uses)
 var testing = false;
-var experimental = true;
+var experimental = false;
 
 #Game Servers (Both clients and servers use these vars, but in different ways. overlapping would not work)
 var serverIP = "";
