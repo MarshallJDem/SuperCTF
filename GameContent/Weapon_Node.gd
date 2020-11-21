@@ -3,8 +3,8 @@ extends Node2D
 var bullet_atlas_blue = preload("res://Assets/Weapons/bullet_b.png");
 var bullet_atlas_red = preload("res://Assets/Weapons/bullet_r.png");
 
-var demo_atlas_blue = preload("res://Assets/Weapons/bullet_death_B.png");
-var demo_atlas_red = preload("res://Assets/Weapons/bullet_death_R.png");
+var demo_atlas_blue = preload("res://Assets/Weapons/bullet_b.png");
+var demo_atlas_red = preload("res://Assets/Weapons/bullet_r.png");
 
 var Muzzle_Bullet = preload("res://GameContent/Muzzle_Bullet.tscn");
 var Bullet = preload("res://GameContent/Bullet.tscn");

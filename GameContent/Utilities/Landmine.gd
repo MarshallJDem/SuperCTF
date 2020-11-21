@@ -37,8 +37,9 @@ func _activation_timer_ended():
 	$Sprite.frame = 1;
 	$Trigger_Area2D.monitoring = true;
 	if Globals.localPlayerTeamID != team_id:
-		modulate = Color(0.0,0.0,0.0,0.0);
-
+		# Landmines used to disappear after "activating"
+		#modulate = Color(0.0,0.0,0.0,0.0);
+		pass;
 remotesync func start_detonation():
 	if triggered:
 		return;
@@ -51,7 +52,7 @@ func _detonation_timer_ended():
 	$Explosion_Area2D.monitorable = true;
 	$Death_Timer.start();
 func die():
-	if player_id == Globals.localPlayerID:
+	if player_id == Globals.localPlayerID or Globals.testing:
 		Globals.active_landmines -= 1;
 	call_deferred("free");
 func _death_timer_ended():

@@ -6,6 +6,8 @@ var Bullet_Death_Particles = preload("res://GameContent/Bullet_Death_Particles.t
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	Globals.options_menu_should_scale = true;
+	Globals.is_typing_in_chat = false;
+	Globals.active_landmines = 0;
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE);
 	if !Globals.testing:
 		$Test_Player.call_deferred("free");

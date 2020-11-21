@@ -9,6 +9,12 @@ var player_id = -1;
 var original_time_shot = 0;
 var puppet_time_shot = 0;
 var is_blank = false;
+var stuck_player = null;
+var stick_direction = Vector2.DOWN;
+var animation_progress = 0.0;
+var death_atlas_blue = preload("res://Assets/Weapons/bullet_death_B.png");
+var death_atlas_red = preload("res://Assets/Weapons/bullet_death_R.png");
+var has_been_stuck = false;
 
 func _ready():
 	$Detonation_Timer.connect("timeout", self, "_detonation_timer_ended");
@@ -35,16 +41,33 @@ func _ready():
 	$Lag_Comp_Timer.start();
 	$Detonation_Timer.start();
 	$Area2D.monitorable = false;
-	
 
 func _detonation_timer_ended():
 	detonate();
+	
+
+remotesync func stick_to_player(p_id, stick_direction):
+	var p = get_tree().get_root().get_node_or_null("MainScene/Players/P" + str(p_id));
+	if Globals.testing:
+		p = get_tree().get_root().get_node("MainScene/Test_Player");
+	has_been_stuck = true;
+	if p == null or !is_instance_valid(p):
+		print_stack();
+		return;
+	stuck_player = p;
+	self.stick_direction = stick_direction;
 
 remotesync func detonate(from_remote = false):
 	
 	# If we already detonated
 	if $Death_Timer.time_left > 0:
 		return;
+	if team_id == 1:
+		$Sprite.set_texture(death_atlas_red);
+	else:
+		$Sprite.set_texture(death_atlas_blue);
+	$Sprite.hframes = 5;
+		
 	if from_remote and puppet_state == Puppet_State.Master:
 		var t = Timer.new();
 		t.set_wait_time(float(Globals.player_lerp_time)/float(1000.0));
@@ -54,6 +77,14 @@ remotesync func detonate(from_remote = false):
 		yield(t, "timeout");
 		t.call_deferred("free");
 		print("Waited for detonation");
+	
+	if stuck_player != null and is_instance_valid(stuck_player):
+		# Detach from player if they die
+		if stuck_player.alive == false:
+			stuck_player = null;
+		else:
+			position = stuck_player.position + (10  * stick_direction);
+			z_index = stuck_player.z_index + 5;
 
 	$Detonation_Timer.stop();
 	$Death_Timer.start();
@@ -72,6 +103,22 @@ func _death_timer_ended():
 	yield(get_tree().create_timer(1), "timeout");
 	call_deferred("free");
 func _process(delta):
+	
+	animation_progress += delta;
+	var val = sin(animation_progress * 40);
+	if $Detonation_Timer.time_left <= 0.75 and $Death_Timer.time_left == 0:
+		if val >= 0:
+			$Sprite.frame = 0;
+		else:
+			$Sprite.frame = 3;
+	
+	# Area only detects collision for a very brief time
+	if $Death_Timer.time_left != 0 and $Death_Timer.time_left < 0.4:
+		$Area2D.monitorable = false;
+		$Area2D.monitoring = false;
+		$Area2D2.monitorable = false;
+		$Area2D2.monitoring = false;
+	
 	if $Death_Timer.time_left > 0:
 		var progress = 1.0 - $Death_Timer.time_left/$Death_Timer.wait_time;
 		var frame = int(progress * ($Sprite.hframes + 1)) - 1;
@@ -80,6 +127,14 @@ func _process(delta):
 		if frame < 0:
 			frame = 0;
 		$Sprite.frame = frame;
+	if !is_blank:
+		if stuck_player != null and is_instance_valid(stuck_player):
+			# Detach from player if they die
+			if stuck_player.alive == false:
+				stuck_player = null;
+			else:
+				position = stuck_player.position + (10  * stick_direction);
+				z_index = stuck_player.z_index + 5;
 	update();
 
 func _draw():
@@ -91,7 +146,8 @@ func _draw():
 		draw_circle(Vector2.ZERO,50,color);
 func _physics_process(delta):
 	if !is_blank:
-		move(delta);
+		if !has_been_stuck:
+			move(delta);
 
 var previous_compensation_progress = 0.0;
 # Given an amount of delta time, moves the bullet in its trajectory direction using its speed
