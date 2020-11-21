@@ -119,6 +119,14 @@ func _process(delta):
 		if frame < 0:
 			frame = 0;
 		$Sprite.frame = frame;
+	if !is_blank:
+		if stuck_player != null and is_instance_valid(stuck_player):
+			# Detach from player if they die
+			if stuck_player.alive == false:
+				stuck_player = null;
+			else:
+				position = stuck_player.position + (10  * stick_direction);
+				z_index = stuck_player.z_index + 5;
 	update();
 
 func _draw():
@@ -132,13 +140,6 @@ func _physics_process(delta):
 	if !is_blank:
 		if !has_been_stuck:
 			move(delta);
-		if stuck_player != null and is_instance_valid(stuck_player):
-			# Detach from player if they die
-			if stuck_player.alive == false:
-				stuck_player = null;
-			else:
-				position = stuck_player.position + (10  * stick_direction);
-				z_index = stuck_player.z_index + 5;
 
 var previous_compensation_progress = 0.0;
 # Given an amount of delta time, moves the bullet in its trajectory direction using its speed
