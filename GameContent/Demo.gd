@@ -77,6 +77,14 @@ remotesync func detonate(from_remote = false):
 		yield(t, "timeout");
 		t.call_deferred("free");
 		print("Waited for detonation");
+	
+	if stuck_player != null and is_instance_valid(stuck_player):
+		# Detach from player if they die
+		if stuck_player.alive == false:
+			stuck_player = null;
+		else:
+			position = stuck_player.position + (10  * stick_direction);
+			z_index = stuck_player.z_index + 5;
 
 	$Detonation_Timer.stop();
 	$Death_Timer.start();
