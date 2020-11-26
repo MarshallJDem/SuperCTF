@@ -266,13 +266,13 @@ func move_on_inputs(teleport = false):
 		speed += FLAG_SLOWDOWN_SPEED;
 	if sprintEnabled:
 		speed += SPRINT_SPEED;
-	if teleport:
-		speed = TELEPORT_SPEED;
 	var areas = $Area2D.get_overlapping_areas();
 	for i in range(areas.size()):
 		if areas[i].is_in_group("Landmine_Bodies") and areas[i].monitorable:
 			speed = speed / 2.0;
 			break;
+	if teleport:
+		speed = TELEPORT_SPEED;
 	var vec = (input * speed);
 	
 	var previous_pos = position;
@@ -301,7 +301,7 @@ remotesync func enable_powerup(type):
 		$Ability_Node.ability_stacks += 1;
 		text = "[wave amp=50 freq=12][color=red]^^ +1 INSTANT ABILITY USE ^^";
 	elif type == 4:
-		DASH_COOLDOWN_PMODIFIER = -1.5;
+		DASH_COOLDOWN_PMODIFIER = -2.0;
 		$Powerup_Timer.wait_time = 10;
 		text = "[wave amp=50 freq=12][color=purple]˅˅˅˅˅˅^^ DASH RATE UP ^^";
 	if Globals.testing or is_network_master():
@@ -393,18 +393,22 @@ remotesync func update_position(new_pos):
 
 # Activates the camera on this player
 func activate_camera():
-	if camera_ref != null:
+	if camera_ref != null and is_instance_valid(camera_ref):
 		camera_ref.current = true;
 
 # De-activates the camera on this player
 func deactivate_camera():
-	if camera_ref != null:
+	if camera_ref != null and is_instance_valid(camera_ref):
 		camera_ref.current = false;
 
 # Called when this player is hit by a projectile
 func hit_by_projectile(attacker_id, projectile_type):
-	get_tree().get_root().get_node("MainScene/Players/P" + str(attacker_id)).stats["kills"] += 1;
-	get_tree().get_root().get_node("MainScene/Players/P" + str(attacker_id)).get_node("Ability_Node").ult_charge += 10;
+	var attacker = get_tree().get_root().get_node("MainScene/Players/P" + str(attacker_id));
+	if attacker != null:
+		attacker.stats["kills"] += 1;
+		attacker.get_node("Ability_Node").ult_charge += 10;
+	else:
+		print_stack();
 	if projectile_type == 0 || projectile_type == 1 || projectile_type == 2 || projectile_type == 3: # Bullet or Laser or Landmine
 		die();
 		var attacker_team_id = get_tree().get_root().get_node("MainScene/NetworkController").players[attacker_id]["team_id"]
@@ -420,7 +424,12 @@ func hit_by_projectile(attacker_id, projectile_type):
 		if is_network_master():
 			get_tree().get_root().get_node("MainScene/UI_Layer").set_big_label_text("KILLED BY\n" + str(attacker_name), attacker_team_id);
 			camera_ref.get_parent().remove_child(camera_ref);
-			get_tree().get_root().get_node("MainScene/Players/P" + str(attacker_id) + "/Center_Pivot").add_child(camera_ref);
+			var pivot = get_tree().get_root().get_node("MainScene/Players/P" + str(attacker_id) + "/Center_Pivot");
+			if pivot != null:
+				pivot.add_child(camera_ref)
+			else:
+				print_stack();
+			
 
 # "Kills" the player. Only for visuals on client - the server handles the respawning.
 func die():

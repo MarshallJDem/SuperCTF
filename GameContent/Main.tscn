@@ -301,9 +301,11 @@ __meta__ = {
 }
 
 [node name="PowerupParticles" parent="UI_Layer/Input_GUIs" instance=ExtResource( 27 )]
+modulate = Color( 1, 1, 1, 0.278431 )
 position = Vector2( 0, 100 )
 scale = Vector2( 3, 3 )
 emitting = false
+lifetime = 0.5
 
 [node name="Move_GUIs" type="Node2D" parent="UI_Layer/Input_GUIs"]
 scale = Vector2( 0.8, 0.8 )

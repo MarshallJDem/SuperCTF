@@ -95,11 +95,12 @@ func _process(delta):
 	client.get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_CONNECTING):
 		client.poll();
 	if $Round_Start_Timer.time_left != 0:
-		get_tree().get_root().get_node("MainScene/UI_Layer/Countdown_Label").text = str(int($Round_Start_Timer.time_left) + 1);
+		var label = get_tree().get_root().get_node_or_null("MainScene/UI_Layer/Countdown_Label");
+		if label != null:
+			label.text = str(int($Round_Start_Timer.time_left) + 1);
 	if !Globals.testing and get_tree().is_network_server() and !isSkirmish and $ServerPollStatus_Timer.time_left == 0 and $HTTPRequest_GameServerPollStatus.get_http_client_status() == 0:
 		var query = "?knownMatchID=" + (str(Globals.matchID) if Globals.matchID != null else "-1");
 		$HTTPRequest_GameServerPollStatus.request(Globals.mainServerIP + "pollGameServerStatus" + query, ["authorization: Bearer " + (Globals.serverPrivateToken)], false);
-
 
 # Resets all game data so that a new game can be started
 func reset_game():
@@ -168,7 +169,7 @@ func _HTTP_GameServerPollStatus_Completed(result, response_code, headers, body):
 			if Globals.matchID == matchID:
 				return;
 			Globals.matchID = matchID;
-			if matchID:
+			if matchID != null:
 				print("Getting Match Data for MatchID = " + str(matchID));
 				updateGameServerStatus(2);
 				$HTTPRequest_GetMatchData.request(Globals.mainServerIP + "getMatchData?matchID=" + str(matchID) + "&authority=gameServer", ["authorization: Bearer " + (Globals.serverPrivateToken)], false);
@@ -290,12 +291,20 @@ func spawn_flag(flag_id):
 	flag.position = flags_data[str(flag_id)]["position"];
 	flag.flag_id = flag_id;
 	flag.set_team(flags_data[str(flag_id)]["team_id"]);
-	flag.home_position = get_tree().get_root().get_node("MainScene/Map/YSort/Flag_Home-" + str(flag_id)).position;
+	var home = get_tree().get_root().get_node("MainScene/Map/YSort/Flag_Home-" + str(flag_id));
+	if home != null:
+		flag.home_position = home.position;
+	else:
+		print_stack();
 	flag.name = "Flag-" + str(flag_id);
 	get_tree().get_root().get_node("MainScene").call_deferred("add_child", flag);
 	
 	if flags_data[str(flag_id)]["holder_player_id"] != -1:
-		get_tree().get_root().get_node("MainScene/Players/P" + str(flags_data[str(flag_id)]["holder_player_id"])).call_deferred("take_flag",(flag_id));
+		var player = get_tree().get_root().get_node("MainScene/Players/P" + str(flags_data[str(flag_id)]["holder_player_id"]));
+		if player != null:
+			player.call_deferred("take_flag",(flag_id));
+		else:
+			print_stack();
 
 # Called when the client's connection is ready, and then tells the server
 func _connection_ok():
@@ -303,6 +312,7 @@ func _connection_ok():
 	rpc_id(1, "user_ready", get_tree().get_network_unique_id(), Globals.userToken);
 
 func _connection_failed():
+	print("Connection to serverfailed");
 	leave_match();
 
 func update_player_objects():
@@ -325,13 +335,16 @@ func update_player_objects():
 			Globals.localPlayerTeamID = players[player_id]["team_id"];
 		if get_tree().get_root().get_node("MainScene/Players").has_node("P" + str(player_id)):
 			var player_node = get_tree().get_root().get_node("MainScene/Players/P" + str(player_id));
-			player_node.team_id = players[player_id]["team_id"];
-			player_node.player_name = players[player_id]["name"];
-			player_node.update_class(players[player_id]["class"]);
-			player_node.set_network_master(players[player_id]['network_id']);
-			if !get_tree().is_network_server() and players[player_id]['network_id'] == get_tree().get_network_unique_id():
-				player_node.control = round_is_running;
-				player_node.activate_camera();
+			if player_node != null:
+				player_node.team_id = players[player_id]["team_id"];
+				player_node.player_name = players[player_id]["name"];
+				player_node.update_class(players[player_id]["class"]);
+				player_node.set_network_master(players[player_id]['network_id']);
+				if !get_tree().is_network_server() and players[player_id]['network_id'] == get_tree().get_network_unique_id():
+					player_node.control = round_is_running;
+					player_node.activate_camera();
+			else:
+				print_stack();
 
 remote func player_class_changed(new_class):
 	var sender_network_id = get_tree().get_rpc_sender_id();
@@ -472,8 +485,9 @@ func spawn_player(id):
 		player.control = round_is_running;
 		player.activate_camera();
 	if get_tree().get_root().get_node("MainScene/Players").has_node("P" + str(id)):
-		get_tree().get_root().get_node("MainScene/Players/P" + str(id)).set_name("P" + str(id) + "DELETED");
-		get_tree().get_root().get_node("MainScene/Players/P" + str(id)).call_deferred("free");
+		var p = get_tree().get_root().get_node("MainScene/Players/P" + str(id));
+		p.set_name("P" + str(id) + "DELETED");
+		p.call_deferred("free");
 	get_tree().get_root().get_node("MainScene/Players").call_deferred("add_child",player);
 	
 
@@ -547,15 +561,24 @@ remotesync func round_ended(scoring_team_id, scoring_player_id, time_limit_reach
 			get_tree().get_root().get_node("MainScene/Score_Audio").play();
 			var scoring_player = get_tree().get_root().get_node("MainScene/Players/P" + str(scoring_player_id));
 			var local_player = get_tree().get_root().get_node("MainScene/Players/P" + str(Globals.localPlayerID));
-			local_player.deactivate_camera();
-			scoring_player.activate_camera();
+			if local_player != null:
+				local_player.deactivate_camera();
+			else:
+				print_stack();
+			if scoring_player != null:
+				scoring_player.activate_camera();
+			else:
+				print_stack();
 	round_is_ended = true;
 	round_is_running = false;
 	print("Round_is_ended");
 	# If we are not the server
 	if !get_tree().is_network_server():
 		var local_player = get_tree().get_root().get_node("MainScene/Players/P" + str(Globals.localPlayerID));
-		local_player.control = false;
+		if local_player != null:
+			local_player.control = false;
+		else:
+			print_stack();
 	# Else if we are the server
 	else:
 		if !isSkirmish and !time_limit_reached:
@@ -624,8 +647,18 @@ remotesync func load_new_round(suddenDeath = false):
 		# Update score
 		rpc("set_scores", scores);
 	
-	flags_data[str(0)] = {"holder_player_id" : -1, "position": get_tree().get_root().get_node("MainScene/Map/YSort/Flag_Home-" + str(0)).position, "team_id" : 0};
-	flags_data[str(1)] = {"holder_player_id" : -1, "position": get_tree().get_root().get_node("MainScene/Map/YSort/Flag_Home-" + str(1)).position, "team_id" : 1};
+	var home0 = get_tree().get_root().get_node("MainScene/Map/YSort/Flag_Home-" + str(0));
+	var home1 = get_tree().get_root().get_node("MainScene/Map/YSort/Flag_Home-" + str(1));
+	flags_data[str(0)] = {"holder_player_id" : -1, "position": Vector2.ZERO, "team_id" : 0};
+	flags_data[str(1)] = {"holder_player_id" : -1, "position": Vector2.ZERO, "team_id" : 1};
+	if home0 != null:
+		flags_data[str(0)]["position"] = home0.position;
+	else:
+		print_stack();
+	if home1 != null:
+		flags_data[str(1)]["position"] = home1.position;
+	else:
+		print_stack();
 	spawn_flag(0);
 	spawn_flag(1);
 	
@@ -686,8 +719,11 @@ remotesync func start_round():
 	# If we are not the server
 	if !get_tree().is_network_server():
 		var local_player = get_tree().get_root().get_node("MainScene/Players/P" + str(Globals.localPlayerID));
-		local_player.control = true;
-		local_player.activate_camera();
+		if local_player != null:
+			local_player.control = true;
+			local_player.activate_camera();
+		else:
+			print_stack();
 	else:
 		if !isSkirmish and !isSuddenDeath:
 			rpc("resume_match_time_limit", $Match_Time_Limit_Timer.time_left);
@@ -702,11 +738,15 @@ remotesync func end_match(winning_team_id):
 	$Match_End_Timer.start();
 	if !Globals.testing and get_tree().is_network_server():
 		yield(get_tree().create_timer(4.0), "timeout");
+		print("GETTING PREDICTED CHANGES WITH MATCHID : " + str(Globals.matchID));
 		$HTTPRequest_GetPredictedMMRChanges.request(Globals.mainServerIP + "gameServerGetPredictedMMRChanges?matchID=" + str(Globals.matchID) + "&winningTeamID=" + str(match_end_winning_team_id) + "&isDoubleDown=" + str(isDD), ["authorization: Bearer " + (Globals.serverPrivateToken)]);
 	else:
 		if !Globals.testing:
 			var local_player = get_tree().get_root().get_node("MainScene/Players/P" + str(Globals.localPlayerID));
-			local_player.control = false;
+			if local_player != null:
+				local_player.control = false;
+			else:
+				print_stack();
 		match_is_running = false;
 		var team_name = "NOBODY";
 		if winning_team_id == 0:

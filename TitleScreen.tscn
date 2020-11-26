@@ -354,26 +354,26 @@ custom_colors/default_color = Color( 0.368627, 0.368627, 0.368627, 1 )
 bbcode_enabled = true
 bbcode_text = "[color=black]NEWS:
 
-Happy November!
+Happy November, and welcome [color=blue][url=https://itch.io]Itch.io[/url][color=black] and [color=blue][url=https://iogames.space]iogames[/url][color=black] players! (And the rest of course)
 
-We are hosting play sessions [rainbow]EVERY WEDNESDAY [/rainbow]at 7PM PST and at 7PM GMT! Join the Discord for more information:
+[rainbow]New balance changes[/rainbow] are out! The grenade launcher has been reworked, bullets have been buffed, and more (plus bug fixes)! News as of Nov 21st. 
 
+[color=red]We are experiencing a LOT more players than we are used to so please bear with us if the game isn't working! If you can't connect to a game please come join our discord and tell us.
+[color=black]
 Discord Link:[color=blue] [url]https://discord.gg/D3Ban34[/url][color=black]
 Twitter:[color=blue] [url]https://twitter.com/SuperCTFGame[/url][color=black]
-
-We are looking for people to get involved and make suggestions or help build the game. Join our discord or email me to get involved!
-- Carshalljd (add me on discord [color=black]carshalljd#4808[color=black] or email me at [color=black]marshalljdem@gmail.com[color=black])"
+"
 text = "NEWS:
 
-Happy November!
+Happy November, and welcome Itch.io and iogames players! (And the rest of course)
 
-We are hosting play sessions EVERY WEDNESDAY at 7PM PST and at 7PM GMT! Join the Discord for more information:
+New balance changes are out! The grenade launcher has been reworked, bullets have been buffed, and more (plus bug fixes)! News as of Nov 21st. 
+
+We are experiencing a LOT more players than we are used to so please bear with us if the game isn't working! If you can't connect to a game please come join our discord and tell us.
 
 Discord Link: https://discord.gg/D3Ban34
 Twitter: https://twitter.com/SuperCTFGame
-
-We are looking for people to get involved and make suggestions or help build the game. Join our discord or email me to get involved!
-- Carshalljd (add me on discord carshalljd#4808 or email me at marshalljdem@gmail.com)"
+"
 scroll_active = false
 selection_enabled = true
 custom_effects = [ ExtResource( 20 ) ]

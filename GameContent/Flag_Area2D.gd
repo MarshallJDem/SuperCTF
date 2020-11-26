@@ -13,6 +13,10 @@ func _ready():
 
 # Called when this area enters another area
 func _area_entered(body):
+	
+	# If the round is not running, ignore collision
+	if !Globals.testing and !get_tree().get_root().get_node("MainScene/NetworkController").round_is_running:
+		return;
 	# Only detect collisions if we are the server
 	if Globals.testing or get_tree().is_network_server():
 		if body.is_in_group("Player_Bodies"):

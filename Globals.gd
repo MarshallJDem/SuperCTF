@@ -13,7 +13,7 @@ var serverPrivateToken;
 var isServer = false;
 var allowedPlayers = [];
 var matchID;
-var allowCommands = true;
+var allowCommands = false;
 var useSecure = true;
 var gameserverStatus = 0;
 
@@ -74,7 +74,7 @@ var player_active_after_respawn = false;
 
 # ----- Constants -----
 const game_var_defaults = {"playerSpeed" : 200, "playerLagTime" : 50,
-	"bulletSpeed" : 350, "bulletCooldown" : 350, 
+	"bulletSpeed" : 400, "bulletCooldown" : 350, 
 	"laserChargeTime" : 650, "laserCooldown" : 500, 
 	"laserWidth" :15, "laserLength" : 1300,
 	"dashDistance" : 5000, "dashCooldown" : 3000, 
