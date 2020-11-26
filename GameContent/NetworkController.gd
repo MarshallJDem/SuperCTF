@@ -401,9 +401,19 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 						team_id = 1;
 					var spawn_pos = Vector2(0,0);
 					if team_id == 0:
-						spawn_pos = Vector2(-1300, 0);
+						var spawn = get_tree().get_root().get_node_or_null("MainScene/Map/YSort/BlueSpawn");
+						if spawn != null:
+							spawn_pos = spawn.position;
+						else:
+							print("<ERROR> Map not found");
+							print_stack();
 					else:
-						spawn_pos = Vector2(1300, 0);
+						var spawn = get_tree().get_root().get_node_or_null("MainScene/Map/YSort/RedSpawn");
+						if spawn != null:
+							spawn_pos = spawn.position;
+						else:
+							print("<ERROR> Map not found");
+							print_stack();
 					players[network_id] = {"name" : player_name, "team_id" : team_id, "user_id": user_id, "network_id": network_id,"spawn_pos": spawn_pos, "position": spawn_pos, "class" : Globals.Classes.Bullet, "DD_vote" : false};
 				# Get the player_id associated with this user_id
 				for player_id in players:
