@@ -39,12 +39,11 @@ var Game_Results_Screen = preload("res://Game_Results_Screen.tscn");
 #	- team_id: int
 
 func _ready():
+	
+	spawn_map("SquareZag");
+	
 	if Globals.testing:
-		flags_data["0"] = {"team_id" : 0, "position" : get_tree().get_root().get_node("MainScene/Map/YSort/Flag_Home-" + str(0)).position, "holder_player_id" : -1};
-		flags_data["1"] = {"team_id" : 1, "position" : get_tree().get_root().get_node("MainScene/Map/YSort/Flag_Home-" + str(1)).position, "holder_player_id" : -1};
-		spawn_flag(0);
-		spawn_flag(1);
-		#call_deferred("spawn_flag", 1, Vector2(-200, 0));
+		call_deferred("init_map_for_testing");
 		return;
 	if Globals.experimental or Globals.player_status == 1 or (Globals.isServer and (Globals.port == 42402 or Globals.port == 42499)):
 		isSkirmish = true;
@@ -76,8 +75,18 @@ func _ready():
 		start_server();
 	else:
 		join_server();
-	
-		
+
+func spawn_map(map_name = "TehoMap1"):
+	var map = load("res://GameContent/Maps/" + map_name + ".tscn").instance();
+	map.name = "Map";
+	get_tree().get_root().get_node("MainScene").call_deferred("add_child", map);
+
+func init_map_for_testing():
+	flags_data["0"] = {"team_id" : 0, "position" : get_tree().get_root().get_node("MainScene/Map/YSort/Flag_Home-" + str(0)).position, "holder_player_id" : -1};
+	flags_data["1"] = {"team_id" : 1, "position" : get_tree().get_root().get_node("MainScene/Map/YSort/Flag_Home-" + str(1)).position, "holder_player_id" : -1};
+	spawn_flag(0);
+	spawn_flag(1);
+
 func _process(delta):
 	SCORE_LIMIT = get_game_var("scoreLimit");
 	if server != null and server.is_listening():
@@ -183,9 +192,19 @@ func _HTTP_GetMatchData_Completed(result, response_code, headers, body):
 					team_id = 0;
 				var spawn_pos = Vector2(0,0);
 				if team_id == 0:
-					spawn_pos = Vector2(-1300, 0);
+					var spawn = get_tree().get_root().get_node_or_null("MainScene/Map/YSort/BlueSpawn");
+					if spawn != null:
+						spawn_pos = spawn.position;
+					else:
+						print("<ERROR> Map not found");
+						print_stack();
 				else:
-					spawn_pos = Vector2(1300, 0);
+					var spawn = get_tree().get_root().get_node_or_null("MainScene/Map/YSort/RedSpawn");
+					if spawn != null:
+						spawn_pos = spawn.position;
+					else:
+						print("<ERROR> Map not found");
+						print_stack();
 				players[i] = {"name" : "Player" + str(i), "team_id" : team_id, "user_id": int(user_id), "network_id": 1, "spawn_pos": spawn_pos, "position": spawn_pos, "class" : Globals.Classes.Bullet, "DD_vote" : false};
 				i += 1;
 			print(players);
