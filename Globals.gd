@@ -126,7 +126,6 @@ func _enter_tree():
 		if argument.find("=") > -1:
 			var key_value = argument.split("=")
 			arguments[key_value[0].lstrip("--")] = key_value[1]
-	
 	if arguments.has("port"):
 		port = int(arguments["port"]);
 		serverPrivateToken = "privatetoken" + str(port);
@@ -134,7 +133,7 @@ func _enter_tree():
 		isServer = true if arguments["isServer"] == "true" else false;
 	if OS.has_feature("editor"):
 		testing = false;
-	experimental =  false;#OS.has_feature("debug") and !OS.has_feature("editor");
+	experimental =  true;#OS.has_feature("debug") and !OS.has_feature("editor");
 	if experimental:
 		get_tree().change_scene("res://GameContent/Main.tscn");
 

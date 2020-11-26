@@ -16,7 +16,7 @@
 [ext_resource path="res://Assets/Environment/Vertical Top Wall Small.png" type="Texture" id=26]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 112.076, 138.987 )
+extents = Vector2( 130.811, 74.1675 )
 
 [node name="Environment" type="Node"]
 __meta__ = {
@@ -3469,16 +3469,13 @@ position = Vector2( 115.35, 137.477 )
 shape = SubResource( 1 )
 
 [node name="BlueSpawn" type="KinematicBody2D" parent="YSort"]
-position = Vector2( -808, -684 )
+position = Vector2( -807.434, -698.153 )
 collision_layer = 0
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="YSort/BlueSpawn"]
 position = Vector2( 115.371, 137.48 )
 shape = SubResource( 1 )
-__meta__ = {
-"_edit_lock_": true
-}
 
 [node name="Area2D" type="Area2D" parent="YSort/BlueSpawn" groups=[
 "Blue_Spawn",
