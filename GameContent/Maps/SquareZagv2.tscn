@@ -4386,8 +4386,8 @@ texture = ExtResource( 24 )
 override_z = false
 
 [node name="Wall_Sprite913" parent="YSort" instance=ExtResource( 9 )]
-position = Vector2( 210.029, 569.78 )
-scale = Vector2( 1, 4.40058 )
+position = Vector2( 210.029, 563.285 )
+scale = Vector2( 1, 4.94183 )
 z_index = -129
 texture = ExtResource( 24 )
 override_z = false
