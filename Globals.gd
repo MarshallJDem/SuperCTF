@@ -119,6 +119,7 @@ func test():
 	add_child(HTTPRequest_ConfirmClientConnection);
 
 func _enter_tree():
+	print("starting to check the args");
 	var arguments = {}
 	for argument in OS.get_cmdline_args():
 		print(argument);
