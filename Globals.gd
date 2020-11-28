@@ -131,9 +131,14 @@ func _enter_tree():
 		serverPrivateToken = "privatetoken" + str(port);
 	if arguments.has("isServer"):
 		isServer = true if arguments["isServer"] == "true" else false;
+	print("HERE IT COMES");
+	if arguments.has("matchData"):
+		var json = JSON.parse(arguments["matchData"]);
+		print("OH ITS FOUND THO");
+		print(json);
 	if OS.has_feature("editor"):
 		testing = true;
-	experimental =  false;#OS.has_feature("debug") and !OS.has_feature("editor");
+	experimental =  true;#OS.has_feature("debug") and !OS.has_feature("editor");
 	if experimental:
 		get_tree().change_scene("res://GameContent/Main.tscn");
 
