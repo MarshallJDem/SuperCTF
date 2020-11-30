@@ -129,14 +129,13 @@ func _enter_tree():
 			arguments[key_value[0].lstrip("--")] = key_value[1]
 	if arguments.has("port"):
 		port = int(arguments["port"]);
-		serverPrivateToken = "privatetoken" + str(port);
 	if arguments.has("isServer"):
 		isServer = true if arguments["isServer"] == "true" else false;
-	print("HERE IT COMES");
+	if arguments.has("serverPrivateToken"):
+		Globals.serverPrivateToken = arguments["serverPrivateToken"];
 	if arguments.has("matchData"):
 		var json = JSON.parse(arguments["matchData"]);
-		print("OH ITS FOUND THO");
-		print(json);
+		Globals.allowedPlayers = json.players;
 	if OS.has_feature("editor"):
 		testing = true;
 	experimental =  true;#OS.has_feature("debug") and !OS.has_feature("editor");

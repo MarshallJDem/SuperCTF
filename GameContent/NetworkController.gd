@@ -64,11 +64,8 @@ func _ready():
 	_err = $Match_End_Timer.connect("timeout", self, "_match_end_timer_ended");
 	_err = $Gameserver_Status_Timer.connect("timeout", self, "_gameserver_status_timer_ended");
 	_err = $HTTPRequest_GameServerCheckUser.connect("request_completed", self, "_HTTP_GameServerCheckUser_Completed");
-	_err = $HTTPRequest_GameServerPollStatus.connect("request_completed", self, "_HTTP_GameServerPollStatus_Completed");
-	_err = $HTTPRequest_GameServerMakeAvailable.connect("request_completed", self, "_HTTP_GameServerMakeAvailable_Completed");
+	_err = $HTTPRequest_GameServerConfirmConnection.connect("request_completed", self, "_HTTP_GameServerConfirmConnection_Completed");
 	_err = $HTTPRequest_GameServerEndMatch.connect("request_completed", self, "_HTTP_GameServerEndMatch_Completed");
-	_err = $HTTPRequest_GetMatchData.connect("request_completed", self, "_HTTP_GetMatchData_Completed");
-	_err = $HTTPRequest_GameServerUpdateStatus.connect("request_completed", self, "_HTTP_GameServerUpdateStatus_Completed");
 	_err = $HTTPRequest_GetPredictedMMRChanges.connect("request_completed", self, "_HTTP_GetPredictedMMRChanges_Completed");
 	_err = $Match_Time_Limit_Timer.connect("timeout", self, "_match_time_limit_ended");
 	if(Globals.isServer):
@@ -98,9 +95,6 @@ func _process(delta):
 		var label = get_tree().get_root().get_node_or_null("MainScene/UI_Layer/Countdown_Label");
 		if label != null:
 			label.text = str(int($Round_Start_Timer.time_left) + 1);
-	if !Globals.testing and get_tree().is_network_server() and !isSkirmish and $ServerPollStatus_Timer.time_left == 0 and $HTTPRequest_GameServerPollStatus.get_http_client_status() == 0:
-		var query = "?knownMatchID=" + (str(Globals.matchID) if Globals.matchID != null else "-1");
-		$HTTPRequest_GameServerPollStatus.request(Globals.mainServerIP + "pollGameServerStatus" + query, ["authorization: Bearer " + (Globals.serverPrivateToken)], false);
 
 # Resets all game data so that a new game can be started
 func reset_game():
@@ -135,91 +129,53 @@ func start_server():
 		server.ssl_certificate = load("res://HTTPS_Keys/linux_cert.crt");
 	server.listen(Globals.port, PoolStringArray(), true);
 	get_tree().set_network_peer(server);
-	if !isSkirmish:
-		$HTTPRequest_GameServerMakeAvailable.request(Globals.mainServerIP + "makeGameServerAvailable?publicToken=" + str("RANDOMTOKEN"), ["authorization: Bearer " + (Globals.serverPrivateToken)], false);
-		updateGameServerStatus(1);
-		$Gameserver_Status_Timer.start();
 	AudioServer.set_bus_volume_db(0, -500);
 	$Timing_Sync_Timer.stop();
 	if isSkirmish:
+		print("Starting a skirmish");
+		start_match();
+	else:
+		print("Starting a match using command line matchData");
+		$HTTPRequest_GameServerConfirmConnection.request(Globals.mainServerIP + "gameServerConfirmConnection", ["authorization: Bearer " + (Globals.serverPrivateToken)], false);
+		var i = 0;
+		# Go through each new allowed player and populate the players array
+		for user_id in Globals.allowedPlayers:
+			var team_id = 1;
+			if(i < ceil(Globals.allowedPlayers.size()/2)):
+				team_id = 0;
+			var spawn_pos = Vector2(0,0);
+			if team_id == 0:
+				var spawn = get_tree().get_root().get_node_or_null("MainScene/Map/YSort/BlueSpawn");
+				if spawn != null:
+					spawn_pos = spawn.position;
+				else:
+					print("<ERROR> Map not found");
+					print_stack();
+			else:
+				var spawn = get_tree().get_root().get_node_or_null("MainScene/Map/YSort/RedSpawn");
+				if spawn != null:
+					spawn_pos = spawn.position;
+				else:
+					print("<ERROR> Map not found");
+					print_stack();
+			players[i] = {"name" : "Player" + str(i), "team_id" : team_id, "user_id": int(user_id), "network_id": 1, "spawn_pos": spawn_pos, "position": spawn_pos, "class" : Globals.Classes.Bullet, "DD_vote" : false};
+			i += 1;
+		print(players);
 		start_match();
 
 
-func _HTTP_GameServerUpdateStatus_Completed(result, response_code, headers, body):
-	if get_tree().is_network_server():
-		if(response_code == 200):
-			var json = JSON.parse(body.get_string_from_utf8());
-		else:
-			pass;
 
-func _HTTP_GameServerMakeAvailable_Completed(result, response_code, headers, body):
+func _HTTP_GameServerConfirmConnection_Completed(result, response_code, headers, body):
 	if get_tree().is_network_server():
-		if(response_code == 200):
-			var json = JSON.parse(body.get_string_from_utf8());
-		else:
-			pass;
-
-func _HTTP_GameServerPollStatus_Completed(result, response_code, headers, body):
-	$ServerPollStatus_Timer.start();
-	if get_tree().is_network_server():
-		if(response_code == 200):
-			var json = JSON.parse(body.get_string_from_utf8());
-			var matchID = json.result.matchID;
-			# If we are already aware of this match
-			if Globals.matchID == matchID:
-				return;
-			Globals.matchID = matchID;
-			if matchID != null:
-				print("Getting Match Data for MatchID = " + str(matchID));
-				updateGameServerStatus(2);
-				$HTTPRequest_GetMatchData.request(Globals.mainServerIP + "getMatchData?matchID=" + str(matchID) + "&authority=gameServer", ["authorization: Bearer " + (Globals.serverPrivateToken)], false);
-		else:
-			pass;
-
-func _HTTP_GetMatchData_Completed(result, response_code, headers, body):
-	if get_tree().is_network_server():
-		if(response_code == 200):
-			var json = JSON.parse(body.get_string_from_utf8());
-			# Have to parse again because players is stored as a JSON string
-			
-			Globals.allowedPlayers = JSON.parse(json.result.matchData.players).result;
-			print("Found match and retrieved matchData.");
-			var i = 0;
-			# Go through each new allowed player and populate the players array
-			for user_id in Globals.allowedPlayers:
-				var team_id = 1;
-				if(i < ceil(Globals.allowedPlayers.size()/2)):
-					team_id = 0;
-				var spawn_pos = Vector2(0,0);
-				if team_id == 0:
-					var spawn = get_tree().get_root().get_node_or_null("MainScene/Map/YSort/BlueSpawn");
-					if spawn != null:
-						spawn_pos = spawn.position;
-					else:
-						print("<ERROR> Map not found");
-						print_stack();
-				else:
-					var spawn = get_tree().get_root().get_node_or_null("MainScene/Map/YSort/RedSpawn");
-					if spawn != null:
-						spawn_pos = spawn.position;
-					else:
-						print("<ERROR> Map not found");
-						print_stack();
-				players[i] = {"name" : "Player" + str(i), "team_id" : team_id, "user_id": int(user_id), "network_id": 1, "spawn_pos": spawn_pos, "position": spawn_pos, "class" : Globals.Classes.Bullet, "DD_vote" : false};
-				i += 1;
-			print(players);
-			start_match();
+		# Poll endlessly
+		yield(get_tree().create_timer(3.0), "timeout");
+		$HTTPRequest_GameServerConfirmConnection.request(Globals.mainServerIP + "gameServerConfirmConnection", ["authorization: Bearer " + (Globals.serverPrivateToken)], false);
 
 remotesync func set_game_var(variable, value):
 	game_vars[variable] = value;
 
 func get_game_var(name):
 	return game_vars[name];
-
-func _gameserver_status_timer_ended():
-	#Disabled this because we no longer check if a game server has updated in a while
-	#updateGameServerStatus();
-	pass;
 
 func _cancel_match_timer_ended():
 	# Don't cancel the match if this is a skirmish
@@ -230,12 +186,7 @@ func _cancel_match_timer_ended():
 		get_tree().set_network_peer(null);
 		server = null;
 		start_server();
-func updateGameServerStatus(status = null):
-	if status != null:
-		Globals.gameserverStatus = status;
-	if $HTTPRequest_GameServerUpdateStatus.get_http_client_status() == 0:
-		var ip = Globals.mainServerIP + "updateGameServerStatus?status=" + String(Globals.gameserverStatus);
-		$HTTPRequest_GameServerUpdateStatus.request(ip, ["authorization: Bearer " + (Globals.serverPrivateToken)], false);
+
 # Joins a server
 func join_server():
 	client = WebSocketClient.new();
@@ -272,7 +223,6 @@ func _match_start_timer_ended():
 	# Tell everybody to load a new round
 	rpc("load_new_round");
 	match_is_running = true;
-	updateGameServerStatus(3);
 
 # Sets the score of the game to the given score. This should only ever be called by the server
 remotesync func set_scores(new_scores):
@@ -866,7 +816,6 @@ var winning_team_id_to_use;
 # Called when the HTTP request GameServerEndMatch completes. If successful, it will reset the server for next use after 5 seconds
 func _HTTP_GameServerEndMatch_Completed(result, response_code, headers, body):
 	if(response_code == 200):
-		updateGameServerStatus(4);
 		yield(get_tree().create_timer(5.0), "timeout");
 		get_tree().set_network_peer(null);
 		server = null;
