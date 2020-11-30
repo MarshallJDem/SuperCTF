@@ -10,7 +10,6 @@ var		round_num	= 0;
 
 var server = null;
 var client = null;
-var isSkirmish = false;
 var isSuddenDeath = false;
 var isDD = false;
 
@@ -45,12 +44,7 @@ func _ready():
 	if Globals.testing:
 		call_deferred("init_map_for_testing");
 		return;
-	if Globals.experimental or Globals.player_status == 1 or (Globals.isServer and (Globals.port == 42402 or Globals.port == 42499)):
-		isSkirmish = true;
-	if isSkirmish:
-		if Globals.experimental:
-			Globals.port = 42499;
-		Globals.serverIP = Globals.skirmishIPPrefix + str(Globals.port);
+	
 	get_tree().connect("network_peer_connected",self, "_client_connected");
 	get_tree().connect("network_peer_disconnected",self, "_client_disconnected");
 	get_tree().connect("connected_to_server",self, "_connection_ok");
@@ -131,7 +125,7 @@ func start_server():
 	get_tree().set_network_peer(server);
 	AudioServer.set_bus_volume_db(0, -500);
 	$Timing_Sync_Timer.stop();
-	if isSkirmish:
+	if Globals.isSkirmish:
 		print("Starting a skirmish");
 		start_match();
 	else:
@@ -179,13 +173,15 @@ func get_game_var(name):
 
 func _cancel_match_timer_ended():
 	# Don't cancel the match if this is a skirmish
-	if isSkirmish:
+	if Globals.isSkirmish:
 		return;
-	# If at this time there are zero connections, cancel the match
-	if get_tree().get_network_connected_peers().size() == 0:
-		get_tree().set_network_peer(null);
-		server = null;
-		start_server();
+	cancel_match();
+
+func cancel_match():
+	# TODO WARN THE BACKEND 
+	print("Canceling match");
+	print("WARNING WE STILL HAVE A TODO TO WARN THE BACKEND ABOUT CANCELING");
+	get_tree().quit();
 
 # Joins a server
 func join_server():
@@ -229,7 +225,7 @@ remotesync func set_scores(new_scores):
 	scores = new_scores;
 	Globals.result_team0_score = scores[0];
 	Globals.result_team1_score = scores[1];
-	if !isSkirmish:
+	if !Globals.isSkirmish:
 		get_tree().get_root().get_node("MainScene/UI_Layer").set_score_text(scores[0], scores[1]);
 	print("current scores: " + str(scores));
 	
@@ -336,10 +332,10 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 			if !is_connected:
 				return;
 			# If the user is one of the players in the current match or this is a skirmish
-			if(Globals.allowedPlayers.has(str(user_id)) || isSkirmish):
+			if(Globals.allowedPlayers.has(str(user_id)) || Globals.isSkirmish):
 				var message = player_name + " connected to the server";
 				get_tree().get_root().get_node("MainScene/Chat_Layer/LineEdit").rpc("receive_message", "[color=green]" + message +  "[/color]", -1);
-				if isSkirmish:
+				if Globals.isSkirmish:
 					var team_id = 0;
 					var b=0; var r=0;
 					for player_id in players:
@@ -371,7 +367,7 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 						# Update the players array and give it to everybody so they can update player data and network masters etc.
 						players[player_id]['name'] = player_name;
 						players[player_id]['class'] = Globals.Classes.Bullet;
-						if players[player_id]['network_id'] != 1 and !isSkirmish:
+						if players[player_id]['network_id'] != 1 and !Globals.isSkirmish:
 							server.disconnect_peer(players[player_id]['network_id'], 1000, "A new computer has connected as this player");
 						players[player_id]['network_id'] = network_id;
 						print("Authenticated new connection : " + str(network_id) + " and giving them control of player " + str(player_id));
@@ -406,7 +402,7 @@ remote func user_ready(id, userToken):
 		var net_id = get_tree().get_rpc_sender_id();
 		var repeats = 0;
 		# Wait for match data to come in if this isn't a skirmish
-		if(!isSkirmish):
+		if(!Globals.isSkirmish):
 			while(true):
 				# If we've tried for too long without success, kick this player
 				if repeats > 5:
@@ -471,7 +467,7 @@ func _client_disconnected(id):
 		var message = players[player_id]["name"];
 		message += " disconnected from the server";
 		get_tree().get_root().get_node("MainScene/Chat_Layer/LineEdit").rpc("receive_message", "[color=red]" + message +  "[/color]", -1);
-		if isSkirmish:
+		if Globals.isSkirmish:
 			players.erase(player_id);
 			if players.size() == 0:
 				game_vars = Globals.game_var_defaults.duplicate();
@@ -479,14 +475,12 @@ func _client_disconnected(id):
 			complete_match_end();
 			return;
 		rpc("update_players_data", players, round_is_running);
-		if !isSkirmish:
+		if !Globals.isSkirmish:
 			if get_tree().get_network_connected_peers().size() == 0:
 				# If this is an actual match, if after 15 seconds go by and there is still 0 connections cancel the match
 				yield(get_tree().create_timer(15), "timeout");
 				if get_tree().get_network_connected_peers().size() == 0:
-					get_tree().set_network_peer(null);
-					server = null;
-					start_server();
+					cancel_match();
 	else: # This will disable DD buttons etc on game results screen
 		if $Match_End_Timer.time_left > 0:
 			$Match_End_Timer.stop();
@@ -541,7 +535,7 @@ remotesync func round_ended(scoring_team_id, scoring_player_id, time_limit_reach
 			print_stack();
 	# Else if we are the server
 	else:
-		if !isSkirmish and !time_limit_reached:
+		if !Globals.isSkirmish and !time_limit_reached:
 			scores[scoring_team_id] = scores[scoring_team_id] + 1;
 			rpc("set_scores", scores);
 			rpc("pause_match_time_limit", $Match_Time_Limit_Timer.time_left);
@@ -653,7 +647,7 @@ remote func load_mid_round(players, scores, round_start_timer_timeleft, round_nu
 	
 	Globals.result_team0_score = scores[0];
 	Globals.result_team1_score = scores[1];
-	if !isSkirmish:
+	if !Globals.isSkirmish:
 		get_tree().get_root().get_node("MainScene/UI_Layer").set_score_text(scores[0], scores[1]);
 	else:
 		get_tree().get_root().get_node("MainScene/UI_Layer").set_score_text(scores[0], scores[1], true);
@@ -685,7 +679,7 @@ remotesync func start_round():
 		else:
 			print_stack();
 	else:
-		if !isSkirmish and !isSuddenDeath:
+		if !Globals.isSkirmish and !isSuddenDeath:
 			rpc("resume_match_time_limit", $Match_Time_Limit_Timer.time_left);
 
 var match_end_winning_team_id;
@@ -817,9 +811,8 @@ var winning_team_id_to_use;
 func _HTTP_GameServerEndMatch_Completed(result, response_code, headers, body):
 	if(response_code == 200):
 		yield(get_tree().create_timer(5.0), "timeout");
-		get_tree().set_network_peer(null);
-		server = null;
-		start_server();
+		print("End match completed. Closing server.");
+		get_tree().quit();
 	else:
 		# Endlessly attempt to end the match until the server responds. It is important that this eventually works!
 		print("FAILED TO END MATCH FOR SOME REASON");

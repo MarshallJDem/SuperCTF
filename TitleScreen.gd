@@ -41,7 +41,7 @@ func _process(delta):
 			$UI_Layer.set_view($UI_Layer.VIEW_START);
 	$UI_Layer.update_title_color($Titlemusic_Audio.get_playback_position() + 3.7);
 	$UI_Layer.set_mmr_and_rank_labels(Globals.player_rank, Globals.player_MMR);
-	if Globals.player_status == 1:
+	if !Globals.isServer and Globals.player_status == 1:
 		get_tree().change_scene("res://GameContent/Main.tscn");
 
 func create_guest():

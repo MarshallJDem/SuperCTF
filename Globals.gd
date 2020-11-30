@@ -11,6 +11,7 @@ var skirmishIPPrefix = "superctf.com:";
 var port = 42402;
 var serverPrivateToken;
 var isServer = false;
+var isSkirmish = false;
 var allowedPlayers = [];
 var matchID;
 var allowCommands = false;
@@ -131,6 +132,8 @@ func _enter_tree():
 		port = int(arguments["port"]);
 	if arguments.has("isServer"):
 		isServer = true if arguments["isServer"] == "true" else false;
+	if arguments.has("isSkirmish"):
+		Globals.isSkirmish = true if arguments["isSkirmish"] == "true" else false;
 	if arguments.has("serverPrivateToken"):
 		Globals.serverPrivateToken = arguments["serverPrivateToken"];
 	if arguments.has("matchData"):
@@ -139,7 +142,7 @@ func _enter_tree():
 	if OS.has_feature("editor"):
 		testing = true;
 	experimental =  true;#OS.has_feature("debug") and !OS.has_feature("editor");
-	if experimental:
+	if experimental and !isServer:
 		get_tree().change_scene("res://GameContent/Main.tscn");
 
 func _ready():
