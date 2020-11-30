@@ -141,7 +141,7 @@ func _enter_tree():
 		Globals.allowedPlayers = json.players;
 	if OS.has_feature("editor"):
 		testing = true;
-	experimental =  true;#OS.has_feature("debug") and !OS.has_feature("editor");
+	#experimental =  true;#OS.has_feature("debug") and !OS.has_feature("editor");
 	if experimental and !isServer:
 		get_tree().change_scene("res://GameContent/Main.tscn");
 
