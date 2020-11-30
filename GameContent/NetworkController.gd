@@ -160,6 +160,8 @@ func start_server():
 
 
 func _HTTP_GameServerConfirmConnection_Completed(result, response_code, headers, body):
+	if response_code != 200:
+		print("Error with _HTTP_GameServerConfirmConnection_Completed");
 	if get_tree().is_network_server():
 		# Poll endlessly
 		yield(get_tree().create_timer(3.0), "timeout");
