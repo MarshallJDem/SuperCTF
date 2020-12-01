@@ -137,7 +137,7 @@ func _enter_tree():
 	if arguments.has("serverPrivateToken"):
 		Globals.serverPrivateToken = arguments["serverPrivateToken"];
 	if arguments.has("matchData"):
-		var json = JSON.parse(arguments["matchData"]);
+		var json = JSON.parse(arguments["matchData"]).result;
 		Globals.allowedPlayers = json;
 	if OS.has_feature("editor"):
 		testing = false;
