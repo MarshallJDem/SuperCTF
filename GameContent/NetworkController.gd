@@ -172,6 +172,8 @@ func get_game_var(name):
 	return game_vars[name];
 
 func _cancel_match_timer_ended():
+	if !get_tree().is_network_server():
+		return;
 	# Don't cancel the match if this is a skirmish
 	if Globals.isSkirmish:
 		return;
@@ -375,7 +377,7 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 						if players[player_id]['network_id'] != 1 and !Globals.isSkirmish:
 							server.disconnect_peer(players[player_id]['network_id'], 1000, "A new computer has connected as this player");
 						players[player_id]['network_id'] = network_id;
-						print("Authenticated new connection : " + str(network_id) + " and giving them control of player " + str(player_id));
+						print("Authenticated new connection : " + str(network_id) + " and giving them control of player " + str(player_id) + " " + str(player_name));
 						rpc("update_players_data", players, round_is_running);
 						rpc("resync_match_time_limit", $Match_Time_Limit_Timer.time_left, $Match_Time_Limit_Timer.paused);
 						# If this user is joining mid match
