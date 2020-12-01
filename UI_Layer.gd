@@ -176,7 +176,7 @@ func _join_party_pressed():
 func _cancel_queue_pressed():
 	disable_buttons();
 	set_view(VIEW_MAIN);
-	get_parent().leave_MM_queue();
+	Globals.leave_MMQueue();
 
 # Called when the find match button is pressed
 func _find_match_pressed():
