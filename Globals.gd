@@ -14,7 +14,7 @@ var isServer = false;
 var isSkirmish = false;
 var allowedPlayers = [];
 var matchID;
-var allowCommands = false;
+var allowCommands = true;
 var useSecure = true;
 var gameserverStatus = 0;
 
