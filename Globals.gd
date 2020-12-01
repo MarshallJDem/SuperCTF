@@ -136,9 +136,11 @@ func _enter_tree():
 		Globals.isSkirmish = true if arguments["isSkirmish"] == "true" else false;
 	if arguments.has("serverPrivateToken"):
 		Globals.serverPrivateToken = arguments["serverPrivateToken"];
-	if arguments.has("matchData"):
-		var json = JSON.parse(arguments["matchData"]).result;
+	if arguments.has("allowedPlayers"):
+		var json = JSON.parse(arguments["allowedPlayers"]).result;
 		Globals.allowedPlayers = json;
+	if arguments.has("matchID"):
+		Globals.matchID = arguments["matchID"];
 	if OS.has_feature("editor"):
 		testing = false;
 	#experimental =  true;#OS.has_feature("debug") and !OS.has_feature("editor");
