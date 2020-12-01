@@ -143,7 +143,7 @@ func _enter_tree():
 	if arguments.has("matchID"):
 		Globals.matchID = arguments["matchID"];
 	if arguments.has("matchType"):
-		Globals.matchType = arguments["matchType"];
+		Globals.matchType = int(arguments["matchType"]);
 	if OS.has_feature("editor"):
 		testing = false;
 	#experimental =  true;#OS.has_feature("debug") and !OS.has_feature("editor");

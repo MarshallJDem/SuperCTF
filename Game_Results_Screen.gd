@@ -160,7 +160,7 @@ func _process(_delta):
 		else:
 			$CanvasLayer/Control/Main_View/Text_MMR_Sub.bbcode_text = "[center]Your MMR[/center]";
 	else:
-		$CanvasLayer/Control/Main_View/Text_MMR_Sub.bbcode_text = "[center]Your MMR ([color=blue]Unaffected by Quickplay[color=black])[/center]";
+		$CanvasLayer/Control/Main_View/Text_MMR_Sub.bbcode_text = "[center]Your MMR ([color=blue]Unaffected by Quickplay[color=black])";
 		
 	
 	# DD
