@@ -334,7 +334,7 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 			# If the user is one of the players in the current match or this is a skirmish
 			var allowed = false;
 			for player in Globals.allowedPlayers:
-				if str(players.keys()[0]) == str(user_id):
+				if str(player.keys()[0]) == str(user_id):
 					allowed = true;
 			if(allowed || Globals.isSkirmish):
 				var message = player_name + " connected to the server";
