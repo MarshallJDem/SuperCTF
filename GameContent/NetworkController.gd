@@ -150,7 +150,7 @@ func start_server():
 				else:
 					print("<ERROR> Map not found");
 					print_stack();
-			players[i] = {"name" : player.name, "team_id" : team_id, "user_id": int(player.id), "network_id": 1, "spawn_pos": spawn_pos, "position": spawn_pos, "class" : Globals.Classes.Bullet, "DD_vote" : false};
+			players[i] = {"name" : str(player.values()[0]), "team_id" : team_id, "user_id": int(player.key()[0]), "network_id": 1, "spawn_pos": spawn_pos, "position": spawn_pos, "class" : Globals.Classes.Bullet, "DD_vote" : false};
 			i += 1;
 		print(players);
 		start_match();
@@ -333,8 +333,8 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 				return;
 			# If the user is one of the players in the current match or this is a skirmish
 			var allowed = false;
-			for i in range(Globals.allowedPlayers.size()):
-				if str(Globals.allowedPlayers[i].id) == str(user_id):
+			for player in Globals.allowedPlayers:
+				if str(players.keys()[0]) == str(user_id):
 					allowed = true;
 			if(allowed || Globals.isSkirmish):
 				var message = player_name + " connected to the server";
@@ -382,7 +382,7 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 							update_flags_data();
 							rpc_id(network_id, "load_mid_round", players, scores, $Round_Start_Timer.time_left, round_num, OS.get_system_time_msecs() - Globals.match_start_time, flags_data, game_vars); 
 			else:
-				print("Disconnecting player " + str(network_id) + " because they are not in the allowed players list (they mightve connected before we got match data)");
+				print("Disconnecting player " + str(network_id) + " because they are not in the allowed players list" + to_json(Globals.allowedPlayers));
 				server.disconnect_peer(network_id, 1000, "You are not a player in this match")
 		else:
 			print("WE SHOULD BE DISCONNECTING A player because the checkUser backend call failed with a non 200 status BUT WE DON'T KNOW THEIR NETWORKID'");
