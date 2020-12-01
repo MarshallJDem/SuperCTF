@@ -19,7 +19,6 @@ func _ready():
 	$JoinPartyButton.connect("pressed", self, "_join_party_pressed");
 	$LogoutButton.connect("pressed", self, "_logout_pressed");
 	$SplashStartButton.connect("pressed", self, "_splash_start_pressed");
-	$Searching_Text_Timer.connect("timeout", self, "_searching_text_timer_ended");
 	$MOTDText.connect("meta_clicked", self, "_MOTD_meta_clicked");
 	$Options_Button.connect("button_up", self, "_options_button_clicked");
 	$Fullscreen_Button.connect("button_up", self, "_fullscreen_button_clicked");
@@ -29,15 +28,6 @@ func _ready():
 func _MOTD_meta_clicked(meta):
 	OS.shell_open(meta)
 
-var current_search_dot_count = 0;
-# Called when the Searching text timer ends
-func _searching_text_timer_ended():
-	current_search_dot_count += 1;
-	if current_search_dot_count > 3:
-		current_search_dot_count = 0;
-	$Searching_Text.text = "Searching";
-	for i in current_search_dot_count:
-		$Searching_Text.text += ".";
 
 func _options_button_clicked():
 	Globals.toggle_options_menu();
@@ -69,7 +59,6 @@ func disable_buttons():
 	$CreateAccountButton.visible = false;
 	$LoginButton.visible = false;
 	$SplashStartButton.visible = false;
-	$Searching_Text.visible = false;
 	$PlayerRank.visible = false;
 	$PlayerMMR.visible = false;
 	$PlayerRankSubtitle.visible = false;
@@ -102,7 +91,6 @@ func set_view(state):
 			$PlayerMMRSubtitle.visible = true;
 		VIEW_IN_QUEUE:
 			$CancelQueueButton.visible = true;
-			$Searching_Text.visible = true;
 			$PlayerRank.visible = true;
 			$PlayerMMR.visible = true;
 			$PlayerRankSubtitle.visible = true;
@@ -113,12 +101,17 @@ func set_view(state):
 	current_state = state;
 
 func _process(delta):
+	
+	
+	
 	var code = "";
 	var players = "";
+	var players_in_party = 0;
 	if Globals.player_party_data != null:
 		code = str(Globals.player_party_data.partyCode);
 		for i in Globals.player_party_data.players:
 			players += str(i.values()[0]) + "\n";
+			players_in_party += 1;
 		if Globals.player_party_data.partyHostID != Globals.player_uid:
 			$RankedButton.disabled = true;
 			$RankedWarning.bbcode_text = "[center][color=gray]Must be party host"
@@ -142,6 +135,26 @@ func _process(delta):
 		else:
 			$RankedWarning.visible = false;
 			$QuickplayWarning.visible = false;
+	
+	# Disable ranked for parties bigger than 2
+	if players_in_party > 2:
+		$RankedButton.disabled = true;
+		$RankedWarning.bbcode_text = "[center][color=gray]Max party size is 2"
+		$RankedWarning.visible = true;
+	
+	# Disable quickplay for parties bigger than 6
+	if players_in_party > 6:
+		$QuickplayButton.disabled = true;
+		$QuickplayWarning.bbcode_text = "[center][color=gray]Max party size is 6"
+		$QuickplayWarning.visible = true;
+	
+	
+	# Disable Ranked for guests
+	if Globals.player_type == 'G':
+		$RankedButton.disabled = true;
+		$RankedWarning.bbcode_text = "[center][color=gray]Must make an account"
+		$RankedWarning.visible = true;
+	
 	
 	#$PartyText.bbcode_text = ;
 	$PartyText.clear();

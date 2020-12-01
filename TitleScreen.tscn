@@ -135,10 +135,10 @@ anchor_left = 0.5
 anchor_top = 0.49966
 anchor_right = 0.5
 anchor_bottom = 0.49966
-margin_left = 478.0
-margin_top = 325.367
-margin_right = 1229.0
-margin_bottom = 664.367
+margin_left = 551.0
+margin_top = 58.1597
+margin_right = 1188.0
+margin_bottom = 515.16
 rect_scale = Vector2( 0.639761, 0.639761 )
 rect_clip_content = false
 focus_mode = 2
@@ -162,7 +162,6 @@ scroll_active = false
 selection_enabled = true
 custom_effects = [ ExtResource( 20 ) ]
 __meta__ = {
-"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -342,9 +341,9 @@ anchor_top = 0.49966
 anchor_right = 0.5
 anchor_bottom = 0.49966
 margin_left = -824.0
-margin_top = 12.0
-margin_right = 1750.0
-margin_bottom = 534.0
+margin_top = 12.3672
+margin_right = 1363.0
+margin_bottom = 534.367
 rect_scale = Vector2( 0.639761, 0.639761 )
 rect_clip_content = false
 focus_mode = 2
@@ -407,16 +406,16 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -395.632
+margin_left = 221.549
 margin_top = 419.946
-margin_right = -77.6317
+margin_right = 539.549
 margin_bottom = 501.949
 custom_styles/hover = ExtResource( 14 )
 custom_styles/pressed = ExtResource( 15 )
 custom_styles/normal = ExtResource( 16 )
 custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color = Color( 0.137255, 0.137255, 0.137255, 1 )
-text = "Find Match"
+text = "Ranked"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -426,16 +425,16 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = 74.0239
+margin_left = -160.82
 margin_top = 419.946
-margin_right = 392.024
+margin_right = 157.18
 margin_bottom = 501.949
 custom_styles/hover = ExtResource( 14 )
 custom_styles/pressed = ExtResource( 15 )
 custom_styles/normal = ExtResource( 16 )
 custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color = Color( 0.137255, 0.137255, 0.137255, 1 )
-text = "Find Match"
+text = "Quickplay"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -580,14 +579,13 @@ __meta__ = {
 }
 
 [node name="JoinPartyButton" type="Button" parent="UI_Layer"]
-visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = 234.85
+margin_left = 637.234
 margin_top = 426.948
-margin_right = 474.85
+margin_right = 877.234
 margin_bottom = 496.948
 custom_styles/hover = ExtResource( 14 )
 custom_styles/pressed = ExtResource( 15 )
@@ -604,9 +602,9 @@ anchor_left = 0.5
 anchor_top = 0.49966
 anchor_right = 0.5
 anchor_bottom = 0.49966
-margin_left = -363.819
+margin_left = 253.362
 margin_top = 388.761
-margin_right = 50.1813
+margin_right = 667.362
 margin_bottom = 458.761
 rect_scale = Vector2( 0.639761, 0.639761 )
 rect_clip_content = false
@@ -629,10 +627,10 @@ anchor_left = 0.5
 anchor_top = 0.49966
 anchor_right = 0.5
 anchor_bottom = 0.49966
-margin_left = 105.837
-margin_top = 388.761
-margin_right = 519.837
-margin_bottom = 458.761
+margin_left = -129.007
+margin_top = 387.329
+margin_right = 284.993
+margin_bottom = 457.329
 rect_scale = Vector2( 0.639761, 0.639761 )
 rect_clip_content = false
 focus_mode = 2
@@ -646,23 +644,6 @@ scroll_active = false
 selection_enabled = true
 custom_effects = [ ExtResource( 20 ) ]
 __meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Searching_Text" type="Label" parent="UI_Layer"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = 207.999
-margin_top = 441.215
-margin_right = 408.999
-margin_bottom = 488.219
-custom_fonts/font = ExtResource( 12 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Searching"
-__meta__ = {
-"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -767,13 +748,13 @@ visible = false
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 12 )
+frame = 1
 playing = true
 
 [node name="Red_Sprite" type="AnimatedSprite" parent="UI_Layer/Flags/Flag"]
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 17 )
-frame = 3
 playing = true
 
 [node name="Area2D" type="Area2D" parent="UI_Layer/Flags/Flag" groups=[
@@ -798,7 +779,6 @@ script = ExtResource( 3 )
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 12 )
-frame = 3
 playing = true
 
 [node name="Red_Sprite" type="AnimatedSprite" parent="UI_Layer/Flags/Flag3"]
@@ -806,7 +786,7 @@ visible = false
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 17 )
-frame = 2
+frame = 3
 playing = true
 
 [node name="Area2D" type="Area2D" parent="UI_Layer/Flags/Flag3" groups=[

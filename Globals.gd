@@ -30,6 +30,7 @@ var player_rank = -1;
 var player_status = 0;
 var player_party_data;
 var player_uid;
+var player_type;
 var knownPartyData;
 
 enum Control_Schemes { touchscreen, keyboard, controller};
@@ -206,6 +207,7 @@ func logout(reload = false):
 	player_MMR = -1;
 	player_rank = -1;
 	player_status = 0;
+	player_type = null;
 	player_party_data = null;
 	player_uid = null;
 	knownPartyData = null;
@@ -261,6 +263,8 @@ func _HTTP_PollPlayerStatus_Completed(result, response_code, headers, body):
 		Globals.player_rank = int(json.result.rank);
 	if json.result.has("uid"):
 		Globals.player_uid = int(json.result.uid);
+	if json.result.has("playerType"):
+		Globals.player_type = String(json.result.playerType);
 	if json.result.has("mmr"):
 		if Globals.player_MMR == -1:
 			Globals.player_MMR = int(json.result.mmr);
