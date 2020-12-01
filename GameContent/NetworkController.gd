@@ -175,7 +175,8 @@ func _cancel_match_timer_ended():
 	# Don't cancel the match if this is a skirmish
 	if Globals.isSkirmish:
 		return;
-	cancel_match();
+	if get_tree().get_network_connected_peers().size() == 0:
+		cancel_match();
 
 func cancel_match():
 	# TODO WARN THE BACKEND 
