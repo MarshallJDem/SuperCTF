@@ -117,7 +117,7 @@ __meta__ = {
 "_edit_vertical_guides_": [ 959.427 ]
 }
 
-[node name="HTTPRequest_FindMatch" type="HTTPRequest" parent="."]
+[node name="HTTPRequest_JoinMMQueue" type="HTTPRequest" parent="."]
 
 [node name="HTTPRequest_CancelQueue" type="HTTPRequest" parent="."]
 
@@ -402,15 +402,33 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="FindMatchButton" type="Button" parent="UI_Layer"]
-visible = false
+[node name="RankedButton" type="Button" parent="UI_Layer"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -165.564
+margin_left = -395.632
 margin_top = 419.946
-margin_right = 152.436
+margin_right = -77.6317
+margin_bottom = 501.949
+custom_styles/hover = ExtResource( 14 )
+custom_styles/pressed = ExtResource( 15 )
+custom_styles/normal = ExtResource( 16 )
+custom_fonts/font = ExtResource( 12 )
+custom_colors/font_color = Color( 0.137255, 0.137255, 0.137255, 1 )
+text = "Find Match"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="QuickplayButton" type="Button" parent="UI_Layer"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 74.0239
+margin_top = 419.946
+margin_right = 392.024
 margin_bottom = 501.949
 custom_styles/hover = ExtResource( 14 )
 custom_styles/pressed = ExtResource( 15 )
@@ -581,14 +599,14 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="FindMatchWarning" type="RichTextLabel" parent="UI_Layer"]
+[node name="RankedWarning" type="RichTextLabel" parent="UI_Layer"]
 anchor_left = 0.5
 anchor_top = 0.49966
 anchor_right = 0.5
 anchor_bottom = 0.49966
-margin_left = -133.751
+margin_left = -363.819
 margin_top = 388.761
-margin_right = 280.249
+margin_right = 50.1813
 margin_bottom = 458.761
 rect_scale = Vector2( 0.639761, 0.639761 )
 rect_clip_content = false
@@ -603,7 +621,31 @@ scroll_active = false
 selection_enabled = true
 custom_effects = [ ExtResource( 20 ) ]
 __meta__ = {
-"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="QuickplayWarning" type="RichTextLabel" parent="UI_Layer"]
+anchor_left = 0.5
+anchor_top = 0.49966
+anchor_right = 0.5
+anchor_bottom = 0.49966
+margin_left = 105.837
+margin_top = 388.761
+margin_right = 519.837
+margin_bottom = 458.761
+rect_scale = Vector2( 0.639761, 0.639761 )
+rect_clip_content = false
+focus_mode = 2
+custom_fonts/mono_font = SubResource( 1 )
+custom_fonts/normal_font = SubResource( 4 )
+custom_colors/default_color = Color( 0.368627, 0.368627, 0.368627, 1 )
+bbcode_enabled = true
+bbcode_text = "[center][color=gray]Must be party host"
+text = "Must be party host"
+scroll_active = false
+selection_enabled = true
+custom_effects = [ ExtResource( 20 ) ]
+__meta__ = {
 "_edit_use_anchors_": false
 }
 
@@ -725,13 +767,14 @@ visible = false
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 12 )
+frame = 2
 playing = true
 
 [node name="Red_Sprite" type="AnimatedSprite" parent="UI_Layer/Flags/Flag"]
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 17 )
-frame = 3
+frame = 1
 playing = true
 
 [node name="Area2D" type="Area2D" parent="UI_Layer/Flags/Flag" groups=[
@@ -756,7 +799,7 @@ script = ExtResource( 3 )
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 12 )
-frame = 3
+frame = 1
 playing = true
 
 [node name="Red_Sprite" type="AnimatedSprite" parent="UI_Layer/Flags/Flag3"]
@@ -764,7 +807,6 @@ visible = false
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 17 )
-frame = 2
 playing = true
 
 [node name="Area2D" type="Area2D" parent="UI_Layer/Flags/Flag3" groups=[

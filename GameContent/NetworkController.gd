@@ -686,8 +686,16 @@ remotesync func end_match(winning_team_id):
 	$Match_End_Timer.start();
 	if !Globals.testing and get_tree().is_network_server():
 		yield(get_tree().create_timer(4.0), "timeout");
-		print("GETTING PREDICTED CHANGES WITH MATCHID : " + str(Globals.matchID));
-		$HTTPRequest_GetPredictedMMRChanges.request(Globals.mainServerIP + "gameServerGetPredictedMMRChanges?matchID=" + str(Globals.matchID) + "&winningTeamID=" + str(match_end_winning_team_id) + "&isDoubleDown=" + str(isDD), ["authorization: Bearer " + (Globals.serverPrivateToken)]);
+		if(Globals.matchType == 2): # Ranked
+			print("GETTING PREDICTED CHANGES WITH MATCHID : " + str(Globals.matchID));
+			$HTTPRequest_GetPredictedMMRChanges.request(Globals.mainServerIP + "gameServerGetPredictedMMRChanges?matchID=" + str(Globals.matchID) + "&winningTeamID=" + str(match_end_winning_team_id) + "&isDoubleDown=" + str(isDD), ["authorization: Bearer " + (Globals.serverPrivateToken)]);
+		elif(Globals.matchType == 1): # Quickplay
+			rpc("show_results_screen", scores, get_game_stats(), players, null, Globals.matchType);
+		else:
+			# Uh oh sphagettios
+			print("ERROR : THERE WAS NOT A VALID MATCH TYPE WHEN TRYING TO END THE MATCH");
+			rpc("show_results_screen", scores, get_game_stats(), players, null, Globals.matchType);
+	
 	else:
 		if !Globals.testing:
 			var local_player = get_tree().get_root().get_node("MainScene/Players/P" + str(Globals.localPlayerID));
@@ -708,9 +716,9 @@ func _HTTP_GetPredictedMMRChanges_Completed(result, response_code, headers, body
 	if(response_code == 200):
 		print("Successfully retrieved predicted MMR Changes");
 		var json = JSON.parse(body.get_string_from_utf8());
-		rpc("show_results_screen", scores, get_game_stats(), players, json.result);
+		rpc("show_results_screen", scores, get_game_stats(), players, json.result, Globals.matchType);
 	else:
-		rpc("show_results_screen", scores, get_game_stats(), players,  null);
+		rpc("show_results_screen", scores, get_game_stats(), players,  null, Globals.matchType);
 		# I mean i guess we can't do anything about this failing...
 		pass;
 
@@ -724,25 +732,25 @@ func get_game_stats():
 			print("I DONT KNOW WHY OR HOW BUT A PLAYER WASN'T SPAWNED ON THE SERVER WHEN GETTING STATS");
 	return stats;
 
-remotesync func show_results_screen(scores, stats,players, results):
+remotesync func show_results_screen(scores, stats,players, results, matchType):
 	if get_tree().is_network_server():
 		return;
 	var scn = Game_Results_Screen.instance();
 	# Get local player user_id
 	var uid = players[Globals.localPlayerID]["user_id"];
-	# Find our player in the results
-	for player in results:
-		if str(player["playerId"]) == str(uid):
-			scn.old_mmr = player["oldRank"];
-			scn.new_mmr = player["newRank"];
+	if results != null:
+		# Find our player in the results
+		for player in results:
+			if str(player["playerId"]) == str(uid):
+				scn.old_mmr = player["oldRank"];
+				scn.new_mmr = player["newRank"];
 	scn.winning_team_ID = match_end_winning_team_id;
 	scn.scores = scores;
 	scn.player_team_ID = players[Globals.localPlayerID]["team_id"];
 	scn.match_ID = Globals.result_match_id;
 	scn.stats = stats;
 	scn.players = players;
-	
-	
+	scn.matchType = matchType;
 	
 	get_tree().get_root().get_node("MainScene").call_deferred("add_child", scn);
 	$"../UI_Layer".disappear();

@@ -14,6 +14,7 @@ var isServer = false;
 var isSkirmish = false;
 var allowedPlayers = [];
 var matchID;
+var matchType;
 var allowCommands = true;
 var useSecure = true;
 var gameserverStatus = 0;
@@ -141,6 +142,8 @@ func _enter_tree():
 		Globals.allowedPlayers = json;
 	if arguments.has("matchID"):
 		Globals.matchID = arguments["matchID"];
+	if arguments.has("matchType"):
+		Globals.matchType = arguments["matchType"];
 	if OS.has_feature("editor"):
 		testing = false;
 	#experimental =  true;#OS.has_feature("debug") and !OS.has_feature("editor");

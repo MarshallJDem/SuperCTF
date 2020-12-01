@@ -10,7 +10,8 @@ var current_state = VIEW_SPLASH;
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	$FindMatchButton.connect("pressed", self, "_find_match_pressed");
+	$RankedButton.connect("pressed", self, "_ranked_pressed");
+	$QuickplayButton.connect("pressed", self, "_quickplay_pressed");
 	$CancelQueueButton.connect("pressed", self, "_cancel_queue_pressed");
 	$PlayAsGuestButton.connect("pressed", self, "_play_as_guest_pressed");
 	$CreateAccountButton.connect("pressed", self, "_create_account_pressed");
@@ -62,7 +63,8 @@ func set_mmr_and_rank_labels(rank, mmr):
 # Disables all the situational buttons
 func disable_buttons():
 	$CancelQueueButton.visible = false;
-	$FindMatchButton.visible = false;
+	$RankedButton.visible = false;
+	$QuickplayButton.visible = false;
 	$PlayAsGuestButton.visible = false;
 	$CreateAccountButton.visible = false;
 	$LoginButton.visible = false;
@@ -90,7 +92,8 @@ func set_view(state):
 			$LoginButton.visible = true;
 			$UsernameLineEdit.visible = false;
 		VIEW_MAIN:
-			$FindMatchButton.visible = true;
+			$RankedButton.visible = true;
+			$QuickplayButton.visible = true;
 			$PlayerRank.visible = true;
 			$PlayerMMR.visible = true;
 			$PartyText.visible = true;
@@ -117,19 +120,28 @@ func _process(delta):
 		for i in Globals.player_party_data.players:
 			players += str(i.values()[0]) + "\n";
 		if Globals.player_party_data.partyHostID != Globals.player_uid:
-			$FindMatchButton.disabled = true;
-			$FindMatchWarning.bbcode_text = "[center][color=gray]Must be party host"
-			$FindMatchWarning.visible = true;
+			$RankedButton.disabled = true;
+			$RankedWarning.bbcode_text = "[center][color=gray]Must be party host"
+			$RankedWarning.visible = true;
+			$QuickplayButton.disabled = true;
+			$QuickplayWarning.bbcode_text = "[center][color=gray]Must be party host"
+			$QuickplayWarning.visible = true;
 		else:
-			$FindMatchButton.disabled = false;
-			$FindMatchWarning.visible = false;
+			$RankedButton.disabled = false;
+			$RankedWarning.visible = false;
+			$QuickplayButton.disabled = false;
+			$QuickplayWarning.visible = false;
 	else:
-		$FindMatchButton.disabled = true;
+		$RankedButton.disabled = true;
+		$QuickplayButton.disabled = true;
 		if current_state == VIEW_MAIN:
-			$FindMatchWarning.bbcode_text = "[center][color=gray]Connecting to server..."
-			$FindMatchWarning.visible = true;
+			$RankedWarning.bbcode_text = "[center][color=gray]Connecting to server..."
+			$RankedWarning.visible = true;
+			$QuickplayWarning.bbcode_text = "[center][color=gray]Connecting to server..."
+			$QuickplayWarning.visible = true;
 		else:
-			$FindMatchWarning.visible = false;
+			$RankedWarning.visible = false;
+			$QuickplayWarning.visible = false;
 	
 	#$PartyText.bbcode_text = ;
 	$PartyText.clear();
@@ -178,9 +190,15 @@ func _cancel_queue_pressed():
 	set_view(VIEW_MAIN);
 	Globals.leave_MMQueue();
 
-# Called when the find match button is pressed
-func _find_match_pressed():
+# Called when the ranked button is pressed
+func _ranked_pressed():
 	disable_buttons();
 	set_view(VIEW_IN_QUEUE);
-	get_parent().join_MM_queue();
+	get_parent().join_MM_queue(2);
+
+# Called when the Quickplay button is pressed
+func _quickplay_pressed():
+	disable_buttons();
+	set_view(VIEW_IN_QUEUE);
+	get_parent().join_MM_queue(1);
 

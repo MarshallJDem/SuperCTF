@@ -7,7 +7,7 @@ func _ready():
 	Globals.options_menu_should_scale = false;
 	if Globals.testing:
 		get_tree().change_scene("res://GameContent/Main.tscn");
-	$HTTPRequest_FindMatch.connect("request_completed", self, "_HTTP_FindMatch_Completed");
+	$HTTPRequest_JoinMMQueue.connect("request_completed", self, "_HTTP_JoinMMQueue_Completed");
 	$HTTPRequest_CreateGuest.connect("request_completed", self, "_HTTP_CreateGuest_Completed");
 	$HTTPRequest_GetLeaderboard.connect("request_completed", self, "_HTTP_GetLeaderboard_Completed");
 	$Leaderboard_Refresh_Timer.connect("timeout", self, "_Leaderboard_Refresh_Ended");
@@ -50,10 +50,10 @@ func create_guest():
 		$HTTPRequest_CreateGuest.request(Globals.mainServerIP + "createGuest?" + "name=" + String(name));
 	else:
 		$HTTPRequest_CreateGuest.request(Globals.mainServerIP + "createGuest");
-func join_MM_queue():
+func join_MM_queue(queueType):
 	print("Token : " + Globals.userToken);
-	var query = "?queueType=" + str(1);
-	$HTTPRequest_FindMatch.request(Globals.mainServerIP + "joinMMQueue" + query, ["authorization: Bearer " + Globals.userToken]);
+	var query = "?queueType=" + str(queueType);
+	$HTTPRequest_JoinMMQueue.request(Globals.mainServerIP + "joinMMQueue" + query, ["authorization: Bearer " + Globals.userToken]);
 func logout():
 	Globals.call_logout_http();
 	
@@ -102,8 +102,8 @@ func _Leaderboard_Refresh_Ended():
 		$HTTPRequest_GetLeaderboard.request(Globals.mainServerIP + "getLeaderboardData", []);
 	
 	
-# Called when the find match HTTP request completes
-func _HTTP_FindMatch_Completed(result, response_code, headers, body):
+# Called when the joinMMQueue HTTP request completes
+func _HTTP_JoinMMQueue_Completed(result, response_code, headers, body):
 	var json = JSON.parse(body.get_string_from_utf8())
 	if(response_code == 200):
 		$UI_Layer.set_view($UI_Layer.VIEW_IN_QUEUE);
