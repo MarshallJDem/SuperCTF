@@ -63,9 +63,9 @@ func _ready():
 	_err = $HTTPRequest_GetPredictedMMRChanges.connect("request_completed", self, "_HTTP_GetPredictedMMRChanges_Completed");
 	_err = $Match_Time_Limit_Timer.connect("timeout", self, "_match_time_limit_ended");
 	if(Globals.isServer):
-		start_server();
+		call_deferred("start_server");
 	else:
-		join_server();
+		call_deferred("join_server");
 
 func spawn_map(map_name = "TehoMap1"):
 	var map = load("res://GameContent/Maps/" + map_name + ".tscn").instance();
