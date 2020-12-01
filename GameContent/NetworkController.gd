@@ -382,7 +382,7 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 							update_flags_data();
 							rpc_id(network_id, "load_mid_round", players, scores, $Round_Start_Timer.time_left, round_num, OS.get_system_time_msecs() - Globals.match_start_time, flags_data, game_vars); 
 			else:
-				print("Disconnecting player " + str(network_id) + " because they are not in the allowed players list" + to_json(Globals.allowedPlayers));
+				print("Disconnecting player " + str(network_id) + " because they are not in the allowed players list : " + JSON.print(Globals.allowedPlayers));
 				server.disconnect_peer(network_id, 1000, "You are not a player in this match")
 		else:
 			print("WE SHOULD BE DISCONNECTING A player because the checkUser backend call failed with a non 200 status BUT WE DON'T KNOW THEIR NETWORKID'");
