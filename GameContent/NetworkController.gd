@@ -109,8 +109,6 @@ func reset_game():
 	$Match_Time_Limit_Timer.paused = true;
 	get_tree().set_network_peer(null);
 	reset_game_objects(true);
-	Globals.allowedPlayers = [];
-	Globals.matchID = null;
 	get_tree().get_root().get_node("MainScene/UI_Layer").clear_big_label_text();
 
 # Starts a server
@@ -133,7 +131,7 @@ func start_server():
 		$HTTPRequest_GameServerConfirmConnection.request(Globals.mainServerIP + "gameServerConfirmConnection", ["authorization: Bearer " + (Globals.serverPrivateToken)], false);
 		var i = 0;
 		# Go through each new allowed player and populate the players array
-		for user_id in Globals.allowedPlayers:
+		for player in Globals.allowedPlayers:
 			var team_id = 1;
 			if(i < ceil(Globals.allowedPlayers.size()/2)):
 				team_id = 0;
@@ -152,7 +150,7 @@ func start_server():
 				else:
 					print("<ERROR> Map not found");
 					print_stack();
-			players[i] = {"name" : "Player" + str(i), "team_id" : team_id, "user_id": int(user_id), "network_id": 1, "spawn_pos": spawn_pos, "position": spawn_pos, "class" : Globals.Classes.Bullet, "DD_vote" : false};
+			players[i] = {"name" : player.name, "team_id" : team_id, "user_id": int(player.id), "network_id": 1, "spawn_pos": spawn_pos, "position": spawn_pos, "class" : Globals.Classes.Bullet, "DD_vote" : false};
 			i += 1;
 		print(players);
 		start_match();
@@ -334,7 +332,11 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 			if !is_connected:
 				return;
 			# If the user is one of the players in the current match or this is a skirmish
-			if(Globals.allowedPlayers.has(str(user_id)) || Globals.isSkirmish):
+			var allowed = false;
+			for i in range(Globals.allowedPlayers.size()):
+				if str(Globals.allowedPlayers[i].id) == str(user_id):
+					allowed = true;
+			if(allowed || Globals.isSkirmish):
 				var message = player_name + " connected to the server";
 				get_tree().get_root().get_node("MainScene/Chat_Layer/LineEdit").rpc("receive_message", "[color=green]" + message +  "[/color]", -1);
 				if Globals.isSkirmish:
@@ -403,20 +405,7 @@ remote func user_ready(id, userToken):
 	if get_tree().is_network_server():
 		var net_id = get_tree().get_rpc_sender_id();
 		var repeats = 0;
-		# Wait for match data to come in if this isn't a skirmish
-		if(!Globals.isSkirmish):
-			while(true):
-				# If we've tried for too long without success, kick this player
-				if repeats > 5:
-					server.disconnect_peer(net_id, 1000, "Unavailable");
-					print("Giving up on player " + str(net_id));
-					return;
-				if(Globals.allowedPlayers != []):
-					break;
-				print("Player " + str(net_id) + " connnected while there was no match data");
-				yield(get_tree().create_timer(0.5), "timeout");
-				repeats += 1;
-		var http = HTTPRequest.new()
+		var http = HTTPRequest.new();
 		add_child(http);
 		http.connect("request_completed", self, "_HTTP_GameServerCheckUser_Completed")
 		http.request(Globals.mainServerIP + "gameServerCheckUser?" + "userToken=" + str(userToken) + "&networkID=" + str(id), ["authorization: Bearer " + Globals.serverPrivateToken], false);

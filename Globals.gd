@@ -138,9 +138,9 @@ func _enter_tree():
 		Globals.serverPrivateToken = arguments["serverPrivateToken"];
 	if arguments.has("matchData"):
 		var json = JSON.parse(arguments["matchData"]);
-		Globals.allowedPlayers = json.players;
+		Globals.allowedPlayers = json;
 	if OS.has_feature("editor"):
-		testing = true;
+		testing = false;
 	#experimental =  true;#OS.has_feature("debug") and !OS.has_feature("editor");
 	if experimental and !isServer:
 		get_tree().change_scene("res://GameContent/Main.tscn");
@@ -179,7 +179,7 @@ func toggle_options_menu():
 
 func leave_MMQueue():
 	if !get_tree().is_network_server():
-		HTTPRequest_CancelQueue.request(Globals.mainServerIP + "leaveMMQueue", ["authorization: Bearer " + Globals.userToken]);
+		HTTPRequest_CancelQueue.request(Globals.mainServerIP + "leaveMMQueueQueue", ["authorization: Bearer " + Globals.userToken]);
 
 # Called when the Cancel Queue HTTP request completes
 func _HTTP_CancelQueue_Completed(result, response_code, headers, body):

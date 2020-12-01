@@ -52,7 +52,8 @@ func create_guest():
 		$HTTPRequest_CreateGuest.request(Globals.mainServerIP + "createGuest");
 func join_MM_queue():
 	print("Token : " + Globals.userToken);
-	$HTTPRequest_FindMatch.request(Globals.mainServerIP + "joinMMQueue", ["authorization: Bearer " + Globals.userToken]);
+	var query = "?queueType=" + str(1);
+	$HTTPRequest_FindMatch.request(Globals.mainServerIP + "joinMMQueue" + query, ["authorization: Bearer " + Globals.userToken]);
 func logout():
 	Globals.call_logout_http();
 	
