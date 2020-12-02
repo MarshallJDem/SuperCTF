@@ -301,7 +301,7 @@ func _HTTP_GetMatchData_Completed(result, response_code, headers, body):
 		Globals.serverIP = json.result.matchData.serverIP;
 		Globals.serverPublicToken = json.result.matchData.serverPublicToken;
 		Globals.result_match_id = json.result.matchData.matchID;
-		Globals.mapName = json.result.matchData.mapName;
+		Globals.mapName = json.result.matchData.map;
 		Globals.matchType = json.result.matchData.type;
 		get_tree().change_scene("res://GameContent/Main.tscn");
 	else:
