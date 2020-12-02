@@ -39,7 +39,7 @@ var Game_Results_Screen = preload("res://Game_Results_Screen.tscn");
 
 func _ready():
 	
-	spawn_map("SquareZagv3");
+	spawn_map(Globals.mapName);
 	
 	if Globals.testing:
 		call_deferred("init_map_for_testing");

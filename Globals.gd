@@ -15,6 +15,7 @@ var isSkirmish = false;
 var allowedPlayers = [];
 var matchID;
 var matchType;
+var mapName = "TehoMap1";
 var allowCommands = true;
 var useSecure = true;
 var gameserverStatus = 0;
@@ -145,6 +146,8 @@ func _enter_tree():
 		Globals.matchID = arguments["matchID"];
 	if arguments.has("matchType"):
 		Globals.matchType = int(arguments["matchType"]);
+	if arguments.has("mapName"):
+		Globals.mapName = str(arguments["mapName"]);
 	if OS.has_feature("editor"):
 		testing = false;
 	#experimental =  true;#OS.has_feature("debug") and !OS.has_feature("editor");
@@ -182,6 +185,10 @@ func toggle_options_menu():
 		var menu = load("res://GameContent/Options_Menu.tscn").instance();
 		get_tree().get_root().add_child(menu);
 
+func create_popup(text):
+	var scene = load("res://Popup_Overlay.tscn").instance();
+	scene.text = text;
+	self.call_deferred("add_child",scene);
 
 func leave_MMQueue():
 	if !get_tree().is_network_server():
@@ -292,10 +299,15 @@ func _HTTP_ConfirmClientStatus_Completed(result, response_code, headers, body):
 func _HTTP_GetMatchData_Completed(result, response_code, headers, body):
 	var json = JSON.parse(body.get_string_from_utf8())
 	print(json.result)
-	serverIP = json.result.matchData.serverIP;
-	serverPublicToken = json.result.matchData.serverPublicToken;
-	result_match_id = json.result.matchData.matchID;
-	get_tree().change_scene("res://GameContent/Main.tscn");
+	if(response_code == 200):
+		Globals.serverIP = json.result.matchData.serverIP;
+		Globals.serverPublicToken = json.result.matchData.serverPublicToken;
+		Globals.result_match_id = json.result.matchData.matchID;
+		Globals.mapName = json.result.matchData.mapName;
+		Globals.matchType = json.result.matchData.type;
+		get_tree().change_scene("res://GameContent/Main.tscn");
+	else:
+		Globals.create_popup("It looks like you just crashed our server with error code 22819. Sorry! Please alert us in the discord.");
 
 var last_pollPlayerStatus_response = 0;
 var last_confirmClientConnection_response = 0;

@@ -107,9 +107,14 @@ func _HTTP_JoinMMQueue_Completed(result, response_code, headers, body):
 	var json = JSON.parse(body.get_string_from_utf8())
 	if(response_code == 200):
 		$UI_Layer.set_view($UI_Layer.VIEW_IN_QUEUE);
-	else:
+	elif(response_code == 400):
+		if(json.result.failReason != null):
+			Globals.create_popup(str(json.result.failReason));
 		$UI_Layer.set_view($UI_Layer.VIEW_MAIN);
-
+	else:
+		Globals.create_popup("It looks like you just crashed our server with error code 43819. Sorry! Please alert us in the discord.");
+		$UI_Layer.set_view($UI_Layer.VIEW_MAIN);
+		
 func _HTTP_CreateGuest_Completed(result, response_code, headers, body):
 	var json = JSON.parse(body.get_string_from_utf8())
 	if(response_code == 200 && json.result):
@@ -122,7 +127,7 @@ func _HTTP_CreateGuest_Completed(result, response_code, headers, body):
 		else:# TODO: - Handle error
 			pass;
 	else:
-		pass;
+		Globals.create_popup("It looks like you just crashed our server with error code 43219. Sorry! Please alert us in the discord.");
 
 
 
