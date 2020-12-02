@@ -7,7 +7,8 @@ var experimental = false;
 #Game Servers (Both clients and servers use these vars, but in different ways. overlapping would not work)
 var serverIP = "";
 var serverPublicToken;
-var skirmishIPPrefix = "superctf.com:";
+var skirmishIP = "superctf.com:42480";
+var skirmishMap = "TehoMap1";
 var port = 42480;
 var serverPrivateToken;
 var isServer = false;
