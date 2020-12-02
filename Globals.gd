@@ -11,7 +11,6 @@ var skirmishIPPrefix = "superctf.com:";
 var port = 42402;
 var serverPrivateToken;
 var isServer = false;
-var isSkirmish = false;
 var allowedPlayers = [];
 var matchID;
 var matchType;
@@ -135,8 +134,6 @@ func _enter_tree():
 		port = int(arguments["port"]);
 	if arguments.has("isServer"):
 		isServer = true if arguments["isServer"] == "true" else false;
-	if arguments.has("isSkirmish"):
-		Globals.isSkirmish = true if arguments["isSkirmish"] == "true" else false;
 	if arguments.has("serverPrivateToken"):
 		Globals.serverPrivateToken = arguments["serverPrivateToken"];
 	if arguments.has("allowedPlayers"):

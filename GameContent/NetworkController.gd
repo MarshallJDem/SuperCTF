@@ -123,7 +123,7 @@ func start_server():
 	get_tree().set_network_peer(server);
 	AudioServer.set_bus_volume_db(0, -500);
 	$Timing_Sync_Timer.stop();
-	if Globals.isSkirmish:
+	if Globals.matchType == 0:
 		print("Starting a skirmish");
 		start_match();
 	else:
@@ -175,7 +175,7 @@ func _cancel_match_timer_ended():
 	if !get_tree().is_network_server():
 		return;
 	# Don't cancel the match if this is a skirmish
-	if Globals.isSkirmish:
+	if Globals.matchType == 0:
 		return;
 	if get_tree().get_network_connected_peers().size() == 0:
 		cancel_match();
@@ -228,7 +228,7 @@ remotesync func set_scores(new_scores):
 	scores = new_scores;
 	Globals.result_team0_score = scores[0];
 	Globals.result_team1_score = scores[1];
-	if !Globals.isSkirmish:
+	if Globals.matchType != 0:
 		get_tree().get_root().get_node("MainScene/UI_Layer").set_score_text(scores[0], scores[1]);
 	print("current scores: " + str(scores));
 	
@@ -339,10 +339,10 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 			for player in Globals.allowedPlayers:
 				if str(player.keys()[0]) == str(user_id):
 					allowed = true;
-			if(allowed || Globals.isSkirmish):
+			if(allowed || Globals.matchType == 0):
 				var message = player_name + " connected to the server";
 				get_tree().get_root().get_node("MainScene/Chat_Layer/LineEdit").rpc("receive_message", "[color=green]" + message +  "[/color]", -1);
-				if Globals.isSkirmish:
+				if Globals.matchType == 0:
 					var team_id = 0;
 					var b=0; var r=0;
 					for player_id in players:
@@ -374,7 +374,7 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 						# Update the players array and give it to everybody so they can update player data and network masters etc.
 						players[player_id]['name'] = player_name;
 						players[player_id]['class'] = Globals.Classes.Bullet;
-						if players[player_id]['network_id'] != 1 and !Globals.isSkirmish:
+						if players[player_id]['network_id'] != 1 and Globals.matchType != 0:
 							server.disconnect_peer(players[player_id]['network_id'], 1000, "A new computer has connected as this player");
 						players[player_id]['network_id'] = network_id;
 						print("Authenticated new connection : " + str(network_id) + " and giving them control of player " + str(player_id) + " " + str(player_name));
@@ -461,7 +461,7 @@ func _client_disconnected(id):
 		var message = players[player_id]["name"];
 		message += " disconnected from the server";
 		get_tree().get_root().get_node("MainScene/Chat_Layer/LineEdit").rpc("receive_message", "[color=red]" + message +  "[/color]", -1);
-		if Globals.isSkirmish:
+		if Globals.matchType == 0:
 			players.erase(player_id);
 			if players.size() == 0:
 				game_vars = Globals.game_var_defaults.duplicate();
@@ -469,7 +469,7 @@ func _client_disconnected(id):
 			complete_match_end();
 			return;
 		rpc("update_players_data", players, round_is_running);
-		if !Globals.isSkirmish:
+		if Globals.matchType != 0:
 			if get_tree().get_network_connected_peers().size() == 0:
 				# If this is an actual match, if after 15 seconds go by and there is still 0 connections cancel the match
 				yield(get_tree().create_timer(15), "timeout");
@@ -529,7 +529,7 @@ remotesync func round_ended(scoring_team_id, scoring_player_id, time_limit_reach
 			print_stack();
 	# Else if we are the server
 	else:
-		if !Globals.isSkirmish and !time_limit_reached:
+		if Globals.matchType != 0 and !time_limit_reached:
 			scores[scoring_team_id] = scores[scoring_team_id] + 1;
 			rpc("set_scores", scores);
 			rpc("pause_match_time_limit", $Match_Time_Limit_Timer.time_left);
@@ -641,7 +641,7 @@ remote func load_mid_round(players, scores, round_start_timer_timeleft, round_nu
 	
 	Globals.result_team0_score = scores[0];
 	Globals.result_team1_score = scores[1];
-	if !Globals.isSkirmish:
+	if Globals.matchType != 0:
 		get_tree().get_root().get_node("MainScene/UI_Layer").set_score_text(scores[0], scores[1]);
 	else:
 		get_tree().get_root().get_node("MainScene/UI_Layer").set_score_text(scores[0], scores[1], true);
@@ -673,7 +673,7 @@ remotesync func start_round():
 		else:
 			print_stack();
 	else:
-		if !Globals.isSkirmish and !isSuddenDeath:
+		if Globals.matchType != 0 and !isSuddenDeath:
 			rpc("resume_match_time_limit", $Match_Time_Limit_Timer.time_left);
 
 var match_end_winning_team_id;
