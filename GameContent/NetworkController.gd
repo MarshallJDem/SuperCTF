@@ -185,14 +185,24 @@ func _cancel_match_timer_ended():
 	# Don't cancel the match if this is a skirmish
 	if Globals.matchType == 0:
 		return;
-	if get_tree().get_network_connected_peers().size() == 0:
-		cancel_match();
+	
+	# If any players have not connected yet, cancel the match
+	var allConnected = true;
+	for player in players:
+		if player["network_id"] == 1:
+			allConnected = false;
+	if !allConnected or get_tree().get_network_connected_peers().size() == 0:
+		rpc("cancel_match");
 
-func cancel_match():
-	# TODO WARN THE BACKEND 
-	print("Canceling match");
-	print("WARNING WE STILL HAVE A TODO TO WARN THE BACKEND ABOUT CANCELING");
-	get_tree().quit();
+remotesync func cancel_match():
+	if get_tree().is_network_server():
+		# TODO WARN THE BACKEND 
+		print("Canceling match");
+		print("WARNING WE STILL HAVE A TODO TO WARN THE BACKEND ABOUT CANCELING");
+		get_tree().quit();
+	else:
+		Globals.create_popup("The match was canceled due to one or more players failing to connect. If this is happening consistently, please let us know in the discord. Something may be wrong with the servers.");
+		leave_match();
 
 # Joins a server
 func join_server():
@@ -482,7 +492,7 @@ func _client_disconnected(id):
 				# If this is an actual match, if after 15 seconds go by and there is still 0 connections cancel the match
 				yield(get_tree().create_timer(15), "timeout");
 				if get_tree().get_network_connected_peers().size() == 0:
-					cancel_match();
+					rpc("cancel_match");
 	else: # This will disable DD buttons etc on game results screen
 		if $Match_End_Timer.time_left > 0:
 			$Match_End_Timer.stop();
