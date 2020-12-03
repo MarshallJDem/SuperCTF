@@ -189,13 +189,12 @@ func _cancel_match_timer_ended():
 	# If any players have not connected yet, cancel the match
 	var allConnected = true;
 	for player in players:
-		if player["network_id"] == 1:
+		if players[player]["network_id"] == 1:
 			allConnected = false;
 	if (not allConnected) or (get_tree().get_network_connected_peers().size() == 0):
 		rpc("cancel_match");
 	else:
-		print("Decided not to cancel match with players")
-		print(players);
+		print("Decided not to cancel match")
 
 remotesync func cancel_match():
 	if get_tree().is_network_server():
