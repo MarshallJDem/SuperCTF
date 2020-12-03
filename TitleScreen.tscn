@@ -358,7 +358,7 @@ Happy December, and welcome [color=blue][url=https://itch.io]Itch.io[/url][color
 
 [color=green]Sick of AFK players or losing MMR to guests? [color=black]In the next day or two we will be releasing Quickplay and Ranked mode! Stay tuned :)
 
-[color=red]SuperCTF has WAY more player than we were used to - please report bugs or server downage in our discord!
+[color=red]SuperCTF has WAY more players than we were used to - please report bugs or server downage in our discord!
 [color=black]
 Discord Link:[color=blue] [url]https://discord.gg/D3Ban34[/url][color=black]
 Twitter:[color=blue] [url]https://twitter.com/SuperCTFGame[/url][color=black]
@@ -369,7 +369,7 @@ Happy December, and welcome Itch.io and iogames players! (And the rest of course
 
 Sick of AFK players or losing MMR to guests? In the next day or two we will be releasing Quickplay and Ranked mode! Stay tuned :)
 
-SuperCTF has WAY more player than we were used to - please report bugs or server downage in our discord!
+SuperCTF has WAY more players than we were used to - please report bugs or server downage in our discord!
 
 Discord Link: https://discord.gg/D3Ban34
 Twitter: https://twitter.com/SuperCTFGame
@@ -725,13 +725,14 @@ visible = false
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 12 )
-frame = 1
+frame = 3
 playing = true
 
 [node name="Red_Sprite" type="AnimatedSprite" parent="UI_Layer/Flags/Flag"]
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 17 )
+frame = 2
 playing = true
 
 [node name="Area2D" type="Area2D" parent="UI_Layer/Flags/Flag" groups=[
@@ -756,6 +757,7 @@ script = ExtResource( 3 )
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 12 )
+frame = 2
 playing = true
 
 [node name="Red_Sprite" type="AnimatedSprite" parent="UI_Layer/Flags/Flag3"]
@@ -763,7 +765,7 @@ visible = false
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 17 )
-frame = 3
+frame = 1
 playing = true
 
 [node name="Area2D" type="Area2D" parent="UI_Layer/Flags/Flag3" groups=[
