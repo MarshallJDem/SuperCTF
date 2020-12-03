@@ -228,6 +228,10 @@ func join_server():
 		if error == 0:
 			get_tree().set_network_peer(client);
 		else:
+			if Globals.matchType == 0:
+				Globals.create_popup("Failed to join the skirmish lobby. You are still successfully in the matchmaking queue, but please tell us on discord that our skirmish lobby is down!  Error code 1552");
+			else:
+				Globals.create_popup("Failed to join the match. You should try refreshing your page. If that doesn't work please tell us in the discord that something went wrong with your match!  Error code 16122");
 			leave_match();
 
 # Starts the match
