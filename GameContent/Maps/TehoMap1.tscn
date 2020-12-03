@@ -277,3 +277,9 @@ shape = SubResource( 1 )
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="YSort/BlueSpawn/Area2D"]
 position = Vector2( 115.371, 137.48 )
 shape = SubResource( 1 )
+
+[node name="BlueSpawn_Location" type="Node2D" parent="YSort"]
+position = Vector2( -1240.01, 8.59412 )
+
+[node name="RedSpawn_Location2" type="Node2D" parent="YSort"]
+position = Vector2( 1241.87, 10.2643 )

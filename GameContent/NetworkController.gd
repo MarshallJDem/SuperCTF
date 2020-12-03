@@ -145,14 +145,14 @@ func start_server():
 				team_id = 0;
 			var spawn_pos = Vector2(0,0);
 			if team_id == 0:
-				var spawn = get_tree().get_root().get_node_or_null("MainScene/Map/YSort/BlueSpawn");
+				var spawn = get_tree().get_root().get_node_or_null("MainScene/Map/YSort/BlueSpawn_Location");
 				if spawn != null:
 					spawn_pos = spawn.position;
 				else:
 					print("<ERROR> Map not found");
 					print_stack();
 			else:
-				var spawn = get_tree().get_root().get_node_or_null("MainScene/Map/YSort/RedSpawn");
+				var spawn = get_tree().get_root().get_node_or_null("MainScene/Map/YSort/RedSpawn_Location");
 				if spawn != null:
 					spawn_pos = spawn.position;
 				else:
@@ -378,14 +378,14 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 						team_id = 1;
 					var spawn_pos = Vector2(0,0);
 					if team_id == 0:
-						var spawn = get_tree().get_root().get_node_or_null("MainScene/Map/YSort/BlueSpawn");
+						var spawn = get_tree().get_root().get_node_or_null("MainScene/Map/YSort/BlueSpawn_Location");
 						if spawn != null:
 							spawn_pos = spawn.position;
 						else:
 							print("<ERROR> Map not found");
 							print_stack();
 					else:
-						var spawn = get_tree().get_root().get_node_or_null("MainScene/Map/YSort/RedSpawn");
+						var spawn = get_tree().get_root().get_node_or_null("MainScene/Map/YSort/RedSpawn_Location");
 						if spawn != null:
 							spawn_pos = spawn.position;
 						else:
