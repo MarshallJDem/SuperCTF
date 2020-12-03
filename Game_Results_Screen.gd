@@ -11,6 +11,7 @@ var match_ID = -1;
 var has_animated_mmr = false;
 var stats;
 var players;
+var matchType;
 
 var stats_view_cell = preload("res://Stats_View_Cell.tscn");
 
@@ -29,8 +30,10 @@ func _ready():
 	_screen_resized();
 	
 	yield(get_tree().create_timer(1.0), "timeout");
-	has_animated_mmr = true;
-	$MMR_Animation_Timer.start();
+	if matchType == 2:
+		has_animated_mmr = true;
+		$MMR_Animation_Timer.start();
+		
 	setup_stats_visuals();
 	
 func _screen_resized():
@@ -131,25 +134,34 @@ func _process(_delta):
 	if !Globals.testing:
 		$CanvasLayer/Control/Main_View/Text_Score.bbcode_text = "[center][color=blue]" + String(scores[0]) + "[/color]" + "[color=black]-[/color][color=red]" + String(scores[1]) + "[/color][/center]";
 	
-	# MMR Label setup
-	if has_animated_mmr:
-		var x = ($MMR_Animation_Timer.time_left / $MMR_Animation_Timer.wait_time);
-		var current_value = int(old_mmr + ((1 - x*x*x*x*x) * (new_mmr - old_mmr)));
-		$CanvasLayer/Control/Main_View/Text_MMR.bbcode_text = "[center]" + String(current_value) + "[/center]";
-	else:
-		$CanvasLayer/Control/Main_View/Text_MMR.bbcode_text = "[center]" + String(old_mmr) + "[/center]";
-	# MMR Sub text setup
-	if has_animated_mmr:
-		var MMR_change = new_mmr - old_mmr;
-		var change_text;
-		if MMR_change >= 0:
-			change_text = "+" + String(MMR_change);
+	if matchType == 2:
+		# MMR Label setup
+		if has_animated_mmr:
+			var x = ($MMR_Animation_Timer.time_left / $MMR_Animation_Timer.wait_time);
+			var current_value = int(old_mmr + ((1 - x*x*x*x*x) * (new_mmr - old_mmr)));
+			$CanvasLayer/Control/Main_View/Text_MMR.bbcode_text = "[center]" + String(current_value) + "[/center]";
 		else:
-			change_text = String(MMR_change);
-		var change_color = "red" if MMR_change < 0 else "green";
-		$CanvasLayer/Control/Main_View/Text_MMR_Sub.bbcode_text = "[center][color=black]Your MMR ([/color][color=" + change_color + "]" + change_text + "[/color][color=black])[/color][/center]"; 
+			$CanvasLayer/Control/Main_View/Text_MMR.bbcode_text = "[center]" + String(old_mmr) + "[/center]";
 	else:
-		$CanvasLayer/Control/Main_View/Text_MMR_Sub.bbcode_text = "[center]Your MMR[/center]";
+		$CanvasLayer/Control/Main_View/Text_MMR.bbcode_text = "[center]" + String(Globals.player_MMR) + "[/center]";
+	
+	
+	if matchType == 2:
+		# MMR Sub text setup
+		if has_animated_mmr:
+			var MMR_change = new_mmr - old_mmr;
+			var change_text;
+			if MMR_change >= 0:
+				change_text = "+" + String(MMR_change);
+			else:
+				change_text = String(MMR_change);
+			var change_color = "red" if MMR_change < 0 else "green";
+			$CanvasLayer/Control/Main_View/Text_MMR_Sub.bbcode_text = "[center][color=black]Your MMR ([/color][color=" + change_color + "]" + change_text + "[/color][color=black])[/color][/center]"; 
+		else:
+			$CanvasLayer/Control/Main_View/Text_MMR_Sub.bbcode_text = "[center]Your MMR[/center]";
+	else:
+		$CanvasLayer/Control/Main_View/Text_MMR_Sub.bbcode_text = "[center]Your MMR ([color=blue]Unaffected by Quickplay[color=black])";
+		
 	
 	# DD
 	var players = get_tree().get_root().get_node("MainScene/NetworkController").players;

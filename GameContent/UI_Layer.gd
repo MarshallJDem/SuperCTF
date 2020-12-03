@@ -46,7 +46,7 @@ func _process(delta):
 		$Shoot_Stick.modulate = Color(1,1,1,1);
 		
 	$Skirmish_Subtext.visible = false;
-	if get_tree().get_root().get_node("MainScene/NetworkController").isSkirmish:
+	if Globals.matchType == 0: # If this is a skirmish
 		$Score_Label.bbcode_text = "[center][color=black]SEARCHING " + str(OS.get_system_time_secs() - start_time);
 		$Time_Label.visible = false;
 		$Skirmish_Subtext.visible = true;

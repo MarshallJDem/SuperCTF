@@ -1,4 +1,4 @@
-[gd_scene load_steps=46 format=2]
+[gd_scene load_steps=45 format=2]
 
 [ext_resource path="res://GameContent/Main.gd" type="Script" id=1]
 [ext_resource path="res://GameContent/Player.tscn" type="PackedScene" id=2]
@@ -23,7 +23,6 @@
 [ext_resource path="res://Assets/GUI/Space-Key-GUI.png" type="Texture" id=21]
 [ext_resource path="res://Assets/Sound/score.wav" type="AudioStream" id=22]
 [ext_resource path="res://Assets/Sound/Countdown.wav" type="AudioStream" id=23]
-[ext_resource path="res://GameContent/Maps/TehoMap1.tscn" type="PackedScene" id=24]
 [ext_resource path="res://fonts/pixel.TTF" type="DynamicFontData" id=25]
 [ext_resource path="res://GameContent/Loadout_Menu.tscn" type="PackedScene" id=26]
 [ext_resource path="res://GameContent/PowerupGUIParticles.tscn" type="PackedScene" id=27]
@@ -111,11 +110,7 @@ position = Vector2( 15.6066, 14.9669 )
 
 [node name="HTTPRequest_GameServerCheckUser" type="HTTPRequest" parent="NetworkController"]
 
-[node name="HTTPRequest_GameServerMakeAvailable" type="HTTPRequest" parent="NetworkController"]
-
-[node name="HTTPRequest_GameServerPollStatus" type="HTTPRequest" parent="NetworkController"]
-
-[node name="HTTPRequest_GetMatchData" type="HTTPRequest" parent="NetworkController"]
+[node name="HTTPRequest_GameServerConfirmConnection" type="HTTPRequest" parent="NetworkController"]
 
 [node name="HTTPRequest_GameServerEndMatch" type="HTTPRequest" parent="NetworkController"]
 
@@ -652,5 +647,3 @@ volume_db = 2.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2( 4, 4 )
-
-[node name="Map" parent="." instance=ExtResource( 24 )]

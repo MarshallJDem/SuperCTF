@@ -7,13 +7,16 @@ var experimental = false;
 #Game Servers (Both clients and servers use these vars, but in different ways. overlapping would not work)
 var serverIP = "";
 var serverPublicToken;
-var skirmishIPPrefix = "superctf.com:";
-var port = 42402;
+var skirmishIP = "superctf.com:42480";
+var skirmishMap = "TehoMap1";
+var port = 42480;
 var serverPrivateToken;
 var isServer = false;
 var allowedPlayers = [];
 var matchID;
-var allowCommands = false;
+var matchType;
+var mapName = "TehoMap1";
+var allowCommands = true;
 var useSecure = true;
 var gameserverStatus = 0;
 
@@ -28,6 +31,7 @@ var player_rank = -1;
 var player_status = 0;
 var player_party_data;
 var player_uid;
+var player_type;
 var knownPartyData;
 
 enum Control_Schemes { touchscreen, keyboard, controller};
@@ -38,7 +42,7 @@ var control_scheme = Control_Schemes.keyboard;
 var player_old_MMR = -1;
 
 #Main Server
-var mainServerIP = "https://www.superctf.com" + ":42401/";
+var mainServerIP = "https://www.superctf.com" + ":42501/";
  
 var game_just_started = true;
 var is_typing_in_chat = false;
@@ -119,6 +123,7 @@ func test():
 	add_child(HTTPRequest_ConfirmClientConnection);
 
 func _enter_tree():
+	print("starting to check the args");
 	var arguments = {}
 	for argument in OS.get_cmdline_args():
 		print(argument);
@@ -126,17 +131,25 @@ func _enter_tree():
 		if argument.find("=") > -1:
 			var key_value = argument.split("=")
 			arguments[key_value[0].lstrip("--")] = key_value[1]
-	
 	if arguments.has("port"):
 		port = int(arguments["port"]);
-		serverPrivateToken = "privatetoken" + str(port);
 	if arguments.has("isServer"):
 		isServer = true if arguments["isServer"] == "true" else false;
+	if arguments.has("serverPrivateToken"):
+		Globals.serverPrivateToken = arguments["serverPrivateToken"];
+	if arguments.has("allowedPlayers"):
+		var json = JSON.parse(arguments["allowedPlayers"]).result;
+		Globals.allowedPlayers = json;
+	if arguments.has("matchID"):
+		Globals.matchID = arguments["matchID"];
+	if arguments.has("matchType"):
+		Globals.matchType = int(arguments["matchType"]);
+	if arguments.has("mapName"):
+		Globals.mapName = str(arguments["mapName"]);
 	if OS.has_feature("editor"):
-		testing = true;
-	#testing = false;
-	#experimental = !OS.has_feature("editor");
-	if experimental:
+		testing = false;
+	#experimental =  true;#OS.has_feature("debug") and !OS.has_feature("editor");
+	if experimental and !isServer:
 		get_tree().change_scene("res://GameContent/Main.tscn");
 
 func _ready():
@@ -170,6 +183,10 @@ func toggle_options_menu():
 		var menu = load("res://GameContent/Options_Menu.tscn").instance();
 		get_tree().get_root().add_child(menu);
 
+func create_popup(text):
+	var scene = load("res://Popup_Overlay.tscn").instance();
+	scene.text = text;
+	self.call_deferred("add_child",scene);
 
 func leave_MMQueue():
 	if !get_tree().is_network_server():
@@ -195,6 +212,7 @@ func logout(reload = false):
 	player_MMR = -1;
 	player_rank = -1;
 	player_status = 0;
+	player_type = null;
 	player_party_data = null;
 	player_uid = null;
 	knownPartyData = null;
@@ -250,6 +268,8 @@ func _HTTP_PollPlayerStatus_Completed(result, response_code, headers, body):
 		Globals.player_rank = int(json.result.rank);
 	if json.result.has("uid"):
 		Globals.player_uid = int(json.result.uid);
+	if json.result.has("playerType"):
+		Globals.player_type = String(json.result.playerType);
 	if json.result.has("mmr"):
 		if Globals.player_MMR == -1:
 			Globals.player_MMR = int(json.result.mmr);
@@ -277,10 +297,15 @@ func _HTTP_ConfirmClientStatus_Completed(result, response_code, headers, body):
 func _HTTP_GetMatchData_Completed(result, response_code, headers, body):
 	var json = JSON.parse(body.get_string_from_utf8())
 	print(json.result)
-	serverIP = json.result.matchData.serverIP;
-	serverPublicToken = json.result.matchData.serverPublicToken;
-	result_match_id = json.result.matchData.matchID;
-	get_tree().change_scene("res://GameContent/Main.tscn");
+	if(response_code == 200):
+		Globals.serverIP = json.result.matchData.serverIP;
+		Globals.serverPublicToken = json.result.matchData.serverPublicToken;
+		Globals.result_match_id = json.result.matchData.matchID;
+		Globals.mapName = json.result.matchData.map;
+		Globals.matchType = json.result.matchData.type;
+		get_tree().change_scene("res://GameContent/Main.tscn");
+	else:
+		Globals.create_popup("It looks like you just crashed our server with error code 22819. Sorry! Please alert us in the discord.");
 
 var last_pollPlayerStatus_response = 0;
 var last_confirmClientConnection_response = 0;

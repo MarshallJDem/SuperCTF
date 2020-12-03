@@ -7,7 +7,7 @@ func _ready():
 	Globals.options_menu_should_scale = false;
 	if Globals.testing:
 		get_tree().change_scene("res://GameContent/Main.tscn");
-	$HTTPRequest_FindMatch.connect("request_completed", self, "_HTTP_FindMatch_Completed");
+	$HTTPRequest_JoinMMQueue.connect("request_completed", self, "_HTTP_JoinMMQueue_Completed");
 	$HTTPRequest_CreateGuest.connect("request_completed", self, "_HTTP_CreateGuest_Completed");
 	$HTTPRequest_GetLeaderboard.connect("request_completed", self, "_HTTP_GetLeaderboard_Completed");
 	$Leaderboard_Refresh_Timer.connect("timeout", self, "_Leaderboard_Refresh_Ended");
@@ -41,7 +41,7 @@ func _process(delta):
 			$UI_Layer.set_view($UI_Layer.VIEW_START);
 	$UI_Layer.update_title_color($Titlemusic_Audio.get_playback_position() + 3.7);
 	$UI_Layer.set_mmr_and_rank_labels(Globals.player_rank, Globals.player_MMR);
-	if Globals.player_status == 1:
+	if !Globals.isServer and Globals.player_status == 1:
 		get_tree().change_scene("res://GameContent/Main.tscn");
 
 func create_guest():
@@ -50,9 +50,10 @@ func create_guest():
 		$HTTPRequest_CreateGuest.request(Globals.mainServerIP + "createGuest?" + "name=" + String(name));
 	else:
 		$HTTPRequest_CreateGuest.request(Globals.mainServerIP + "createGuest");
-func join_MM_queue():
+func join_MM_queue(queueType):
 	print("Token : " + Globals.userToken);
-	$HTTPRequest_FindMatch.request(Globals.mainServerIP + "joinMMQueue", ["authorization: Bearer " + Globals.userToken]);
+	var query = "?queueType=" + str(queueType);
+	$HTTPRequest_JoinMMQueue.request(Globals.mainServerIP + "joinMMQueue" + query, ["authorization: Bearer " + Globals.userToken]);
 func logout():
 	Globals.call_logout_http();
 	
@@ -101,14 +102,19 @@ func _Leaderboard_Refresh_Ended():
 		$HTTPRequest_GetLeaderboard.request(Globals.mainServerIP + "getLeaderboardData", []);
 	
 	
-# Called when the find match HTTP request completes
-func _HTTP_FindMatch_Completed(result, response_code, headers, body):
+# Called when the joinMMQueue HTTP request completes
+func _HTTP_JoinMMQueue_Completed(result, response_code, headers, body):
 	var json = JSON.parse(body.get_string_from_utf8())
 	if(response_code == 200):
 		$UI_Layer.set_view($UI_Layer.VIEW_IN_QUEUE);
-	else:
+	elif(response_code == 400):
+		if(json.result.failReason != null):
+			Globals.create_popup(str(json.result.failReason));
 		$UI_Layer.set_view($UI_Layer.VIEW_MAIN);
-
+	else:
+		Globals.create_popup("It looks like you just crashed our server with error code 43819_" + response_code + ". Sorry! Please alert us in the discord.");
+		$UI_Layer.set_view($UI_Layer.VIEW_MAIN);
+		
 func _HTTP_CreateGuest_Completed(result, response_code, headers, body):
 	var json = JSON.parse(body.get_string_from_utf8())
 	if(response_code == 200 && json.result):
@@ -121,7 +127,7 @@ func _HTTP_CreateGuest_Completed(result, response_code, headers, body):
 		else:# TODO: - Handle error
 			pass;
 	else:
-		pass;
+		Globals.create_popup("It looks like you just crashed our server with error code 43219. Sorry! Please alert us in the discord.");
 
 
 
