@@ -42,7 +42,7 @@ var control_scheme = Control_Schemes.keyboard;
 var player_old_MMR = -1;
 
 #Main Server
-var mainServerIP = "https://www.superctf.com" + ":42501/";
+var mainServerIP = "https://www.superctf.com" + ":42401/";
  
 var game_just_started = true;
 var is_typing_in_chat = false;
