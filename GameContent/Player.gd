@@ -90,6 +90,8 @@ func is_in_own_spawn() -> bool:
 		return $Area2D.is_in_blue_spawn;
 
 func _process(delta):
+	if !Globals.testing and name != ("P" + str(player_id)):
+		call_deferred("queue_free");
 	BASE_SPEED = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("playerSpeed");
 	
 	TELEPORT_SPEED = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("dashDistance");

@@ -444,6 +444,12 @@ remotesync func test_ping():
 	print("Test Ping");
 
 func spawn_player(id):
+	
+	if get_tree().get_root().get_node("MainScene/Players").has_node("P" + str(id)):
+		var p = get_tree().get_root().get_node("MainScene/Players/P" + str(id));
+		p.set_name("P" + str(id) + "DELETED");
+		p.call_deferred("free");
+	
 	var player = load("res://GameContent/Player.tscn").instance();
 	player.set_name("P" + str(id));
 	player.set_network_master(players[id]["network_id"]);
@@ -457,10 +463,6 @@ func spawn_player(id):
 	if players[id]["network_id"] == get_tree().get_network_unique_id():
 		player.control = round_is_running;
 		player.activate_camera();
-	if get_tree().get_root().get_node("MainScene/Players").has_node("P" + str(id)):
-		var p = get_tree().get_root().get_node("MainScene/Players/P" + str(id));
-		p.set_name("P" + str(id) + "DELETED");
-		p.call_deferred("free");
 	get_tree().get_root().get_node("MainScene/Players").call_deferred("add_child",player);
 	
 
