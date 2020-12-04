@@ -191,7 +191,8 @@ func _cancel_match_timer_ended():
 	for player in players:
 		if players[player]["network_id"] == 1:
 			allConnected = false;
-	if (not allConnected) or (get_tree().get_network_connected_peers().size() == 0):
+	# Cancel match if its ranked and any players are missing, otherwise only cancel if nobody has connected
+	if (not allConnected and Globals.matchType == 2) or (get_tree().get_network_connected_peers().size() == 0):
 		rpc("cancel_match");
 	else:
 		print("Decided not to cancel match")

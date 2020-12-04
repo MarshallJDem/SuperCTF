@@ -281,12 +281,12 @@ func _HTTP_PollPlayerStatus_Completed(result, response_code, headers, body):
 		Globals.knownPartyData = json.result.partyData;
 		Globals.player_party_data = json.result.partyData;
 		Globals.player_party_data.players = Globals.player_party_data.players;
-	if(player_status <= 1 and int(json.result.status) > 1):
+	if(player_status < 10 and int(json.result.status) >= 10):
 		print("Found Match : " + str(json.result.status));
 		var matchID = str(json.result.status);
 		var query = "matchID=" + str(matchID) + "&authority=client";
 		HTTPRequest_GetMatchData.request(Globals.mainServerIP + "getMatchData?" + query, ["authorization: Bearer " + Globals.userToken], false, HTTPClient.METHOD_GET);
-	elif(player_status == 1 and int(json.result.status) == 0):
+	elif(player_status < 10 and int(json.result.status) == 0):
 		get_tree().change_scene("res://TitleScreen.tscn");
 	player_status = int(json.result.status);
 
