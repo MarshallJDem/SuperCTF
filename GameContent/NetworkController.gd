@@ -345,11 +345,6 @@ func _timing_sync_timer_ended():
 		rpc("update_timing_sync", OS.get_system_time_msecs() - Globals.match_start_time);
 		#rpc("resync_match_time_limit", $Match_Time_Limit_Timer.time_left, $Match_Time_Limit_Timer.paused);
 func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
-	
-	print(result);
-	print(response_code);
-	print(headers);
-	print(body);
 	if get_tree().is_network_server():
 		if(response_code == 200):
 			var json = JSON.parse(body.get_string_from_utf8());
@@ -440,8 +435,6 @@ remote func user_ready(id, userToken):
 		var http = HTTPRequest.new();
 		add_child(http);
 		http.connect("request_completed", self, "_HTTP_GameServerCheckUser_Completed")
-		print(Globals.mainServerIP + "gameServerCheckUser?" + "userToken=" + str(userToken) + "&networkID=" + str(id));
-		print(Globals.serverPrivateToken);
 		http.request(Globals.mainServerIP + "gameServerCheckUser?" + "userToken=" + str(userToken) + "&networkID=" + str(id), ["authorization: Bearer " + Globals.serverPrivateToken], false);
 		yield(http, "request_completed");
 		http.call_deferred("free");
