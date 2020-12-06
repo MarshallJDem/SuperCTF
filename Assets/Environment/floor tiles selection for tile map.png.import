@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Horizontal Middle Wall Red 2.png-00076e655d2978a789c6eea9f4e60a0c.stex"
+path="res://.import/floor tiles selection for tile map.png-d20ef5064366abc30bd62164f727c159.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Environment/Horizontal Middle Wall Red 2.png"
-dest_files=[ "res://.import/Horizontal Middle Wall Red 2.png-00076e655d2978a789c6eea9f4e60a0c.stex" ]
+source_file="res://Assets/Environment/floor tiles selection for tile map.png"
+dest_files=[ "res://.import/floor tiles selection for tile map.png-d20ef5064366abc30bd62164f727c159.stex" ]
 
 [params]
 
@@ -19,7 +19,7 @@ compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
-flags/repeat=1
+flags/repeat=0
 flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
