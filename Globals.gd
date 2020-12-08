@@ -15,7 +15,7 @@ var isServer = false;
 var allowedPlayers = [];
 var matchID;
 var matchType;
-var mapName = "TehoMap1";
+var mapName = "SquareZagv6";
 var allowCommands = true;
 var useSecure = true;
 var gameserverStatus = 0;
