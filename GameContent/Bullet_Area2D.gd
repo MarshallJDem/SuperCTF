@@ -40,6 +40,8 @@ func collided_with_bullet(bullet):
 
 # Called when the bullet collides with a laser
 func collided_with_laser(laser):
+	# Temporary disabling of this functionality
+	return;
 	# If this laser was shot by anybody on the same team as this bullet, ignore the collision
 	if laser.team_id == get_parent().team_id:
 		return;
