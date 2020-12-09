@@ -19,7 +19,7 @@
 [ext_resource path="res://Assets/Environment/Vertical Bottom Wall Red 2.png" type="Texture" id=25]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 130.811, 74.1675 )
+extents = Vector2( 157.535, 100.068 )
 
 [node name="Environment" type="Node"]
 __meta__ = {
@@ -515,17 +515,18 @@ scale = Vector2( 3, 65 )
 [node name="RedSpawn" type="KinematicBody2D" parent="YSort" groups=[
 "Red_Spawn",
 ]]
-position = Vector2( 811.957, 391.315 )
+position = Vector2( 983.452, 524.699 )
 collision_layer = 0
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="YSort/RedSpawn"]
-position = Vector2( 115.371, 137.48 )
+position = Vector2( -79.1185, 3.86296 )
 shape = SubResource( 1 )
 
 [node name="Area2D" type="Area2D" parent="YSort/RedSpawn" groups=[
 "Red_Spawn",
 ]]
+position = Vector2( -197.43, -134.352 )
 
 [node name="CollisionShape2D3" type="CollisionShape2D" parent="YSort/RedSpawn/Area2D"]
 position = Vector2( 115.35, 137.477 )
@@ -537,13 +538,13 @@ collision_layer = 0
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="YSort/BlueSpawn"]
-position = Vector2( 54.7966, 1.95772 )
+position = Vector2( 77.4067, 1.9577 )
 shape = SubResource( 1 )
 
 [node name="Area2D" type="Area2D" parent="YSort/BlueSpawn" groups=[
 "Blue_Spawn",
 ]]
-position = Vector2( -60.5743, -650.812 )
+position = Vector2( -37.9642, -650.812 )
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="YSort/BlueSpawn/Area2D"]
 position = Vector2( 115.371, 652.77 )
