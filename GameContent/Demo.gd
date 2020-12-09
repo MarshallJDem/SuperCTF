@@ -79,7 +79,8 @@ func detonate():
 	
 	if get_tree().is_network_server():
 		if stuck_player != null:
-			if stuck_player.invincible == false and stuck_player.alive == true and Globals.testing == false:
+			# Ignore invincibility because dash gives u temporary invincibility
+			if stuck_player.alive == true and Globals.testing == false and stuck_player.get_node("Invincibility_Timer").time_left == 0:
 				stuck_player.rpc("receive_hit", player_id, 3);
 
 	$Detonation_Timer.stop();
