@@ -53,14 +53,14 @@ __meta__ = {
 position = Vector2( 0, 12 )
 
 [node name="Flag_Home-0" parent="YSort" instance=ExtResource( 4 )]
-position = Vector2( -121.606, -566.147 )
+position = Vector2( -113.304, -579.732 )
 scale = Vector2( 2, 2 )
 z_index = -4016
 team_id = 0
 flag_id = 0
 
 [node name="Flag_Home-1" parent="YSort" instance=ExtResource( 4 )]
-position = Vector2( 121.606, 560.505 )
+position = Vector2( 114.228, 571.813 )
 scale = Vector2( 2, 2 )
 z_index = -4016
 team_id = 1
