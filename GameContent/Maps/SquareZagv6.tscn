@@ -81,7 +81,7 @@ region_rect = Rect2( 8, 16, 8, 24 )
 override_z = false
 
 [node name="Wall_Sprite549" parent="YSort" instance=ExtResource( 9 )]
-position = Vector2( -129.199, 361.5 )
+position = Vector2( -129.199, 360.5 )
 texture = ExtResource( 12 )
 region_enabled = true
 region_rect = Rect2( 0, 0, 723, 24 )
