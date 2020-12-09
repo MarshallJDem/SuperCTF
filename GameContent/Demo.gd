@@ -85,6 +85,11 @@ remotesync func detonate(from_remote = false):
 		else:
 			position = stuck_player.position + (10  * stick_direction);
 			z_index = stuck_player.z_index + 5;
+	
+	
+	if stuck_player != null:
+		if stuck_player.invincible == false and stuck_player.alive == true and Globals.testing == false:
+			stuck_player.rpc("receive_hit", player_id, 3);
 
 	$Detonation_Timer.stop();
 	$Death_Timer.start();
