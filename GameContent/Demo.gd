@@ -182,13 +182,14 @@ func move(d):
 func check_for_explosion(collision) -> bool:
 	if !Globals.testing and !get_tree().is_network_server():
 		return false;
-	if collision.collider.is_in_group("Forcefield_Bodies"):
-		if Globals.testing:
-			fizout();
-		else:
-			rpc("fizout");
-		return true;
+	#if collision.collider.is_in_group("Forcefield_Bodies"):
+	#	if Globals.testing:
+	#		fizout();
+	#	else:
+	#		rpc("fizout");
+	#	return true;
 	return false;
+
 remotesync func fizout():
 	$Death_Timer.start();
 	is_blank = true;
