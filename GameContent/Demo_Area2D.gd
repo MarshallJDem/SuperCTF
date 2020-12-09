@@ -27,7 +27,7 @@ func collided_with_player(player):
 		return;
 	
 	# If the player it hit is dead, ignore it
-	if get_parent().alive == false:
+	if player.alive == false:
 		return;
 		
 	if get_tree().is_network_server():
