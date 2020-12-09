@@ -199,7 +199,7 @@ remotesync func direction_override(dir, pos ,time):
 		return;
 	direction = dir;
 	position = pos;
-	var deltatime = (OS.get_system_time_msecs() - Globals.match_start_time) - time;
+	var deltatime = ((OS.get_system_time_msecs() - Globals.match_start_time) - time)/1000;
 	simulate_physics(deltatime);
 	
 
