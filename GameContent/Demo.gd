@@ -57,7 +57,7 @@ remotesync func stick_to_player(p_id, stick_direction):
 	stuck_player = p;
 	self.stick_direction = stick_direction;
 
-func detonate(from_remote = false):
+func detonate():
 	
 	# If we already detonated
 	if $Death_Timer.time_left > 0:
@@ -68,15 +68,6 @@ func detonate(from_remote = false):
 		$Sprite.set_texture(death_atlas_blue);
 	$Sprite.hframes = 5;
 		
-	if from_remote and puppet_state == Puppet_State.Master:
-		var t = Timer.new();
-		t.set_wait_time(float(Globals.player_lerp_time)/float(1000.0));
-		t.set_one_shot(true);
-		self.add_child(t);
-		t.start();
-		yield(t, "timeout");
-		t.call_deferred("free");
-		print("Waited for detonation");
 	
 	if stuck_player != null and is_instance_valid(stuck_player):
 		# Detach from player if they die
@@ -178,16 +169,39 @@ func move(d):
 		total_compensation = 0;
 		
 	deltatime += progress_delta * total_compensation;
-	var collision = move_and_collide(direction * deltatime * speed);
-	if collision:
-		if check_for_explosion(collision):
-			return;
-		# Reflect bullet
-		var reflection_dir = (direction - (2 * direction.dot(collision.normal) * collision.normal)).normalized();
-		collision = move_and_collide(reflection_dir * collision.remainder.distance_to(Vector2.ZERO));
+	simulate_physics(deltatime);
+
+func simulate_physics(deltatime):
+	var collided_with_forcefield = false;
+	var remainder = deltatime * speed;
+	var samples = 0;
+	while(remainder != 0 and samples < 15):
+		samples += 1;
+		var collision = move_and_collide(direction * remainder);
 		if collision:
-			check_for_explosion(collision);
-		direction = reflection_dir;
+			if check_for_explosion(collision):
+				return;
+			# Reflect bullet
+			var reflection_dir = (direction - (2 * direction.dot(collision.normal) * collision.normal)).normalized();
+			remainder = collision.remainder.distance_to(Vector2.ZERO);
+			direction = reflection_dir
+			if collision.collider.is_in_group("Forcefield_Bodies"):
+				collided_with_forcefield = true
+		else:
+			remainder = 0;
+	if get_tree().is_network_server() and collided_with_forcefield:
+		rpc("direction_override", direction, position, (OS.get_system_time_msecs() - Globals.match_start_time));
+
+remotesync func direction_override(dir, pos ,time):
+	# This is irellevant for the server because it would just override its own changes
+	if get_tree().is_network_server():
+		return;
+	direction = dir;
+	position = pos;
+	var deltatime = (OS.get_system_time_msecs() - Globals.match_start_time) - time;
+	simulate_physics(deltatime);
+	
+
 func check_for_explosion(collision) -> bool:
 	if !Globals.testing and !get_tree().is_network_server():
 		return false;
