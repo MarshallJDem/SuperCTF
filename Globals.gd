@@ -149,10 +149,12 @@ func _enter_tree():
 	if OS.has_feature("editor"):
 		testing = false;
 	#experimental =  true;#OS.has_feature("debug") and !OS.has_feature("editor");
-	if experimental and !isServer:
-		skirmishIP = "superctf.com:42490";
-		serverIP = skirmishIP;
-		get_tree().change_scene("res://GameContent/Main.tscn");
+	if experimental:
+		skirmishMap = "SquareZagv6"
+		if !isServer:
+			skirmishIP = "superctf.com:42490";
+			serverIP = skirmishIP;
+			get_tree().change_scene("res://GameContent/Main.tscn");
 
 func _ready():
 	add_child(HTTPRequest_PollPlayerStatus);
