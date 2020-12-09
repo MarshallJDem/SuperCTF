@@ -57,7 +57,7 @@ remotesync func stick_to_player(p_id, stick_direction):
 	stuck_player = p;
 	self.stick_direction = stick_direction;
 
-remotesync func detonate(from_remote = false):
+func detonate(from_remote = false):
 	
 	# If we already detonated
 	if $Death_Timer.time_left > 0:
@@ -86,10 +86,10 @@ remotesync func detonate(from_remote = false):
 			position = stuck_player.position + (10  * stick_direction);
 			z_index = stuck_player.z_index + 5;
 	
-	
-	if stuck_player != null:
-		if stuck_player.invincible == false and stuck_player.alive == true and Globals.testing == false:
-			stuck_player.rpc("receive_hit", player_id, 3);
+	if get_tree().is_network_server():
+		if stuck_player != null:
+			if stuck_player.invincible == false and stuck_player.alive == true and Globals.testing == false:
+				stuck_player.rpc("receive_hit", player_id, 3);
 
 	$Detonation_Timer.stop();
 	$Death_Timer.start();
@@ -98,15 +98,19 @@ remotesync func detonate(from_remote = false):
 	speed = 0;
 
 func _death_timer_ended():
-	
 	# Give time for audio to finish
 	$Area2D.monitorable = false;
 	$Area2D.monitoring = false;
 	$Area2D2.monitorable = false;
 	$Area2D2.monitoring = false;
 	visible = false;
-	yield(get_tree().create_timer(1), "timeout");
-	call_deferred("free");
+	if get_tree().is_network_server():
+		yield(get_tree().create_timer(1), "timeout");
+		rpc("die");
+	
+remotesync func die():
+	call_deferred("queue_free");
+	
 func _process(delta):
 	
 	animation_progress += delta;
