@@ -17,7 +17,7 @@ var allowedPlayers = [];
 var matchID;
 var matchType;
 var mapName = "SquareZagv6";
-var allowCommands = true;
+var allowCommands = false;
 var useSecure = true;
 var gameserverStatus = 0;
 
@@ -151,6 +151,7 @@ func _enter_tree():
 		testing = false;
 	#experimental =  true;#OS.has_feature("debug") and !OS.has_feature("editor");
 	if experimental:
+		allowCommands = true;
 		skirmishMap = "SquareZagv6"
 		if !isServer:
 			skirmishIP = "superctf.com:42490";
