@@ -70,7 +70,7 @@ position = Vector2( 93.014, 636.582 )
 z_index = -129
 texture = ExtResource( 12 )
 region_enabled = true
-region_rect = Rect2( 0, 0, 1941, 24 )
+region_rect = Rect2( 0, 0, 1937, 24 )
 
 [node name="Wall_Sprite901" parent="YSort/Wall_Sprite548" instance=ExtResource( 9 )]
 position = Vector2( 136.916, 0 )
@@ -80,18 +80,39 @@ region_enabled = true
 region_rect = Rect2( 8, 16, 8, 24 )
 override_z = false
 
+[node name="Wall_Sprite604" parent="YSort/Wall_Sprite548" instance=ExtResource( 9 )]
+position = Vector2( -966.757, 6.10352e-05 )
+z_index = 1
+texture = ExtResource( 7 )
+region_enabled = true
+region_rect = Rect2( 0, 16, 8, 24 )
+override_z = false
+
+[node name="Wall_Sprite606" parent="YSort" instance=ExtResource( 9 )]
+position = Vector2( -1061.95, -421.366 )
+z_index = 1000
+texture = ExtResource( 7 )
+region_enabled = true
+region_rect = Rect2( 24, 16, 8, 24 )
+override_z = false
+
 [node name="Wall_Sprite549" parent="YSort" instance=ExtResource( 9 )]
-position = Vector2( -129.199, 360.5 )
+position = Vector2( -129.199, 361.4 )
 texture = ExtResource( 12 )
 region_enabled = true
 region_rect = Rect2( 0, 0, 723, 24 )
 
 [node name="Wall_Sprite603" parent="YSort/Wall_Sprite549" instance=ExtResource( 9 )]
-position = Vector2( 359.293, -7.99905 )
+position = Vector2( 359.293, 0 )
 z_index = 1
 texture = ExtResource( 7 )
 region_enabled = true
-region_rect = Rect2( 16, 0, 8, 40 )
+region_rect = Rect2( 16, 16, 8, 24 )
+override_z = false
+
+[node name="Wall_Sprite557" parent="YSort/Wall_Sprite549" instance=ExtResource( 9 )]
+position = Vector2( -368.783, 0 )
+texture = ExtResource( 18 )
 override_z = false
 
 [node name="Wall_Sprite550" parent="YSort" instance=ExtResource( 9 )]
@@ -130,6 +151,54 @@ texture = ExtResource( 19 )
 region_enabled = true
 region_rect = Rect2( 0, 0, 320, 24 )
 
+[node name="Wall_Sprite605" parent="YSort" instance=ExtResource( 9 )]
+position = Vector2( -873.743, -421.366 )
+z_index = 1000
+texture = ExtResource( 7 )
+region_enabled = true
+region_rect = Rect2( 32, 40, 8, 24 )
+override_z = false
+
+[node name="Wall_Sprite611" parent="YSort" instance=ExtResource( 9 )]
+position = Vector2( -229.93, -650.89 )
+z_index = 1000
+texture = ExtResource( 7 )
+region_enabled = true
+region_rect = Rect2( 32, 40, 8, 24 )
+override_z = false
+
+[node name="Wall_Sprite607" parent="YSort" instance=ExtResource( 9 )]
+position = Vector2( -1061.95, -650.89 )
+z_index = 1000
+texture = ExtResource( 7 )
+region_enabled = true
+region_rect = Rect2( 24, 40, 8, 24 )
+override_z = false
+
+[node name="Wall_Sprite612" parent="YSort" instance=ExtResource( 9 )]
+position = Vector2( -644, -191.491 )
+z_index = 1000
+texture = ExtResource( 7 )
+region_enabled = true
+region_rect = Rect2( 24, 40, 8, 24 )
+override_z = false
+
+[node name="Wall_Sprite608" parent="YSort" instance=ExtResource( 9 )]
+position = Vector2( -230.094, -375.776 )
+z_index = 1000
+texture = ExtResource( 7 )
+region_enabled = true
+region_rect = Rect2( 24, 40, 8, 24 )
+override_z = false
+
+[node name="Wall_Sprite613" parent="YSort" instance=ExtResource( 9 )]
+position = Vector2( 873.743, -650.89 )
+z_index = 1000
+texture = ExtResource( 7 )
+region_enabled = true
+region_rect = Rect2( 16, 40, 8, 24 )
+override_z = false
+
 [node name="Wall_Sprite909" parent="YSort" instance=ExtResource( 9 )]
 position = Vector2( -552.043, -191.491 )
 z_index = -129
@@ -137,47 +206,30 @@ texture = ExtResource( 19 )
 region_enabled = true
 region_rect = Rect2( 0, 0, 187, 24 )
 
+[node name="Wall_Sprite613" parent="YSort/Wall_Sprite909" instance=ExtResource( 9 )]
+position = Vector2( 92.322, -1.52588e-05 )
+texture = ExtResource( 7 )
+region_enabled = true
+region_rect = Rect2( 32, 16, 8, 24 )
+override_z = false
+
 [node name="Wall_Sprite916" parent="YSort" instance=ExtResource( 9 )]
 position = Vector2( 136.047, -375.776 )
 texture = ExtResource( 19 )
 region_enabled = true
 region_rect = Rect2( 0, 0, 728, 24 )
 
-[node name="Wall_Sprite917" parent="YSort" instance=ExtResource( 9 )]
-position = Vector2( 499.06, -375.78 )
-z_index = -129
+[node name="Wall_Sprite917" parent="YSort/Wall_Sprite916" instance=ExtResource( 9 )]
+position = Vector2( 363.013, -0.0039978 )
 texture = ExtResource( 16 )
 flip_h = true
-
-[node name="Wall_Sprite877" parent="YSort" instance=ExtResource( 9 )]
-position = Vector2( -873.761, -421.223 )
-z_index = -129
-texture = ExtResource( 23 )
-
-[node name="Wall_Sprite878" parent="YSort" instance=ExtResource( 9 )]
-position = Vector2( -1061.95, -647.087 )
-z_index = -129
-texture = ExtResource( 23 )
-
-[node name="Wall_Sprite879" parent="YSort" instance=ExtResource( 9 )]
-position = Vector2( 873.743, -646.942 )
-z_index = -129
-texture = ExtResource( 23 )
-
-[node name="Wall_Sprite881" parent="YSort" instance=ExtResource( 9 )]
-position = Vector2( -229.93, -646.704 )
-z_index = -129
-texture = ExtResource( 23 )
+override_z = false
 
 [node name="Wall_Sprite882" parent="YSort" instance=ExtResource( 9 )]
 position = Vector2( -459.721, -501.232 )
-z_index = -129
+z_index = 1000
 texture = ExtResource( 23 )
-
-[node name="Wall_Sprite883" parent="YSort" instance=ExtResource( 9 )]
-position = Vector2( -230.094, -374.57 )
-z_index = -129
-texture = ExtResource( 23 )
+override_z = false
 
 [node name="Wall_Sprite884" parent="YSort" instance=ExtResource( 9 )]
 position = Vector2( -91.92, -100.871 )
@@ -201,13 +253,9 @@ texture = ExtResource( 23 )
 
 [node name="Wall_Sprite888" parent="YSort" instance=ExtResource( 9 )]
 position = Vector2( 229.93, 504.996 )
-z_index = -129
+z_index = 1000
 texture = ExtResource( 23 )
-
-[node name="Wall_Sprite889" parent="YSort" instance=ExtResource( 9 )]
-position = Vector2( -644, -191.487 )
-z_index = -129
-texture = ExtResource( 23 )
+override_z = false
 
 [node name="Wall_Sprite890" parent="YSort" instance=ExtResource( 9 )]
 position = Vector2( -644.036, 101.087 )
@@ -216,8 +264,9 @@ texture = ExtResource( 23 )
 
 [node name="Wall_Sprite918" parent="YSort" instance=ExtResource( 9 )]
 position = Vector2( 644.036, -231.075 )
-z_index = -129
+z_index = 1000
 texture = ExtResource( 23 )
+override_z = false
 
 [node name="Wall_Sprite891" parent="YSort" instance=ExtResource( 9 )]
 position = Vector2( 1061.95, 407.495 )
@@ -226,7 +275,6 @@ texture = ExtResource( 23 )
 
 [node name="Wall_Sprite892" parent="YSort" instance=ExtResource( 9 )]
 position = Vector2( 644.036, -112.905 )
-z_index = -129
 texture = ExtResource( 20 )
 
 [node name="Wall_Sprite893" parent="YSort" instance=ExtResource( 9 )]
@@ -234,24 +282,12 @@ position = Vector2( -230.094, -191.464 )
 z_index = -129
 texture = ExtResource( 20 )
 
-[node name="Wall_Sprite894" parent="YSort" instance=ExtResource( 9 )]
-position = Vector2( -459.721, -191.464 )
-z_index = -129
-texture = ExtResource( 20 )
-
 [node name="Wall_Sprite895" parent="YSort" instance=ExtResource( 9 )]
 position = Vector2( -644, -112.864 )
-z_index = -129
 texture = ExtResource( 20 )
 
 [node name="Wall_Sprite896" parent="YSort" instance=ExtResource( 9 )]
 position = Vector2( -229.93, -516.896 )
-z_index = -129
-texture = ExtResource( 20 )
-
-[node name="Wall_Sprite897" parent="YSort" instance=ExtResource( 9 )]
-position = Vector2( -1061.95, -421.257 )
-z_index = -129
 texture = ExtResource( 20 )
 
 [node name="Wall_Sprite898" parent="YSort" instance=ExtResource( 9 )]
@@ -295,28 +331,19 @@ position = Vector2( 459.721, 489.311 )
 z_index = -129
 texture = ExtResource( 25 )
 
-[node name="Wall_Sprite557" parent="YSort" instance=ExtResource( 9 )]
-position = Vector2( -497.982, 361.5 )
-z_index = -129
-texture = ExtResource( 18 )
-
 [node name="Wall_Sprite609" parent="YSort" instance=ExtResource( 9 )]
-position = Vector2( 230.094, 263.112 )
-scale = Vector2( 1, 6.04782 )
+position = Vector2( 230.094, 270.335 )
+scale = Vector2( 1, 6.64975 )
 z_index = 1000
 texture = ExtResource( 24 )
 override_z = false
 
-[node name="Wall_Sprite735" parent="YSort" instance=ExtResource( 9 )]
-position = Vector2( -873.743, 632.71 )
-z_index = -129
-texture = ExtResource( 25 )
-
 [node name="Wall_Sprite752" parent="YSort" instance=ExtResource( 9 )]
-position = Vector2( -873.743, 104.397 )
-scale = Vector2( 1, 43.0494 )
-z_index = -129
+position = Vector2( -873.743, 106.479 )
+scale = Vector2( 1, 43.2229 )
+z_index = 1000
 texture = ExtResource( 24 )
+override_z = false
 
 [node name="Wall_Sprite908" parent="YSort" instance=ExtResource( 9 )]
 position = Vector2( -644.036, 159.964 )
@@ -325,10 +352,11 @@ z_index = -129
 texture = ExtResource( 24 )
 
 [node name="Wall_Sprite910" parent="YSort" instance=ExtResource( 9 )]
-position = Vector2( -644, -149.975 )
-scale = Vector2( 1, 2.51442 )
-z_index = -129
+position = Vector2( -644, -152.223 )
+scale = Vector2( 1, 2.32706 )
+z_index = 1000
 texture = ExtResource( 24 )
+override_z = false
 
 [node name="Wall_Sprite911" parent="YSort" instance=ExtResource( 9 )]
 position = Vector2( 91.92, -5.68837 )
@@ -350,22 +378,25 @@ texture = ExtResource( 24 )
 override_z = false
 
 [node name="Wall_Sprite914" parent="YSort" instance=ExtResource( 9 )]
-position = Vector2( -229.93, -581.854 )
-scale = Vector2( 1, 4.44087 )
-z_index = -129
+position = Vector2( -229.93, -584.368 )
+scale = Vector2( 1, 4.68225 )
+z_index = 1000
 texture = ExtResource( 24 )
+override_z = false
 
 [node name="Wall_Sprite876" parent="YSort" instance=ExtResource( 9 )]
 position = Vector2( -1061.95, -537.758 )
 scale = Vector2( 1, 8.80731 )
-z_index = -129
+z_index = 1000
 texture = ExtResource( 24 )
+override_z = false
 
 [node name="Wall_Sprite753" parent="YSort" instance=ExtResource( 9 )]
-position = Vector2( 873.743, -120.19 )
-scale = Vector2( 1, 42.9918 )
-z_index = -129
+position = Vector2( 873.743, -122.299 )
+scale = Vector2( 1, 43.1675 )
+z_index = 1000
 texture = ExtResource( 24 )
+override_z = false
 
 [node name="Wall_Sprite904" parent="YSort" instance=ExtResource( 9 )]
 position = Vector2( 644.048, 136.519 )
@@ -374,16 +405,18 @@ z_index = -129
 texture = ExtResource( 24 )
 
 [node name="Wall_Sprite905" parent="YSort" instance=ExtResource( 9 )]
-position = Vector2( -230.094, -283.022 )
-scale = Vector2( 1, 6.67207 )
-z_index = -129
+position = Vector2( -230.094, -284.205 )
+scale = Vector2( 1, 6.77068 )
+z_index = 1000
 texture = ExtResource( 24 )
+override_z = false
 
 [node name="Wall_Sprite906" parent="YSort" instance=ExtResource( 9 )]
-position = Vector2( 644.036, -171.848 )
-scale = Vector2( 1, 3.9356 )
-z_index = -129
+position = Vector2( 644.036, -171.66 )
+scale = Vector2( 1, 3.95127 )
+z_index = 1000
 texture = ExtResource( 24 )
+override_z = false
 
 [node name="Wall_Sprite754" parent="YSort" instance=ExtResource( 9 )]
 position = Vector2( 459.721, 341.72 )
@@ -392,10 +425,11 @@ z_index = -129
 texture = ExtResource( 24 )
 
 [node name="Wall_Sprite755" parent="YSort" instance=ExtResource( 9 )]
-position = Vector2( -459.721, -346.957 )
-scale = Vector2( 1, 12.3413 )
-z_index = -129
+position = Vector2( -459.721, -349.004 )
+scale = Vector2( 1, 12.1707 )
+z_index = 1000
 texture = ExtResource( 24 )
+override_z = false
 
 [node name="Wall_Sprite907" parent="YSort" instance=ExtResource( 9 )]
 position = Vector2( -91.92, -5.86984 )
@@ -405,8 +439,9 @@ texture = ExtResource( 24 )
 
 [node name="Wall_Sprite610" parent="YSort" instance=ExtResource( 9 )]
 position = Vector2( 230.094, 179.449 )
-z_index = -129
+z_index = 1000
 texture = ExtResource( 23 )
+override_z = false
 
 [node name="Wall56" parent="YSort" instance=ExtResource( 2 )]
 position = Vector2( -136.974, 368.622 )
@@ -518,6 +553,10 @@ scale = Vector2( 3, 65 )
 position = Vector2( 983.452, 524.699 )
 collision_layer = 0
 collision_mask = 0
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="YSort/RedSpawn"]
 position = Vector2( -79.1185, 3.86296 )
@@ -536,6 +575,10 @@ shape = SubResource( 1 )
 position = Vector2( -982.014, -530.444 )
 collision_layer = 0
 collision_mask = 0
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="YSort/BlueSpawn"]
 position = Vector2( 77.4067, 1.9577 )
