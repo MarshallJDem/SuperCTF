@@ -112,9 +112,9 @@ func _process(delta):
 		# Move around as long as we aren't typing in chat
 		if !Globals.is_typing_in_chat:
 			move_on_inputs();
-	
-	camera_ref.get_node("Canvas_Layer/Vignette_Blue").visible = false;
-	camera_ref.get_node("Canvas_Layer/Vignette_Red").visible = false;
+	if is_instance_valid(camera_ref):
+		camera_ref.get_node("Canvas_Layer/Vignette_Blue").visible = false;
+		camera_ref.get_node("Canvas_Layer/Vignette_Red").visible = false;
 	if control and has_flag():
 		if team_id == 1:
 			camera_ref.get_node("Canvas_Layer/Vignette_Red").visible = true;

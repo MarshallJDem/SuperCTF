@@ -2,7 +2,8 @@ extends Node
 
 # Whether to run in testing mode (for development uses)
 var testing = false;
-var experimental = false;
+var experimental = true;
+var temporaryQuickplayDisable = true;
 
 #Game Servers (Both clients and servers use these vars, but in different ways. overlapping would not work)
 var serverIP = "";
@@ -15,8 +16,8 @@ var isServer = false;
 var allowedPlayers = [];
 var matchID;
 var matchType;
-var mapName = "TehoMap1";
-var allowCommands = true;
+var mapName = "SquareZagv6";
+var allowCommands = false;
 var useSecure = true;
 var gameserverStatus = 0;
 
@@ -149,8 +150,13 @@ func _enter_tree():
 	if OS.has_feature("editor"):
 		testing = false;
 	#experimental =  true;#OS.has_feature("debug") and !OS.has_feature("editor");
-	if experimental and !isServer:
-		get_tree().change_scene("res://GameContent/Main.tscn");
+	if experimental:
+		allowCommands = true;
+		skirmishMap = "SquareZagv6"
+		if !isServer:
+			skirmishIP = "superctf.com:42490";
+			serverIP = skirmishIP;
+			#get_tree().change_scene("res://GameContent/Main.tscn");
 
 func _ready():
 	add_child(HTTPRequest_PollPlayerStatus);

@@ -57,7 +57,7 @@ remotesync func stick_to_player(p_id, stick_direction):
 	stuck_player = p;
 	self.stick_direction = stick_direction;
 
-remotesync func detonate(from_remote = false):
+func detonate():
 	
 	# If we already detonated
 	if $Death_Timer.time_left > 0:
@@ -68,15 +68,6 @@ remotesync func detonate(from_remote = false):
 		$Sprite.set_texture(death_atlas_blue);
 	$Sprite.hframes = 5;
 		
-	if from_remote and puppet_state == Puppet_State.Master:
-		var t = Timer.new();
-		t.set_wait_time(float(Globals.player_lerp_time)/float(1000.0));
-		t.set_one_shot(true);
-		self.add_child(t);
-		t.start();
-		yield(t, "timeout");
-		t.call_deferred("free");
-		print("Waited for detonation");
 	
 	if stuck_player != null and is_instance_valid(stuck_player):
 		# Detach from player if they die
@@ -85,6 +76,12 @@ remotesync func detonate(from_remote = false):
 		else:
 			position = stuck_player.position + (10  * stick_direction);
 			z_index = stuck_player.z_index + 5;
+	
+	if get_tree().is_network_server():
+		if stuck_player != null:
+			# Ignore invincibility because dash gives u temporary invincibility
+			if stuck_player.alive == true and Globals.testing == false and stuck_player.get_node("Invincibility_Timer").time_left == 0:
+				stuck_player.rpc("receive_hit", player_id, 3);
 
 	$Detonation_Timer.stop();
 	$Death_Timer.start();
@@ -93,15 +90,19 @@ remotesync func detonate(from_remote = false):
 	speed = 0;
 
 func _death_timer_ended():
-	
 	# Give time for audio to finish
 	$Area2D.monitorable = false;
 	$Area2D.monitoring = false;
 	$Area2D2.monitorable = false;
 	$Area2D2.monitoring = false;
 	visible = false;
-	yield(get_tree().create_timer(1), "timeout");
-	call_deferred("free");
+	if get_tree().is_network_server():
+		yield(get_tree().create_timer(1), "timeout");
+		rpc("die");
+	
+remotesync func die():
+	call_deferred("queue_free");
+	
 func _process(delta):
 	
 	animation_progress += delta;
@@ -169,26 +170,50 @@ func move(d):
 		total_compensation = 0;
 		
 	deltatime += progress_delta * total_compensation;
-	var collision = move_and_collide(direction * deltatime * speed);
-	if collision:
-		if check_for_explosion(collision):
-			return;
-		# Reflect bullet
-		var reflection_dir = (direction - (2 * direction.dot(collision.normal) * collision.normal)).normalized();
-		collision = move_and_collide(reflection_dir * collision.remainder.distance_to(Vector2.ZERO));
+	simulate_physics(deltatime);
+
+func simulate_physics(deltatime):
+	var collided_with_forcefield = false;
+	var remainder = deltatime * speed;
+	var samples = 0;
+	while(remainder != 0 and samples < 15):
+		samples += 1;
+		var collision = move_and_collide(direction * remainder);
 		if collision:
-			check_for_explosion(collision);
-		direction = reflection_dir;
+			if check_for_explosion(collision):
+				return;
+			# Reflect bullet
+			var reflection_dir = (direction - (2 * direction.dot(collision.normal) * collision.normal)).normalized();
+			remainder = collision.remainder.distance_to(Vector2.ZERO);
+			direction = reflection_dir
+			if collision.collider.is_in_group("Forcefield_Bodies"):
+				collided_with_forcefield = true
+		else:
+			remainder = 0;
+	if get_tree().is_network_server() and collided_with_forcefield:
+		rpc("direction_override", direction, position, (OS.get_system_time_msecs() - Globals.match_start_time));
+
+remotesync func direction_override(dir, pos ,time):
+	# This is irellevant for the server because it would just override its own changes
+	if get_tree().is_network_server():
+		return;
+	direction = dir;
+	position = pos;
+	var deltatime = ((OS.get_system_time_msecs() - Globals.match_start_time) - time)/1000;
+	simulate_physics(deltatime);
+	
+
 func check_for_explosion(collision) -> bool:
 	if !Globals.testing and !get_tree().is_network_server():
 		return false;
-	if collision.collider.is_in_group("Forcefield_Bodies"):
-		if Globals.testing:
-			fizout();
-		else:
-			rpc("fizout");
-		return true;
+	#if collision.collider.is_in_group("Forcefield_Bodies"):
+	#	if Globals.testing:
+	#		fizout();
+	#	else:
+	#		rpc("fizout");
+	#	return true;
 	return false;
+
 remotesync func fizout():
 	$Death_Timer.start();
 	is_blank = true;

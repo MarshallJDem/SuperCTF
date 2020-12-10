@@ -39,7 +39,6 @@ var Game_Results_Screen = preload("res://Game_Results_Screen.tscn");
 
 func _ready():
 	
-	
 	if !Globals.isServer and Globals.player_status == 1:
 		Globals.matchType = 0;
 		Globals.serverIP = Globals.skirmishIP;

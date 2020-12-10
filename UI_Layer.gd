@@ -54,7 +54,9 @@ func set_mmr_and_rank_labels(rank, mmr):
 func disable_buttons():
 	$CancelQueueButton.visible = false;
 	$RankedButton.visible = false;
+	$RankedWarning.visible = false;
 	$QuickplayButton.visible = false;
+	$QuickplayWarning.visible = false;
 	$PlayAsGuestButton.visible = false;
 	$CreateAccountButton.visible = false;
 	$LoginButton.visible = false;
@@ -155,6 +157,22 @@ func _process(delta):
 		$RankedWarning.bbcode_text = "[center][color=gray]Must make an account"
 		$RankedWarning.visible = true;
 	
+	if Globals.temporaryQuickplayDisable:
+		$RankedButton.visible = false;
+		$RankedWarning.visible = false;
+		$QuickplayButton.disabled = false;
+		$QuickplayWarning.visible = false;
+		$QuickplayButton.text = "Find Match"
+		if players_in_party > 2:
+			$QuickplayButton.disabled = true;
+			$QuickplayWarning.visible = true;
+			$QuickplayWarning.bbcode_text = "[center][color=gray]Max party size is 2 currently"
+		if Globals.player_party_data != null and Globals.player_party_data.partyHostID != Globals.player_uid:
+			$QuickplayButton.disabled = true;
+			$QuickplayWarning.visible = true;
+			$QuickplayWarning.bbcode_text = "[center][color=gray]Must be party host"
+		
+		
 	
 	#$PartyText.bbcode_text = ;
 	$PartyText.clear();
@@ -213,5 +231,8 @@ func _ranked_pressed():
 func _quickplay_pressed():
 	disable_buttons();
 	set_view(VIEW_IN_QUEUE);
+	if Globals.temporaryQuickplayDisable:
+		get_parent().join_MM_queue(2);
+		return;
 	get_parent().join_MM_queue(1);
 
