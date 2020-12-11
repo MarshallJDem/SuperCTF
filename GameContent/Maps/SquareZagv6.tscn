@@ -603,6 +603,12 @@ position = Vector2( -37.9642, -650.812 )
 position = Vector2( 115.371, 652.77 )
 shape = SubResource( 1 )
 
+[node name="BlueSpawn_Location" type="Node2D" parent="YSort"]
+position = Vector2( -983.739, -531.536 )
+
+[node name="RedSpawn_Location" type="Node2D" parent="YSort"]
+position = Vector2( 985.326, 523.603 )
+
 [node name="SquareZagMapV2Template" type="Sprite" parent="."]
 visible = false
 position = Vector2( 70, 24 )
