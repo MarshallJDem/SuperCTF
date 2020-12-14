@@ -14,6 +14,9 @@ func _ready():
 
 func _process(delta):
 	z_index = global_position.y;
+	if get_parent().name == "MainScene":
+		z_as_relative = false;
+		z_index = 4000;
 
 # Sets the team id and flag color of this flag using the given id
 func set_team(id):
