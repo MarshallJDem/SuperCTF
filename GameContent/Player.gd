@@ -121,6 +121,18 @@ func _process(delta):
 	
 	update();
 	
+	
+	#check if the player is the one we ar e controlling
+	if player_id == Globals.localPlayerID:
+		#get the players flag home
+		var flagHome = get_tree().get_root().get_node("MainScene/Map/YSort/Flag_Home-" + str(team_id));
+		#turn the helper arrow on if they have the flag and off if they dont
+		flagHome.toggle_score_helper(has_flag())
+
+	
+	
+	
+	
 	if $Invincibility_Timer.time_left > 0:
 		var t = $Invincibility_Timer.time_left / $Invincibility_Timer.wait_time 
 		var x =  (t * 10);
