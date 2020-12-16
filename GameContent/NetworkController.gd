@@ -365,7 +365,7 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 					allowed = true;
 			if(allowed || Globals.matchType == 0):
 				var message = player_name + " connected to the server";
-				get_tree().get_root().get_node("MainScene/Chat_Layer/LineEdit").rpc("receive_message", "[color=green]" + message +  "[/color]", -1);
+				get_tree().get_root().get_node("MainScene/Chat_Layer/Line_Edit").rpc("receive_message", "[color=green]" + message +  "[/color]", -1);
 				if Globals.matchType == 0:
 					var team_id = 0;
 					var b=0; var r=0;
@@ -481,11 +481,12 @@ func _client_disconnected(id):
 		if players[i]["network_id"] == id:
 			player_id = i;
 	if player_id == -1:
+		print("COULDNT FIND PLAYER IN PLAYERS DATA TO DELETE FOR NETWORKID : " + str(id));
 		return;
 	if get_tree().is_network_server():
 		var message = players[player_id]["name"];
 		message += " disconnected from the server";
-		get_tree().get_root().get_node("MainScene/Chat_Layer/LineEdit").rpc("receive_message", "[color=red]" + message +  "[/color]", -1);
+		get_tree().get_root().get_node("MainScene/Chat_Layer/Line_Edit").rpc("receive_message", "[color=red]" + message +  "[/color]", -1);
 		if Globals.matchType == 0:
 			players.erase(player_id);
 			if players.size() == 0:
