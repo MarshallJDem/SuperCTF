@@ -82,7 +82,6 @@ func teleport_pressed():
 	if $Teleport_Timer.time_left == 0 and $Weapon_Node/Laser_Timer.time_left == 0:
 		move_on_inputs(true);
 		camera_ref.lag_smooth();
-		$Teleport_Timer.start();
 func is_in_own_spawn() -> bool:
 	if team_id == 1:
 		return $Area2D.is_in_red_spawn;
@@ -255,7 +254,7 @@ func move_on_inputs(teleport = false):
 	else:
 		input.x = (1 if Input.is_key_pressed(KEY_D) else 0) - (1 if Input.is_key_pressed(KEY_A) else 0)
 		input.y = (1 if Input.is_key_pressed(KEY_S) else 0) - (1 if Input.is_key_pressed(KEY_W) else 0)
-		input = input.normalized();
+	input = input.normalized();
 	last_movement_input = input;
 	if teleport or (input.x != 0 or input.y != 0):
 		has_moved_after_respawn = true;
@@ -273,8 +272,9 @@ func move_on_inputs(teleport = false):
 		if areas[i].is_in_group("Landmine_Bodies") and areas[i].monitorable:
 			speed = speed / 2.0;
 			break;
-	if teleport:
+	if teleport and $Teleport_Timer.time_left == 0:
 		speed = TELEPORT_SPEED;
+		$Teleport_Timer.start();
 	var vec = (input * speed);
 	
 	var previous_pos = position;
