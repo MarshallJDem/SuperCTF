@@ -43,7 +43,7 @@ remotesync func spawn_powerup(n):
 
 # Called by client on server to ask for an update on the spawner state
 master func request_update():
-	var id = get_tree().get_rpc_caller_id();
+	var id = get_tree().get_rpc_sender_id();
 	rpc("receive_update",$Spawner_Timer.time_left,powerup_type,powerup_used, $Powerup.visible);
 
 # Called by the server on the client to send them details on current state

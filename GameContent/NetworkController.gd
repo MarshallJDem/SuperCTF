@@ -286,7 +286,11 @@ func _connection_ok():
 
 func _connection_failed():
 	print("Connection to serverfailed");
-	leave_match();
+	if Globals.matchType == 0:
+		Globals.create_popup("Something unknown went wrong when trying to connect to the skirmish lobby. You are still likely successfully in the matchmaking queue.");
+	else:
+		Globals.create_popup("Something unknown went wrong when trying to connect to the game server. You should try refreshing your page. That being said this is most likely our fault.");
+	#leave_match();
 
 func update_player_objects():
 	# Delete players that have left and spawn new players
@@ -401,7 +405,7 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 						if players[player_id]['network_id'] != 1:
 							server.disconnect_peer(players[player_id]['network_id'], 1000, "A new computer has connected as this player");
 						players[player_id]['network_id'] = network_id;
-						print("Authenticated new connection : " + str(network_id) + " and giving them control of player " + str(player_id) + " " + str(player_name));
+						print("Authenticated new connection : " + str(network_id) + " and giving them control of player id " + str(player_id) + " with name " + str(player_name));
 						rpc("update_players_data", players, round_is_running);
 						rpc("resync_match_time_limit", $Match_Time_Limit_Timer.time_left, $Match_Time_Limit_Timer.paused);
 						# If this user is joining mid match
