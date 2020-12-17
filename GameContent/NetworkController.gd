@@ -402,7 +402,8 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 						# Update the players array and give it to everybody so they can update player data and network masters etc.
 						players[player_id]['name'] = player_name;
 						players[player_id]['class'] = Globals.Classes.Bullet;
-						if players[player_id]['network_id'] != 1:
+						if players[player_id]['network_id'] != network_id:
+							print("Disconnecting peer " + str(players[player_id]['network_id']) + " because a new player connected to the same user id " + str(user_id) + " and name " + str(player_name) +  " with network id: " + str(network_id));
 							server.disconnect_peer(players[player_id]['network_id'], 1000, "A new computer has connected as this player");
 						players[player_id]['network_id'] = network_id;
 						print("Authenticated new connection : " + str(network_id) + " and giving them control of player id " + str(player_id) + " with name " + str(player_name));
