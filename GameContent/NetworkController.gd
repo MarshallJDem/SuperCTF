@@ -232,7 +232,6 @@ func join_server():
 				Globals.create_popup("Failed to join the skirmish lobby. You are still successfully in the matchmaking queue, but please tell us on discord that our skirmish lobby is down!  Error code 1552");
 			else:
 				Globals.create_popup("Failed to join the match. You should try refreshing your page. If that doesn't work please tell us in the discord that something went wrong with your match!  Error code 16122");
-			leave_match();
 
 # Starts the match
 func start_match():
@@ -290,7 +289,6 @@ func _connection_failed():
 		Globals.create_popup("Something unknown went wrong when trying to connect to the skirmish lobby. You are still likely successfully in the matchmaking queue.");
 	else:
 		Globals.create_popup("Something unknown went wrong when trying to connect to the game server. You should try refreshing your page. That being said this is most likely our fault.");
-	#leave_match();
 
 func update_player_objects():
 	# Delete players that have left and spawn new players
