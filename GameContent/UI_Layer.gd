@@ -30,7 +30,6 @@ func _process(delta):
 	elif show_move_gui == true:
 		show_move_gui = false;
 		$Move_GUI_Fade_Timer.start();
-	
 	if show_move_gui:
 		$Input_GUIs/Move_GUIs.modulate = Color(1,1,1,1);
 		$Input_GUIs/Ability_GUIs.modulate = Color(0,0,0,0);
@@ -164,10 +163,11 @@ func _process(delta):
 
 func _screen_resized():
 	var window_size = OS.get_window_size();
-	$"../Chat_Layer/Chat_Box".rect_scale= Vector2(1,1);
-	$"../Chat_Layer/Line_Edit".rect_scale= Vector2(1,1);
 	$"../Chat_Layer/Chat_Box".margin_bottom = window_size.y * (0.6);
+	$"../Chat_Layer/Chat_Box".get_font("normal_font").size = 8;
+	$"../Chat_Layer/Line_Edit".rect_scale= Vector2(1,1);
 	$"../Chat_Layer/Chat_Box".margin_top = 73;
+	$"../Chat_Layer/Chat_Box".margin_right = 300;
 	$"../Chat_Layer/Kill_Feed".get_font("normal_font").size = 16;
 	$"../Chat_Layer/Options_Button".rect_scale = Vector2(0.5,0.5);
 	$Cancel_Button.rect_scale = Vector2(0.5,0.5);
@@ -193,7 +193,8 @@ func _screen_resized():
 		$Alert_Text.get_font("normal_font").size =48;
 		$Skirmish_Subtext.get_font("normal_font").size =20;
 		$Alert_Text.margin_top = $Skirmish_Subtext.margin_top + 140;
-		$"../Chat_Layer/Chat_Box".rect_scale = Vector2(2,2);
+		$"../Chat_Layer/Chat_Box".margin_right = 600;
+		$"../Chat_Layer/Chat_Box".get_font("normal_font").size = 16;
 		$"../Chat_Layer/Kill_Feed".get_font("normal_font").size = 24;
 		$"../Chat_Layer/Line_Edit".rect_scale = Vector2(2,2);
 		$"../Chat_Layer/Options_Button".rect_scale = Vector2(1,1);
