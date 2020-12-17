@@ -153,6 +153,7 @@ func _enter_tree():
 	if experimental:
 		allowCommands = true;
 		skirmishMap = "SquareZagv6"
+		mainServerIP = "https://www.superctf.com" + ":42501/";
 		if !isServer:
 			skirmishIP = "superctf.com:42490";
 			serverIP = skirmishIP;
