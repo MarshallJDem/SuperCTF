@@ -366,7 +366,7 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 				if str(player.keys()[0]) == str(user_id):
 					allowed = true;
 			if(allowed || Globals.matchType == 0):
-				var message = player_name + " connected to the server";
+				var message = player_name + " connected";
 				get_tree().get_root().get_node("MainScene/Chat_Layer/Line_Edit").rpc("receive_message", "[color=green]" + message +  "[/color]", -1);
 				if Globals.matchType == 0:
 					var team_id = 0;
@@ -488,7 +488,7 @@ func _client_disconnected(id):
 		return;
 	if get_tree().is_network_server():
 		var message = players[player_id]["name"];
-		message += " disconnected from the server";
+		message += " disconnected";
 		get_tree().get_root().get_node("MainScene/Chat_Layer/Line_Edit").rpc("receive_message", "[color=red]" + message +  "[/color]", -1);
 		if Globals.matchType == 0:
 			players.erase(player_id);
@@ -787,6 +787,8 @@ remotesync func show_results_screen(scores, stats,players, results, matchType):
 # Shows over. You don't have to go home but you can't stay here
 remotesync func tell_clients_to_piss_off():
 	if !get_tree().is_network_server():
+		var message = "CHAT HAS ENDED";
+		get_tree().get_root().get_node("MainScene/Chat_Layer/Line_Edit").rpc("receive_message", "[color=red]" + message +  "[/color]", -1);
 		$Match_End_Timer.stop();
 		if !get_tree().get_root().has_node("MainScene/Game_Results_Screen"):
 			leave_match();

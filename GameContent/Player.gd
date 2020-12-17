@@ -97,7 +97,7 @@ func _process(delta):
 	$Teleport_Timer.wait_time = DASH_COOLDOWN_PMODIFIER + float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("dashCooldown"))/1000.0;
 	if !get_tree().get_root().get_node("MainScene/NetworkController").round_is_running:
 		has_moved_after_respawn = false;
-	if !Globals.testing and is_network_master():
+	if !Globals.testing and get_tree().has_network_peer() and is_network_master():
 		Globals.player_active_after_respawn = has_moved_after_respawn and control;
 		Globals.displaying_loadout = is_in_own_spawn();
 	elif Globals.testing:
@@ -131,10 +131,10 @@ func _process(delta):
 	z_index = global_position.y + 5;
 	
 	# If we are a puppet and not the server, then lerp our position
-	if !Globals.testing and !is_network_master() and !get_tree().is_network_server():
+	if !Globals.testing and get_tree().has_network_peer() and !is_network_master() and !get_tree().is_network_server():
 		position = lerp(lerp_start_pos, lerp_end_pos, clamp(float(OS.get_ticks_msec() - time_of_last_received_pos)/float(Globals.player_lerp_time), 0.0, 1.0));
 	
-	if !Globals.testing and is_network_master() and !get_tree().is_network_server():
+	if !Globals.testing and get_tree().has_network_peer() and is_network_master() and !get_tree().is_network_server():
 		rpc_unreliable("update_position", position);
 	
 	# Animation

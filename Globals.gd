@@ -307,7 +307,7 @@ func _HTTP_PollPlayerStatus_Completed(result, response_code, headers, body):
 		var matchID = str(json.result.status);
 		var query = "matchID=" + str(matchID) + "&authority=client";
 		HTTPRequest_GetMatchData.request(Globals.mainServerIP + "getMatchData?" + query, ["authorization: Bearer " + Globals.userToken], false, HTTPClient.METHOD_GET);
-	elif(player_status < 10 and int(json.result.status) == 0):
+	elif(player_status < 10 and player_status != 0 and int(json.result.status) == 0):
 		get_tree().change_scene("res://TitleScreen.tscn");
 	player_status = int(json.result.status);
 
