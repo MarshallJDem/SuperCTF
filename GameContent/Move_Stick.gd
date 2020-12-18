@@ -28,7 +28,7 @@ func _input(event):
 				local_player.get_node("Utility_Node").utility_released(event.position + translate);
 			if event.is_pressed() and (event.position - rect_position).distance_to($Dash.rect_position + $Dash.rect_size/2) < button_radius:
 				if local_player != null:
-					local_player.teleport_pressed();
+					local_player.attempt_teleport();
 				return;
 			if event.is_pressed() and (event.position - rect_position).distance_to($Ult.rect_position + $Ult.rect_size/2) < button_radius:
 				if local_player != null:

@@ -331,6 +331,17 @@ func _HTTP_GetMatchData_Completed(result, response_code, headers, body):
 var last_pollPlayerStatus_response = 0;
 var last_confirmClientConnection_response = 0;
 
+func get_input_vector() -> Vector2:
+	var input = Vector2(0,0);
+	if Globals.control_scheme == Globals.Control_Schemes.touchscreen:
+		if get_tree().get_root().has_node("MainScene/UI_Layer/Move_Stick"):
+			input = get_tree().get_root().get_node("MainScene/UI_Layer/Move_Stick").stick_vector / get_tree().get_root().get_node("MainScene/UI_Layer/Move_Stick").radius_big;
+	else:
+		input.x = (1 if Input.is_key_pressed(KEY_D) else 0) - (1 if Input.is_key_pressed(KEY_A) else 0)
+		input.y = (1 if Input.is_key_pressed(KEY_S) else 0) - (1 if Input.is_key_pressed(KEY_W) else 0)
+	input = input.normalized();
+	return input;
+
 func attempt_PollPlayerStatus():
 	if OS.get_ticks_msec() - last_pollPlayerStatus_response > 1000:
 		# If were not already in the middle of a poll, poll it
