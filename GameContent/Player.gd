@@ -277,6 +277,10 @@ func attempt_teleport():
 		return;
 	$Teleport_Timer.start();
 	
+	# Smooth camera slower for a moment
+	if is_instance_valid(camera_ref):
+		camera_ref.lag_smooth();
+	
 	var input = Globals.get_input_vector();
 
 	var vec = (input * TELEPORT_SPEED);
