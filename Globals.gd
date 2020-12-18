@@ -2,8 +2,9 @@ extends Node
 
 # Whether to run in testing mode (for development uses)
 var testing = false;
-var experimental = false;
+var experimental = true;
 var temporaryQuickplayDisable = true;
+var localTesting = false; # Used for running a server locally on the machine
 
 #Game Servers (Both clients and servers use these vars, but in different ways. overlapping would not work)
 var serverIP = "";
@@ -153,10 +154,24 @@ func _enter_tree():
 	if experimental:
 		allowCommands = true;
 		skirmishMap = "SquareZagv6"
+		mainServerIP = "https://www.superctf.com" + ":42501/";
 		if !isServer:
 			skirmishIP = "superctf.com:42490";
 			serverIP = skirmishIP;
 			#get_tree().change_scene("res://GameContent/Main.tscn");
+	if localTesting:
+		isServer = false;
+		allowCommands = true;
+		mainServerIP = "https://www.superctf.com" + ":42501/";
+		skirmishIP = "localhost:42401";
+		useSecure = false;
+		port = 42401
+		if isServer:
+			serverPrivateToken = "localhosttoken";
+			matchType = 0;
+		else:
+			serverIP = skirmishIP;
+		
 
 func _ready():
 	add_child(HTTPRequest_PollPlayerStatus);
@@ -292,7 +307,7 @@ func _HTTP_PollPlayerStatus_Completed(result, response_code, headers, body):
 		var matchID = str(json.result.status);
 		var query = "matchID=" + str(matchID) + "&authority=client";
 		HTTPRequest_GetMatchData.request(Globals.mainServerIP + "getMatchData?" + query, ["authorization: Bearer " + Globals.userToken], false, HTTPClient.METHOD_GET);
-	elif(player_status < 10 and int(json.result.status) == 0):
+	elif(player_status < 10 and player_status != 0 and int(json.result.status) == 0):
 		get_tree().change_scene("res://TitleScreen.tscn");
 	player_status = int(json.result.status);
 
@@ -315,6 +330,17 @@ func _HTTP_GetMatchData_Completed(result, response_code, headers, body):
 
 var last_pollPlayerStatus_response = 0;
 var last_confirmClientConnection_response = 0;
+
+func get_input_vector() -> Vector2:
+	var input = Vector2(0,0);
+	if Globals.control_scheme == Globals.Control_Schemes.touchscreen:
+		if get_tree().get_root().has_node("MainScene/UI_Layer/Move_Stick"):
+			input = get_tree().get_root().get_node("MainScene/UI_Layer/Move_Stick").stick_vector / get_tree().get_root().get_node("MainScene/UI_Layer/Move_Stick").radius_big;
+	else:
+		input.x = (1 if Input.is_key_pressed(KEY_D) else 0) - (1 if Input.is_key_pressed(KEY_A) else 0)
+		input.y = (1 if Input.is_key_pressed(KEY_S) else 0) - (1 if Input.is_key_pressed(KEY_W) else 0)
+	input = input.normalized();
+	return input;
 
 func attempt_PollPlayerStatus():
 	if OS.get_ticks_msec() - last_pollPlayerStatus_response > 1000:

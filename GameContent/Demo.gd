@@ -190,7 +190,7 @@ func simulate_physics(deltatime):
 				collided_with_forcefield = true
 		else:
 			remainder = 0;
-	if get_tree().is_network_server() and collided_with_forcefield:
+	if !Globals.testing and get_tree().is_network_server() and collided_with_forcefield:
 		rpc("direction_override", direction, position, (OS.get_system_time_msecs() - Globals.match_start_time));
 
 remotesync func direction_override(dir, pos ,time):

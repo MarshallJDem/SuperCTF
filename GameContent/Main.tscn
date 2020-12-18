@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=2]
+[gd_scene load_steps=46 format=2]
 
 [ext_resource path="res://GameContent/Main.gd" type="Script" id=1]
 [ext_resource path="res://GameContent/Player.tscn" type="PackedScene" id=2]
@@ -40,6 +40,11 @@ bg_color = Color( 0, 0, 0, 0 )
 content_margin_left = 8.0
 content_margin_top = 8.0
 bg_color = Color( 1, 1, 1, 0 )
+
+[sub_resource type="DynamicFont" id=17]
+size = 8
+outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
+font_data = ExtResource( 25 )
 
 [sub_resource type="DynamicFont" id=4]
 size = 12
@@ -140,7 +145,7 @@ margin_bottom = 334.0
 rect_clip_content = false
 mouse_filter = 2
 custom_styles/normal = SubResource( 3 )
-custom_fonts/normal_font = ExtResource( 5 )
+custom_fonts/normal_font = SubResource( 17 )
 bbcode_enabled = true
 bbcode_text = "[chat]"
 scroll_active = false

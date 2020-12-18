@@ -191,7 +191,7 @@ func _cancel_match_timer_ended():
 		if players[player]["network_id"] == 1:
 			allConnected = false;
 	# Cancel match if its ranked and any players are missing, otherwise only cancel if nobody has connected
-	if (not allConnected and Globals.matchType == 2) or (get_tree().get_network_connected_peers().size() == 0):
+	if (not allConnected and Globals.matchType == 2 and !Globals.temporaryQuickplayDisable) or (get_tree().get_network_connected_peers().size() == 0):
 		rpc("cancel_match");
 	else:
 		print("Decided not to cancel match")
@@ -232,7 +232,6 @@ func join_server():
 				Globals.create_popup("Failed to join the skirmish lobby. You are still successfully in the matchmaking queue, but please tell us on discord that our skirmish lobby is down!  Error code 1552");
 			else:
 				Globals.create_popup("Failed to join the match. You should try refreshing your page. If that doesn't work please tell us in the discord that something went wrong with your match!  Error code 16122");
-			leave_match();
 
 # Starts the match
 func start_match():
@@ -286,7 +285,10 @@ func _connection_ok():
 
 func _connection_failed():
 	print("Connection to serverfailed");
-	leave_match();
+	if Globals.matchType == 0:
+		Globals.create_popup("Something unknown went wrong when trying to connect to the skirmish lobby. You are still likely successfully in the matchmaking queue.");
+	else:
+		Globals.create_popup("Something unknown went wrong when trying to connect to the game server. You should try refreshing your page. That being said this is most likely our fault.");
 
 func update_player_objects():
 	# Delete players that have left and spawn new players
@@ -364,8 +366,8 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 				if str(player.keys()[0]) == str(user_id):
 					allowed = true;
 			if(allowed || Globals.matchType == 0):
-				var message = player_name + " connected to the server";
-				get_tree().get_root().get_node("MainScene/Chat_Layer/LineEdit").rpc("receive_message", "[color=green]" + message +  "[/color]", -1);
+				var message = player_name + " connected";
+				get_tree().get_root().get_node("MainScene/Chat_Layer/Line_Edit").rpc("receive_message", "[color=green]" + message +  "[/color]", -1);
 				if Globals.matchType == 0:
 					var team_id = 0;
 					var b=0; var r=0;
@@ -398,10 +400,11 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 						# Update the players array and give it to everybody so they can update player data and network masters etc.
 						players[player_id]['name'] = player_name;
 						players[player_id]['class'] = Globals.Classes.Bullet;
-						if players[player_id]['network_id'] != 1 and Globals.matchType != 0:
+						if players[player_id]['network_id'] != network_id:
+							print("Disconnecting peer " + str(players[player_id]['network_id']) + " because a new player connected to the same user id " + str(user_id) + " and name " + str(player_name) +  " with network id: " + str(network_id));
 							server.disconnect_peer(players[player_id]['network_id'], 1000, "A new computer has connected as this player");
 						players[player_id]['network_id'] = network_id;
-						print("Authenticated new connection : " + str(network_id) + " and giving them control of player " + str(player_id) + " " + str(player_name));
+						print("Authenticated new connection : " + str(network_id) + " and giving them control of player id " + str(player_id) + " with name " + str(player_name));
 						rpc("update_players_data", players, round_is_running);
 						rpc("resync_match_time_limit", $Match_Time_Limit_Timer.time_left, $Match_Time_Limit_Timer.paused);
 						# If this user is joining mid match
@@ -481,11 +484,12 @@ func _client_disconnected(id):
 		if players[i]["network_id"] == id:
 			player_id = i;
 	if player_id == -1:
+		print("COULDNT FIND PLAYER IN PLAYERS DATA TO DELETE FOR NETWORKID : " + str(id));
 		return;
 	if get_tree().is_network_server():
 		var message = players[player_id]["name"];
-		message += " disconnected from the server";
-		get_tree().get_root().get_node("MainScene/Chat_Layer/LineEdit").rpc("receive_message", "[color=red]" + message +  "[/color]", -1);
+		message += " disconnected";
+		get_tree().get_root().get_node("MainScene/Chat_Layer/Line_Edit").rpc("receive_message", "[color=red]" + message +  "[/color]", -1);
 		if Globals.matchType == 0:
 			players.erase(player_id);
 			if players.size() == 0:
@@ -783,6 +787,8 @@ remotesync func show_results_screen(scores, stats,players, results, matchType):
 # Shows over. You don't have to go home but you can't stay here
 remotesync func tell_clients_to_piss_off():
 	if !get_tree().is_network_server():
+		var message = "CHAT HAS ENDED";
+		get_tree().get_root().get_node("MainScene/Chat_Layer/Line_Edit").rpc("receive_message", "[color=red]" + message +  "[/color]", -1);
 		$Match_End_Timer.stop();
 		if !get_tree().get_root().has_node("MainScene/Game_Results_Screen"):
 			leave_match();
