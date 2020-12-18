@@ -355,9 +355,9 @@ bbcode_text = "[color=black]NEWS:
 
 Happy December, and welcome [color=blue][url=https://itch.io]Itch.io[/url][color=black] and [color=blue][url=https://iogames.space]iogames[/url][color=black] players! (And the rest of course)
 
-[color=green]A HUGE UPDATE HAS JUST BEEN [rainbow]RELEASED![/rainbow][color=black] Quickplay and Ranked are now live! 
+[color=green]12/17 Update: Tons of bug and exploit fixes have just been pushed! Many more on the way.
 
-[color=red]Please let us know if you are having issues - these new features will bring new bugs :P
+[color=red]If you are having any issues, please report them on our discord!
 [color=black]
 Discord Link:[color=blue] [url]https://discord.gg/D3Ban34[/url][color=black]
 Twitter:[color=blue] [url]https://twitter.com/SuperCTFGame[/url][color=black]
@@ -366,9 +366,9 @@ text = "NEWS:
 
 Happy December, and welcome Itch.io and iogames players! (And the rest of course)
 
-A HUGE UPDATE HAS JUST BEEN RELEASED! Quickplay and Ranked are now live! 
+12/17 Update: Tons of bug and exploit fixes have just been pushed! Many more on the way.
 
-Please let us know if you are having issues - these new features will bring new bugs :P
+If you are having any issues, please report them on our discord!
 
 Discord Link: https://discord.gg/D3Ban34
 Twitter: https://twitter.com/SuperCTFGame
@@ -748,14 +748,14 @@ visible = false
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 12 )
-frame = 3
+frame = 2
 playing = true
 
 [node name="Red_Sprite" type="AnimatedSprite" parent="UI_Layer/Flags/Flag"]
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 17 )
-frame = 2
+frame = 1
 playing = true
 
 [node name="Area2D" type="Area2D" parent="UI_Layer/Flags/Flag" groups=[
@@ -780,7 +780,7 @@ script = ExtResource( 3 )
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 12 )
-frame = 2
+frame = 1
 playing = true
 
 [node name="Red_Sprite" type="AnimatedSprite" parent="UI_Layer/Flags/Flag3"]
@@ -788,7 +788,6 @@ visible = false
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 17 )
-frame = 1
 playing = true
 
 [node name="Area2D" type="Area2D" parent="UI_Layer/Flags/Flag3" groups=[
