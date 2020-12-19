@@ -23,7 +23,7 @@ var round_is_running = false;
 
 var Game_Results_Screen = preload("res://Game_Results_Screen.tscn");
 
-# players Struct (Indexed by player game ID (which is only the same as network_id on skirmish, and never the same as uid))
+# players Struct (Indexed by player game ID (which is arbitrary 0,1,2,3, etc in a match and UID in a skirmish))
 #	- name: string
 #	- team_id: int
 #	- user_id: int
@@ -393,7 +393,7 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 						else:
 							print("<ERROR> Map not found");
 							print_stack();
-					players[network_id] = {"name" : player_name, "team_id" : team_id, "user_id": user_id, "network_id": network_id,"spawn_pos": spawn_pos, "position": spawn_pos, "class" : Globals.Classes.Bullet, "DD_vote" : false};
+					players[user_id] = {"name" : player_name, "team_id" : team_id, "user_id": user_id, "network_id": network_id,"spawn_pos": spawn_pos, "position": spawn_pos, "class" : Globals.Classes.Bullet, "DD_vote" : false};
 				# Get the player_id associated with this user_id
 				for player_id in players:
 					if players[player_id]['user_id'] == user_id:

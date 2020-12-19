@@ -244,7 +244,7 @@ remotesync func teleport(start, end):
 		position = end;
 
 # Checks the current pressed keys and calculates a new player position using the KinematicBody2D
-func move_on_inputs(teleport = false):
+func move_on_inputs():
 	var input = Globals.get_input_vector();
 	last_movement_input = input;
 	if (input.x != 0 or input.y != 0):
