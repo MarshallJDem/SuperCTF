@@ -214,11 +214,13 @@ remotesync func teleport(start, end):
 	$Teleport_Audio.play();
 	$Teleport_Invincibility_Timer.start();
 	invincible = true;
-	for i in range(6):
+	var count = 6
+	for i in range(count):
 		var node = Ghost_Trail.instance();
-		node.position = start;
-		node.position.x = node.position.x + ((i) * (end.x - start.x)/4)
-		node.position.y = node.position.y + ((i) * (end.y - start.y)/4)
+		if !Globals.testing:
+			start = position
+		node.position = start + ((i) * (end - start)/(count-1))
+		#node.position.y = position.y + ((i) * (end.y - start.y)/4)
 		node.z_index = z_index;
 		node.look_direction = look_direction;
 		node.scale = $Sprite_Body.scale
