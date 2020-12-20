@@ -508,13 +508,13 @@ func _client_disconnected(id):
 				players.erase(player_id);
 				if players.size() == 0:
 					game_vars = Globals.game_var_defaults.duplicate();
+			var message = players[player_id]["name"];
+			message += " disconnected";
+			get_tree().get_root().get_node("MainScene/Chat_Layer/Line_Edit").rpc("receive_message", "[color=red]" + message +  "[/color]", -1);
 	if player_id == -1:
 		print("COULDNT FIND PLAYER IN PLAYERS DATA TO DELETE FOR NETWORKID : " + str(id));
 		return;
 	if get_tree().is_network_server():
-		var message = players[player_id]["name"];
-		message += " disconnected";
-		get_tree().get_root().get_node("MainScene/Chat_Layer/Line_Edit").rpc("receive_message", "[color=red]" + message +  "[/color]", -1);
 		if $Match_End_Timer.time_left > 0:
 			complete_match_end();
 			return;

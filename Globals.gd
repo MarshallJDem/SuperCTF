@@ -4,7 +4,7 @@ extends Node
 var testing = false;
 var experimental = true;
 var temporaryQuickplayDisable = true;
-var localTesting = false; # Used for running a server locally on the machine
+var localTesting = true; # Used for running a server locally on the machine
 
 #Game Servers (Both clients and servers use these vars, but in different ways. overlapping would not work)
 var serverIP = "";
@@ -149,7 +149,7 @@ func _enter_tree():
 	if arguments.has("mapName"):
 		Globals.mapName = str(arguments["mapName"]);
 	if OS.has_feature("editor"):
-		testing = true;
+		testing = false;
 	#experimental =  true;#OS.has_feature("debug") and !OS.has_feature("editor");
 	if experimental:
 		allowCommands = true;
@@ -160,7 +160,10 @@ func _enter_tree():
 			serverIP = skirmishIP;
 			#get_tree().change_scene("res://GameContent/Main.tscn");
 	if localTesting:
-		isServer = false;
+		if OS.has_feature("editor"):
+			isServer = true;
+		else:
+			isServer = false;
 		allowCommands = true;
 		mainServerIP = "https://www.superctf.com" + ":42501/";
 		skirmishIP = "localhost:42401";
