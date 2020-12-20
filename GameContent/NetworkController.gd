@@ -503,6 +503,11 @@ func _client_disconnected(id):
 	for i in players:
 		if players[i]["network_id"] == id:
 			player_id = i;
+			# Delete as we go just incase something weird happens and we have multiple entries for one network_id
+			if Globals.matchType == 0:
+				players.erase(player_id);
+				if players.size() == 0:
+					game_vars = Globals.game_var_defaults.duplicate();
 	if player_id == -1:
 		print("COULDNT FIND PLAYER IN PLAYERS DATA TO DELETE FOR NETWORKID : " + str(id));
 		return;
@@ -510,10 +515,6 @@ func _client_disconnected(id):
 		var message = players[player_id]["name"];
 		message += " disconnected";
 		get_tree().get_root().get_node("MainScene/Chat_Layer/Line_Edit").rpc("receive_message", "[color=red]" + message +  "[/color]", -1);
-		if Globals.matchType == 0:
-			players.erase(player_id);
-			if players.size() == 0:
-				game_vars = Globals.game_var_defaults.duplicate();
 		if $Match_End_Timer.time_left > 0:
 			complete_match_end();
 			return;
