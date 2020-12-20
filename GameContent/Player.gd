@@ -217,8 +217,6 @@ remotesync func teleport(start, end):
 	var count = 6
 	for i in range(count):
 		var node = Ghost_Trail.instance();
-		if !Globals.testing:
-			start = position
 		node.position = start + ((i) * (end - start)/(count-1))
 		#node.position.y = position.y + ((i) * (end.y - start.y)/4)
 		node.z_index = z_index;
