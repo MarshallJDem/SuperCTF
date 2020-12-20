@@ -33,6 +33,8 @@ var last_position = Vector2(0,0);
 var look_direction = 0;
 var has_moved_after_respawn = false;
 var current_class;
+# If this is true the player will dash once physics process is called
+var dash_signaled = false;
 
 # Only accurately being tracked by server
 var stats = {"kills" : 0, "deaths": 0, "captures" : 0, "recovers" : 0};
@@ -77,7 +79,7 @@ func _input(event):
 			if event.scancode == KEY_SPACE:
 				#Attempt a teleport
 				# Re-enable line below to prevent telporting while you have flag
-				attempt_teleport();
+				attempt_dash();
 
 func is_in_own_spawn() -> bool:
 	if team_id == 1:
@@ -85,7 +87,7 @@ func is_in_own_spawn() -> bool:
 	else:
 		return $Area2D.is_in_blue_spawn;
 
-func _process(delta):
+func _physics_process(delta: float) -> void:
 	if !Globals.testing and name != ("P" + str(player_id)):
 		call_deferred("queue_free");
 	BASE_SPEED = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("playerSpeed");
@@ -116,6 +118,10 @@ func _process(delta):
 			camera_ref.get_node("Canvas_Layer/Vignette_Red").visible = true;
 		else:
 			camera_ref.get_node("Canvas_Layer/Vignette_Blue").visible = true;
+	
+	#Dash
+	if dash_signaled:
+		dash();
 	
 	update();
 	
@@ -270,12 +276,18 @@ func move_on_inputs():
 	var change = move_and_slide(vec);
 	var new_pos = position;
 
-func attempt_teleport():
+func attempt_dash():
+	if $Teleport_Timer.time_left != 0:
+		return;
+	dash_signaled = true;
+
+func dash():
 	
 	# Prevent using before the cooldown finished
 	if $Teleport_Timer.time_left != 0:
 		return;
 	$Teleport_Timer.start();
+	dash_signaled = false;
 	
 	# Smooth camera slower for a moment
 	if is_instance_valid(camera_ref):
@@ -283,7 +295,7 @@ func attempt_teleport():
 	
 	var input = Globals.get_input_vector();
 
-	var vec = (input * TELEPORT_SPEED);
+	var vec = (input.normalized() * TELEPORT_SPEED);
 	
 	var previous_pos = position;
 	var change = move_and_slide(vec);
