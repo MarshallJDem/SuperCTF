@@ -508,6 +508,7 @@ func _client_disconnected(id):
 			message += " disconnected";
 			get_tree().get_root().get_node("MainScene/Chat_Layer/Line_Edit").rpc("receive_message", "[color=red]" + message +  "[/color]", -1);
 			if Globals.matchType == 0:
+				print("Erasing player_id " + str(player_id) + " with name " + str(players[player_id]["name"]));
 				players.erase(player_id);
 				if players.size() == 0:
 					game_vars = Globals.game_var_defaults.duplicate();
