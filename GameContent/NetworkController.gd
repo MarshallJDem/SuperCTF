@@ -353,7 +353,7 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 			# Get some precursor information about this player situation before making decisions
 			var json = JSON.parse(body.get_string_from_utf8());
 			var player_name = json.result.user.name;
-			var user_id = json.result.user.uid;
+			var user_id = str(int(json.result.user.uid));
 			var network_id = int(json.result.networkID);
 			# If this player disconnected already then dont make them a player
 			var is_connected = false;
@@ -415,7 +415,7 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 					else:
 						print("<ERROR> Map not found");
 						print_stack();
-				players[str(user_id)] = {"name" : player_name, "team_id" : team_id, "user_id": user_id, "network_id": network_id,"spawn_pos": spawn_pos, "position": spawn_pos, "class" : Globals.Classes.Bullet, "DD_vote" : false};
+				players[user_id] = {"name" : player_name, "team_id" : team_id, "user_id": user_id, "network_id": network_id,"spawn_pos": spawn_pos, "position": spawn_pos, "class" : Globals.Classes.Bullet, "DD_vote" : false};
 				player_id_collision = user_id;
 				print("Added a new player for Skirmish of networkID : " + str(network_id) + " | userID : " + str(user_id) + " | name : " + str(player_name));
 			else: #Else if there is no collision and this is a match, then something has gone wrong. Disconnect the peer
