@@ -415,7 +415,7 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 					else:
 						print("<ERROR> Map not found");
 						print_stack();
-				players[int(user_id)] = {"name" : player_name, "team_id" : team_id, "user_id": user_id, "network_id": network_id,"spawn_pos": spawn_pos, "position": spawn_pos, "class" : Globals.Classes.Bullet, "DD_vote" : false};
+				players[str(user_id)] = {"name" : player_name, "team_id" : team_id, "user_id": user_id, "network_id": network_id,"spawn_pos": spawn_pos, "position": spawn_pos, "class" : Globals.Classes.Bullet, "DD_vote" : false};
 				player_id_collision = user_id;
 				print("Added a new player for Skirmish of networkID : " + str(network_id) + " | userID : " + str(user_id) + " | name : " + str(player_name));
 			else: #Else if there is no collision and this is a match, then something has gone wrong. Disconnect the peer
