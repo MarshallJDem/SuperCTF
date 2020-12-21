@@ -504,14 +504,15 @@ func _client_disconnected(id):
 		if players[i]["network_id"] == id:
 			player_id = i;
 			# Delete as we go just incase something weird happens and we have multiple entries for one network_id
-			var message = players[player_id]["name"];
-			message += " disconnected";
-			get_tree().get_root().get_node("MainScene/Chat_Layer/Line_Edit").rpc("receive_message", "[color=red]" + message +  "[/color]", -1);
-			if Globals.matchType == 0:
-				print("Erasing player_id " + str(player_id) + " with name " + str(players[player_id]["name"]));
-				players.erase(player_id);
-				if players.size() == 0:
-					game_vars = Globals.game_var_defaults.duplicate();
+			if get_tree().is_network_server():
+				var message = players[player_id]["name"];
+				message += " disconnected";
+				get_tree().get_root().get_node("MainScene/Chat_Layer/Line_Edit").rpc("receive_message", "[color=red]" + message +  "[/color]", -1);
+				if Globals.matchType == 0:
+					print("Erasing player_id " + str(player_id) + " with name " + str(players[player_id]["name"]));
+					players.erase(player_id);
+					if players.size() == 0:
+						game_vars = Globals.game_var_defaults.duplicate();
 	if player_id == -1:
 		print("COULDNT FIND PLAYER IN PLAYERS DATA TO DELETE FOR NETWORKID : " + str(id));
 		return;
