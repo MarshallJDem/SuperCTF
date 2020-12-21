@@ -331,6 +331,7 @@ remote func player_class_changed(new_class):
 
 
 remotesync func update_players_data(players_data, round_is_running):
+	print(players_data);
 	players = players_data;
 	self.round_is_running = round_is_running;
 	update_player_objects();
@@ -380,6 +381,7 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 			else:
 				print("Disconnecting player " + str(network_id) + " because they are not in the allowed players list : " + to_json(Globals.allowedPlayers));
 				server.disconnect_peer(network_id, 1000, "You are not a player in this match")
+				return;
 			
 			
 			# If there is a collision, disconnect original peer if there was one
@@ -413,7 +415,7 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 					else:
 						print("<ERROR> Map not found");
 						print_stack();
-				players[user_id] = {"name" : player_name, "team_id" : team_id, "user_id": user_id, "network_id": network_id,"spawn_pos": spawn_pos, "position": spawn_pos, "class" : Globals.Classes.Bullet, "DD_vote" : false};
+				players[int(user_id)] = {"name" : player_name, "team_id" : team_id, "user_id": user_id, "network_id": network_id,"spawn_pos": spawn_pos, "position": spawn_pos, "class" : Globals.Classes.Bullet, "DD_vote" : false};
 				player_id_collision = user_id;
 				print("Added a new player for Skirmish of networkID : " + str(network_id) + " | userID : " + str(user_id) + " | name : " + str(player_name));
 			else: #Else if there is no collision and this is a match, then something has gone wrong. Disconnect the peer
