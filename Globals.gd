@@ -4,7 +4,7 @@ extends Node
 var testing = false;
 var experimental = true;
 var temporaryQuickplayDisable = true;
-var localTesting = true; # Used for running a server locally on the machine
+var localTesting = false; # Used for running a server locally on the machine
 
 #Game Servers (Both clients and servers use these vars, but in different ways. overlapping would not work)
 var serverIP = "";
