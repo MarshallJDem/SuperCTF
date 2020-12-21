@@ -353,7 +353,7 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 			# Get some precursor information about this player situation before making decisions
 			var json = JSON.parse(body.get_string_from_utf8());
 			var player_name = json.result.user.name;
-			var user_id = str(int(json.result.user.uid));
+			var user_id = int(json.result.user.uid);
 			var network_id = int(json.result.networkID);
 			# If this player disconnected already then dont make them a player
 			var is_connected = false;
