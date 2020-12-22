@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=2]
+[gd_scene load_steps=32 format=2]
 
 [ext_resource path="res://GameContent/Player.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Player/gunner_gun_B.png" type="Texture" id=2]
@@ -23,6 +23,8 @@
 [ext_resource path="res://Assets/Sound/Powerup.wav" type="AudioStream" id=21]
 [ext_resource path="res://Assets/Shaders/Vignette_Red.shader" type="Shader" id=22]
 [ext_resource path="res://Assets/Shaders/Vignette_Blue.shader" type="Shader" id=23]
+[ext_resource path="res://Assets/GUI/arrow_G.png" type="Texture" id=24]
+[ext_resource path="res://GameContent/Home_Pointer.gd" type="Script" id=25]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 5.0
@@ -339,3 +341,20 @@ __meta__ = {
 [node name="Teleport_Invincibility_Timer" type="Timer" parent="."]
 wait_time = 0.5
 one_shot = true
+
+[node name="Home_Pointer" type="TextureRect" parent="."]
+visible = false
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -5.0
+margin_top = -53.0
+margin_right = 6.0
+margin_bottom = -39.0
+rect_pivot_offset = Vector2( 5, 53 )
+texture = ExtResource( 24 )
+script = ExtResource( 25 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

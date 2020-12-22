@@ -128,7 +128,9 @@ func _process(delta):
 		var flagHome = get_tree().get_root().get_node("MainScene/Map/YSort/Flag_Home-" + str(team_id));
 		#turn the helper arrow on if they have the flag and off if they dont
 		flagHome.toggle_score_helper(has_flag())
-
+		#point the home pointer to the flag home
+		$Home_Pointer.point_at_home(self.position, flagHome.position, flagHome.is_flag_home_visible or !has_flag())
+	
 	
 	
 	
