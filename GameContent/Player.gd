@@ -3,7 +3,7 @@ extends KinematicBody2D
 var control = false;
 # The ID of this player 0,1,2 etc. NOT the network unique ID
 var player_id = -1;
-var team_id = -1;
+var team_id = 0;
 var BASE_SPEED = 200;
 const SPRINT_SPEED = 50;
 const FLAG_SLOWDOWN_SPEED = -25;
@@ -90,6 +90,7 @@ func is_in_own_spawn() -> bool:
 		return $Area2D.is_in_blue_spawn;
 
 func _process(delta):
+	print(team_id)
 	BASE_SPEED = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("playerSpeed");
 	
 	TELEPORT_SPEED = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("dashDistance");
@@ -123,7 +124,7 @@ func _process(delta):
 	
 	
 	#check if the player is the one we ar e controlling
-	if player_id == Globals.localPlayerID:
+	if Globals.testing or player_id == Globals.localPlayerID:
 		#get the players flag home
 		var flagHome = get_tree().get_root().get_node("MainScene/Map/YSort/Flag_Home-" + str(team_id));
 		#turn the helper arrow on if they have the flag and off if they dont
