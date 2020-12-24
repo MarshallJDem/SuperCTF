@@ -37,5 +37,3 @@ texture = ExtResource( 3 )
 
 [node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
 scale = Vector2( 0.044, 0.027 )
-[connection signal="screen_entered" from="VisibilityNotifier2D" to="." method="flaghome_entered_screen"]
-[connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="flaghome_exited_screen"]
