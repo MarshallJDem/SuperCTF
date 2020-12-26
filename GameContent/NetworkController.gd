@@ -23,7 +23,7 @@ var round_is_running = false;
 
 var Game_Results_Screen = preload("res://Game_Results_Screen.tscn");
 
-# players Struct (Indexed by player game ID (which is only the same as network_id on skirmish, and never the same as uid))
+# players Struct (Indexed by player game ID (which is arbitrary 0,1,2,3, etc in a match and UID in a skirmish))
 #	- name: string
 #	- team_id: int
 #	- user_id: int
@@ -331,6 +331,7 @@ remote func player_class_changed(new_class):
 
 
 remotesync func update_players_data(players_data, round_is_running):
+	print(players_data);
 	players = players_data;
 	self.round_is_running = round_is_running;
 	update_player_objects();
@@ -349,9 +350,10 @@ func _timing_sync_timer_ended():
 func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 	if get_tree().is_network_server():
 		if(response_code == 200):
+			# Get some precursor information about this player situation before making decisions
 			var json = JSON.parse(body.get_string_from_utf8());
 			var player_name = json.result.user.name;
-			var user_id = json.result.user.uid;
+			var user_id = int(json.result.user.uid);
 			var network_id = int(json.result.networkID);
 			# If this player disconnected already then dont make them a player
 			var is_connected = false;
@@ -365,55 +367,75 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 			for player in Globals.allowedPlayers:
 				if str(player.keys()[0]) == str(user_id):
 					allowed = true;
+			var player_id_collision = null;
+			for player_id in players:
+				if players[player_id]['user_id'] == user_id:
+					player_id_collision = player_id;
+			
+			#START MAKING DECISIONS:
+			
+			# Kick unallowed players if this is a match (not a skirmish)
 			if(allowed || Globals.matchType == 0):
 				var message = player_name + " connected";
 				get_tree().get_root().get_node("MainScene/Chat_Layer/Line_Edit").rpc("receive_message", "[color=green]" + message +  "[/color]", -1);
-				if Globals.matchType == 0:
-					var team_id = 0;
-					var b=0; var r=0;
-					for player_id in players:
-						if players[player_id]["team_id"] == 0:
-							b += 1;
-						else:
-							r += 1;
-					if b > r:
-						team_id = 1;
-					var spawn_pos = Vector2(0,0);
-					if team_id == 0:
-						var spawn = get_tree().get_root().get_node_or_null("MainScene/Map/YSort/BlueSpawn_Location");
-						if spawn != null:
-							spawn_pos = spawn.position;
-						else:
-							print("<ERROR> Map not found");
-							print_stack();
-					else:
-						var spawn = get_tree().get_root().get_node_or_null("MainScene/Map/YSort/RedSpawn_Location");
-						if spawn != null:
-							spawn_pos = spawn.position;
-						else:
-							print("<ERROR> Map not found");
-							print_stack();
-					players[network_id] = {"name" : player_name, "team_id" : team_id, "user_id": user_id, "network_id": network_id,"spawn_pos": spawn_pos, "position": spawn_pos, "class" : Globals.Classes.Bullet, "DD_vote" : false};
-				# Get the player_id associated with this user_id
-				for player_id in players:
-					if players[player_id]['user_id'] == user_id:
-						# Update the players array and give it to everybody so they can update player data and network masters etc.
-						players[player_id]['name'] = player_name;
-						players[player_id]['class'] = Globals.Classes.Bullet;
-						if players[player_id]['network_id'] != network_id:
-							print("Disconnecting peer " + str(players[player_id]['network_id']) + " because a new player connected to the same user id " + str(user_id) + " and name " + str(player_name) +  " with network id: " + str(network_id));
-							server.disconnect_peer(players[player_id]['network_id'], 1000, "A new computer has connected as this player");
-						players[player_id]['network_id'] = network_id;
-						print("Authenticated new connection : " + str(network_id) + " and giving them control of player id " + str(player_id) + " with name " + str(player_name));
-						rpc("update_players_data", players, round_is_running);
-						rpc("resync_match_time_limit", $Match_Time_Limit_Timer.time_left, $Match_Time_Limit_Timer.paused);
-						# If this user is joining mid match
-						if match_is_running:
-							update_flags_data();
-							rpc_id(network_id, "load_mid_round", players, scores, $Round_Start_Timer.time_left, round_num, OS.get_system_time_msecs() - Globals.match_start_time, flags_data, game_vars); 
 			else:
 				print("Disconnecting player " + str(network_id) + " because they are not in the allowed players list : " + to_json(Globals.allowedPlayers));
 				server.disconnect_peer(network_id, 1000, "You are not a player in this match")
+				return;
+			
+			
+			# If there is a collision, disconnect original peer if there was one
+			if player_id_collision != null:
+				if players[player_id_collision]['network_id'] != 1:
+					print("Disconnecting peer " + str(players[player_id_collision]['network_id']) + " because a new player connected to the same user id " + str(user_id) + " and name " + str(player_name) +  " with new network id: " + str(network_id));
+					server.disconnect_peer(players[player_id_collision]['network_id'], 1000, "A new computer has connected as this player");
+			# Else if this is a skirmish, and there is no collision, allocate a new player for this connection
+			elif Globals.matchType == 0:
+				var team_id = 0;
+				var b=0; var r=0;
+				for player_id in players:
+					if players[player_id]["team_id"] == 0:
+						b += 1;
+					else:
+						r += 1;
+				if b > r:
+					team_id = 1;
+				var spawn_pos = Vector2(0,0);
+				if team_id == 0:
+					var spawn = get_tree().get_root().get_node_or_null("MainScene/Map/YSort/BlueSpawn_Location");
+					if spawn != null:
+						spawn_pos = spawn.position;
+					else:
+						print("<ERROR> Map not found");
+						print_stack();
+				else:
+					var spawn = get_tree().get_root().get_node_or_null("MainScene/Map/YSort/RedSpawn_Location");
+					if spawn != null:
+						spawn_pos = spawn.position;
+					else:
+						print("<ERROR> Map not found");
+						print_stack();
+				players[user_id] = {"name" : player_name, "team_id" : team_id, "user_id": user_id, "network_id": network_id,"spawn_pos": spawn_pos, "position": spawn_pos, "class" : Globals.Classes.Bullet, "DD_vote" : false};
+				player_id_collision = user_id;
+				print("Added a new player for Skirmish of networkID : " + str(network_id) + " | userID : " + str(user_id) + " | name : " + str(player_name));
+			else: #Else if there is no collision and this is a match, then something has gone wrong. Disconnect the peer
+				print("A PLAYER CONNECTED TO MATCH AND WAS IN ALLOWED PLAYER BUT WE HAD NO ALLOCATED SPOT FOR THEM. DISCONNECTING PEER");
+				server.disconnect_peer(network_id, 1000, "Something went wrong sorry! We don't know the issue yet.");
+			
+			# Through the above logic player_id_collision must no longer be null and we can now update the players data to tell people
+			players[player_id_collision]['name'] = player_name;
+			# TODO FORCE PLAYER TO USE EXISTING CLASS
+			players[player_id_collision]['class'] = Globals.Classes.Bullet;
+			players[player_id_collision]['network_id'] = network_id;
+			print("Authenticated new connection : " + str(network_id) + " and giving them control of player id " + str(player_id_collision) + " with name " + str(player_name));
+			rpc("update_players_data", players, round_is_running);
+			rpc("resync_match_time_limit", $Match_Time_Limit_Timer.time_left, $Match_Time_Limit_Timer.paused);
+			# If this user is joining mid match
+			if match_is_running:
+				update_flags_data();
+				rpc_id(network_id, "load_mid_round", players, scores, $Round_Start_Timer.time_left, round_num, OS.get_system_time_msecs() - Globals.match_start_time, flags_data, game_vars); 
+
+			
 		else:
 			print("WE SHOULD BE DISCONNECTING A player because the checkUser backend call failed with a non 200 status BUT WE DON'T KNOW THEIR NETWORKID'");
 			#server.disconnect_peer(player_check_queue[0]['networkID'], 1000, "An Unknown Error Occurred.")
@@ -483,17 +505,20 @@ func _client_disconnected(id):
 	for i in players:
 		if players[i]["network_id"] == id:
 			player_id = i;
+			# Delete as we go just incase something weird happens and we have multiple entries for one network_id
+			if get_tree().is_network_server():
+				var message = players[player_id]["name"];
+				message += " disconnected";
+				get_tree().get_root().get_node("MainScene/Chat_Layer/Line_Edit").rpc("receive_message", "[color=red]" + message +  "[/color]", -1);
+				if Globals.matchType == 0:
+					print("Erasing player_id " + str(player_id) + " with name " + str(players[player_id]["name"]));
+					players.erase(player_id);
+					if players.size() == 0:
+						game_vars = Globals.game_var_defaults.duplicate();
 	if player_id == -1:
 		print("COULDNT FIND PLAYER IN PLAYERS DATA TO DELETE FOR NETWORKID : " + str(id));
 		return;
 	if get_tree().is_network_server():
-		var message = players[player_id]["name"];
-		message += " disconnected";
-		get_tree().get_root().get_node("MainScene/Chat_Layer/Line_Edit").rpc("receive_message", "[color=red]" + message +  "[/color]", -1);
-		if Globals.matchType == 0:
-			players.erase(player_id);
-			if players.size() == 0:
-				game_vars = Globals.game_var_defaults.duplicate();
 		if $Match_End_Timer.time_left > 0:
 			complete_match_end();
 			return;

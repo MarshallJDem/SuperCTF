@@ -33,6 +33,8 @@ var last_position = Vector2(0,0);
 var look_direction = 0;
 var has_moved_after_respawn = false;
 var current_class;
+# If this is true the player will dash once physics process is called
+var dash_signaled = false;
 
 # Only accurately being tracked by server
 var stats = {"kills" : 0, "deaths": 0, "captures" : 0, "recovers" : 0};
@@ -77,7 +79,7 @@ func _input(event):
 			if event.scancode == KEY_SPACE:
 				#Attempt a teleport
 				# Re-enable line below to prevent telporting while you have flag
-				attempt_teleport();
+				attempt_dash();
 
 func is_in_own_spawn() -> bool:
 	if team_id == 1:
@@ -85,7 +87,7 @@ func is_in_own_spawn() -> bool:
 	else:
 		return $Area2D.is_in_blue_spawn;
 
-func _process(delta):
+func _physics_process(delta: float) -> void:
 	if !Globals.testing and name != ("P" + str(player_id)):
 		call_deferred("queue_free");
 	BASE_SPEED = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("playerSpeed");
@@ -116,6 +118,10 @@ func _process(delta):
 			camera_ref.get_node("Canvas_Layer/Vignette_Red").visible = true;
 		else:
 			camera_ref.get_node("Canvas_Layer/Vignette_Blue").visible = true;
+	
+	#Dash
+	if dash_signaled:
+		dash();
 	
 	update();
 	
@@ -214,11 +220,11 @@ remotesync func teleport(start, end):
 	$Teleport_Audio.play();
 	$Teleport_Invincibility_Timer.start();
 	invincible = true;
-	for i in range(6):
+	var count = 6
+	for i in range(count):
 		var node = Ghost_Trail.instance();
-		node.position = start;
-		node.position.x = node.position.x + ((i) * (end.x - start.x)/4)
-		node.position.y = node.position.y + ((i) * (end.y - start.y)/4)
+		node.position = start + ((i) * (end - start)/(count-1))
+		#node.position.y = position.y + ((i) * (end.y - start.y)/4)
 		node.z_index = z_index;
 		node.look_direction = look_direction;
 		node.scale = $Sprite_Body.scale
@@ -244,7 +250,7 @@ remotesync func teleport(start, end):
 		position = end;
 
 # Checks the current pressed keys and calculates a new player position using the KinematicBody2D
-func move_on_inputs(teleport = false):
+func move_on_inputs():
 	var input = Globals.get_input_vector();
 	last_movement_input = input;
 	if (input.x != 0 or input.y != 0):
@@ -270,12 +276,18 @@ func move_on_inputs(teleport = false):
 	var change = move_and_slide(vec);
 	var new_pos = position;
 
-func attempt_teleport():
+func attempt_dash():
+	if $Teleport_Timer.time_left != 0:
+		return;
+	dash_signaled = true;
+
+func dash():
 	
 	# Prevent using before the cooldown finished
 	if $Teleport_Timer.time_left != 0:
 		return;
 	$Teleport_Timer.start();
+	dash_signaled = false;
 	
 	# Smooth camera slower for a moment
 	if is_instance_valid(camera_ref):
@@ -283,7 +295,7 @@ func attempt_teleport():
 	
 	var input = Globals.get_input_vector();
 
-	var vec = (input * TELEPORT_SPEED);
+	var vec = (input.normalized() * TELEPORT_SPEED);
 	
 	var previous_pos = position;
 	var change = move_and_slide(vec);

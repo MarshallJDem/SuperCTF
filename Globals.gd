@@ -160,7 +160,10 @@ func _enter_tree():
 			serverIP = skirmishIP;
 			#get_tree().change_scene("res://GameContent/Main.tscn");
 	if localTesting:
-		isServer = false;
+		if OS.has_feature("editor"):
+			isServer = true;
+		else:
+			isServer = false;
 		allowCommands = true;
 		mainServerIP = "https://www.superctf.com" + ":42501/";
 		skirmishIP = "localhost:42401";

@@ -355,7 +355,7 @@ bbcode_text = "[color=black]NEWS:
 
 Happy December, and welcome [color=blue][url=https://itch.io]Itch.io[/url][color=black] and [color=blue][url=https://iogames.space]iogames[/url][color=black] players! (And the rest of course)
 
-[color=green]12/17 Update: Tons of bug and exploit fixes have just been pushed! Many more on the way.
+[color=green]12/26 Update: More fixes have just been released. We are now working on UI changes and ranking!
 
 [color=red]If you are having any issues, please report them on our discord!
 [color=black]
@@ -366,7 +366,7 @@ text = "NEWS:
 
 Happy December, and welcome Itch.io and iogames players! (And the rest of course)
 
-12/17 Update: Tons of bug and exploit fixes have just been pushed! Many more on the way.
+12/26 Update: More fixes have just been released. We are now working on UI changes and ranking!
 
 If you are having any issues, please report them on our discord!
 
@@ -748,13 +748,14 @@ visible = false
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 12 )
+frame = 3
 playing = true
 
 [node name="Red_Sprite" type="AnimatedSprite" parent="UI_Layer/Flags/Flag"]
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 17 )
-frame = 3
+frame = 2
 playing = true
 
 [node name="Area2D" type="Area2D" parent="UI_Layer/Flags/Flag" groups=[
@@ -779,7 +780,7 @@ script = ExtResource( 3 )
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 12 )
-frame = 3
+frame = 2
 playing = true
 
 [node name="Red_Sprite" type="AnimatedSprite" parent="UI_Layer/Flags/Flag3"]
@@ -787,7 +788,7 @@ visible = false
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 17 )
-frame = 2
+frame = 1
 playing = true
 
 [node name="Area2D" type="Area2D" parent="UI_Layer/Flags/Flag3" groups=[
