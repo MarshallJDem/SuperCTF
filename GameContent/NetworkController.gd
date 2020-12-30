@@ -665,7 +665,15 @@ remotesync func load_new_round(suddenDeath = false):
 	spawn_flag(1);
 	
 	get_tree().get_root().get_node("MainScene/UI_Layer").clear_big_label_text();
+	
+	
+	if isSuddenDeath:
+		var overlay = load("res://GameContent/SuddenDeath_Overlay.tscn").instance();
+		call_deferred("add_child", overlay);
+		yield(get_tree().create_timer(10), "timeout");
+	
 	$Round_Start_Timer.set_wait_time(3);
+		
 	$Round_Start_Timer.start();
 
 # For when a player joins mid round

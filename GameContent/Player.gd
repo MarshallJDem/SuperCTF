@@ -142,27 +142,7 @@ func _physics_process(delta: float) -> void:
 	
 	# Animation
 	var diff = last_position - position;
-	if sqrt(pow(diff.x, 2) + pow(diff.y, 2)) < 0.1:
-		# Idle
-		if team_id == 1:
-			#$Sprite_Top.set_texture(idle_top_atlas_red);
-			pass;
-		else:
-			#$Sprite_Top.set_texture(idle_top_atlas_blue);
-			pass;
-		$Sprite_Legs.frame = look_direction;
-	else:
-		# Moving
-		if team_id == 1:
-			#$Sprite_Top.set_texture(running_top_atlas_red);
-			pass;
-		else:
-			#$Sprite_Top.set_texture(running_top_atlas_blue);
-			pass;
-		$Sprite_Legs.frame = look_direction + (int((1-($Leg_Animation_Timer.time_left / $Leg_Animation_Timer.wait_time)) * 4)%4) * $Sprite_Legs.hframes;
-	
-	
-	$Sprite_Head.position.y = int(2 * sin((1 - $Top_Animation_Timer.time_left/$Top_Animation_Timer.wait_time)*(2 * PI)))/2.0;
+	$Player_Visuals._update_animation(diff);
 		
 	# Name tag
 	var color = "blue";
@@ -174,21 +154,7 @@ func _physics_process(delta: float) -> void:
 
 
 func update_class(c):
-	var n = "gunner"
-	if c == Globals.Classes.Bullet:
-		n = "gunner";
-	elif c == Globals.Classes.Laser:
-		n = "laser";
-	elif c == Globals.Classes.Demo:
-		n = "demo";
-	
-	var t = "B";
-	if team_id == 1:
-		t = "R";
-	
-	$Sprite_Head.set_texture(load("res://Assets/Player/" + str(n) + "_head_" +t+ ".png"));
-	$Sprite_Body.set_texture(load("res://Assets/Player/" + str(n) + "_body_" +t+ ".png"));
-	$Sprite_Gun.set_texture(load("res://Assets/Player/" + str(n) + "_gun_" +t+ ".png"));
+	$Player_Visuals._update_class(c, team_id);
 
 func loadout_class_updated():
 	update_class(Globals.current_class);
@@ -224,23 +190,14 @@ remotesync func teleport(start, end):
 	for i in range(count):
 		var node = Ghost_Trail.instance();
 		node.position = start + ((i) * (end - start)/(count-1))
+		node.add_child($Player_Visuals.duplicate());
 		#node.position.y = position.y + ((i) * (end.y - start.y)/4)
 		node.z_index = z_index;
-		node.look_direction = look_direction;
-		node.scale = $Sprite_Body.scale
 		if has_flag():
 			if team_id == 1:
 				node.flag_team_id = 0;
 			else:
 				node.flag_team_id = 1;
-		node.get_node("Sprite_Gun").texture = $Sprite_Gun.texture
-		node.get_node("Sprite_Gun").z_index = $Sprite_Gun.z_index
-		node.get_node("Sprite_Head").texture = $Sprite_Head.texture
-		node.get_node("Sprite_Head").z_index = $Sprite_Head.z_index
-		node.get_node("Sprite_Body").texture = $Sprite_Body.texture
-		node.get_node("Sprite_Body").z_index = $Sprite_Body.z_index
-		node.get_node("Sprite_Legs").texture = $Sprite_Legs.texture
-		node.get_node("Sprite_Legs").frame = $Sprite_Legs.frame
 		get_tree().get_root().get_node("MainScene").add_child(node);  
 		node.get_node("Death_Timer").start((i) * 0.05 + 0.0001);
 	# If this is a puppet, use this ghost trail as an oppurtunity to also update its position
@@ -383,18 +340,7 @@ func get_vector_angle(dist):
 # Set the direction that the player is "looking" at by changing sprite frame
 func set_look_direction(dir):
 	look_direction = dir;
-	$Sprite_Head.frame = dir;
-	$Sprite_Gun.frame = dir;
-	$Sprite_Body.frame = dir;
-	$Sprite_Legs.frame = look_direction + (int((1-($Leg_Animation_Timer.time_left / $Leg_Animation_Timer.wait_time)) * 4)%4) * $Sprite_Legs.hframes;
-	if dir == 2 or dir == 3:
-		$Sprite_Head.z_index =1;
-		$Sprite_Body.z_index =0;
-		$Sprite_Gun.z_index =2;
-	else:
-		$Sprite_Head.z_index =2;
-		$Sprite_Body.z_index =0;
-		$Sprite_Gun.z_index =1;
+	$Player_Visuals._update_look_direction(dir);
 	
 
 # Updates this player's position with the new given position. Only ever called remotely

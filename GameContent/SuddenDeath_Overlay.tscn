@@ -1,0 +1,155 @@
+[gd_scene load_steps=19 format=2]
+
+[ext_resource path="res://fonts/pixel.TTF" type="DynamicFontData" id=1]
+[ext_resource path="res://GameContent/Player_Visuals.tscn" type="PackedScene" id=2]
+[ext_resource path="res://GameContent/SuddenDeath_Overlay.gd" type="Script" id=3]
+[ext_resource path="res://Assets/Items/flags.png" type="Texture" id=4]
+[ext_resource path="res://GameContent/Player_Visuals.gd" type="Script" id=5]
+[ext_resource path="res://Assets/GUI/x-symbol.svg" type="Texture" id=6]
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 4 )
+region = Rect2( 0, 16, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 4 )
+region = Rect2( 16, 16, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 4 )
+region = Rect2( 32, 16, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=6]
+atlas = ExtResource( 4 )
+region = Rect2( 48, 16, 16, 16 )
+
+[sub_resource type="SpriteFrames" id=7]
+animations = [ {
+"frames": [ SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ) ],
+"loop": true,
+"name": "default",
+"speed": 7.0
+} ]
+
+[sub_resource type="DynamicFont" id=1]
+size = 163
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 70
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 1 )
+
+[sub_resource type="AtlasTexture" id=8]
+atlas = ExtResource( 4 )
+region = Rect2( 0, 32, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=9]
+atlas = ExtResource( 4 )
+region = Rect2( 16, 32, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=10]
+atlas = ExtResource( 4 )
+region = Rect2( 32, 32, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=11]
+atlas = ExtResource( 4 )
+region = Rect2( 48, 32, 16, 16 )
+
+[sub_resource type="SpriteFrames" id=12]
+animations = [ {
+"frames": [ SubResource( 8 ), SubResource( 9 ), SubResource( 10 ), SubResource( 11 ) ],
+"loop": true,
+"name": "default",
+"speed": 7.0
+} ]
+
+[node name="SuddenDeath_Overlay" type="Control"]
+modulate = Color( 1, 1, 1, 0.901961 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Player" type="Control" parent="." instance=ExtResource( 2 )]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_top = 286.695
+margin_right = 1152.0
+margin_bottom = 1366.69
+rect_scale = Vector2( 8, 8 )
+script = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Red_Flag" type="AnimatedSprite" parent="Player"]
+position = Vector2( 11.75, -15.125 )
+scale = Vector2( 2, 2 )
+z_index = -1
+frames = SubResource( 7 )
+frame = 3
+playing = true
+
+[node name="Title" type="RichTextLabel" parent="."]
+anchor_top = 0.25
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_top = -203.368
+margin_bottom = -203.368
+rect_clip_content = false
+custom_fonts/normal_font = SubResource( 1 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center][color=red]SUDDEN DEATH"
+text = "SUDDEN DEATH"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Subtitle" type="RichTextLabel" parent="."]
+anchor_top = 0.25
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_top = 71.0982
+margin_bottom = 71.0982
+rect_clip_content = false
+custom_fonts/normal_font = SubResource( 2 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]Flags can[color=red] NOT[color=black] be recovered"
+text = "Flags can NOT be recovered"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Animation_Timer" type="Timer" parent="."]
+one_shot = true
+
+[node name="Blue_Flag" type="Control" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 132.954
+margin_top = 271.843
+margin_right = 172.954
+margin_bottom = 311.843
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="x-symbol" type="Sprite" parent="Blue_Flag"]
+position = Vector2( -64.2692, 4.45221 )
+scale = Vector2( 0.49532, 0.49532 )
+texture = ExtResource( 6 )
+
+[node name="Sprite" type="AnimatedSprite" parent="Blue_Flag"]
+scale = Vector2( 16, 16 )
+z_index = -1
+frames = SubResource( 12 )
+frame = 1
+playing = true
