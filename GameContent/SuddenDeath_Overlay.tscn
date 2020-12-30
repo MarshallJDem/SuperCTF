@@ -91,7 +91,7 @@ position = Vector2( 11.75, -15.125 )
 scale = Vector2( 2, 2 )
 z_index = -1
 frames = SubResource( 7 )
-frame = 3
+frame = 1
 playing = true
 
 [node name="Title" type="RichTextLabel" parent="."]
@@ -151,5 +151,5 @@ texture = ExtResource( 6 )
 scale = Vector2( 16, 16 )
 z_index = -1
 frames = SubResource( 12 )
-frame = 1
+frame = 3
 playing = true
