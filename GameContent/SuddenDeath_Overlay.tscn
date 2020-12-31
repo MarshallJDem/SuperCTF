@@ -31,12 +31,12 @@ animations = [ {
 "speed": 7.0
 } ]
 
-[sub_resource type="DynamicFont" id=1]
+[sub_resource type="DynamicFont" id=23]
 size = 163
 outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 1 )
 
-[sub_resource type="DynamicFont" id=2]
+[sub_resource type="DynamicFont" id=24]
 size = 70
 outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 1 )
@@ -67,9 +67,20 @@ animations = [ {
 
 [node name="SuddenDeath_Overlay" type="Control"]
 modulate = Color( 1, 1, 1, 0.901961 )
+margin_right = 1920.0
+margin_bottom = 1080.0
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-script = ExtResource( 3 )
+margin_left = -20.0
+margin_top = -20.0
+margin_right = 20.0
+margin_bottom = 20.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -89,9 +100,7 @@ __meta__ = {
 [node name="Red_Flag" type="AnimatedSprite" parent="Player"]
 position = Vector2( 11.75, -15.125 )
 scale = Vector2( 2, 2 )
-z_index = -1
 frames = SubResource( 7 )
-frame = 1
 playing = true
 
 [node name="Title" type="RichTextLabel" parent="."]
@@ -101,7 +110,7 @@ anchor_bottom = 0.5
 margin_top = -203.368
 margin_bottom = -203.368
 rect_clip_content = false
-custom_fonts/normal_font = SubResource( 1 )
+custom_fonts/normal_font = SubResource( 23 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
 bbcode_text = "[center][color=red]SUDDEN DEATH"
@@ -117,7 +126,7 @@ anchor_bottom = 0.5
 margin_top = 71.0982
 margin_bottom = 71.0982
 rect_clip_content = false
-custom_fonts/normal_font = SubResource( 2 )
+custom_fonts/normal_font = SubResource( 24 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
 bbcode_text = "[center]Flags can[color=red] NOT[color=black] be recovered"
@@ -145,11 +154,11 @@ __meta__ = {
 [node name="x-symbol" type="Sprite" parent="Blue_Flag"]
 position = Vector2( -64.2692, 4.45221 )
 scale = Vector2( 0.49532, 0.49532 )
+z_index = 1
 texture = ExtResource( 6 )
 
 [node name="Sprite" type="AnimatedSprite" parent="Blue_Flag"]
 scale = Vector2( 16, 16 )
-z_index = -1
 frames = SubResource( 12 )
-frame = 3
+frame = 2
 playing = true

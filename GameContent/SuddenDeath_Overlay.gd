@@ -45,6 +45,7 @@ func _ready() -> void:
 		i += 0.05;
 		$Blue_Flag.modulate = Color(1,1,1,i);
 	yield(get_tree().create_timer(1), "timeout");
+	return;
 	i = 0.9
 	while(i > 0):
 		yield(get_tree().create_timer(0.05), "timeout");
