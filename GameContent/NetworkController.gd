@@ -44,7 +44,11 @@ func _ready():
 		Globals.serverIP = Globals.skirmishIP;
 	if Globals.matchType == 0:
 		Globals.mapName = Globals.skirmishMap;
-		
+	
+	
+	
+	var overlay = load("res://GameContent/SuddenDeath_Overlay.tscn").instance();
+	get_tree().get_root().get_node("MainScene").call_deferred("add_child", overlay);
 		
 	spawn_map(Globals.mapName);
 	

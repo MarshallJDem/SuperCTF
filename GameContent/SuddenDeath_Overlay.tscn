@@ -65,6 +65,7 @@ animations = [ {
 } ]
 
 [node name="SuddenDeath_Overlay" type="CanvasLayer"]
+layer = 6
 
 [node name="ColorRect" type="ColorRect" parent="."]
 anchor_right = 1.0
