@@ -8,8 +8,9 @@ extends CanvasLayer
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	get_tree().connect("screen_resized", self, "_screen_resized");
-	_screen_resized();
+	#get_tree().connect("screen_resized", self, "_screen_resized");
+	#_screen_resized();
+	pass;
 
 
 func _screen_resized():
@@ -21,4 +22,7 @@ func _screen_resized():
 		s = window_size.y / 1080;
 	else:
 		s = window_size.x / 1920;
-	$Main.rect_scale = Vector2(s,s);
+	$Main/SuddenDeath_Overlay.rect_scale = Vector2( s , s );
+	var size = $Main/SuddenDeath_Overlay.rect_size;
+	$Main/SuddenDeath_Overlay.rect_position = (size * 0.5) - (size * s * 0.5)
+

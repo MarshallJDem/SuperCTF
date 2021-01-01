@@ -670,7 +670,7 @@ remotesync func load_new_round(suddenDeath = false):
 	
 	if isSuddenDeath:
 		var overlay = load("res://GameContent/SuddenDeath_Overlay.tscn").instance();
-		call_deferred("add_child", overlay);
+		get_tree().get_root().get_node("MainScene").call_deferred("add_child", overlay);
 		yield(get_tree().create_timer(10), "timeout");
 	
 	$Round_Start_Timer.set_wait_time(3);
