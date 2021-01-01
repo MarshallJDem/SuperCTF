@@ -46,7 +46,6 @@ func _ready():
 		Globals.mapName = Globals.skirmishMap;
 		
 		
-		
 	spawn_map(Globals.mapName);
 	
 	if Globals.testing:

@@ -1,7 +1,7 @@
 extends Node
 
 # Whether to run in testing mode (for development uses)
-var testing = false;
+var testing = true;
 var experimental = true;
 var temporaryQuickplayDisable = true;
 var localTesting = false; # Used for running a server locally on the machine
@@ -149,7 +149,7 @@ func _enter_tree():
 	if arguments.has("mapName"):
 		Globals.mapName = str(arguments["mapName"]);
 	if OS.has_feature("editor"):
-		testing = true;
+		testing = false;
 	#experimental =  true;#OS.has_feature("debug") and !OS.has_feature("editor");
 	if experimental:
 		allowCommands = true;
