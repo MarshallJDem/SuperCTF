@@ -102,7 +102,7 @@ func collided_with_flag_home(flag_home):
 		if !flag.is_at_home and !get_tree().get_root().get_node("MainScene/NetworkController").isSuddenDeath:
 			# Only display message if this is our local player
 			if get_parent().player_id == Globals.localPlayerID:
-				get_tree().get_root().get_node("MainScene/UI_Layer").set_alert_text("[center][color=black]* YOUR FLAG MUST BE HOME TO SCORE *");
+				flag.enable_warning("[center]Can't score without\nyour flag at home");
 		elif get_tree().is_network_server(): # Otherwise score if we're the server
 			print("Scoring : " + str(get_tree().get_root().get_node("MainScene/NetworkController").round_is_ended));
 			player.stats["captures"] += 1;

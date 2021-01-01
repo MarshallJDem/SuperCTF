@@ -45,7 +45,6 @@ func collided_with_player(player):
 	# If the player is not alive, ignore it
 	if !player.alive:
 		return;
-	# Comment
 	# If this is this player's flag and it already safe, then ignore it
 	if flag.is_at_home and flag.team_id == player.team_id:
 		return
@@ -59,8 +58,8 @@ func collided_with_player(player):
 			player.stats["recovers"] += 1;
 			flag.rpc("return_home");
 			return;
-		else: # Otherwise give a warning
-			pass;
+		else: # SUDDEN DEATH, you cannot recover. Give a warning
+			flag.enable_warning("[center]Can't recover in\nSudden Death");
 	# Else if this is this player's enemy's flag
 	if flag.team_id != player.team_id:
 		if Globals.testing:

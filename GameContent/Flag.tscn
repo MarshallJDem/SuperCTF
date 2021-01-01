@@ -1,6 +1,7 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://GameContent/Flag.gd" type="Script" id=1]
+[ext_resource path="res://fonts/pixel.TTF" type="DynamicFontData" id=2]
 [ext_resource path="res://Assets/Items/flags.png" type="Texture" id=6]
 [ext_resource path="res://GameContent/Flag_Area2D.gd" type="Script" id=10]
 
@@ -55,6 +56,12 @@ animations = [ {
 [sub_resource type="ConvexPolygonShape2D" id=11]
 points = PoolVector2Array( -10, -9.171, 23.751, -8.802, 23.926, 33.35, -10, 33.419 )
 
+[sub_resource type="DynamicFont" id=12]
+size = 8
+outline_size = 1
+outline_color = Color( 0.807843, 0.807843, 0.807843, 1 )
+font_data = ExtResource( 2 )
+
 [node name="Flag" type="Node2D" groups=[
 "Flags",
 ]]
@@ -65,13 +72,14 @@ script = ExtResource( 1 )
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 5 )
-frame = 1
+frame = 3
 playing = true
 
 [node name="Red_Sprite" type="AnimatedSprite" parent="."]
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 10 )
+frame = 2
 playing = true
 
 [node name="Area2D" type="Area2D" parent="." groups=[
@@ -83,3 +91,22 @@ script = ExtResource( 10 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2( -20.7247, 2.43704 )
 shape = SubResource( 11 )
+
+[node name="Warning" type="RichTextLabel" parent="."]
+visible = false
+margin_left = -37.2945
+margin_top = -61.7153
+margin_right = 55.7055
+margin_bottom = -21.7153
+rect_clip_content = false
+custom_fonts/normal_font = SubResource( 12 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]Can't recover in
+Sudden Death"
+text = "Can't recover in
+Sudden Death"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
