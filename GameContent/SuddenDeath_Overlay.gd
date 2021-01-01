@@ -48,7 +48,7 @@ func _ready() -> void:
 	yield(get_tree().create_timer(1), "timeout");
 	i = 1.0
 	while(i > 0):
-		yield(get_tree().create_timer(0.05), "timeout");
+		yield(get_tree().create_timer(0.03), "timeout");
 		i -= 0.05;
 		get_parent().modulate = Color(1,1,1,i);
 		$"../../ColorRect".modulate = Color(1,1,1,i - 0.1);
