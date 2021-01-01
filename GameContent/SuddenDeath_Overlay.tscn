@@ -115,7 +115,6 @@ rect_scale = Vector2( 8, 8 )
 position = Vector2( 11.75, -15.125 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 5 )
-frame = 1
 playing = true
 
 [node name="Title" type="RichTextLabel" parent="Stupid_Parent_Node/Main"]
@@ -175,5 +174,5 @@ texture = ExtResource( 6 )
 [node name="Sprite" type="AnimatedSprite" parent="Stupid_Parent_Node/Main/Blue_Flag"]
 scale = Vector2( 16, 16 )
 frames = SubResource( 12 )
-frame = 3
+frame = 2
 playing = true
