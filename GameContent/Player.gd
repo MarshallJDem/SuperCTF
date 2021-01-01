@@ -31,7 +31,6 @@ var sprintEnabled = false;
 var last_position = Vector2(0,0);
 # The frame of the all of the sprite on the top (Gun, Head, Body)
 var look_direction = 0;
-var has_moved_after_respawn = false;
 var current_class;
 # If this is true the player will dash once physics process is called
 var dash_signaled = false;
@@ -94,14 +93,10 @@ func _physics_process(delta: float) -> void:
 	
 	TELEPORT_SPEED = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("dashDistance");
 	$Teleport_Timer.wait_time = DASH_COOLDOWN_PMODIFIER + float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("dashCooldown"))/1000.0;
-	if !get_tree().get_root().get_node("MainScene/NetworkController").round_is_running:
-		has_moved_after_respawn = false;
 	if !Globals.testing and get_tree().has_network_peer() and is_network_master():
-		Globals.player_active_after_respawn = has_moved_after_respawn and control;
 		Globals.displaying_loadout = is_in_own_spawn();
 	elif Globals.testing:
 		Globals.displaying_loadout = true;
-		Globals.player_active_after_respawn = true;
 	if control:
 		activate_camera();
 		# Don't look around if we're shooting a laser
@@ -210,8 +205,6 @@ remotesync func teleport(start, end):
 func move_on_inputs():
 	var input = Globals.get_input_vector();
 	last_movement_input = input;
-	if (input.x != 0 or input.y != 0):
-		has_moved_after_respawn = true;
 	
 	var speed = BASE_SPEED + POWERUP_SPEED;
 	if $Weapon_Node/Laser_Timer.time_left > 0:
@@ -435,7 +428,6 @@ func respawn():
 	visible = true;
 	alive = true;
 	position = start_pos;
-	has_moved_after_respawn = false;
 	if is_network_master() and get_tree().get_root().get_node("MainScene/NetworkController").round_is_running:
 		control = true;
 	start_temporary_invincibility();
