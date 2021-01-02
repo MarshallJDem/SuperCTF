@@ -644,7 +644,6 @@ remotesync func load_new_round(suddenDeath = false):
 	round_is_ended = false;
 	match_is_running = true;
 	reset_game_objects();
-	get_tree().get_root().get_node("MainScene/Countdown_Audio").play();
 	# If we're the server, instruct other to spawn game nodes
 	if get_tree().is_network_server():
 		# Update score
@@ -672,9 +671,11 @@ remotesync func load_new_round(suddenDeath = false):
 		var overlay = load("res://GameContent/SuddenDeath_Overlay.tscn").instance();
 		get_tree().get_root().get_node("MainScene").call_deferred("add_child", overlay);
 		yield(get_tree().create_timer(9), "timeout");
+		get_tree().get_root().get_node("MainScene/Countdown_Audio").play();
 		$Round_Start_Timer.set_wait_time(3);
 		$Round_Start_Timer.start();
 	else:
+		get_tree().get_root().get_node("MainScene/Countdown_Audio").play();
 		$Round_Start_Timer.set_wait_time(3);
 		$Round_Start_Timer.start();
 
