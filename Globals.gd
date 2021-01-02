@@ -148,7 +148,7 @@ func _enter_tree():
 	if arguments.has("mapName"):
 		Globals.mapName = str(arguments["mapName"]);
 	if OS.has_feature("editor"):
-		testing = true;
+		testing = false;
 	#experimental =  true;#OS.has_feature("debug") and !OS.has_feature("editor");
 	if experimental:
 		allowCommands = true;

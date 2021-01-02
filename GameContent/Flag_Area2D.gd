@@ -59,7 +59,7 @@ func collided_with_player(player):
 			flag.rpc("return_home");
 			return;
 		else: # SUDDEN DEATH, you cannot recover. Give a warning
-			flag.enable_warning("[center]Can't recover in\nSudden Death");
+			flag.rpc("enable_warning" , "[center]Can't recover in\nSudden Death");
 	# Else if this is this player's enemy's flag
 	if flag.team_id != player.team_id:
 		if Globals.testing:
