@@ -27,7 +27,7 @@ func _flaghome_entered_screen():
 	
 
 #turns score helper invisible or visbible using a boolean and if it is on screen
-func toggle_score_helper(has_flag):
+func _toggle_score_helper(has_flag):
 	$ScoreHelper.visible = has_flag and is_flag_home_visible
 
 

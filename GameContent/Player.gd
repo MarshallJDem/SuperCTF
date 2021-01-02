@@ -125,12 +125,22 @@ func _process(delta):
 	
 	#check if the player is the one we ar e controlling
 	if Globals.testing or player_id == Globals.localPlayerID:
-		#get the players flag home
-		var flagHome = get_tree().get_root().get_node("MainScene/Map/YSort/Flag_Home-" + str(team_id));
+		
+		if has_flag():
+			#get the players flag home
+			var flagHome = get_tree().get_root().get_node("MainScene/Map/YSort/Flag_Home-" + str(team_id));
+			#set home pointer visible
+			$Home_Pointer.visible = true
+			#point the home pointer to the flag home
+			$Home_Pointer._point_at_home(self.position, flagHome.position)
+			$Home_Pointer._move_arrow(self.position, flagHome.position, delta, flagHome.is_flag_home_visible)
+				
+				
+		
 		#turn the helper arrow on if they have the flag and off if they dont
-		flagHome.toggle_score_helper(has_flag())
-		#point the home pointer to the flag home
-		$Home_Pointer.point_at_home(self.position, flagHome.position, flagHome.is_flag_home_visible or !has_flag())
+		#flagHome._toggle_score_helper(has_flag())
+		
+		
 	
 	
 	
