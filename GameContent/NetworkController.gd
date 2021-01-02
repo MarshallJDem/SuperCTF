@@ -672,10 +672,11 @@ remotesync func load_new_round(suddenDeath = false):
 		var overlay = load("res://GameContent/SuddenDeath_Overlay.tscn").instance();
 		get_tree().get_root().get_node("MainScene").call_deferred("add_child", overlay);
 		yield(get_tree().create_timer(9), "timeout");
-	
-	$Round_Start_Timer.set_wait_time(3);
-		
-	$Round_Start_Timer.start();
+		$Round_Start_Timer.set_wait_time(3);
+		$Round_Start_Timer.start();
+	else:
+		$Round_Start_Timer.set_wait_time(3);
+		$Round_Start_Timer.start();
 
 # For when a player joins mid round
 remote func load_mid_round(players, scores, round_start_timer_timeleft, round_num, round_time_elapsed, flags_data, game_vars):

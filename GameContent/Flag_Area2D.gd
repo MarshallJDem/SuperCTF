@@ -53,7 +53,7 @@ func collided_with_player(player):
 		return;
 	# If this is this player's flag and it's away from home, return it home
 	if !flag.is_at_home and flag.team_id == player.team_id:
-		# Do it only ff this is not a sudden death
+		# Do it only if this is not a sudden death
 		if !get_tree().get_root().get_node("MainScene/NetworkController").isSuddenDeath:
 			player.stats["recovers"] += 1;
 			flag.rpc("return_home");
