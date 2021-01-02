@@ -10,19 +10,6 @@ script = ExtResource( 1 )
 wait_time = 100.0
 one_shot = true
 
-[node name="Sprite_Head" type="Sprite" parent="."]
-hframes = 8
-
-[node name="Sprite_Body" type="Sprite" parent="."]
-hframes = 8
-
-[node name="Sprite_Gun" type="Sprite" parent="."]
-hframes = 8
-
-[node name="Sprite_Legs" type="Sprite" parent="."]
-vframes = 4
-hframes = 8
-
 [node name="Sprite_Flag_B" type="Sprite" parent="."]
 visible = false
 position = Vector2( 13.3467, -16.3429 )

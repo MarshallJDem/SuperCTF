@@ -51,6 +51,13 @@ remotesync func return_home():
 			if area.is_in_group("Player_Bodies"): # If it's a player
 				area.collided_with_flag_home(flag_home);
 
+remotesync func enable_warning(text):
+	$Warning.visible = true;
+	$Warning.bbcode_text = text;
+	yield(get_tree().create_timer(3), "timeout");
+	$Warning.visible = false;
+
+
 # Reparents this flag so its parent is the given node
 func re_parent(new_parent):
 	get_parent().call_deferred("remove_child", self);
