@@ -52,7 +52,7 @@ func _ready() -> void:
 		i -= 0.05;
 		get_parent().modulate = Color(1,1,1,i);
 		$"../../ColorRect".modulate = Color(1,1,1,i - 0.1);
-	call_deferred("queue_free");
+	get_parent().get_parent().call_deferred("queue_free");
 
 
 func _animation_timer_ended():
