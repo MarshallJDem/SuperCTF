@@ -72,14 +72,13 @@ script = ExtResource( 1 )
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 5 )
-frame = 3
+frame = 1
 playing = true
 
 [node name="Red_Sprite" type="AnimatedSprite" parent="."]
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 10 )
-frame = 2
 playing = true
 
 [node name="Area2D" type="Area2D" parent="." groups=[
@@ -93,6 +92,7 @@ position = Vector2( -20.7247, 2.43704 )
 shape = SubResource( 11 )
 
 [node name="Warning" type="RichTextLabel" parent="."]
+visible = false
 margin_left = -91.1031
 margin_top = -62.3964
 margin_right = 108.897
