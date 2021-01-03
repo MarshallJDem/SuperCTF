@@ -197,6 +197,7 @@ func _process(delta):
 		if Globals.userToken != null:
 			attempt_ConfirmClientConnection();
 			attempt_PollPlayerStatus();
+	print_stack();
 
 var volume_sliders = Vector2(50,50);
 func toggle_options_menu():

@@ -68,7 +68,6 @@ func _process(delta):
 	if !player.alive:
 		$Cooldown_Timer.stop();
 		$Laser_Timer.stop();
-		$Shoot_Animation_Timer.stop();
 		
 	update_cooldown_lengths();
 	
@@ -137,7 +136,11 @@ func shoot_on_inputs():
 					if $Cooldown_Timer.time_left == 0:
 						
 						# Test to see if demo is spawning inside of forcefield
-						$CollisionTester.position = get_node("Bullet_Starts/" + String(player.look_direction)).position;
+						var bullet_start = get_node_or_null("Bullet_Starts/" + String(player.look_direction));
+						if bullet_start != null:
+							$CollisionTester.position = bullet_start.position;
+						else:
+							$CollisionTester.position = Vector2(0,0);
 						var forcefield_test = $CollisionTester.move_and_collide(direction * 0.0);
 						
 						var time_shot = OS.get_system_time_msecs() - Globals.match_start_time;

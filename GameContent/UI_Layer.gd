@@ -5,6 +5,8 @@ var show_move_gui = true;
 
 
 func _ready():
+	if Globals.isServer:
+		return;
 	var _err = $Leave_Match_Button.connect("pressed", self, "_leave_match_button_pressed");
 	_err = $Cancel_Button.connect("pressed", self, "_cancel_button_pressed");
 	_err = $"../Chat_Layer/Options_Button".connect("button_up", self, "_options_button_clicked");
