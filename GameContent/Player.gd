@@ -70,7 +70,8 @@ func _input(event):
 	if control:
 		if event is InputEventKey and event.pressed:
 			if event.scancode == KEY_T:
-				get_tree().get_root().get_node("MainScene/NetworkController").rpc("test_ping");
+				pass;
+				#get_tree().get_root().get_node("MainScene/NetworkController").rpc("test_ping");
 			if event.scancode == KEY_CONTROL:
 				if !has_flag():
 					pass;

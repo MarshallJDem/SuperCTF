@@ -1,8 +1,8 @@
 extends Node
 
 # Whether to run in testing mode (for development uses)
-var testing = false;
-var experimental = false;
+var testing = true;
+var experimental = true;
 var temporaryQuickplayDisable = true;
 var localTesting = false; # Used for running a server locally on the machine
 
@@ -148,7 +148,9 @@ func _enter_tree():
 	if arguments.has("mapName"):
 		Globals.mapName = str(arguments["mapName"]);
 	if OS.has_feature("editor"):
-		testing = false;
+		pass;
+	else:
+		testing = true
 	#experimental =  true;#OS.has_feature("debug") and !OS.has_feature("editor");
 	if experimental:
 		allowCommands = true;
@@ -195,6 +197,7 @@ func _process(delta):
 		if Globals.userToken != null:
 			attempt_ConfirmClientConnection();
 			attempt_PollPlayerStatus();
+	print_stack();
 
 var volume_sliders = Vector2(50,50);
 func toggle_options_menu():
