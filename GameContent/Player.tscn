@@ -342,19 +342,24 @@ __meta__ = {
 wait_time = 0.5
 one_shot = true
 
-[node name="Home_Pointer" type="TextureRect" parent="."]
+[node name="Home_Pointer_Pivot" type="Control" parent="."]
+script = ExtResource( 25 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Home_Pointer" type="TextureRect" parent="Home_Pointer_Pivot"]
 visible = false
 anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-margin_left = -5.0
-margin_top = -53.0
-margin_right = 6.0
-margin_bottom = -39.0
-rect_pivot_offset = Vector2( 5, 53 )
+margin_left = -6.0
+margin_top = -50.0
+margin_right = 5.0
+margin_bottom = -36.0
+rect_scale = Vector2( 2, 2 )
 texture = ExtResource( 24 )
-script = ExtResource( 25 )
 __meta__ = {
 "_edit_use_anchors_": false
 }

@@ -129,13 +129,17 @@ func _process(delta):
 		if has_flag():
 			#get the players flag home
 			var flagHome = get_tree().get_root().get_node("MainScene/Map/YSort/Flag_Home-" + str(team_id));
-			#set home pointer visible
-			$Home_Pointer.visible = true
+			
+			
+
 			#point the home pointer to the flag home
-			$Home_Pointer._point_at_home(self.position, flagHome.position)
-			$Home_Pointer._move_arrow(self.position, flagHome.position, delta, flagHome.is_flag_home_visible)
-				
-				
+			$Home_Pointer_Pivot._point_at_home(self.position, flagHome.position)
+			$Home_Pointer_Pivot._move_arrow(self.position, flagHome.position, delta, flagHome.is_flag_home_visible)
+			#set home pointer visible
+			$Home_Pointer_Pivot/Home_Pointer.visible = true
+		else:
+			$Home_Pointer_Pivot/Home_Pointer.visible = false
+			
 		
 		#turn the helper arrow on if they have the flag and off if they dont
 		#flagHome._toggle_score_helper(has_flag())
