@@ -305,7 +305,7 @@ func update_player_objects():
 	for player in players:
 		if !get_tree().get_root().get_node("MainScene/Players").has_node("P" + str(player)):
 			spawn_player(player);
-	
+	# For every 
 	for player_id in players:
 		if !get_tree().is_network_server() and players[player_id]["network_id"] == get_tree().get_network_unique_id():
 			Globals.localPlayerID = player_id;
@@ -320,7 +320,7 @@ func update_player_objects():
 				player_node.control = round_is_running;
 				player_node.activate_camera();
 		else:
-			print_stack();
+			print("ERROR : FAILED TO FIND PLAYER OBJECT FOR PLAYERID : "  + str(player_id));
 
 remote func player_class_changed(new_class):
 	var sender_network_id = get_tree().get_rpc_sender_id();
@@ -510,7 +510,9 @@ func _client_disconnected(id):
 			if get_tree().is_network_server():
 				var message = players[player_id]["name"];
 				message += " disconnected";
-				get_tree().get_root().get_node("MainScene/Chat_Layer/Line_Edit").rpc("receive_message", "[color=red]" + message +  "[/color]", -1);
+				for peer in  get_tree().get_network_connected_peers():
+					get_tree().get_root().get_node("MainScene/Chat_Layer/Line_Edit").rpc_id(peer, "receive_message", "[color=red]" + message +  "[/color]", -1);
+				get_tree().get_root().get_node("MainScene/Chat_Layer/Line_Edit").receive_message( "[color=red]" + message +  "[/color]", -1);
 				if Globals.matchType == 0:
 					print("Erasing player_id " + str(player_id) + " with name " + str(players[player_id]["name"]));
 					players.erase(player_id);
@@ -523,7 +525,9 @@ func _client_disconnected(id):
 		if $Match_End_Timer.time_left > 0:
 			complete_match_end();
 			return;
-		rpc("update_players_data", players, round_is_running);
+		for peer in  get_tree().get_network_connected_peers():
+			rpc_id(peer,"update_players_data", players, round_is_running);
+		update_players_data(players,round_is_running);
 		if Globals.matchType != 0:
 			if get_tree().get_network_connected_peers().size() == 0:
 				# If this is an actual match, if after 15 seconds go by and there is still 0 connections cancel the match
