@@ -296,9 +296,9 @@ func update_player_objects():
 	# Delete players that have left and spawn new players
 	# For every old player that no longer exists
 	for player in get_tree().get_root().get_node("MainScene/Players").get_children():
-		var name = player.name;
-		name.erase(0,1);
-		if !players.has(int(name)):
+		var n = player.name;
+		n.erase(0,1);
+		if !players.has(int(n)):
 			player.drop_current_flag();
 			player.call_deferred("free");
 	# For every new player
