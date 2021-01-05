@@ -123,7 +123,7 @@ func _process(delta):
 	update();
 	
 	
-	#check if the player is the one we ar e controlling
+	#check if the player is the one we are controlling
 	if Globals.testing or player_id == Globals.localPlayerID:
 		
 		if has_flag():
