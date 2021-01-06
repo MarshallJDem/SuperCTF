@@ -7,16 +7,14 @@ export var flag_home_boundary = 40
 export var player_boundary = 40
 #export var distance_to_home = 0
 var Arrow 
-#angle from player to flag home in degrees
-var angle_to_home = 0.0
 
+#Position that the arrow moves towards
 var target_position = Vector2(0,0);
 
 
 func _ready() -> void:
 	#set home pointer to its starting point
 	Arrow = $Home_Pointer
-	#Arrow.position = starting_distance
 
 
 #Points towards flag home using: player position Vec2, flag home position Vec2
@@ -29,8 +27,10 @@ func _point_at_home(player_position, home_position):
 func _move_arrow(player_position, home_position, delta, home_visible):
 	
 	if home_visible:
-		# TODO: make the arrow offset from the flag home a bit (like 40 pixels from the center)
+		#Target position is on top of the flag home
 		target_position = (home_position - player_position);
+		#minus a multiple of the normalized version of this vector so it stays flag_home_boundary pixels away
+		target_position = target_position - (target_position.normalized()) * flag_home_boundary;
 	else:
 		var angle = player_position.angle_to_point(home_position);
 		target_position = -Vector2(cos(angle)*player_boundary, sin(angle)*player_boundary);
