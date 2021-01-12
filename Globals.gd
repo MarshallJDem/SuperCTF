@@ -5,6 +5,7 @@ var testing = false;
 var experimental = true;
 var temporaryQuickplayDisable = true;
 var localTesting = false; # Used for running a server locally on the machine
+var remoteSkirmish = true; # Used for running the skirmish lobby on a remote computer (so you can run it in the editor and catch bugs)
 
 #Game Servers (Both clients and servers use these vars, but in different ways. overlapping would not work)
 var serverIP = "";
@@ -159,6 +160,13 @@ func _enter_tree():
 			skirmishIP = "superctf.com:42490";
 			serverIP = skirmishIP;
 			#get_tree().change_scene("res://GameContent/Main.tscn");
+	if remoteSkirmish:
+		port = 42401
+		if !isServer:
+			skirmishIP = "gameserver.superctf.com:42401";
+		if isServer:
+			serverPrivateToken = "localhosttoken";
+			matchType = 0;
 	if localTesting:
 		if OS.has_feature("editor"):
 			isServer = true;
