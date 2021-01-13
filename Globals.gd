@@ -5,7 +5,7 @@ var testing = false;
 var experimental = false;
 var temporaryQuickplayDisable = true;
 var localTesting = false; # Used for running a server locally on the machine
-var remoteSkirmish = true; # Used for running the skirmish lobby on a remote computer (so you can run it in the editor and catch bugs)
+var remoteSkirmish = false; # Used for running the skirmish lobby on a remote computer (so you can run it in the editor and catch bugs)
 
 #Game Servers (Both clients and servers use these vars, but in different ways. overlapping would not work)
 var serverIP = "";
@@ -14,7 +14,7 @@ var skirmishIP = "superctf.com:42480";
 var skirmishMap = "TehoMap1";
 var port = 42480;
 var serverPrivateToken;
-var isServer = false;
+var isServer = true;
 var allowedPlayers = [];
 var matchID;
 var matchType;
