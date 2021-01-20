@@ -97,7 +97,7 @@ func _death_timer_ended():
 	visible = false;
 	if get_tree().is_network_server():
 		yield(get_tree().create_timer(1), "timeout");
-		rpc("die");
+		rpc("die"); # WARNING : Sometimes this throws an error if the demo dies in the time of this yield.
 	
 remotesync func die():
 	call_deferred("queue_free");
