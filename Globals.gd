@@ -161,10 +161,11 @@ func _enter_tree():
 			serverIP = skirmishIP;
 			#get_tree().change_scene("res://GameContent/Main.tscn");
 	if remoteSkirmish:
-		port = 42401
 		if !isServer:
+			port = 42401
 			skirmishIP = "gameserver.superctf.com:42401";
 		if isServer and OS.has_feature("editor"):
+			port = 42401
 			serverPrivateToken = "localhosttoken";
 			matchType = 0;
 	if localTesting:
