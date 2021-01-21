@@ -134,9 +134,17 @@ func _process(delta):
 
 			#point the home pointer to the flag home
 			$Home_Pointer_Pivot._point_at_home(self.position, flagHome.position)
-			$Home_Pointer_Pivot._move_arrow(self.position, flagHome.position, delta, flagHome.is_flag_home_visible)
-			#set home pointer visible
 			$Home_Pointer_Pivot/Home_Pointer.visible = true
+			if $Home_Pointer_Pivot/Home_Pointer.visible:
+				if ($Home_Pointer_Pivot._move_arrow(self.position, flagHome.position, delta, flagHome.is_flag_home_visible)) <= 100 and flagHome.is_flag_home_visible and ($Home_Pointer_Pivot._move_arrow(self.position, flagHome.position, delta, flagHome.is_flag_home_visible)) >= -100:
+					flagHome._toggle_score_helper(true)
+					$Home_Pointer_Pivot/Home_Pointer.visible = false
+				else:
+					flagHome._toggle_score_helper(false)
+			
+				
+			#set home pointer visible
+			#$Home_Pointer_Pivot/Home_Pointer.visible = true
 		else:
 			$Home_Pointer_Pivot/Home_Pointer.visible = false
 			

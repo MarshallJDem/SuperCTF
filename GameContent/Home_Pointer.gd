@@ -41,9 +41,14 @@ func _move_arrow(player_position, home_position, delta, home_visible):
 	# Figure out what percentage of the distance we need to travel (basically our speed / the total distance gives us a percentage of the total distance we should travel)
 	var t = 1.0;
 	# Checking this makes sure that t will be 1.0 if we would have overshot
+	
 	if delta * arrow_speed < distance:
-		t = (delta * arrow_speed)/distance;
+		if distance != 0:
+			
+			t = (delta * arrow_speed)/distance;
 	
 	# Travel t percentage from where we are to where we want to go.
 	var new_pos = lerp(self.position, target_position, t);
 	self.position = new_pos;
+	
+	return(distance)
