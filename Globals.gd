@@ -164,7 +164,7 @@ func _enter_tree():
 		port = 42401
 		if !isServer:
 			skirmishIP = "gameserver.superctf.com:42401";
-		if isServer:
+		if isServer and OS.has_feature("editor"):
 			serverPrivateToken = "localhosttoken";
 			matchType = 0;
 	if localTesting:
