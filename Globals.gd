@@ -1,8 +1,8 @@
 extends Node
 
 # Whether to run in testing mode (for development uses)
-var testing = false;
-var experimental = true;
+var testing = true;
+var experimental = false;
 var temporaryQuickplayDisable = true;
 var localTesting = false; # Used for running a server locally on the machine
 var remoteSkirmish = true; # Used for running the skirmish lobby on a remote computer (so you can run it in the editor and catch bugs)
@@ -150,7 +150,6 @@ func _enter_tree():
 		Globals.mapName = str(arguments["mapName"]);
 	if OS.has_feature("editor"):
 		pass;
-
 	#experimental =  true;#OS.has_feature("debug") and !OS.has_feature("editor");
 	if experimental:
 		allowCommands = true;
