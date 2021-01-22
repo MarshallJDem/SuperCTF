@@ -56,7 +56,7 @@ team_id = 0
 flag_id = 0
 
 [node name="Flag_Home-1" parent="YSort" instance=ExtResource( 4 )]
-position = Vector2( 943.361, -0.382878 )
+position = Vector2( 943.361, 2.256 )
 scale = Vector2( 2, 2 )
 z_index = -4016
 team_id = 1
