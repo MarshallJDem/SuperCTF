@@ -1,7 +1,7 @@
 extends Node
 
 # Whether to run in testing mode (for development uses)
-var testing = true;
+var testing = false;
 var experimental = false;
 var temporaryQuickplayDisable = true;
 var localTesting = false; # Used for running a server locally on the machine
@@ -14,7 +14,7 @@ var skirmishIP = "superctf.com:42480";
 var skirmishMap = "TehoMap1";
 var port = 42480;
 var serverPrivateToken;
-var isServer = false;
+var isServer = true;
 var allowedPlayers = [];
 var matchID;
 var matchType;
