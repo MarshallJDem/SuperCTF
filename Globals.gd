@@ -14,7 +14,7 @@ var skirmishIP = "superctf.com:42480";
 var skirmishMap = "TehoMap1";
 var port = 42480;
 var serverPrivateToken;
-var isServer = true;
+var isServer = false;
 var allowedPlayers = [];
 var matchID;
 var matchType;
@@ -160,10 +160,11 @@ func _enter_tree():
 			serverIP = skirmishIP;
 			#get_tree().change_scene("res://GameContent/Main.tscn");
 	if remoteSkirmish:
-		port = 42401
 		if !isServer:
+			port = 42401
 			skirmishIP = "gameserver.superctf.com:42401";
-		if isServer:
+		if isServer and OS.has_feature("editor"):
+			port = 42401
 			serverPrivateToken = "localhosttoken";
 			matchType = 0;
 	if localTesting:
