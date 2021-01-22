@@ -1,7 +1,7 @@
 extends Node
 
 # Whether to run in testing mode (for development uses)
-var testing = false;
+var testing = true;
 var experimental = false;
 var temporaryQuickplayDisable = true;
 var localTesting = false; # Used for running a server locally on the machine
@@ -14,7 +14,7 @@ var skirmishIP = "superctf.com:42480";
 var skirmishMap = "TehoMap1";
 var port = 42480;
 var serverPrivateToken;
-var isServer = true;
+var isServer = false;
 var allowedPlayers = [];
 var matchID;
 var matchType;
@@ -150,7 +150,6 @@ func _enter_tree():
 		Globals.mapName = str(arguments["mapName"]);
 	if OS.has_feature("editor"):
 		pass;
-
 	#experimental =  true;#OS.has_feature("debug") and !OS.has_feature("editor");
 	if experimental:
 		allowCommands = true;
@@ -161,10 +160,11 @@ func _enter_tree():
 			serverIP = skirmishIP;
 			#get_tree().change_scene("res://GameContent/Main.tscn");
 	if remoteSkirmish:
-		port = 42401
 		if !isServer:
+			port = 42401
 			skirmishIP = "gameserver.superctf.com:42401";
-		if isServer:
+		if isServer and OS.has_feature("editor"):
+			port = 42401
 			serverPrivateToken = "localhosttoken";
 			matchType = 0;
 	if localTesting:

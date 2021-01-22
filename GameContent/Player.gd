@@ -3,7 +3,7 @@ extends KinematicBody2D
 var control = false;
 # The ID of this player 0,1,2 etc. NOT the network unique ID
 var player_id = -1;
-var team_id = -1;
+var team_id = 0;
 var BASE_SPEED = 200;
 const SPRINT_SPEED = 50;
 const FLAG_SLOWDOWN_SPEED = -25;
@@ -120,6 +120,42 @@ func _physics_process(delta: float) -> void:
 		dash();
 	
 	update();
+	
+	
+	#check if the player is the one we are controlling
+	if Globals.testing or player_id == Globals.localPlayerID:
+		
+		if has_flag():
+			#get the players flag home
+			var flagHome = get_tree().get_root().get_node("MainScene/Map/YSort/Flag_Home-" + str(team_id));
+			
+			
+
+			#point the home pointer to the flag home
+			$Home_Pointer_Pivot._point_at_home(self.position, flagHome.position)
+			$Home_Pointer_Pivot/Home_Pointer.visible = true
+			if $Home_Pointer_Pivot/Home_Pointer.visible:
+				if ($Home_Pointer_Pivot._move_arrow(self.position, flagHome.position, delta, flagHome.is_flag_home_visible)) <= 100 and flagHome.is_flag_home_visible and ($Home_Pointer_Pivot._move_arrow(self.position, flagHome.position, delta, flagHome.is_flag_home_visible)) >= -100:
+					flagHome._toggle_score_helper(true)
+					$Home_Pointer_Pivot/Home_Pointer.visible = false
+				else:
+					flagHome._toggle_score_helper(false)
+			
+				
+			#set home pointer visible
+			#$Home_Pointer_Pivot/Home_Pointer.visible = true
+		else:
+			$Home_Pointer_Pivot/Home_Pointer.visible = false
+			
+		
+		#turn the helper arrow on if they have the flag and off if they dont
+		#flagHome._toggle_score_helper(has_flag())
+		
+		
+	
+	
+	
+	
 	
 	if $Invincibility_Timer.time_left > 0:
 		var t = $Invincibility_Timer.time_left / $Invincibility_Timer.wait_time 
