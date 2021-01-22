@@ -353,22 +353,22 @@ custom_colors/default_color = Color( 0.368627, 0.368627, 0.368627, 1 )
 bbcode_enabled = true
 bbcode_text = "[color=black]NEWS:
 
-Happy December, and welcome [color=blue][url=https://itch.io]Itch.io[/url][color=black] and [color=blue][url=https://iogames.space]iogames[/url][color=black] players! (And the rest of course)
+Happy [rainbow]NEW YEAR!!![/rainbow] and welcome [color=blue][url=https://itch.io]Itch.io[/url][color=black] and [color=blue][url=https://iogames.space]iogames[/url][color=black] players! (And the rest of course)
 
-[color=green]Sick of AFK players or losing MMR to guests? [color=black]In the next day or two we will be releasing Quickplay and Ranked mode! Stay tuned :)
+[color=green]January 12th update[color=black]: Huge UI update releasing soon! Next up cosmetics!
 
-[color=red]SuperCTF has WAY more players than we were used to - please report bugs or server downage in our discord!
+[color=red]If you are having any issues, please report them on our discord!
 [color=black]
 Discord Link:[color=blue] [url]https://discord.gg/D3Ban34[/url][color=black]
 Twitter:[color=blue] [url]https://twitter.com/SuperCTFGame[/url][color=black]
 "
 text = "NEWS:
 
-Happy December, and welcome Itch.io and iogames players! (And the rest of course)
+Happy NEW YEAR!!! and welcome Itch.io and iogames players! (And the rest of course)
 
-Sick of AFK players or losing MMR to guests? In the next day or two we will be releasing Quickplay and Ranked mode! Stay tuned :)
+January 12th update: Huge UI update releasing soon! Next up cosmetics!
 
-SuperCTF has WAY more players than we were used to - please report bugs or server downage in our discord!
+If you are having any issues, please report them on our discord!
 
 Discord Link: https://discord.gg/D3Ban34
 Twitter: https://twitter.com/SuperCTFGame
@@ -473,7 +473,7 @@ custom_styles/pressed = ExtResource( 15 )
 custom_styles/normal = ExtResource( 16 )
 custom_fonts/font = ExtResource( 12 )
 custom_colors/font_color = Color( 0.109804, 0.109804, 0.109804, 1 )
-text = "Create Acccount"
+text = "Create Account"
 __meta__ = {
 "_edit_lock_": true,
 "_edit_use_anchors_": false
@@ -748,13 +748,14 @@ visible = false
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 12 )
+frame = 3
 playing = true
 
 [node name="Red_Sprite" type="AnimatedSprite" parent="UI_Layer/Flags/Flag"]
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 17 )
-frame = 3
+frame = 2
 playing = true
 
 [node name="Area2D" type="Area2D" parent="UI_Layer/Flags/Flag" groups=[
@@ -779,7 +780,7 @@ script = ExtResource( 3 )
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 12 )
-frame = 3
+frame = 2
 playing = true
 
 [node name="Red_Sprite" type="AnimatedSprite" parent="UI_Layer/Flags/Flag3"]
@@ -787,7 +788,7 @@ visible = false
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 17 )
-frame = 2
+frame = 1
 playing = true
 
 [node name="Area2D" type="Area2D" parent="UI_Layer/Flags/Flag3" groups=[

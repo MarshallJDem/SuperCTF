@@ -31,8 +31,9 @@ var sprintEnabled = false;
 var last_position = Vector2(0,0);
 # The frame of the all of the sprite on the top (Gun, Head, Body)
 var look_direction = 0;
-var has_moved_after_respawn = false;
 var current_class;
+# If this is true the player will dash once physics process is called
+var dash_signaled = false;
 
 # Only accurately being tracked by server
 var stats = {"kills" : 0, "deaths": 0, "captures" : 0, "recovers" : 0};
@@ -69,7 +70,8 @@ func _input(event):
 	if control:
 		if event is InputEventKey and event.pressed:
 			if event.scancode == KEY_T:
-				get_tree().get_root().get_node("MainScene/NetworkController").rpc("test_ping");
+				pass;
+				#get_tree().get_root().get_node("MainScene/NetworkController").rpc("test_ping");
 			if event.scancode == KEY_CONTROL:
 				if !has_flag():
 					pass;
@@ -77,32 +79,25 @@ func _input(event):
 			if event.scancode == KEY_SPACE:
 				#Attempt a teleport
 				# Re-enable line below to prevent telporting while you have flag
-				teleport_pressed();
-func teleport_pressed():
-	if $Teleport_Timer.time_left == 0 and $Weapon_Node/Laser_Timer.time_left == 0:
-		move_on_inputs(true);
-		camera_ref.lag_smooth();
-		$Teleport_Timer.start();
+				attempt_dash();
+
 func is_in_own_spawn() -> bool:
 	if team_id == 1:
 		return $Area2D.is_in_red_spawn;
 	else:
 		return $Area2D.is_in_blue_spawn;
 
-func _process(delta):
-	print(team_id)
+func _physics_process(delta: float) -> void:
+	if !Globals.testing and name != ("P" + str(player_id)):
+		call_deferred("queue_free");
 	BASE_SPEED = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("playerSpeed");
 	
 	TELEPORT_SPEED = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("dashDistance");
 	$Teleport_Timer.wait_time = DASH_COOLDOWN_PMODIFIER + float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("dashCooldown"))/1000.0;
-	if !get_tree().get_root().get_node("MainScene/NetworkController").round_is_running:
-		has_moved_after_respawn = false;
-	if !Globals.testing and is_network_master():
-		Globals.player_active_after_respawn = has_moved_after_respawn and control;
+	if !Globals.testing and get_tree().has_network_peer() and is_network_master():
 		Globals.displaying_loadout = is_in_own_spawn();
 	elif Globals.testing:
 		Globals.displaying_loadout = true;
-		Globals.player_active_after_respawn = true;
 	if control:
 		activate_camera();
 		# Don't look around if we're shooting a laser
@@ -119,6 +114,10 @@ func _process(delta):
 			camera_ref.get_node("Canvas_Layer/Vignette_Red").visible = true;
 		else:
 			camera_ref.get_node("Canvas_Layer/Vignette_Blue").visible = true;
+	
+	#Dash
+	if dash_signaled:
+		dash();
 	
 	update();
 	
@@ -167,35 +166,15 @@ func _process(delta):
 	z_index = global_position.y + 5;
 	
 	# If we are a puppet and not the server, then lerp our position
-	if !Globals.testing and !is_network_master() and !get_tree().is_network_server():
+	if !Globals.testing and get_tree().has_network_peer() and !is_network_master() and !get_tree().is_network_server():
 		position = lerp(lerp_start_pos, lerp_end_pos, clamp(float(OS.get_ticks_msec() - time_of_last_received_pos)/float(Globals.player_lerp_time), 0.0, 1.0));
 	
-	if !Globals.testing and is_network_master() and !get_tree().is_network_server():
+	if !Globals.testing and get_tree().has_network_peer() and is_network_master() and !get_tree().is_network_server():
 		rpc_unreliable("update_position", position);
 	
 	# Animation
 	var diff = last_position - position;
-	if sqrt(pow(diff.x, 2) + pow(diff.y, 2)) < 0.1:
-		# Idle
-		if team_id == 1:
-			#$Sprite_Top.set_texture(idle_top_atlas_red);
-			pass;
-		else:
-			#$Sprite_Top.set_texture(idle_top_atlas_blue);
-			pass;
-		$Sprite_Legs.frame = look_direction;
-	else:
-		# Moving
-		if team_id == 1:
-			#$Sprite_Top.set_texture(running_top_atlas_red);
-			pass;
-		else:
-			#$Sprite_Top.set_texture(running_top_atlas_blue);
-			pass;
-		$Sprite_Legs.frame = look_direction + (int((1-($Leg_Animation_Timer.time_left / $Leg_Animation_Timer.wait_time)) * 4)%4) * $Sprite_Legs.hframes;
-	
-	
-	$Sprite_Head.position.y = int(2 * sin((1 - $Top_Animation_Timer.time_left/$Top_Animation_Timer.wait_time)*(2 * PI)))/2.0;
+	$Player_Visuals._update_animation(diff);
 		
 	# Name tag
 	var color = "blue";
@@ -207,21 +186,7 @@ func _process(delta):
 
 
 func update_class(c):
-	var n = "gunner"
-	if c == Globals.Classes.Bullet:
-		n = "gunner";
-	elif c == Globals.Classes.Laser:
-		n = "laser";
-	elif c == Globals.Classes.Demo:
-		n = "demo";
-	
-	var t = "B";
-	if team_id == 1:
-		t = "R";
-	
-	$Sprite_Head.set_texture(load("res://Assets/Player/" + str(n) + "_head_" +t+ ".png"));
-	$Sprite_Body.set_texture(load("res://Assets/Player/" + str(n) + "_body_" +t+ ".png"));
-	$Sprite_Gun.set_texture(load("res://Assets/Player/" + str(n) + "_gun_" +t+ ".png"));
+	$Player_Visuals._update_class(c, team_id);
 
 func loadout_class_updated():
 	update_class(Globals.current_class);
@@ -253,47 +218,30 @@ remotesync func teleport(start, end):
 	$Teleport_Audio.play();
 	$Teleport_Invincibility_Timer.start();
 	invincible = true;
-	for i in range(6):
+	var count = 6
+	for i in range(count):
 		var node = Ghost_Trail.instance();
-		node.position = start;
-		node.position.x = node.position.x + ((i) * (end.x - start.x)/4)
-		node.position.y = node.position.y + ((i) * (end.y - start.y)/4)
+		node.position = start + ((i) * (end - start)/(count-1))
+		node.add_child($Player_Visuals.duplicate());
+		#node.position.y = position.y + ((i) * (end.y - start.y)/4)
 		node.z_index = z_index;
-		node.look_direction = look_direction;
-		node.scale = $Sprite_Body.scale
 		if has_flag():
 			if team_id == 1:
 				node.flag_team_id = 0;
 			else:
 				node.flag_team_id = 1;
-		node.get_node("Sprite_Gun").texture = $Sprite_Gun.texture
-		node.get_node("Sprite_Gun").z_index = $Sprite_Gun.z_index
-		node.get_node("Sprite_Head").texture = $Sprite_Head.texture
-		node.get_node("Sprite_Head").z_index = $Sprite_Head.z_index
-		node.get_node("Sprite_Body").texture = $Sprite_Body.texture
-		node.get_node("Sprite_Body").z_index = $Sprite_Body.z_index
-		node.get_node("Sprite_Legs").texture = $Sprite_Legs.texture
-		node.get_node("Sprite_Legs").frame = $Sprite_Legs.frame
 		get_tree().get_root().get_node("MainScene").add_child(node);  
 		node.get_node("Death_Timer").start((i) * 0.05 + 0.0001);
 	# If this is a puppet, use this ghost trail as an oppurtunity to also update its position
-	if !is_network_master():
+	if !Globals.testing and get_tree().has_network_peer() and !is_network_master():
 		lerp_start_pos = end;
 		lerp_end_pos = end;
 		position = end;
 
 # Checks the current pressed keys and calculates a new player position using the KinematicBody2D
-func move_on_inputs(teleport = false):
-	var input = Vector2(0,0);
-	if Globals.control_scheme == Globals.Control_Schemes.touchscreen:
-		input = get_tree().get_root().get_node("MainScene/UI_Layer/Move_Stick").stick_vector / get_tree().get_root().get_node("MainScene/UI_Layer/Move_Stick").radius_big;
-	else:
-		input.x = (1 if Input.is_key_pressed(KEY_D) else 0) - (1 if Input.is_key_pressed(KEY_A) else 0)
-		input.y = (1 if Input.is_key_pressed(KEY_S) else 0) - (1 if Input.is_key_pressed(KEY_W) else 0)
-		input = input.normalized();
+func move_on_inputs():
+	var input = Globals.get_input_vector();
 	last_movement_input = input;
-	if teleport or (input.x != 0 or input.y != 0):
-		has_moved_after_respawn = true;
 	
 	var speed = BASE_SPEED + POWERUP_SPEED;
 	if $Weapon_Node/Laser_Timer.time_left > 0:
@@ -308,19 +256,42 @@ func move_on_inputs(teleport = false):
 		if areas[i].is_in_group("Landmine_Bodies") and areas[i].monitorable:
 			speed = speed / 2.0;
 			break;
-	if teleport:
-		speed = TELEPORT_SPEED;
+
 	var vec = (input * speed);
 	
 	var previous_pos = position;
 	var change = move_and_slide(vec);
 	var new_pos = position;
+
+func attempt_dash():
+	if $Teleport_Timer.time_left != 0:
+		return;
+	dash_signaled = true;
+
+func dash():
 	
-	if teleport:
-		if Globals.testing:
-			teleport(previous_pos, new_pos);
-		else:
-			rpc("teleport", previous_pos, new_pos);
+	# Prevent using before the cooldown finished
+	if $Teleport_Timer.time_left != 0:
+		return;
+	$Teleport_Timer.start();
+	dash_signaled = false;
+	
+	# Smooth camera slower for a moment
+	if is_instance_valid(camera_ref):
+		camera_ref.lag_smooth();
+	
+	var input = Globals.get_input_vector();
+
+	var vec = (input.normalized() * TELEPORT_SPEED);
+	
+	var previous_pos = position;
+	var change = move_and_slide(vec);
+	var new_pos = position;
+
+	if Globals.testing:
+		teleport(previous_pos, new_pos);
+	else:
+		rpc("teleport", previous_pos, new_pos);
 
 remotesync func enable_powerup(type):
 	var text = "";
@@ -399,18 +370,7 @@ func get_vector_angle(dist):
 # Set the direction that the player is "looking" at by changing sprite frame
 func set_look_direction(dir):
 	look_direction = dir;
-	$Sprite_Head.frame = dir;
-	$Sprite_Gun.frame = dir;
-	$Sprite_Body.frame = dir;
-	$Sprite_Legs.frame = look_direction + (int((1-($Leg_Animation_Timer.time_left / $Leg_Animation_Timer.wait_time)) * 4)%4) * $Sprite_Legs.hframes;
-	if dir == 2 or dir == 3:
-		$Sprite_Head.z_index =1;
-		$Sprite_Body.z_index =0;
-		$Sprite_Gun.z_index =2;
-	else:
-		$Sprite_Head.z_index =2;
-		$Sprite_Body.z_index =0;
-		$Sprite_Gun.z_index =1;
+	$Player_Visuals._update_look_direction(dir);
 	
 
 # Updates this player's position with the new given position. Only ever called remotely
@@ -505,7 +465,6 @@ func respawn():
 	visible = true;
 	alive = true;
 	position = start_pos;
-	has_moved_after_respawn = false;
 	if is_network_master() and get_tree().get_root().get_node("MainScene/NetworkController").round_is_running:
 		control = true;
 	start_temporary_invincibility();

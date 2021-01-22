@@ -39,7 +39,7 @@ func _process(delta):
 		ult_charge = 100;
 
 func _input(event):
-	if Globals.is_typing_in_chat or !Globals.player_active_after_respawn:
+	if Globals.is_typing_in_chat:
 		return;
 	if player.control:
 		if event is InputEventKey and event.pressed:
@@ -90,21 +90,12 @@ func _camo_timer_ended():
 func spawn_camo_flash():
 	var node = Ghost_Trail.instance();
 	node.position = player.position;
-	node.look_direction = player.look_direction;
-	node.scale = player.get_node("Sprite_Body").scale
+	node.add_child(get_parent().get_node("Player_Visuals").duplicate());
 	if player.has_flag():
 		if player.team_id == 1:
 			node.flag_team_id = 0;
 		else:
 			node.flag_team_id = 1;
-	node.get_node("Sprite_Gun").texture = player.get_node("Sprite_Gun").texture
-	node.get_node("Sprite_Gun").z_index = player.get_node("Sprite_Gun").z_index
-	node.get_node("Sprite_Head").texture = player.get_node("Sprite_Head").texture
-	node.get_node("Sprite_Head").z_index = player.get_node("Sprite_Head").z_index
-	node.get_node("Sprite_Body").texture = player.get_node("Sprite_Body").texture
-	node.get_node("Sprite_Body").z_index = player.get_node("Sprite_Body").z_index
-	node.get_node("Sprite_Legs").texture = player.get_node("Sprite_Legs").texture
-	node.get_node("Sprite_Legs").frame = player.get_node("Sprite_Legs").frame
 	get_tree().get_root().get_node("MainScene").add_child(node);  
 	node.get_node("Death_Timer").start((10) * 0.05 + 0.0001);
 

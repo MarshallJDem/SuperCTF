@@ -1,8 +1,7 @@
 [gd_scene load_steps=32 format=2]
 
 [ext_resource path="res://GameContent/Player.gd" type="Script" id=1]
-[ext_resource path="res://Assets/Player/gunner_gun_B.png" type="Texture" id=2]
-[ext_resource path="res://Assets/Player/legs.png" type="Texture" id=3]
+[ext_resource path="res://GameContent/Player_Visuals.tscn" type="PackedScene" id=2]
 [ext_resource path="res://GameContent/Center_Pivot.gd" type="Script" id=4]
 [ext_resource path="res://GameContent/Camera.gd" type="Script" id=5]
 [ext_resource path="res://GameContent/Player_Area2D.gd" type="Script" id=6]
@@ -14,8 +13,6 @@
 [ext_resource path="res://Assets/Sound/Flag_Drop.wav" type="AudioStream" id=12]
 [ext_resource path="res://Assets/Sound/Teleport.wav" type="AudioStream" id=13]
 [ext_resource path="res://fonts/Pixel_Chat.tres" type="DynamicFont" id=14]
-[ext_resource path="res://Assets/Player/gunner_body_B.png" type="Texture" id=15]
-[ext_resource path="res://Assets/Player/gunner_head_B.png" type="Texture" id=16]
 [ext_resource path="res://GameContent/Ability_Node.gd" type="Script" id=17]
 [ext_resource path="res://GameContent/Utility_Node.gd" type="Script" id=18]
 [ext_resource path="res://GameContent/Weapon_Node.gd" type="Script" id=19]
@@ -75,10 +72,6 @@ one_shot = true
 
 [node name="Cooldown_Timer" type="Timer" parent="Weapon_Node"]
 wait_time = 0.5
-one_shot = true
-
-[node name="Shoot_Animation_Timer" type="Timer" parent="Weapon_Node"]
-wait_time = 0.2
 one_shot = true
 
 [node name="Laser_Charge_Audio" type="AudioStreamPlayer" parent="Weapon_Node"]
@@ -182,32 +175,7 @@ autostart = true
 wait_time = 8.0
 one_shot = true
 
-[node name="Sprite_Legs" type="Sprite" parent="."]
-texture = ExtResource( 3 )
-vframes = 4
-hframes = 8
-frame = 1
-__meta__ = {
-"_edit_lock_": true
-}
-
-[node name="Sprite_Gun" type="Sprite" parent="."]
-texture = ExtResource( 2 )
-hframes = 8
-frame = 5
-__meta__ = {
-"_edit_lock_": true
-}
-
-[node name="Sprite_Body" type="Sprite" parent="."]
-texture = ExtResource( 15 )
-hframes = 8
-frame = 1
-
-[node name="Sprite_Head" type="Sprite" parent="."]
-texture = ExtResource( 16 )
-hframes = 8
-frame = 1
+[node name="Player_Visuals" parent="." instance=ExtResource( 2 )]
 
 [node name="Center_Pivot" type="Position2D" parent="."]
 script = ExtResource( 4 )
@@ -276,14 +244,6 @@ one_shot = true
 
 [node name="Teleport_Timer" type="Timer" parent="."]
 one_shot = true
-
-[node name="Top_Animation_Timer" type="Timer" parent="."]
-wait_time = 0.35
-autostart = true
-
-[node name="Leg_Animation_Timer" type="Timer" parent="."]
-wait_time = 0.271
-autostart = true
 
 [node name="Powerup_Timer" type="Timer" parent="."]
 wait_time = 5.0

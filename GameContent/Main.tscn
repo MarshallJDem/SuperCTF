@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=2]
+[gd_scene load_steps=46 format=2]
 
 [ext_resource path="res://GameContent/Main.gd" type="Script" id=1]
 [ext_resource path="res://GameContent/Player.tscn" type="PackedScene" id=2]
@@ -42,35 +42,38 @@ content_margin_top = 8.0
 bg_color = Color( 1, 1, 1, 0 )
 
 [sub_resource type="DynamicFont" id=4]
-size = 12
-outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
-font_data = ExtResource( 25 )
-
-[sub_resource type="DynamicFont" id=5]
-size = 18
-outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
-font_data = ExtResource( 25 )
-
-[sub_resource type="DynamicFont" id=6]
-size = 25
-outline_color = Color( 0, 0, 0, 1 )
-font_data = ExtResource( 25 )
-
-[sub_resource type="DynamicFont" id=7]
-outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
-font_data = ExtResource( 25 )
-
-[sub_resource type="DynamicFont" id=8]
-size = 30
-outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
-font_data = ExtResource( 25 )
-
-[sub_resource type="DynamicFont" id=9]
 size = 8
 outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
 font_data = ExtResource( 25 )
 
-[sub_resource type="StyleBoxEmpty" id=10]
+[sub_resource type="DynamicFont" id=5]
+size = 12
+outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
+font_data = ExtResource( 25 )
+
+[sub_resource type="DynamicFont" id=6]
+size = 18
+outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
+font_data = ExtResource( 25 )
+
+[sub_resource type="DynamicFont" id=7]
+size = 25
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 25 )
+
+[sub_resource type="DynamicFont" id=8]
+outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
+font_data = ExtResource( 25 )
+
+[sub_resource type="DynamicFont" id=9]
+size = 30
+outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
+font_data = ExtResource( 25 )
+
+[sub_resource type="DynamicFont" id=10]
+size = 8
+outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
+font_data = ExtResource( 25 )
 
 [sub_resource type="StyleBoxEmpty" id=11]
 
@@ -78,16 +81,18 @@ font_data = ExtResource( 25 )
 
 [sub_resource type="StyleBoxEmpty" id=13]
 
-[sub_resource type="DynamicFont" id=14]
-outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
-font_data = ExtResource( 25 )
+[sub_resource type="StyleBoxEmpty" id=14]
 
 [sub_resource type="DynamicFont" id=15]
-size = 12
 outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
 font_data = ExtResource( 25 )
 
 [sub_resource type="DynamicFont" id=16]
+size = 12
+outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
+font_data = ExtResource( 25 )
+
+[sub_resource type="DynamicFont" id=17]
 size = 12
 outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
 font_data = ExtResource( 25 )
@@ -140,7 +145,7 @@ margin_bottom = 334.0
 rect_clip_content = false
 mouse_filter = 2
 custom_styles/normal = SubResource( 3 )
-custom_fonts/normal_font = ExtResource( 5 )
+custom_fonts/normal_font = SubResource( 4 )
 bbcode_enabled = true
 bbcode_text = "[chat]"
 scroll_active = false
@@ -160,7 +165,7 @@ margin_bottom = 261.0
 rect_clip_content = false
 mouse_filter = 2
 custom_styles/normal = SubResource( 3 )
-custom_fonts/normal_font = SubResource( 4 )
+custom_fonts/normal_font = SubResource( 5 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
 scroll_active = false
@@ -183,7 +188,7 @@ focus_mode = 0
 custom_styles/hover = ExtResource( 9 )
 custom_styles/pressed = ExtResource( 10 )
 custom_styles/normal = ExtResource( 11 )
-custom_fonts/font = SubResource( 5 )
+custom_fonts/font = SubResource( 6 )
 custom_colors/font_color = Color( 0.172549, 0.172549, 0.172549, 1 )
 enabled_focus_mode = 0
 text = "Options"
@@ -214,7 +219,7 @@ margin_top = 99.8129
 margin_bottom = 189.813
 rect_clip_content = false
 size_flags_stretch_ratio = 0.0
-custom_fonts/normal_font = SubResource( 6 )
+custom_fonts/normal_font = SubResource( 7 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
 scroll_active = false
@@ -314,7 +319,7 @@ margin_top = -78.1522
 margin_right = 67.1633
 margin_bottom = -56.1522
 rect_pivot_offset = Vector2( -533.113, 40.108 )
-custom_fonts/font = SubResource( 7 )
+custom_fonts/font = SubResource( 8 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "MOVE"
 align = 1
@@ -502,7 +507,7 @@ margin_top = 180.0
 margin_right = 960.0
 margin_bottom = 358.0
 rect_clip_content = false
-custom_fonts/normal_font = SubResource( 8 )
+custom_fonts/normal_font = SubResource( 9 )
 bbcode_enabled = true
 bbcode_text = "[center][color=black] KILLED"
 text = " KILLED"
@@ -516,7 +521,7 @@ anchor_right = 1.0
 margin_top = 115.462
 margin_bottom = 215.462
 rect_clip_content = false
-custom_fonts/normal_font = SubResource( 9 )
+custom_fonts/normal_font = SubResource( 10 )
 bbcode_enabled = true
 bbcode_text = "[center][color=black] This is a skirmish lobby for waiting in matchmaking queue."
 text = " This is a skirmish lobby for waiting in matchmaking queue."
@@ -536,10 +541,10 @@ one_shot = true
 [node name="Move_Stick" type="Button" parent="UI_Layer"]
 anchor_right = 0.5
 anchor_bottom = 1.0
-custom_styles/hover = SubResource( 10 )
-custom_styles/pressed = SubResource( 11 )
-custom_styles/focus = SubResource( 12 )
-custom_styles/normal = SubResource( 13 )
+custom_styles/hover = SubResource( 11 )
+custom_styles/pressed = SubResource( 12 )
+custom_styles/focus = SubResource( 13 )
+custom_styles/normal = SubResource( 14 )
 action_mode = 0
 keep_pressed_outside = true
 script = ExtResource( 30 )
@@ -552,10 +557,10 @@ __meta__ = {
 anchor_left = 0.5
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_styles/hover = SubResource( 10 )
-custom_styles/pressed = SubResource( 11 )
-custom_styles/focus = SubResource( 12 )
-custom_styles/normal = SubResource( 13 )
+custom_styles/hover = SubResource( 11 )
+custom_styles/pressed = SubResource( 12 )
+custom_styles/focus = SubResource( 13 )
+custom_styles/normal = SubResource( 14 )
 action_mode = 0
 keep_pressed_outside = true
 script = ExtResource( 30 )
@@ -570,7 +575,7 @@ margin_left = 231.36
 margin_top = 859.44
 margin_right = 287.36
 margin_bottom = 881.44
-custom_fonts/font = SubResource( 14 )
+custom_fonts/font = SubResource( 15 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "DASH"
 align = 1
@@ -583,7 +588,7 @@ margin_left = 289.672
 margin_top = 792.08
 margin_right = 345.672
 margin_bottom = 814.08
-custom_fonts/font = SubResource( 14 )
+custom_fonts/font = SubResource( 15 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "ULT"
 align = 1
@@ -596,7 +601,7 @@ margin_left = 363.629
 margin_top = 737.36
 margin_right = 419.629
 margin_bottom = 759.36
-custom_fonts/font = SubResource( 15 )
+custom_fonts/font = SubResource( 16 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "GRENADE"
 align = 1
@@ -609,7 +614,7 @@ margin_left = 454.258
 margin_top = 705.298
 margin_right = 510.258
 margin_bottom = 727.298
-custom_fonts/font = SubResource( 16 )
+custom_fonts/font = SubResource( 17 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "FORCEFIELD"
 align = 1
@@ -629,7 +634,7 @@ focus_mode = 0
 custom_styles/hover = ExtResource( 9 )
 custom_styles/pressed = ExtResource( 10 )
 custom_styles/normal = ExtResource( 11 )
-custom_fonts/font = SubResource( 5 )
+custom_fonts/font = SubResource( 6 )
 custom_colors/font_color = Color( 0.172549, 0.172549, 0.172549, 1 )
 enabled_focus_mode = 0
 text = "Cancel"

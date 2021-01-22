@@ -23,7 +23,7 @@ var round_is_running = false;
 
 var Game_Results_Screen = preload("res://Game_Results_Screen.tscn");
 
-# players Struct (Indexed by player game ID (which is only the same as network_id on skirmish, and never the same as uid))
+# players Struct (Indexed by player game ID (which is arbitrary 0,1,2,3, etc in a match and UID in a skirmish))
 #	- name: string
 #	- team_id: int
 #	- user_id: int
@@ -44,7 +44,8 @@ func _ready():
 		Globals.serverIP = Globals.skirmishIP;
 	if Globals.matchType == 0:
 		Globals.mapName = Globals.skirmishMap;
-		
+	
+	
 		
 	spawn_map(Globals.mapName);
 	
@@ -87,7 +88,8 @@ func init_map_for_testing():
 
 func _process(delta):
 	SCORE_LIMIT = get_game_var("scoreLimit");
-	if server != null and server.is_listening():
+	if server != null and server.is_listening() and (server.get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_CONNECTED || 
+	server.get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_CONNECTING):
 		server.poll();
 	if client != null and (client.get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_CONNECTED || 
 	client.get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_CONNECTING):
@@ -144,14 +146,14 @@ func start_server():
 				team_id = 0;
 			var spawn_pos = Vector2(0,0);
 			if team_id == 0:
-				var spawn = get_tree().get_root().get_node_or_null("MainScene/Map/YSort/BlueSpawn");
+				var spawn = get_tree().get_root().get_node_or_null("MainScene/Map/YSort/BlueSpawn_Location");
 				if spawn != null:
 					spawn_pos = spawn.position;
 				else:
 					print("<ERROR> Map not found");
 					print_stack();
 			else:
-				var spawn = get_tree().get_root().get_node_or_null("MainScene/Map/YSort/RedSpawn");
+				var spawn = get_tree().get_root().get_node_or_null("MainScene/Map/YSort/RedSpawn_Location");
 				if spawn != null:
 					spawn_pos = spawn.position;
 				else:
@@ -190,7 +192,8 @@ func _cancel_match_timer_ended():
 	for player in players:
 		if players[player]["network_id"] == 1:
 			allConnected = false;
-	if (not allConnected) or (get_tree().get_network_connected_peers().size() == 0):
+	# Cancel match if its ranked and any players are missing, otherwise only cancel if nobody has connected
+	if (not allConnected and Globals.matchType == 2 and !Globals.temporaryQuickplayDisable) or (get_tree().get_network_connected_peers().size() == 0):
 		rpc("cancel_match");
 	else:
 		print("Decided not to cancel match")
@@ -231,7 +234,6 @@ func join_server():
 				Globals.create_popup("Failed to join the skirmish lobby. You are still successfully in the matchmaking queue, but please tell us on discord that our skirmish lobby is down!  Error code 1552");
 			else:
 				Globals.create_popup("Failed to join the match. You should try refreshing your page. If that doesn't work please tell us in the discord that something went wrong with your match!  Error code 16122");
-			leave_match();
 
 # Starts the match
 func start_match():
@@ -272,10 +274,11 @@ func spawn_flag(flag_id):
 	get_tree().get_root().get_node("MainScene").call_deferred("add_child", flag);
 	
 	if flags_data[str(flag_id)]["holder_player_id"] != -1:
-		var player = get_tree().get_root().get_node("MainScene/Players/P" + str(flags_data[str(flag_id)]["holder_player_id"]));
+		var player = get_tree().get_root().get_node_or_null("MainScene/Players/P" + str(flags_data[str(flag_id)]["holder_player_id"]));
 		if player != null:
 			player.call_deferred("take_flag",(flag_id));
 		else:
+			print("ERROR FOUND NULL PLAYER IN SPAWN FLAG");
 			print_stack();
 
 # Called when the client's connection is ready, and then tells the server
@@ -285,38 +288,40 @@ func _connection_ok():
 
 func _connection_failed():
 	print("Connection to serverfailed");
-	leave_match();
+	if Globals.matchType == 0:
+		Globals.create_popup("Something unknown went wrong when trying to connect to the skirmish lobby. You are still likely successfully in the matchmaking queue.");
+	else:
+		Globals.create_popup("Something unknown went wrong when trying to connect to the game server. You should try refreshing your page. That being said this is most likely our fault.");
 
 func update_player_objects():
 	# Delete players that have left and spawn new players
 	# For every old player that no longer exists
 	for player in get_tree().get_root().get_node("MainScene/Players").get_children():
-		var name = player.name;
-		name.erase(0,1);
-		if !players.has(int(name)):
+		var n = player.name;
+		n.erase(0,1);
+		if !players.has(int(n)):
 			player.drop_current_flag();
 			player.call_deferred("free");
 	# For every new player
 	for player in players:
 		if !get_tree().get_root().get_node("MainScene/Players").has_node("P" + str(player)):
 			spawn_player(player);
-	
+	# For every 
 	for player_id in players:
 		if !get_tree().is_network_server() and players[player_id]["network_id"] == get_tree().get_network_unique_id():
 			Globals.localPlayerID = player_id;
 			Globals.localPlayerTeamID = players[player_id]["team_id"];
-		if get_tree().get_root().get_node("MainScene/Players").has_node("P" + str(player_id)):
-			var player_node = get_tree().get_root().get_node("MainScene/Players/P" + str(player_id));
-			if player_node != null:
-				player_node.team_id = players[player_id]["team_id"];
-				player_node.player_name = players[player_id]["name"];
-				player_node.update_class(players[player_id]["class"]);
-				player_node.set_network_master(players[player_id]['network_id']);
-				if !get_tree().is_network_server() and players[player_id]['network_id'] == get_tree().get_network_unique_id():
-					player_node.control = round_is_running;
-					player_node.activate_camera();
-			else:
-				print_stack();
+		var player_node = get_tree().get_root().get_node_or_null("MainScene/Players/P" + str(player_id));
+		if player_node != null:
+			player_node.team_id = players[player_id]["team_id"];
+			player_node.player_name = players[player_id]["name"];
+			player_node.update_class(players[player_id]["class"]);
+			player_node.set_network_master(players[player_id]['network_id']);
+			if !get_tree().is_network_server() and players[player_id]['network_id'] == get_tree().get_network_unique_id():
+				player_node.control = round_is_running;
+				player_node.activate_camera();
+		else:
+			print("ERROR : FAILED TO FIND PLAYER OBJECT FOR PLAYERID : "  + str(player_id));
 
 remote func player_class_changed(new_class):
 	var sender_network_id = get_tree().get_rpc_sender_id();
@@ -328,6 +333,7 @@ remote func player_class_changed(new_class):
 
 
 remotesync func update_players_data(players_data, round_is_running):
+	print(players_data);
 	players = players_data;
 	self.round_is_running = round_is_running;
 	update_player_objects();
@@ -346,9 +352,10 @@ func _timing_sync_timer_ended():
 func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 	if get_tree().is_network_server():
 		if(response_code == 200):
+			# Get some precursor information about this player situation before making decisions
 			var json = JSON.parse(body.get_string_from_utf8());
 			var player_name = json.result.user.name;
-			var user_id = json.result.user.uid;
+			var user_id = int(json.result.user.uid);
 			var network_id = int(json.result.networkID);
 			# If this player disconnected already then dont make them a player
 			var is_connected = false;
@@ -362,54 +369,75 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 			for player in Globals.allowedPlayers:
 				if str(player.keys()[0]) == str(user_id):
 					allowed = true;
+			var player_id_collision = null;
+			for player_id in players:
+				if players[player_id]['user_id'] == user_id:
+					player_id_collision = player_id;
+			
+			#START MAKING DECISIONS:
+			
+			# Kick unallowed players if this is a match (not a skirmish)
 			if(allowed || Globals.matchType == 0):
-				var message = player_name + " connected to the server";
-				get_tree().get_root().get_node("MainScene/Chat_Layer/LineEdit").rpc("receive_message", "[color=green]" + message +  "[/color]", -1);
-				if Globals.matchType == 0:
-					var team_id = 0;
-					var b=0; var r=0;
-					for player_id in players:
-						if players[player_id]["team_id"] == 0:
-							b += 1;
-						else:
-							r += 1;
-					if b > r:
-						team_id = 1;
-					var spawn_pos = Vector2(0,0);
-					if team_id == 0:
-						var spawn = get_tree().get_root().get_node_or_null("MainScene/Map/YSort/BlueSpawn");
-						if spawn != null:
-							spawn_pos = spawn.position;
-						else:
-							print("<ERROR> Map not found");
-							print_stack();
-					else:
-						var spawn = get_tree().get_root().get_node_or_null("MainScene/Map/YSort/RedSpawn");
-						if spawn != null:
-							spawn_pos = spawn.position;
-						else:
-							print("<ERROR> Map not found");
-							print_stack();
-					players[network_id] = {"name" : player_name, "team_id" : team_id, "user_id": user_id, "network_id": network_id,"spawn_pos": spawn_pos, "position": spawn_pos, "class" : Globals.Classes.Bullet, "DD_vote" : false};
-				# Get the player_id associated with this user_id
-				for player_id in players:
-					if players[player_id]['user_id'] == user_id:
-						# Update the players array and give it to everybody so they can update player data and network masters etc.
-						players[player_id]['name'] = player_name;
-						players[player_id]['class'] = Globals.Classes.Bullet;
-						if players[player_id]['network_id'] != 1 and Globals.matchType != 0:
-							server.disconnect_peer(players[player_id]['network_id'], 1000, "A new computer has connected as this player");
-						players[player_id]['network_id'] = network_id;
-						print("Authenticated new connection : " + str(network_id) + " and giving them control of player " + str(player_id) + " " + str(player_name));
-						rpc("update_players_data", players, round_is_running);
-						rpc("resync_match_time_limit", $Match_Time_Limit_Timer.time_left, $Match_Time_Limit_Timer.paused);
-						# If this user is joining mid match
-						if match_is_running:
-							update_flags_data();
-							rpc_id(network_id, "load_mid_round", players, scores, $Round_Start_Timer.time_left, round_num, OS.get_system_time_msecs() - Globals.match_start_time, flags_data, game_vars); 
+				var message = player_name + " connected";
+				get_tree().get_root().get_node("MainScene/Chat_Layer/Line_Edit").rpc("receive_message", "[color=green]" + message +  "[/color]", -1);
 			else:
 				print("Disconnecting player " + str(network_id) + " because they are not in the allowed players list : " + to_json(Globals.allowedPlayers));
 				server.disconnect_peer(network_id, 1000, "You are not a player in this match")
+				return;
+			
+			
+			# If there is a collision, disconnect original peer if there was one
+			if player_id_collision != null:
+				if players[player_id_collision]['network_id'] != 1:
+					print("Disconnecting peer " + str(players[player_id_collision]['network_id']) + " because a new player connected to the same user id " + str(user_id) + " and name " + str(player_name) +  " with new network id: " + str(network_id));
+					server.disconnect_peer(players[player_id_collision]['network_id'], 1000, "A new computer has connected as this player");
+			# Else if this is a skirmish, and there is no collision, allocate a new player for this connection
+			elif Globals.matchType == 0:
+				var team_id = 0;
+				var b=0; var r=0;
+				for player_id in players:
+					if players[player_id]["team_id"] == 0:
+						b += 1;
+					else:
+						r += 1;
+				if b > r:
+					team_id = 1;
+				var spawn_pos = Vector2(0,0);
+				if team_id == 0:
+					var spawn = get_tree().get_root().get_node_or_null("MainScene/Map/YSort/BlueSpawn_Location");
+					if spawn != null:
+						spawn_pos = spawn.position;
+					else:
+						print("<ERROR> Map not found");
+						print_stack();
+				else:
+					var spawn = get_tree().get_root().get_node_or_null("MainScene/Map/YSort/RedSpawn_Location");
+					if spawn != null:
+						spawn_pos = spawn.position;
+					else:
+						print("<ERROR> Map not found");
+						print_stack();
+				players[user_id] = {"name" : player_name, "team_id" : team_id, "user_id": user_id, "network_id": network_id,"spawn_pos": spawn_pos, "position": spawn_pos, "class" : Globals.Classes.Bullet, "DD_vote" : false};
+				player_id_collision = user_id;
+				print("Added a new player for Skirmish of networkID : " + str(network_id) + " | userID : " + str(user_id) + " | name : " + str(player_name));
+			else: #Else if there is no collision and this is a match, then something has gone wrong. Disconnect the peer
+				print("A PLAYER CONNECTED TO MATCH AND WAS IN ALLOWED PLAYER BUT WE HAD NO ALLOCATED SPOT FOR THEM. DISCONNECTING PEER");
+				server.disconnect_peer(network_id, 1000, "Something went wrong sorry! We don't know the issue yet.");
+			
+			# Through the above logic player_id_collision must no longer be null and we can now update the players data to tell people
+			players[player_id_collision]['name'] = player_name;
+			# TODO FORCE PLAYER TO USE EXISTING CLASS
+			players[player_id_collision]['class'] = Globals.Classes.Bullet;
+			players[player_id_collision]['network_id'] = network_id;
+			print("Authenticated new connection : " + str(network_id) + " and giving them control of player id " + str(player_id_collision) + " with name " + str(player_name));
+			rpc("update_players_data", players, round_is_running);
+			rpc("resync_match_time_limit", $Match_Time_Limit_Timer.time_left, $Match_Time_Limit_Timer.paused);
+			# If this user is joining mid match
+			if match_is_running:
+				update_flags_data();
+				rpc_id(network_id, "load_mid_round", players, scores, $Round_Start_Timer.time_left, round_num, OS.get_system_time_msecs() - Globals.match_start_time, flags_data, game_vars); 
+
+			
 		else:
 			print("WE SHOULD BE DISCONNECTING A player because the checkUser backend call failed with a non 200 status BUT WE DON'T KNOW THEIR NETWORKID'");
 			#server.disconnect_peer(player_check_queue[0]['networkID'], 1000, "An Unknown Error Occurred.")
@@ -442,8 +470,13 @@ remote func user_ready(id, userToken):
 remotesync func test_ping():
 	print("Test Ping");
 
-
 func spawn_player(id):
+	
+	var p = get_tree().get_root().get_node_or_null("MainScene/Players/P" + str(id));
+	if p != null:
+		p.set_name("P" + str(id) + "DELETED");
+		p.call_deferred("free");
+	
 	var player = load("res://GameContent/Player.tscn").instance();
 	player.set_name("P" + str(id));
 	player.set_network_master(players[id]["network_id"]);
@@ -457,10 +490,6 @@ func spawn_player(id):
 	if players[id]["network_id"] == get_tree().get_network_unique_id():
 		player.control = round_is_running;
 		player.activate_camera();
-	if get_tree().get_root().get_node("MainScene/Players").has_node("P" + str(id)):
-		var p = get_tree().get_root().get_node("MainScene/Players/P" + str(id));
-		p.set_name("P" + str(id) + "DELETED");
-		p.call_deferred("free");
 	get_tree().get_root().get_node("MainScene/Players").call_deferred("add_child",player);
 	
 
@@ -478,20 +507,28 @@ func _client_disconnected(id):
 	for i in players:
 		if players[i]["network_id"] == id:
 			player_id = i;
+			# Delete as we go just incase something weird happens and we have multiple entries for one network_id
+			if get_tree().is_network_server():
+				var message = players[player_id]["name"];
+				message += " disconnected";
+				for peer in  get_tree().get_network_connected_peers():
+					get_tree().get_root().get_node("MainScene/Chat_Layer/Line_Edit").rpc_id(peer, "receive_message", "[color=red]" + message +  "[/color]", -1);
+				get_tree().get_root().get_node("MainScene/Chat_Layer/Line_Edit").receive_message( "[color=red]" + message +  "[/color]", -1);
+				if Globals.matchType == 0:
+					print("Erasing player_id " + str(player_id) + " with name " + str(players[player_id]["name"]));
+					players.erase(player_id);
+					if players.size() == 0:
+						game_vars = Globals.game_var_defaults.duplicate();
 	if player_id == -1:
+		print("COULDNT FIND PLAYER IN PLAYERS DATA TO DELETE FOR NETWORKID : " + str(id));
 		return;
 	if get_tree().is_network_server():
-		var message = players[player_id]["name"];
-		message += " disconnected from the server";
-		get_tree().get_root().get_node("MainScene/Chat_Layer/LineEdit").rpc("receive_message", "[color=red]" + message +  "[/color]", -1);
-		if Globals.matchType == 0:
-			players.erase(player_id);
-			if players.size() == 0:
-				game_vars = Globals.game_var_defaults.duplicate();
 		if $Match_End_Timer.time_left > 0:
 			complete_match_end();
 			return;
-		rpc("update_players_data", players, round_is_running);
+		for peer in  get_tree().get_network_connected_peers():
+			rpc_id(peer,"update_players_data", players, round_is_running);
+		update_players_data(players,round_is_running);
 		if Globals.matchType != 0:
 			if get_tree().get_network_connected_peers().size() == 0:
 				# If this is an actual match, if after 15 seconds go by and there is still 0 connections cancel the match
@@ -530,8 +567,8 @@ remotesync func round_ended(scoring_team_id, scoring_player_id, time_limit_reach
 			get_tree().get_root().get_node("MainScene").slowdown_music();
 			get_tree().get_root().get_node("MainScene/UI_Layer").set_big_label_text(str(players[scoring_player_id]['name']) + "\nSCORED!", scoring_team_id);
 			get_tree().get_root().get_node("MainScene/Score_Audio").play();
-			var scoring_player = get_tree().get_root().get_node("MainScene/Players/P" + str(scoring_player_id));
-			var local_player = get_tree().get_root().get_node("MainScene/Players/P" + str(Globals.localPlayerID));
+			var scoring_player = get_tree().get_root().get_node_or_null("MainScene/Players/P" + str(scoring_player_id));
+			var local_player = get_tree().get_root().get_node_or_null("MainScene/Players/P" + str(Globals.localPlayerID));
 			if local_player != null:
 				local_player.deactivate_camera();
 			else:
@@ -545,7 +582,7 @@ remotesync func round_ended(scoring_team_id, scoring_player_id, time_limit_reach
 	print("Round_is_ended");
 	# If we are not the server
 	if !get_tree().is_network_server():
-		var local_player = get_tree().get_root().get_node("MainScene/Players/P" + str(Globals.localPlayerID));
+		var local_player = get_tree().get_root().get_node_or_null("MainScene/Players/P" + str(Globals.localPlayerID));
 		if local_player != null:
 			local_player.control = false;
 		else:
@@ -612,7 +649,6 @@ remotesync func load_new_round(suddenDeath = false):
 	round_is_ended = false;
 	match_is_running = true;
 	reset_game_objects();
-	get_tree().get_root().get_node("MainScene/Countdown_Audio").play();
 	# If we're the server, instruct other to spawn game nodes
 	if get_tree().is_network_server():
 		# Update score
@@ -633,9 +669,21 @@ remotesync func load_new_round(suddenDeath = false):
 	spawn_flag(0);
 	spawn_flag(1);
 	
+	
 	get_tree().get_root().get_node("MainScene/UI_Layer").clear_big_label_text();
-	$Round_Start_Timer.set_wait_time(3);
-	$Round_Start_Timer.start();
+	
+	
+	if isSuddenDeath:
+		var overlay = load("res://GameContent/SuddenDeath_Overlay.tscn").instance();
+		get_tree().get_root().get_node("MainScene").call_deferred("add_child", overlay);
+		yield(get_tree().create_timer(9), "timeout");
+		get_tree().get_root().get_node("MainScene/Countdown_Audio").play();
+		$Round_Start_Timer.set_wait_time(3);
+		$Round_Start_Timer.start();
+	else:
+		get_tree().get_root().get_node("MainScene/Countdown_Audio").play();
+		$Round_Start_Timer.set_wait_time(3);
+		$Round_Start_Timer.start();
 
 # For when a player joins mid round
 remote func load_mid_round(players, scores, round_start_timer_timeleft, round_num, round_time_elapsed, flags_data, game_vars):
@@ -689,7 +737,7 @@ remotesync func start_round():
 	get_tree().get_root().get_node("MainScene").slowdown_music();
 	# If we are not the server
 	if !get_tree().is_network_server():
-		var local_player = get_tree().get_root().get_node("MainScene/Players/P" + str(Globals.localPlayerID));
+		var local_player = get_tree().get_root().get_node_or_null("MainScene/Players/P" + str(Globals.localPlayerID));
 		if local_player != null:
 			local_player.control = true;
 			local_player.activate_camera();
@@ -721,7 +769,7 @@ remotesync func end_match(winning_team_id):
 	
 	else:
 		if !Globals.testing:
-			var local_player = get_tree().get_root().get_node("MainScene/Players/P" + str(Globals.localPlayerID));
+			var local_player = get_tree().get_root().get_node_or_null("MainScene/Players/P" + str(Globals.localPlayerID));
 			if local_player != null:
 				local_player.control = false;
 			else:
@@ -748,8 +796,8 @@ func _HTTP_GetPredictedMMRChanges_Completed(result, response_code, headers, body
 func get_game_stats():
 	var stats = {};
 	for player_id in players:
-		if get_tree().get_root().get_node("MainScene/Players").has_node("P" + str(player_id)):
-			var player = get_tree().get_root().get_node("MainScene/Players/P" + str(player_id));
+		var player = get_tree().get_root().get_node_or_null("MainScene/Players/P" + str(player_id));
+		if player != null:
 			stats[player_id] = player.get_stats();
 		else:
 			print("I DONT KNOW WHY OR HOW BUT A PLAYER WASN'T SPAWNED ON THE SERVER WHEN GETTING STATS");
@@ -781,6 +829,8 @@ remotesync func show_results_screen(scores, stats,players, results, matchType):
 # Shows over. You don't have to go home but you can't stay here
 remotesync func tell_clients_to_piss_off():
 	if !get_tree().is_network_server():
+		var message = "CHAT HAS ENDED";
+		get_tree().get_root().get_node("MainScene/Chat_Layer/Line_Edit").rpc("receive_message", "[color=red]" + message +  "[/color]", -1);
 		$Match_End_Timer.stop();
 		if !get_tree().get_root().has_node("MainScene/Game_Results_Screen"):
 			leave_match();

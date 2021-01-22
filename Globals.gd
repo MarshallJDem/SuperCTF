@@ -4,6 +4,8 @@ extends Node
 var testing = true;
 var experimental = false;
 var temporaryQuickplayDisable = true;
+var localTesting = false; # Used for running a server locally on the machine
+var remoteSkirmish = true; # Used for running the skirmish lobby on a remote computer (so you can run it in the editor and catch bugs)
 
 #Game Servers (Both clients and servers use these vars, but in different ways. overlapping would not work)
 var serverIP = "";
@@ -12,7 +14,7 @@ var skirmishIP = "superctf.com:42480";
 var skirmishMap = "TehoMap1";
 var port = 42480;
 var serverPrivateToken;
-var isServer = false;
+var isServer = true;
 var allowedPlayers = [];
 var matchID;
 var matchType;
@@ -43,7 +45,7 @@ var control_scheme = Control_Schemes.keyboard;
 var player_old_MMR = -1;
 
 #Main Server
-var mainServerIP = "https://www.superctf.com" + ":42501/";
+var mainServerIP = "https://www.superctf.com" + ":42401/";
  
 var game_just_started = true;
 var is_typing_in_chat = false;
@@ -75,7 +77,6 @@ var active_landmines = 0;
 
 var options_menu_should_scale;
 var displaying_loadout = false;
-var player_active_after_respawn = false;
 
 # ----- Constants -----
 const game_var_defaults = {"playerSpeed" : 200, "playerLagTime" : 50,
@@ -148,15 +149,39 @@ func _enter_tree():
 	if arguments.has("mapName"):
 		Globals.mapName = str(arguments["mapName"]);
 	if OS.has_feature("editor"):
-		testing = true;
+		pass;
 	#experimental =  true;#OS.has_feature("debug") and !OS.has_feature("editor");
 	if experimental:
 		allowCommands = true;
 		skirmishMap = "SquareZagv6"
+		mainServerIP = "https://www.superctf.com" + ":42501/";
 		if !isServer:
 			skirmishIP = "superctf.com:42490";
 			serverIP = skirmishIP;
 			#get_tree().change_scene("res://GameContent/Main.tscn");
+	if remoteSkirmish:
+		port = 42401
+		if !isServer:
+			skirmishIP = "gameserver.superctf.com:42401";
+		if isServer:
+			serverPrivateToken = "localhosttoken";
+			matchType = 0;
+	if localTesting:
+		if OS.has_feature("editor"):
+			isServer = true;
+		else:
+			isServer = false;
+		allowCommands = true;
+		mainServerIP = "https://www.superctf.com" + ":42501/";
+		skirmishIP = "localhost:42401";
+		useSecure = false;
+		port = 42401
+		if isServer:
+			serverPrivateToken = "localhosttoken";
+			matchType = 0;
+		else:
+			serverIP = skirmishIP;
+		
 
 func _ready():
 	add_child(HTTPRequest_PollPlayerStatus);
@@ -287,12 +312,12 @@ func _HTTP_PollPlayerStatus_Completed(result, response_code, headers, body):
 		Globals.knownPartyData = json.result.partyData;
 		Globals.player_party_data = json.result.partyData;
 		Globals.player_party_data.players = Globals.player_party_data.players;
-	if(player_status <= 1 and int(json.result.status) > 1):
+	if(player_status < 10 and int(json.result.status) >= 10):
 		print("Found Match : " + str(json.result.status));
 		var matchID = str(json.result.status);
 		var query = "matchID=" + str(matchID) + "&authority=client";
 		HTTPRequest_GetMatchData.request(Globals.mainServerIP + "getMatchData?" + query, ["authorization: Bearer " + Globals.userToken], false, HTTPClient.METHOD_GET);
-	elif(player_status == 1 and int(json.result.status) == 0):
+	elif(player_status < 10 and player_status != 0 and int(json.result.status) == 0):
 		get_tree().change_scene("res://TitleScreen.tscn");
 	player_status = int(json.result.status);
 
@@ -315,6 +340,17 @@ func _HTTP_GetMatchData_Completed(result, response_code, headers, body):
 
 var last_pollPlayerStatus_response = 0;
 var last_confirmClientConnection_response = 0;
+
+func get_input_vector() -> Vector2:
+	var input = Vector2(0,0);
+	if Globals.control_scheme == Globals.Control_Schemes.touchscreen:
+		if get_tree().get_root().has_node("MainScene/UI_Layer/Move_Stick"):
+			input = get_tree().get_root().get_node("MainScene/UI_Layer/Move_Stick").stick_vector / get_tree().get_root().get_node("MainScene/UI_Layer/Move_Stick").radius_big;
+	else:
+		input.x = (1 if Input.is_key_pressed(KEY_D) else 0) - (1 if Input.is_key_pressed(KEY_A) else 0)
+		input.y = (1 if Input.is_key_pressed(KEY_S) else 0) - (1 if Input.is_key_pressed(KEY_W) else 0)
+	input = input.normalized();
+	return input;
 
 func attempt_PollPlayerStatus():
 	if OS.get_ticks_msec() - last_pollPlayerStatus_response > 1000:
