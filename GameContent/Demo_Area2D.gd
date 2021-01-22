@@ -25,6 +25,11 @@ func collided_with_player(player):
 	# If this bullet was shot by the same team, ignore it
 	if get_parent().team_id == player.team_id:
 		return;
+	
+	# If the player it hit is dead, ignore it
+	if player.alive == false:
+		return;
+		
 	if get_tree().is_network_server():
 		get_parent().rpc("stick_to_player", player.player_id,  (get_parent().position - player.position).normalized());
 	else:

@@ -68,7 +68,6 @@ func _process(delta):
 	if !player.alive:
 		$Cooldown_Timer.stop();
 		$Laser_Timer.stop();
-		$Shoot_Animation_Timer.stop();
 		
 	update_cooldown_lengths();
 	
@@ -78,28 +77,6 @@ func _process(delta):
 		if !Globals.is_typing_in_chat:
 			shoot_on_inputs();
 	
-	# Gun Animation
-	var sprite_gun = player.get_node("Sprite_Gun");
-	sprite_gun.position.y = int(2 * sin((PI * 0.25) + (1 - player.get_node("Top_Animation_Timer").time_left/player.get_node("Top_Animation_Timer").wait_time)*(2 * PI)))/2.0;
-	sprite_gun.position.x = 0;
-	# Shooting Animation (Overrides idleness)
-	if $Shoot_Animation_Timer.time_left > 0:
-		if player.look_direction == 0:
-			sprite_gun.position.y = 20 * $Shoot_Animation_Timer.time_left;
-		elif player.look_direction == 1:
-			sprite_gun.position.y = +20 * $Shoot_Animation_Timer.time_left;
-			sprite_gun.position.x = -20 * $Shoot_Animation_Timer.time_left;
-		elif player.look_direction == 2 or player.look_direction == 3:
-			sprite_gun.position.y = -20 * $Shoot_Animation_Timer.time_left;
-			sprite_gun.position.x = -20 * $Shoot_Animation_Timer.time_left;
-		elif player.look_direction == 4:
-			sprite_gun.position.y = -20 * $Shoot_Animation_Timer.time_left;
-		elif player.look_direction == 5 or player.look_direction == 6:
-			sprite_gun.position.y = -20 * $Shoot_Animation_Timer.time_left;
-			sprite_gun.position.x = 20 * $Shoot_Animation_Timer.time_left;
-		elif player.look_direction == 7:
-			sprite_gun.position.y = +20 * $Shoot_Animation_Timer.time_left;
-			sprite_gun.position.x = 20 * $Shoot_Animation_Timer.time_left;
 	
 	update();
 
@@ -130,9 +107,8 @@ func _draw():
 
 
 func shoot_on_inputs():
-	if Globals.is_typing_in_chat or !Globals.player_active_after_respawn:
+	if Globals.is_typing_in_chat:
 		return;
-	player.has_moved_after_respawn = true;
 	# Check for mouse input	
 	if (Globals.control_scheme == Globals.Control_Schemes.keyboard and Input.is_action_pressed("clickL")) or (Globals.control_scheme == Globals.Control_Schemes.touchscreen and get_tree().get_root().get_node("MainScene/UI_Layer/Shoot_Stick").stick_vector != Vector2(0,0)):
 		var direction = ((get_global_mouse_position() - global_position).normalized());
@@ -160,7 +136,11 @@ func shoot_on_inputs():
 					if $Cooldown_Timer.time_left == 0:
 						
 						# Test to see if demo is spawning inside of forcefield
-						$CollisionTester.position = get_node("Bullet_Starts/" + String(player.look_direction)).position;
+						var bullet_start = get_node_or_null("Bullet_Starts/" + String(player.look_direction));
+						if bullet_start != null:
+							$CollisionTester.position = bullet_start.position;
+						else:
+							$CollisionTester.position = Vector2(0,0);
 						var forcefield_test = $CollisionTester.move_and_collide(direction * 0.0);
 						
 						var time_shot = OS.get_system_time_msecs() - Globals.match_start_time;
@@ -185,8 +165,7 @@ func shoot_on_inputs():
 remotesync func shoot_demo(d, shots, time_shot, is_blank = false):
 	#emit_signal("shake", 0.1, 20, 10, 2, Tween.TRANS_ELASTIC, Tween.EASE_IN_OUT)
 	$Cooldown_Timer.start();
-	$Shoot_Animation_Timer.start();
-	
+	player.get_node("Player_Visuals")._start_shoot_animation();
 	var direction = d.normalized();
 	var start_pos = player.position + get_node("Bullet_Starts/" + String(player.look_direction)).position;
 	
@@ -238,7 +217,7 @@ func shoot_bullet(d):
 	var time = OS.get_system_time_msecs() - Globals.match_start_time;
 	var bullet_name = "Bullet"+ "-" + str(player.player_id) + "-" + str(bullets_shot);
 	#player.camera_ref.shake();
-	$Shoot_Animation_Timer.start();
+	player.get_node("Player_Visuals")._start_shoot_animation();
 	
 	# If we are too close to a wall, shoot a blank
 	if(collision_tester_length < 10):
@@ -286,12 +265,9 @@ remotesync func spawn_bullet(pos, player_id, direction, time_shot, bullet_name, 
 	get_tree().get_root().get_node("MainScene").call_deferred("add_child", bullet);
 	return bullet;
 var laser_is_blank = false;
-remotesync func start_laser(direction, start_pos, target_pos, look_direction,time_shot,width, is_blank):
+remotesync func start_laser(direction, start_pos, target_pos, look_direction, time_shot,width, is_blank):
 	laser_is_blank = is_blank;
-	player.get_node("Sprite_Gun").frame = look_direction;
-	player.get_node("Sprite_Head").frame = look_direction;
-	player.get_node("Sprite_Body").frame = look_direction;
-	player.get_node("Sprite_Legs").frame = look_direction;
+	player.get_node("Player_Visuals")._update_look_direction(look_direction);
 	#$CollisionTester.position = target_pos;
 	laser_direction = direction;
 	laser_position = start_pos;
@@ -328,7 +304,7 @@ func _laser_timer_ended():
 
 # Shoots a laser shot
 func spawn_laser():
-	$Shoot_Animation_Timer.start();
+	player.get_node("Player_Visuals")._start_shoot_animation();
 	if is_network_master():
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE);
 	var laser = Laser.instance();

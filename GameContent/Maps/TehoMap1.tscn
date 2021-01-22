@@ -245,35 +245,43 @@ z_index = -1000
 [node name="RedSpawn" type="KinematicBody2D" parent="YSort" groups=[
 "Red_Spawn",
 ]]
-position = Vector2( 1127.7, -128.921 )
+position = Vector2( 1244.43, 7.98421 )
 collision_layer = 0
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="YSort/RedSpawn"]
-position = Vector2( 115.371, 137.48 )
+position = Vector2( -0.419525, 0.574768 )
 shape = SubResource( 1 )
 
 [node name="Area2D" type="Area2D" parent="YSort/RedSpawn" groups=[
 "Red_Spawn",
 ]]
+position = Vector2( -115.791, -136.905 )
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="YSort/RedSpawn/Area2D"]
 position = Vector2( 115.371, 137.48 )
 shape = SubResource( 1 )
 
 [node name="BlueSpawn" type="KinematicBody2D" parent="YSort"]
-position = Vector2( -1357.85, -128.921 )
+position = Vector2( -1245.88, 7.45518 )
 collision_layer = 0
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="YSort/BlueSpawn"]
-position = Vector2( 115.371, 137.48 )
+position = Vector2( -0.451263, -0.116943 )
 shape = SubResource( 1 )
 
 [node name="Area2D" type="Area2D" parent="YSort/BlueSpawn" groups=[
 "Blue_Spawn",
 ]]
+position = Vector2( -115.822, -137.597 )
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="YSort/BlueSpawn/Area2D"]
 position = Vector2( 115.371, 137.48 )
 shape = SubResource( 1 )
+
+[node name="BlueSpawn_Location" type="Node2D" parent="YSort"]
+position = Vector2( -1240.01, 8.59412 )
+
+[node name="RedSpawn_Location" type="Node2D" parent="YSort"]
+position = Vector2( 1241.87, 10.2643 )

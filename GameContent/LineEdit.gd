@@ -49,6 +49,8 @@ func process_command(command):
 	if command == "/endmatch 1":
 		get_tree().get_root().get_node("MainScene/NetworkController").rpc("end_match",1);
 		return;
+	if command == "/shutdown" and get_tree().is_network_server():
+		get_tree().quit();
 	var first_space = command.findn(" ", 0);
 	var verb = command.substr(1, first_space-1);
 	var second_space = command.findn(" ", first_space+1);

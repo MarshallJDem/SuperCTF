@@ -5,6 +5,8 @@ var show_move_gui = true;
 
 
 func _ready():
+	if Globals.isServer:
+		return;
 	var _err = $Leave_Match_Button.connect("pressed", self, "_leave_match_button_pressed");
 	_err = $Cancel_Button.connect("pressed", self, "_cancel_button_pressed");
 	_err = $"../Chat_Layer/Options_Button".connect("button_up", self, "_options_button_clicked");
@@ -25,12 +27,10 @@ func _process(delta):
 	if Globals.isServer:
 		return;
 	# Show / Hide move gui depending on whether loadout is visible
-	if !Globals.player_active_after_respawn:
-		show_move_gui = true;
-	elif show_move_gui == true:
+	show_move_gui = false; # Decided to remove this GUI at least temporarily
+	if show_move_gui == true:
 		show_move_gui = false;
 		$Move_GUI_Fade_Timer.start();
-	
 	if show_move_gui:
 		$Input_GUIs/Move_GUIs.modulate = Color(1,1,1,1);
 		$Input_GUIs/Ability_GUIs.modulate = Color(0,0,0,0);
@@ -46,7 +46,7 @@ func _process(delta):
 		$Shoot_Stick.modulate = Color(1,1,1,1);
 		
 	$Skirmish_Subtext.visible = false;
-	if get_tree().get_root().get_node("MainScene/NetworkController").isSkirmish:
+	if Globals.matchType == 0: # If this is a skirmish
 		$Score_Label.bbcode_text = "[center][color=black]SEARCHING " + str(OS.get_system_time_secs() - start_time);
 		$Time_Label.visible = false;
 		$Skirmish_Subtext.visible = true;
@@ -164,10 +164,11 @@ func _process(delta):
 
 func _screen_resized():
 	var window_size = OS.get_window_size();
-	$"../Chat_Layer/Chat_Box".rect_scale= Vector2(1,1);
-	$"../Chat_Layer/Line_Edit".rect_scale= Vector2(1,1);
 	$"../Chat_Layer/Chat_Box".margin_bottom = window_size.y * (0.6);
+	$"../Chat_Layer/Chat_Box".get_font("normal_font").size = 8;
+	$"../Chat_Layer/Line_Edit".rect_scale= Vector2(1,1);
 	$"../Chat_Layer/Chat_Box".margin_top = 73;
+	$"../Chat_Layer/Chat_Box".margin_right = 300;
 	$"../Chat_Layer/Kill_Feed".get_font("normal_font").size = 16;
 	$"../Chat_Layer/Options_Button".rect_scale = Vector2(0.5,0.5);
 	$Cancel_Button.rect_scale = Vector2(0.5,0.5);
@@ -193,7 +194,8 @@ func _screen_resized():
 		$Alert_Text.get_font("normal_font").size =48;
 		$Skirmish_Subtext.get_font("normal_font").size =20;
 		$Alert_Text.margin_top = $Skirmish_Subtext.margin_top + 140;
-		$"../Chat_Layer/Chat_Box".rect_scale = Vector2(2,2);
+		$"../Chat_Layer/Chat_Box".margin_right = 600;
+		$"../Chat_Layer/Chat_Box".get_font("normal_font").size = 16;
 		$"../Chat_Layer/Kill_Feed".get_font("normal_font").size = 24;
 		$"../Chat_Layer/Line_Edit".rect_scale = Vector2(2,2);
 		$"../Chat_Layer/Options_Button".rect_scale = Vector2(1,1);

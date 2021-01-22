@@ -102,7 +102,8 @@ func collided_with_flag_home(flag_home):
 		if !flag.is_at_home and !get_tree().get_root().get_node("MainScene/NetworkController").isSuddenDeath:
 			# Only display message if this is our local player
 			if get_parent().player_id == Globals.localPlayerID:
-				get_tree().get_root().get_node("MainScene/UI_Layer").set_alert_text("[center][color=black]* YOUR FLAG MUST BE HOME TO SCORE *");
+				var our_flag = player.get_node("Flag_Holder").get_children()[0]
+				our_flag.rpc("enable_warning", "[center]Can't score without\nyour flag at home");
 		elif get_tree().is_network_server(): # Otherwise score if we're the server
 			print("Scoring : " + str(get_tree().get_root().get_node("MainScene/NetworkController").round_is_ended));
 			player.stats["captures"] += 1;
@@ -113,9 +114,6 @@ func collided_with_laser_body(laser_parent):
 	var player = get_parent();
 	# If this is our team's laser, ignore it
 	if laser_parent.team_id == player.team_id:
-		return;
-	# If we just teleported, ignore it
-	if player.just_teleported:
 		return;
 	# If this player is invincible, dont get hit
 	if player.invincible:
@@ -130,9 +128,6 @@ func collided_with_laser_body(laser_parent):
 func collided_with_grenade_body(grenade_parent):
 	if get_tree().get_root().get_node("MainScene/NetworkController").round_is_ended: return;
 	var player = get_parent();
-	# If we just teleported, ignore it
-	if player.just_teleported:
-		return;
 	# If this is our team's grenade, ignore it
 	if grenade_parent.team_id == player.team_id:
 		return;
@@ -147,19 +142,19 @@ func collided_with_demo_body(demo_parent):
 	if get_tree().get_root().get_node("MainScene/NetworkController").round_is_ended: 
 		return;
 	var player = get_parent();
-	# If we just teleported, ignore it
-	if player.just_teleported:
-		return;
 	# If this is our team's demo, ignore it
 	if demo_parent.team_id == player.team_id:
 		return;
 	# If this player is invincible, dont get hit
 	if player.invincible:
 		return;
-	for area in get_overlapping_areas():
-		# If we're currently in a forcefield, ignore it
-		if area.is_in_group("Forcefield_Bodies"):
-			return;
+	
+	# We no longer protect player from demos in the forcefield
+	#for area in get_overlapping_areas():
+	#	# If we're currently in a forcefield, ignore it
+	#	if area.is_in_group("Forcefield_Bodies"):
+	#		return;
+	
 	# Otherwise receive a hit from the grenade
 	player.rpc("receive_hit", demo_parent.player_id, 3);
 	
