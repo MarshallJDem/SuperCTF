@@ -365,15 +365,25 @@ func deactivate_camera():
 # Called when this player is hit by a projectile
 func hit_by_projectile(attacker_id, projectile_type):
 	var attacker = get_tree().get_root().get_node("MainScene/Players/P" + str(attacker_id));
-	if attacker != null:
+	if attacker != null and is_instance_valid(attacker):
 		attacker.stats["kills"] += 1;
 		attacker.get_node("Ability_Node").ult_charge += 10;
 	else:
 		print_stack();
 	if projectile_type == 0 || projectile_type == 1 || projectile_type == 2 || projectile_type == 3: # Bullet or Laser or Landmine
 		die();
-		var attacker_team_id = get_tree().get_root().get_node("MainScene/NetworkController").players[attacker_id]["team_id"]
-		var attacker_name = get_tree().get_root().get_node("MainScene/NetworkController").players[attacker_id]["name"]
+		var attacker_team_id = 0;
+		var attacker_name = "a Player";
+		var players_dict = get_tree().get_root().get_node("MainScene/NetworkController").players;
+		
+		if players_dict.has(attacker_id):
+			attacker_team_id = players_dict[attacker_id]["team_id"];
+			attacker_name = players_dict[attacker_id]["name"];
+		elif attacker != null and is_instance_valid(attacker):
+			attacker_team_id = attacker.team_id;
+			attacker_name = attacker.player_name;
+		
+		get_tree().get_root().get_node("MainScene/NetworkController").players[attacker_id]["name"]
 		var color_1 = "red"
 		var color_2 = "blue"
 		if team_id == 1:

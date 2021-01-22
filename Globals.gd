@@ -2,7 +2,7 @@ extends Node
 
 # Whether to run in testing mode (for development uses)
 var testing = false;
-var experimental = true;
+var experimental = false;
 var temporaryQuickplayDisable = true;
 var localTesting = false; # Used for running a server locally on the machine
 var remoteSkirmish = true; # Used for running the skirmish lobby on a remote computer (so you can run it in the editor and catch bugs)
