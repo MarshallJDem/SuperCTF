@@ -137,11 +137,6 @@ func _physics_process(delta: float) -> void:
 		else:
 			$Home_Pointer_Pivot/Home_Pointer.visible = false
 			
-		
-	
-	
-	
-	
 	
 	if $Invincibility_Timer.time_left > 0:
 		var t = $Invincibility_Timer.time_left / $Invincibility_Timer.wait_time 

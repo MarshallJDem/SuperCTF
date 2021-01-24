@@ -3,6 +3,16 @@ extends CanvasLayer
 var start_time = OS.get_system_time_secs();
 var show_move_gui = true;
 
+var camo_HUD_B = preload("res://Assets/GUI/HUD/camo_HUD_B.png");
+var camo_HUD_R = preload("res://Assets/GUI/HUD/camo_HUD_R.png");
+var forcefield_HUD_B = preload("res://Assets/GUI/HUD/forcefield_HUD_B.png");
+var forcefield_HUD_R = preload("res://Assets/GUI/HUD/forcefield_HUD_R.png");
+var grenade_HUD_B = preload("res://Assets/GUI/HUD/grenade_HUD_B.png");
+var grenade_HUD_R = preload("res://Assets/GUI/HUD/grenade_HUD_R.png");
+var landmine_HUD_B = preload("res://Assets/GUI/HUD/landmine_HUD_B.png");
+var landmine_HUD_R = preload("res://Assets/GUI/HUD/landmine_HUD_R.png");
+var dash_HUD = preload("res://Assets/GUI/HUD/dash_HUD.png");
+
 
 func _ready():
 	if Globals.isServer:
@@ -125,12 +135,17 @@ func _process(delta):
 		var ability_wait_time = local_player.get_node("Ability_Node/Cooldown_Timer").wait_time;
 		
 		if ability_time_left == 0:
-			var t = "";
 			if Globals.current_ability == Globals.Abilities.Forcefield:
-				t = "FORCEFIELD";
+				if local_player.team_id == 1:
+					$Input_GUIs/Ability_GUIs/SPACE_GUI.set_texture(forcefield_HUD_R);
+				else:
+					$Input_GUIs/Ability_GUIs/SPACE_GUI.set_texture(forcefield_HUD_B);
 			elif Globals.current_ability == Globals.Abilities.Camo:
-				t = "CAMO"
-			$Input_GUIs/Ability_GUIs/Ability_GUI_Text.text = t;
+				if local_player.team_id == 1:
+					$Input_GUIs/Ability_GUIs/SPACE_GUI.set_texture(camo_HUD_R);
+				else:
+					$Input_GUIs/Ability_GUIs/SPACE_GUI.set_texture(camo_HUD_B);
+			$Input_GUIs/Ability_GUIs/Ability_GUI_Text.text = "E";
 			$Input_GUIs/Ability_GUIs/E_GUI.modulate = Color(1,1,1,1);
 		else:
 			$Input_GUIs/Ability_GUIs/Ability_GUI_Text.text = "%0.2f" % ability_time_left;

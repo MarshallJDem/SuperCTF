@@ -16,11 +16,11 @@
 [ext_resource path="res://Assets/GUI/A-Key-GUI.png" type="Texture" id=14]
 [ext_resource path="res://Assets/GUI/S-Key-GUI.png" type="Texture" id=15]
 [ext_resource path="res://Assets/GUI/D-Key-GUI.png" type="Texture" id=16]
-[ext_resource path="res://Assets/GUI/E-Key-GUI.png" type="Texture" id=17]
-[ext_resource path="res://Assets/GUI/Mouse-GUI.png" type="Texture" id=18]
+[ext_resource path="res://Assets/GUI/HUD/grenade_HUD_B.png" type="Texture" id=17]
+[ext_resource path="res://Assets/GUI/HUD/dash_HUD.png" type="Texture" id=18]
 [ext_resource path="res://Chat_Text.tres" type="RichTextEffect" id=19]
 [ext_resource path="res://Assets/GUI/Shift-Key-GUI.png" type="Texture" id=20]
-[ext_resource path="res://Assets/GUI/Space-Key-GUI.png" type="Texture" id=21]
+[ext_resource path="res://Assets/GUI/HUD/forcefield_HUD_B.png" type="Texture" id=21]
 [ext_resource path="res://Assets/Sound/score.wav" type="AudioStream" id=22]
 [ext_resource path="res://Assets/Sound/Countdown.wav" type="AudioStream" id=23]
 [ext_resource path="res://fonts/pixel.TTF" type="DynamicFontData" id=25]
@@ -361,16 +361,14 @@ hframes = 2
 [node name="E_GUI" type="Sprite" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
 position = Vector2( 49.4302, -25.8934 )
 scale = Vector2( 2, 2 )
-texture = ExtResource( 17 )
+texture = ExtResource( 21 )
 centered = false
-hframes = 2
 
 [node name="UTILITY_GUI" type="Sprite" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
 position = Vector2( -80.7254, -26.4901 )
 scale = Vector2( 2, 2 )
-texture = ExtResource( 18 )
+texture = ExtResource( 17 )
 centered = false
-hframes = 2
 
 [node name="ULT_GUI" type="Sprite" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
 position = Vector2( -15.2682, -26.4901 )
@@ -389,9 +387,8 @@ hframes = 2
 [node name="SPACE_GUI" type="Sprite" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
 position = Vector2( -174.337, -26 )
 scale = Vector2( 2, 2 )
-texture = ExtResource( 21 )
+texture = ExtResource( 18 )
 centered = false
-hframes = 2
 
 [node name="Teleport_GUI_Text" type="Label" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
 margin_left = -212.337
