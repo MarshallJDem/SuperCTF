@@ -1,11 +1,16 @@
 extends Control
 
 var look_direction = 0;
+var current_class = Globals.Classes.Bullet;
+var current_class_name = "gunner";
+var head_skin = 0;
+var body_skin = 0;
+var gun_skin = 0;
+var team_id = 0;
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass # Replace with function body.
-
 
 func _update_animation(position_delta):
 	# Feet running
@@ -57,7 +62,7 @@ func _update_look_direction(dir):
 		$Sprite_Body.z_index =0;
 		$Sprite_Gun.z_index =1;
 
-func _update_class(c, team_id):
+func _update_class(c):
 	var n = "gunner"
 	if c == Globals.Classes.Bullet:
 		n = "gunner";
@@ -66,29 +71,46 @@ func _update_class(c, team_id):
 	elif c == Globals.Classes.Demo:
 		n = "demo";
 	
-	var t = "B";
-	if team_id == 1:
-		t = "R";
+	current_class_name = n;
+	current_class = c;
 	
-	$Sprite_Head.set_texture(load("res://Assets/Player/" + str(n) + "_head_" +t+ ".png"));
-	$Sprite_Body.set_texture(load("res://Assets/Player/" + str(n) + "_body_" +t+ ".png"));
-	$Sprite_Gun.set_texture(load("res://Assets/Player/" + str(n) + "_gun_" +t+ ".png"));
+	refresh_textures();
+
+func _update_team_id(t):
+	team_id = t;
+	refresh_textures();
 
 func _start_shoot_animation():
 	$Shoot_Animation_Timer.start()
 
-func _change_head(skin_number, current_class_name, team_id):
-	#use team_id to see the colour of the team
-	var team_colour = "B";
+func refresh_textures():
+	var t = "B";
 	if team_id == 1:
-		team_colour = "R";
+		t = "R";
 	
-	#get the path of the desired head
-	var new_head = ("res://Assets/Player/" + current_class_name + "_head_" + str(skin_number) + "_" + str(team_colour) + ".png")
-	#check if that head exists 
-	if ResourceLoader.exists(new_head):
-		#load the new head png to the head sprite
-		$Sprite_Head.set_texture(load(new_head))
+	#Use this once ready for new skins
+	#var new_head = ("res://Assets/Player/" + current_class_name + "_head_" + str(skin_number) + "_" + str(team_colour) + ".png")
 	
-	
+	var head = "res://Assets/Player/" + str(current_class_name) + "_head_" + str(t) + ".png";
+	if ResourceLoader.exists(head):
+		$Sprite_Head.set_texture(load(head));
+	var body = "res://Assets/Player/" + str(current_class_name) + "_body_" + str(t) + ".png";
+	if ResourceLoader.exists(body):
+		$Sprite_Body.set_texture(load(body));
+	var gun = "res://Assets/Player/" + str(current_class_name) + "_gun_" + str(t) + ".png";
+	if ResourceLoader.exists(gun):
+		$Sprite_Gun.set_texture(load(gun));
+
+func _change_head(skin_number):
+	head_skin = skin_number;
+	refresh_textures();
+
+func _change_body(skin_number):
+	body_skin = skin_number;
+	refresh_textures();
+
+func _change_gun(skin_number):
+	gun_skin = skin_number;
+	refresh_textures();
+
 
