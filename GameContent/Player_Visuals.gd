@@ -76,3 +76,19 @@ func _update_class(c, team_id):
 
 func _start_shoot_animation():
 	$Shoot_Animation_Timer.start()
+
+func _change_head(skin_number, current_class_name, team_id):
+	#use team_id to see the colour of the team
+	var team_colour = "B";
+	if team_id == 1:
+		team_colour = "R";
+	
+	#get the path of the desired head
+	var new_head = ("res://Assets/Player/" + current_class_name + "_head_" + str(skin_number) + "_" + str(team_colour) + ".png")
+	#check if that head exists 
+	if ResourceLoader.exists(new_head):
+		#load the new head png to the head sprite
+		$Sprite_Head.set_texture(load(new_head))
+	
+	
+
