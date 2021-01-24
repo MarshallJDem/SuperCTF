@@ -14,9 +14,18 @@ func _ready() -> void:
 	$VisibilityNotifier2D.connect("screen_exited", self, "_flaghome_exited_screen");
 	#Flip arrow around if the flag home is above the y axis, so that they can see it sooner
 	if self.position.y < -30 :
-		var score_helper = $ScoreHelper
-		score_helper.position.y *= -1
-		score_helper.rotation = 0
+		$ScoreHelper.position.y *= -1
+		$ScoreHelper.rotation = 0
+
+var score_helper_t = 0.0;
+
+func _process(delta):
+	score_helper_t += delta;
+	$ScoreHelper.position.y = -23.75 + (sin(2 * PI * score_helper_t) * 2);
+	#Flip arrow around if the flag home is above the y axis, so that they can see it sooner
+	if self.position.y < -30 :
+		$ScoreHelper.position.y *= -1
+		$ScoreHelper.rotation = 0
 
 func _flaghome_exited_screen():
 	is_flag_home_visible = false

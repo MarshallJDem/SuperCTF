@@ -30,10 +30,11 @@ shape = SubResource( 1 )
 
 [node name="ScoreHelper" type="Sprite" parent="."]
 visible = false
-position = Vector2( -1, -23.75 )
+position = Vector2( -0.0160217, -26.5789 )
 rotation = 3.14159
 z_index = 4096
 texture = ExtResource( 3 )
 
 [node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
+position = Vector2( 0, -26.9361 )
 scale = Vector2( 0.044, 0.027 )

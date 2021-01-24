@@ -125,32 +125,18 @@ func _physics_process(delta: float) -> void:
 	#check if the player is the one we are controlling
 	if Globals.testing or player_id == Globals.localPlayerID:
 		
+		var flagHome = get_tree().get_root().get_node("MainScene/Map/YSort/Flag_Home-" + str(team_id));
 		if has_flag():
 			#get the players flag home
-			var flagHome = get_tree().get_root().get_node("MainScene/Map/YSort/Flag_Home-" + str(team_id));
 			
-			
-
 			#point the home pointer to the flag home
 			$Home_Pointer_Pivot._point_at_home(self.position, flagHome.position)
 			$Home_Pointer_Pivot/Home_Pointer.visible = true
-			if $Home_Pointer_Pivot/Home_Pointer.visible:
-				if ($Home_Pointer_Pivot._move_arrow(self.position, flagHome.position, delta, flagHome.is_flag_home_visible)) <= 100 and flagHome.is_flag_home_visible and ($Home_Pointer_Pivot._move_arrow(self.position, flagHome.position, delta, flagHome.is_flag_home_visible)) >= -100:
-					flagHome._toggle_score_helper(true)
-					$Home_Pointer_Pivot/Home_Pointer.visible = false
-				else:
-					flagHome._toggle_score_helper(false)
+			$Home_Pointer_Pivot._update_arrow(self.position, flagHome.position, delta);
 			
-				
-			#set home pointer visible
-			#$Home_Pointer_Pivot/Home_Pointer.visible = true
 		else:
 			$Home_Pointer_Pivot/Home_Pointer.visible = false
 			
-		
-		#turn the helper arrow on if they have the flag and off if they dont
-		#flagHome._toggle_score_helper(has_flag())
-		
 		
 	
 	
