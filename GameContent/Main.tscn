@@ -359,19 +359,19 @@ hframes = 2
 [node name="Ability_GUIs" type="Node2D" parent="UI_Layer/Input_GUIs"]
 
 [node name="E_GUI" type="Sprite" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
-position = Vector2( 49.4302, -25.8934 )
+position = Vector2( -20.6783, -25.8934 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 21 )
 centered = false
 
 [node name="UTILITY_GUI" type="Sprite" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
-position = Vector2( -80.7254, -26.4901 )
+position = Vector2( 54.2329, -26.4901 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 17 )
 centered = false
 
 [node name="ULT_GUI" type="Sprite" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
-position = Vector2( -15.2682, -26.4901 )
+position = Vector2( -258.732, -26.4901 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 28 )
 centered = false
@@ -385,20 +385,20 @@ centered = false
 hframes = 2
 
 [node name="SPACE_GUI" type="Sprite" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
-position = Vector2( -174.337, -26 )
+position = Vector2( -94.5113, -26 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 18 )
 centered = false
 
 [node name="Teleport_GUI_Text" type="Label" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
-margin_left = -212.337
+margin_left = -139.373
 margin_top = 20.0
-margin_right = -78.3375
+margin_right = -5.37347
 margin_bottom = 35.0
 rect_pivot_offset = Vector2( -533.113, 40.108 )
 custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "DASH"
+text = "SPACE"
 align = 1
 valign = 1
 __meta__ = {
@@ -406,14 +406,14 @@ __meta__ = {
 }
 
 [node name="Ability_GUI_Text" type="Label" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
-margin_left = -1.58972
+margin_left = -65.7316
 margin_top = 20.0
-margin_right = 132.41
+margin_right = 68.2682
 margin_bottom = 35.0
 rect_pivot_offset = Vector2( -533.113, 40.108 )
 custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "FORCEFIELD"
+text = "E"
 align = 1
 valign = 1
 __meta__ = {
@@ -421,9 +421,9 @@ __meta__ = {
 }
 
 [node name="Ability_Sub_GUI_Text" type="Label" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
-margin_left = -1.58971
+margin_left = -67.2231
 margin_top = -44.3823
-margin_right = 132.41
+margin_right = 66.7766
 margin_bottom = -29.3823
 rect_pivot_offset = Vector2( -533.113, 40.108 )
 custom_fonts/font = ExtResource( 5 )
@@ -436,9 +436,9 @@ __meta__ = {
 }
 
 [node name="ULT_Sub_GUI_Text" type="Label" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
-margin_left = -66.7961
+margin_left = -310.26
 margin_top = -44.3823
-margin_right = 67.2037
+margin_right = -176.26
 margin_bottom = -29.3823
 rect_pivot_offset = Vector2( -533.113, 40.108 )
 custom_fonts/font = ExtResource( 5 )
@@ -451,14 +451,14 @@ __meta__ = {
 }
 
 [node name="Utility_GUI_Text" type="Label" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
-margin_left = -131.745
+margin_left = 8.26819
 margin_top = 20.0
-margin_right = 2.25473
+margin_right = 142.268
 margin_bottom = 35.0
 rect_pivot_offset = Vector2( -533.113, 40.108 )
 custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "GRENADE"
+text = "RCLICK"
 align = 1
 valign = 1
 __meta__ = {
@@ -466,14 +466,14 @@ __meta__ = {
 }
 
 [node name="ULT_GUI_Text" type="Label" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
-margin_left = -66.1782
+margin_left = -309.642
 margin_top = 20.0
-margin_right = 67.8217
+margin_right = -175.642
 margin_bottom = 35.0
 rect_pivot_offset = Vector2( -533.113, 40.108 )
 custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "ULT"
+text = "Q"
 align = 1
 valign = 1
 __meta__ = {

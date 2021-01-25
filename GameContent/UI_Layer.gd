@@ -70,43 +70,6 @@ func _process(delta):
 		$Skirmish_Subtext.visible = true;
 		$Skirmish_Subtext.bbcode_text = "[center][color=black]Flag cannot be recovered. You can score without your flag home."
 	
-	if !Globals.is_typing_in_chat:
-		if Input.is_key_pressed(KEY_E):
-			$"Input_GUIs/Ability_GUIs/E_GUI".frame = 1;
-		else:
-			$"Input_GUIs/Ability_GUIs/E_GUI".frame = 0;
-		if Input.is_key_pressed(KEY_SPACE):
-			$"Input_GUIs/Ability_GUIs/SPACE_GUI".frame = 1;
-		else:
-			$"Input_GUIs/Ability_GUIs/SPACE_GUI".frame = 0;
-		if Input.is_key_pressed(KEY_W):
-			$"Input_GUIs/Move_GUIs/W_GUI".frame = 1;
-		else:
-			$"Input_GUIs/Move_GUIs/W_GUI".frame = 0;
-		if Input.is_key_pressed(KEY_A):
-			$"Input_GUIs/Move_GUIs/A_GUI".frame = 1;
-		else:
-			$"Input_GUIs/Move_GUIs/A_GUI".frame = 0;
-		if Input.is_key_pressed(KEY_S):
-			$"Input_GUIs/Move_GUIs/S_GUI".frame = 1;
-		else:
-			$"Input_GUIs/Move_GUIs/S_GUI".frame = 0;
-		if Input.is_key_pressed(KEY_D):
-			$"Input_GUIs/Move_GUIs/D_GUI".frame = 1;
-		else:
-			$"Input_GUIs/Move_GUIs/D_GUI".frame = 0;
-		if Input.is_key_pressed(KEY_E):
-			$"Input_GUIs/Ability_GUIs/E_GUI".frame = 1;
-		else:
-			$"Input_GUIs/Ability_GUIs/E_GUI".frame = 0;
-		if Input.is_key_pressed(KEY_SHIFT):
-			$"Input_GUIs/Ability_GUIs/SHIFT_GUI".frame = 1;
-		else:
-			$"Input_GUIs/Ability_GUIs/SHIFT_GUI".frame = 0;
-		if Input.is_action_pressed("clickR"):
-			$Input_GUIs/Ability_GUIs/UTILITY_GUI.frame = 1;
-		else:
-			$Input_GUIs/Ability_GUIs/UTILITY_GUI.frame = 0;
 	
 	var time = get_tree().get_root().get_node("MainScene/NetworkController/Match_Time_Limit_Timer").time_left;
 	var seconds = int(time) % 60;
@@ -120,35 +83,36 @@ func _process(delta):
 	elif Globals.localPlayerID != null and get_tree().get_root().get_node("MainScene/Players").has_node("P" + str(Globals.localPlayerID)):
 		local_player = get_tree().get_root().get_node("MainScene/Players/P" + str(Globals.localPlayerID));
 	if local_player != null:
+		
 		# Teleport button
 		var teleport_time_left = local_player.get_node("Teleport_Timer").time_left;
 		var teleport_wait_time = local_player.get_node("Teleport_Timer").wait_time;
 		if teleport_time_left == 0:
-			$Input_GUIs/Ability_GUIs/Teleport_GUI_Text.text = "DASH";
+			$Input_GUIs/Ability_GUIs/Teleport_GUI_Text.text = "SPACE";
 			$Input_GUIs/Ability_GUIs/SPACE_GUI.modulate = Color(1,1,1,1);
 		else:
-			$Input_GUIs/Ability_GUIs/Teleport_GUI_Text.text = "%0.2f" % teleport_time_left;
+			$Input_GUIs/Ability_GUIs/Teleport_GUI_Text.text = "%0.0f" % (teleport_time_left + 0.5);
 			$Input_GUIs/Ability_GUIs/SPACE_GUI.modulate = Color(1,1,1,0.2 + 0.4 * ((teleport_wait_time - teleport_time_left) / teleport_wait_time) );
 			
 		# Ability button
 		var ability_time_left = local_player.get_node("Ability_Node/Cooldown_Timer").time_left;
 		var ability_wait_time = local_player.get_node("Ability_Node/Cooldown_Timer").wait_time;
 		
+		if Globals.current_ability == Globals.Abilities.Forcefield:
+			if local_player.team_id == 1:
+				$Input_GUIs/Ability_GUIs/E_GUI.set_texture(forcefield_HUD_R);
+			else:
+				$Input_GUIs/Ability_GUIs/E_GUI.set_texture(forcefield_HUD_B);
+		elif Globals.current_ability == Globals.Abilities.Camo:
+			if local_player.team_id == 1:
+				$Input_GUIs/Ability_GUIs/E_GUI.set_texture(camo_HUD_R);
+			else:
+				$Input_GUIs/Ability_GUIs/E_GUI.set_texture(camo_HUD_B);
 		if ability_time_left == 0:
-			if Globals.current_ability == Globals.Abilities.Forcefield:
-				if local_player.team_id == 1:
-					$Input_GUIs/Ability_GUIs/SPACE_GUI.set_texture(forcefield_HUD_R);
-				else:
-					$Input_GUIs/Ability_GUIs/SPACE_GUI.set_texture(forcefield_HUD_B);
-			elif Globals.current_ability == Globals.Abilities.Camo:
-				if local_player.team_id == 1:
-					$Input_GUIs/Ability_GUIs/SPACE_GUI.set_texture(camo_HUD_R);
-				else:
-					$Input_GUIs/Ability_GUIs/SPACE_GUI.set_texture(camo_HUD_B);
 			$Input_GUIs/Ability_GUIs/Ability_GUI_Text.text = "E";
 			$Input_GUIs/Ability_GUIs/E_GUI.modulate = Color(1,1,1,1);
 		else:
-			$Input_GUIs/Ability_GUIs/Ability_GUI_Text.text = "%0.2f" % ability_time_left;
+			$Input_GUIs/Ability_GUIs/Ability_GUI_Text.text = "%0.0f" % (ability_time_left + 0.5);
 			$Input_GUIs/Ability_GUIs/E_GUI.modulate = Color(1,1,1,0.2 + 0.4 * ((ability_wait_time - ability_time_left) / ability_wait_time) );
 		var stacks = local_player.get_node("Ability_Node").ability_stacks;
 		$Input_GUIs/Ability_GUIs/Ability_Sub_GUI_Text.text = ("+" + str(stacks)) if stacks > 0 else "";
@@ -156,16 +120,23 @@ func _process(delta):
 		# Utility
 		var utility_time_left = local_player.get_node("Utility_Node/Cooldown_Timer").time_left;
 		var utility_wait_time = local_player.get_node("Utility_Node/Cooldown_Timer").wait_time;
+		
+			
+		if Globals.current_utility == Globals.Utilities.Grenade:
+			if local_player.team_id == 1:
+				$Input_GUIs/Ability_GUIs/UTILITY_GUI.set_texture(grenade_HUD_B);
+			else:
+				$Input_GUIs/Ability_GUIs/UTILITY_GUI.set_texture(grenade_HUD_R);
+		elif Globals.current_utility == Globals.Utilities.Landmine:
+			if local_player.team_id == 1:
+				$Input_GUIs/Ability_GUIs/UTILITY_GUI.set_texture(landmine_HUD_B);
+			else:
+				$Input_GUIs/Ability_GUIs/UTILITY_GUI.set_texture(landmine_HUD_R);
 		if utility_time_left == 0:
-			var t = "";
-			if Globals.current_utility == Globals.Utilities.Grenade:
-				t = "GRENADE";
-			elif Globals.current_utility == Globals.Utilities.Landmine:
-				t = "LANDMINE"
-			$Input_GUIs/Ability_GUIs/Utility_GUI_Text.text = t;
+			$Input_GUIs/Ability_GUIs/Utility_GUI_Text.text = "RCLICK";
 			$Input_GUIs/Ability_GUIs/UTILITY_GUI.modulate = Color(1,1,1,1);
 		else:
-			$Input_GUIs/Ability_GUIs/Utility_GUI_Text.text = "%0.2f" % utility_time_left;
+			$Input_GUIs/Ability_GUIs/Utility_GUI_Text.text = "%0.0f" % (utility_time_left + 0.5);
 			$Input_GUIs/Ability_GUIs/UTILITY_GUI.modulate = Color(1,1,1,0.2 + 0.4 * ((utility_wait_time - utility_time_left) / utility_wait_time) );
 		
 		# If player is holding a flag
@@ -174,8 +145,33 @@ func _process(delta):
 			pass;
 			
 		
-		# Ult Charge
-		$Input_GUIs/Ability_GUIs/ULT_Sub_GUI_Text.text = "%" + str(local_player.get_node("Ability_Node").ult_charge);
+		# Ult 
+		var charge = local_player.get_node("Ability_Node").ult_charge
+		$Input_GUIs/Ability_GUIs/ULT_GUI.modulate = Color(1,1,1,0.5);
+		$Input_GUIs/Ability_GUIs/ULT_Sub_GUI_Text.text = "%" + str(charge);
+		$Input_GUIs/Ability_GUIs/ULT_GUI_Text.text = "Q";
+	
+	if !Globals.is_typing_in_chat:
+		if Input.is_key_pressed(KEY_E):
+			$"Input_GUIs/Ability_GUIs/E_GUI".modulate = $"Input_GUIs/Ability_GUIs/E_GUI".modulate.darkened(0.5);
+		if Input.is_key_pressed(KEY_SPACE):
+			$"Input_GUIs/Ability_GUIs/SPACE_GUI".modulate = $"Input_GUIs/Ability_GUIs/SPACE_GUI".modulate.darkened(0.5);
+		if Input.is_key_pressed(KEY_W):
+			$"Input_GUIs/Move_GUIs/W_GUI".modulate = $"Input_GUIs/Move_GUIs/W_GUI".modulate.darkened(0.5);
+		if Input.is_key_pressed(KEY_A):
+			$"Input_GUIs/Move_GUIs/A_GUI".modulate = $"Input_GUIs/Move_GUIs/A_GUI".modulate.darkened(0.5);
+		if Input.is_key_pressed(KEY_S):
+			$"Input_GUIs/Move_GUIs/S_GUI".modulate = $"Input_GUIs/Move_GUIs/S_GUI".modulate.darkened(0.5);
+		if Input.is_key_pressed(KEY_D):
+			$"Input_GUIs/Move_GUIs/D_GUI".modulate = $"Input_GUIs/Move_GUIs/D_GUI".modulate.darkened(0.5);
+		if Input.is_key_pressed(KEY_E):
+			$"Input_GUIs/Ability_GUIs/E_GUI".modulate = $"Input_GUIs/Ability_GUIs/E_GUI".modulate.darkened(0.5);
+		if Input.is_key_pressed(KEY_SHIFT):
+			$"Input_GUIs/Ability_GUIs/SHIFT_GUI".modulate = $"Input_GUIs/Ability_GUIs/SHIFT_GUI".modulate.darkened(0.5);
+		if Input.is_action_pressed("clickR"):
+			$"Input_GUIs/Ability_GUIs/UTILITY_GUI".modulate = $"Input_GUIs/Ability_GUIs/UTILITY_GUI".modulate.darkened(0.5);
+		if Input.is_key_pressed(KEY_Q):
+			$"Input_GUIs/Ability_GUIs/ULT_GUI".modulate = $"Input_GUIs/Ability_GUIs/ULT_GUI".modulate.darkened(0.5);
 
 func _screen_resized():
 	var window_size = OS.get_window_size();
