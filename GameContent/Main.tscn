@@ -1,4 +1,4 @@
-[gd_scene load_steps=46 format=2]
+[gd_scene load_steps=49 format=2]
 
 [ext_resource path="res://GameContent/Main.gd" type="Script" id=1]
 [ext_resource path="res://GameContent/Player.tscn" type="PackedScene" id=2]
@@ -23,11 +23,14 @@
 [ext_resource path="res://Assets/GUI/Space-Key-GUI.png" type="Texture" id=21]
 [ext_resource path="res://Assets/Sound/score.wav" type="AudioStream" id=22]
 [ext_resource path="res://Assets/Sound/Countdown.wav" type="AudioStream" id=23]
+[ext_resource path="res://Assets/GUI/Cog Hovered.png" type="Texture" id=24]
 [ext_resource path="res://fonts/pixel.TTF" type="DynamicFontData" id=25]
 [ext_resource path="res://GameContent/Loadout_Menu.tscn" type="PackedScene" id=26]
 [ext_resource path="res://GameContent/PowerupGUIParticles.tscn" type="PackedScene" id=27]
 [ext_resource path="res://Assets/GUI/Q-Key-GUI.png" type="Texture" id=28]
+[ext_resource path="res://Assets/GUI/Cog Pressed.png" type="Texture" id=29]
 [ext_resource path="res://GameContent/Move_Stick.gd" type="Script" id=30]
+[ext_resource path="res://Assets/GUI/Cog.png" type="Texture" id=31]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0, 0, 0, 0.145098 )
@@ -48,11 +51,6 @@ font_data = ExtResource( 25 )
 
 [sub_resource type="DynamicFont" id=5]
 size = 12
-outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
-font_data = ExtResource( 25 )
-
-[sub_resource type="DynamicFont" id=6]
-size = 18
 outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
 font_data = ExtResource( 25 )
 
@@ -94,6 +92,11 @@ font_data = ExtResource( 25 )
 
 [sub_resource type="DynamicFont" id=17]
 size = 12
+outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
+font_data = ExtResource( 25 )
+
+[sub_resource type="DynamicFont" id=6]
+size = 18
 outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
 font_data = ExtResource( 25 )
 
@@ -175,23 +178,20 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Options_Button" type="Button" parent="Chat_Layer"]
+[node name="Options_Button" type="TextureButton" parent="Chat_Layer"]
 margin_left = 38.1514
 margin_top = 24.4809
-margin_right = 164.151
-margin_bottom = 91.4809
+margin_right = 138.151
+margin_bottom = 124.481
 grow_horizontal = 0
 grow_vertical = 0
-rect_scale = Vector2( 0.5, 0.5 )
 rect_pivot_offset = Vector2( 5.308, 0 )
 focus_mode = 0
-custom_styles/hover = ExtResource( 9 )
-custom_styles/pressed = ExtResource( 10 )
-custom_styles/normal = ExtResource( 11 )
-custom_fonts/font = SubResource( 6 )
-custom_colors/font_color = Color( 0.172549, 0.172549, 0.172549, 1 )
 enabled_focus_mode = 0
-text = "Options"
+texture_normal = ExtResource( 31 )
+texture_pressed = ExtResource( 29 )
+texture_hover = ExtResource( 24 )
+expand = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
