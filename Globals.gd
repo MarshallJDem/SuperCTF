@@ -3,9 +3,11 @@ extends Node
 # Whether to run in testing mode (for development uses)
 var testing = false;
 var experimental = true;
-var temporaryQuickplayDisable = true;
 var localTesting = false; # Used for running a server locally on the machine
-var remoteSkirmish = true; # Used for running the skirmish lobby on a remote computer (so you can run it in the editor and catch bugs)
+var localTestingBackend = false; # Used for when the backend is running locally on this machine
+var remoteSkirmish = false; # Used for running the skirmish lobby on a remote computer (so you can run it in the editor and catch bugs)
+
+var temporaryQuickplayDisable = true;
 
 #Game Servers (Both clients and servers use these vars, but in different ways. overlapping would not work)
 var serverIP = "";
@@ -182,6 +184,8 @@ func _enter_tree():
 			matchType = 0;
 		else:
 			serverIP = skirmishIP;
+	if localTestingBackend:
+		mainServerIP = "http://localhost:42401/";
 		
 
 func _ready():
@@ -222,12 +226,14 @@ func create_popup(text):
 
 func leave_MMQueue():
 	if !get_tree().is_network_server():
-		HTTPRequest_CancelQueue.request(Globals.mainServerIP + "leaveMMQueue", ["authorization: Bearer " + Globals.userToken]);
+		HTTPRequest_CancelQueue.request(Globals.mainServerIP + "leaveMMQueue", ["authorization: Bearer " + Globals.userToken], true, HTTPClient.METHOD_POST);
 
 # Called when the Cancel Queue HTTP request completes
 func _HTTP_CancelQueue_Completed(result, response_code, headers, body):
 	if(response_code == 200):
-		pass;
+		print("cancel queue success");
+	else:
+		print("THERE WAS A PROBLEM WITH CANCELING QUEUE: status = " + str(response_code) + " body = " + str(body));
 
 func logout(reload = false):
 	userToken = null;
@@ -291,6 +297,7 @@ func _HTTP_PollPlayerStatus_Completed(result, response_code, headers, body):
 		logout(false);
 		return;
 	if response_code != 200:
+		print(response_code);
 		return;
 	var json = JSON.parse(body.get_string_from_utf8())
 	if json.result.has("logout") and json.result.logout:
@@ -365,6 +372,7 @@ func attempt_ConfirmClientConnection():
 		# If were not already in the middle of a poll, poll it
 		if HTTPRequest_ConfirmClientConnection.get_http_client_status() == 0:
 			print("REQUESTING CONFIRM CLIENT CONNECTION");
+			print(Globals.mainServerIP + "confirmClientConnection");
 			HTTPRequest_ConfirmClientConnection.request(Globals.mainServerIP + "confirmClientConnection", ["authorization: Bearer " + Globals.userToken], true, HTTPClient.METHOD_POST);
 
 func write_save_data():
