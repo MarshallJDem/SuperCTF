@@ -391,9 +391,9 @@ texture = ExtResource( 18 )
 centered = false
 
 [node name="Teleport_GUI_Text" type="Label" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
-margin_left = -139.373
+margin_left = -140.476
 margin_top = 20.0
-margin_right = -5.37347
+margin_right = -6.47693
 margin_bottom = 35.0
 rect_pivot_offset = Vector2( -533.113, 40.108 )
 custom_fonts/font = ExtResource( 5 )
