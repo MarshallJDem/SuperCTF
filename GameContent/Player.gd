@@ -167,7 +167,8 @@ func _physics_process(delta: float) -> void:
 
 
 func update_class(c):
-	$Player_Visuals._update_class(c, team_id);
+	$Player_Visuals._update_team_id(team_id);
+	$Player_Visuals._update_class(c);
 
 func loadout_class_updated():
 	update_class(Globals.current_class);
