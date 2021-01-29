@@ -181,8 +181,8 @@ __meta__ = {
 [node name="Options_Button" type="TextureButton" parent="Chat_Layer"]
 margin_left = 21.8757
 margin_top = 11.0015
-margin_right = 85.8757
-margin_bottom = 75.0015
+margin_right = 149.876
+margin_bottom = 139.001
 grow_horizontal = 0
 grow_vertical = 0
 rect_pivot_offset = Vector2( 5.308, 0 )

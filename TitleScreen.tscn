@@ -528,14 +528,14 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -934.823
-margin_top = -519.552
-margin_right = -902.823
-margin_bottom = -487.552
-rect_scale = Vector2( 2.229, 2.229 )
+margin_left = -939.233
+margin_top = -522.072
+margin_right = -875.233
+margin_bottom = -458.072
 texture_normal = ExtResource( 6 )
 texture_pressed = ExtResource( 4 )
 texture_hover = ExtResource( 5 )
+expand = true
 __meta__ = {
 "_edit_lock_": true
 }
@@ -747,13 +747,14 @@ visible = false
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 12 )
+frame = 2
 playing = true
 
 [node name="Red_Sprite" type="AnimatedSprite" parent="UI_Layer/Flags/Flag"]
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 17 )
-frame = 3
+frame = 1
 playing = true
 
 [node name="Area2D" type="Area2D" parent="UI_Layer/Flags/Flag" groups=[
@@ -778,7 +779,7 @@ script = ExtResource( 3 )
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 12 )
-frame = 3
+frame = 1
 playing = true
 
 [node name="Red_Sprite" type="AnimatedSprite" parent="UI_Layer/Flags/Flag3"]
@@ -786,7 +787,6 @@ visible = false
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 17 )
-frame = 2
 playing = true
 
 [node name="Area2D" type="Area2D" parent="UI_Layer/Flags/Flag3" groups=[
