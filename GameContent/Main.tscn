@@ -27,7 +27,7 @@
 [ext_resource path="res://fonts/pixel.TTF" type="DynamicFontData" id=25]
 [ext_resource path="res://GameContent/Loadout_Menu.tscn" type="PackedScene" id=26]
 [ext_resource path="res://GameContent/PowerupGUIParticles.tscn" type="PackedScene" id=27]
-[ext_resource path="res://Assets/GUI/Q-Key-GUI.png" type="Texture" id=28]
+[ext_resource path="res://Assets/GUI/HUD/ultimate_HUD_gunner_B.png" type="Texture" id=28]
 [ext_resource path="res://Assets/GUI/Cog Pressed.png" type="Texture" id=29]
 [ext_resource path="res://GameContent/Move_Stick.gd" type="Script" id=30]
 [ext_resource path="res://Assets/GUI/Cog.png" type="Texture" id=31]
@@ -373,7 +373,7 @@ centered = false
 [node name="ULT_GUI" type="Sprite" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
 position = Vector2( -263.526, -26.4901 )
 scale = Vector2( 2, 2 )
-texture = ExtResource( 24 )
+texture = ExtResource( 28 )
 centered = false
 
 [node name="SHIFT_GUI" type="Sprite" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
