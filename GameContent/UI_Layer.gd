@@ -12,6 +12,12 @@ var grenade_HUD_R = preload("res://Assets/GUI/HUD/grenade_HUD_R.png");
 var landmine_HUD_B = preload("res://Assets/GUI/HUD/landmine_HUD_B.png");
 var landmine_HUD_R = preload("res://Assets/GUI/HUD/landmine_HUD_R.png");
 var dash_HUD = preload("res://Assets/GUI/HUD/dash_HUD.png");
+var ultimate_HUD_demo_B = preload("res://Assets/GUI/HUD/ultimate_HUD_demo_B.png");
+var ultimate_HUD_demo_R = preload("res://Assets/GUI/HUD/ultimate_HUD_demo_R.png");
+var ultimate_HUD_laser_B = preload("res://Assets/GUI/HUD/ultimate_HUD_laser_B.png");
+var ultimate_HUD_laser_R = preload("res://Assets/GUI/HUD/ultimate_HUD_laser_R.png");
+var ultimate_HUD_gunner_B = preload("res://Assets/GUI/HUD/ultimate_HUD_gunner_B.png");
+var ultimate_HUD_gunner_R = preload("res://Assets/GUI/HUD/ultimate_HUD_gunner_R.png");
 
 
 func _ready():
@@ -147,7 +153,26 @@ func _process(delta):
 		
 		# Ult 
 		var charge = local_player.get_node("Ability_Node").ult_charge
+		
+		if Globals.current_class == Globals.Classes.Bullet:
+			if local_player.team_id == 1:
+				$Input_GUIs/Ability_GUIs/ULT_GUI.set_texture(ultimate_HUD_gunner_B);
+			else:
+				$Input_GUIs/Ability_GUIs/ULT_GUI.set_texture(ultimate_HUD_gunner_R);
+		elif Globals.current_class == Globals.Classes.Demo:
+			if local_player.team_id == 1:
+				$Input_GUIs/Ability_GUIs/ULT_GUI.set_texture(ultimate_HUD_demo_B);
+			else:
+				$Input_GUIs/Ability_GUIs/ULT_GUI.set_texture(ultimate_HUD_demo_R);
+		elif Globals.current_class == Globals.Classes.Laser:
+			if local_player.team_id == 1:
+				$Input_GUIs/Ability_GUIs/ULT_GUI.set_texture(ultimate_HUD_laser_B);
+			else:
+				$Input_GUIs/Ability_GUIs/ULT_GUI.set_texture(ultimate_HUD_laser_R);
+		
 		$Input_GUIs/Ability_GUIs/ULT_GUI.modulate = Color(1,1,1,0.5);
+		if charge == 100:
+			$Input_GUIs/Ability_GUIs/ULT_GUI.modulate = Color(1,1,1,1.0);
 		$Input_GUIs/Ability_GUIs/ULT_Sub_GUI_Text.text = "%" + str(charge);
 		$Input_GUIs/Ability_GUIs/ULT_GUI_Text.text = "Q";
 	

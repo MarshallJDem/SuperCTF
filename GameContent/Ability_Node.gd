@@ -48,9 +48,9 @@ func _input(event):
 			if event.scancode == KEY_Q:
 				ult_pressed();
 			if event.scancode == KEY_P and Globals.testing:
-				$Ult_Timer.start();
-				ult_charge = 0;
-				player.get_node("Weapon_Node").ult_active = true;
+				#$Ult_Timer.start();
+				ult_charge = 100;
+				#player.get_node("Weapon_Node").ult_active = true;
 func ability_pressed():
 	if $Cooldown_Timer.time_left == 0 || ability_stacks > 0:
 		if $Cooldown_Timer.time_left != 0 && ability_stacks > 0:
