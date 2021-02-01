@@ -37,9 +37,14 @@ func _update_arrow(player_position, home_position, delta):
 	
 	# Determine alpha
 	var total_dist = (home_position - player_position).length()
+	var alpha = 1.0;
 	if total_dist > 175:
-		self.modulate = Color(1.0,1.0,1.0,1.0);
+		alpha = 1.0;
 	elif total_dist <= 125:
-		self.modulate = Color(1.0,1.0,1.0,0.0);
+		alpha = 0.0;
 	else:
-		self.modulate = Color(1.0,1.0,1.0,(total_dist - 125)/50);
+		alpha = (total_dist - 125)/50;
+	if alpha > 0.8:
+		alpha = 0.8
+	self.modulate = Color(1.0,1.0,1.0,alpha);
+	
