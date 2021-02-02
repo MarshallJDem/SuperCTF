@@ -45,6 +45,7 @@ content_margin_top = 8.0
 bg_color = Color( 1, 1, 1, 0 )
 
 [sub_resource type="DynamicFont" id=4]
+resource_local_to_scene = true
 size = 8
 outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
 extra_spacing_top = 2
@@ -135,7 +136,7 @@ mouse_filter = 2
 custom_styles/focus = SubResource( 1 )
 custom_styles/normal = SubResource( 2 )
 custom_fonts/font = ExtResource( 5 )
-custom_colors/font_color = Color( 0.243137, 0.243137, 0.243137, 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 max_length = 250
 placeholder_text = "Press ENTER to chat"
 script = ExtResource( 6 )
