@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/ultimate_HUD_laser_r.png-c25989bbf34aa4e8ee981abc50b176fa.stex"
+path="res://.import/ultimate_HUD_laser_R.png-d5a7f476b1cff882bf7274e38acc719d.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/GUI/HUD/ultimate_HUD_laser_r.png"
-dest_files=[ "res://.import/ultimate_HUD_laser_r.png-c25989bbf34aa4e8ee981abc50b176fa.stex" ]
+source_file="res://Assets/GUI/HUD/ultimate_HUD_laser_R.png"
+dest_files=[ "res://.import/ultimate_HUD_laser_R.png-d5a7f476b1cff882bf7274e38acc719d.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=false
+flags/filter=true
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2
