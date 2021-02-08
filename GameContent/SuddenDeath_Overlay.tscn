@@ -1,10 +1,35 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://fonts/pixel.TTF" type="DynamicFontData" id=1]
 [ext_resource path="res://GameContent/Player_Visuals.tscn" type="PackedScene" id=2]
 [ext_resource path="res://GameContent/SuddenDeath_Overlay.gd" type="Script" id=3]
 [ext_resource path="res://Assets/Items/flags.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Items/powerup_spawner.png" type="Texture" id=5]
 [ext_resource path="res://Assets/GUI/x-symbol.svg" type="Texture" id=6]
+
+[sub_resource type="AtlasTexture" id=8]
+atlas = ExtResource( 4 )
+region = Rect2( 0, 32, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=9]
+atlas = ExtResource( 4 )
+region = Rect2( 16, 32, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=10]
+atlas = ExtResource( 4 )
+region = Rect2( 32, 32, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=11]
+atlas = ExtResource( 4 )
+region = Rect2( 48, 32, 16, 16 )
+
+[sub_resource type="SpriteFrames" id=12]
+animations = [ {
+"frames": [ SubResource( 8 ), SubResource( 9 ), SubResource( 10 ), SubResource( 11 ) ],
+"loop": true,
+"name": "default",
+"speed": 7.0
+} ]
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 4 )
@@ -39,30 +64,6 @@ font_data = ExtResource( 1 )
 size = 70
 outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 1 )
-
-[sub_resource type="AtlasTexture" id=8]
-atlas = ExtResource( 4 )
-region = Rect2( 0, 32, 16, 16 )
-
-[sub_resource type="AtlasTexture" id=9]
-atlas = ExtResource( 4 )
-region = Rect2( 16, 32, 16, 16 )
-
-[sub_resource type="AtlasTexture" id=10]
-atlas = ExtResource( 4 )
-region = Rect2( 32, 32, 16, 16 )
-
-[sub_resource type="AtlasTexture" id=11]
-atlas = ExtResource( 4 )
-region = Rect2( 48, 32, 16, 16 )
-
-[sub_resource type="SpriteFrames" id=12]
-animations = [ {
-"frames": [ SubResource( 8 ), SubResource( 9 ), SubResource( 10 ), SubResource( 11 ) ],
-"loop": true,
-"name": "default",
-"speed": 7.0
-} ]
 
 [node name="SuddenDeath_Overlay" type="CanvasLayer"]
 layer = 6
@@ -102,6 +103,42 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Blue_Flag" type="Control" parent="Stupid_Parent_Node/Main"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 93.6229
+margin_top = 307.674
+margin_right = 133.623
+margin_bottom = 347.674
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FlagHome" type="TextureRect" parent="Stupid_Parent_Node/Main/Blue_Flag"]
+margin_left = 342.251
+margin_top = 74.2786
+margin_right = 382.251
+margin_bottom = 104.279
+rect_scale = Vector2( 8, 8 )
+texture = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="x-symbol" type="Sprite" parent="Stupid_Parent_Node/Main/Blue_Flag"]
+visible = false
+position = Vector2( -64.2692, 4.45221 )
+scale = Vector2( 0.49532, 0.49532 )
+z_index = 1
+texture = ExtResource( 6 )
+
+[node name="Sprite" type="AnimatedSprite" parent="Stupid_Parent_Node/Main/Blue_Flag"]
+scale = Vector2( 16, 16 )
+frames = SubResource( 12 )
+playing = true
+
 [node name="Player" parent="Stupid_Parent_Node/Main" instance=ExtResource( 2 )]
 anchor_top = 0.5
 anchor_bottom = 0.5
@@ -115,7 +152,7 @@ rect_scale = Vector2( 8, 8 )
 position = Vector2( 11.75, -15.125 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 5 )
-frame = 3
+frame = 2
 playing = true
 
 [node name="Title" type="RichTextLabel" parent="Stupid_Parent_Node/Main"]
@@ -138,42 +175,19 @@ __meta__ = {
 anchor_top = 0.25
 anchor_right = 1.0
 anchor_bottom = 0.5
-margin_top = 100.386
-margin_bottom = 100.386
+margin_top = 52.1738
+margin_bottom = 52.1738
 rect_clip_content = false
 custom_fonts/normal_font = SubResource( 7 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
-bbcode_text = "[center]Flags can[color=red] NOT[color=black] be recovered"
-text = "Flags can NOT be recovered"
+bbcode_text = "[center]Your flag 
+can[color=red] NOT[color=black] be recovered"
+text = "Your flag 
+can NOT be recovered"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Animation_Timer" type="Timer" parent="Stupid_Parent_Node/Main"]
 one_shot = true
-
-[node name="Blue_Flag" type="Control" parent="Stupid_Parent_Node/Main"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = 93.6229
-margin_top = 307.674
-margin_right = 133.623
-margin_bottom = 347.674
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="x-symbol" type="Sprite" parent="Stupid_Parent_Node/Main/Blue_Flag"]
-position = Vector2( -64.2692, 4.45221 )
-scale = Vector2( 0.49532, 0.49532 )
-z_index = 1
-texture = ExtResource( 6 )
-
-[node name="Sprite" type="AnimatedSprite" parent="Stupid_Parent_Node/Main/Blue_Flag"]
-scale = Vector2( 16, 16 )
-frames = SubResource( 12 )
-frame = 1
-playing = true

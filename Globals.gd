@@ -185,7 +185,7 @@ func _enter_tree():
 		else:
 			serverIP = skirmishIP;
 	if localTestingBackend:
-		mainServerIP = "http://localhost:42401/";
+		mainServerIP = "http://localhost:42501/";
 		
 
 func _ready():
@@ -317,9 +317,9 @@ func _HTTP_PollPlayerStatus_Completed(result, response_code, headers, body):
 			Globals.player_old_MMR = Globals.player_MMR;
 			Globals.player_MMR = int(json.result.mmr);
 	if json.result.has("partyData"):
+		print(json.result.partyData);
 		Globals.knownPartyData = json.result.partyData;
 		Globals.player_party_data = json.result.partyData;
-		Globals.player_party_data.players = Globals.player_party_data.players;
 	if(player_status < 10 and int(json.result.status) >= 10):
 		print("Found Match : " + str(json.result.status));
 		var matchID = str(json.result.status);
