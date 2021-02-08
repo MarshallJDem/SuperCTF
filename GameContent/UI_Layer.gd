@@ -201,7 +201,8 @@ func _process(delta):
 func _screen_resized():
 	var window_size = OS.get_window_size();
 	$"../Chat_Layer/Chat_Box".margin_bottom = window_size.y * (0.6);
-	$"../Chat_Layer/Chat_Box".get_font("normal_font").size = 8;
+	$"../Chat_Layer/Chat_Box".get_font("normal_font").size = 12;
+	$"../Chat_Layer/Line_Edit".get_font("font").size = 12;
 	$"../Chat_Layer/Line_Edit".rect_scale= Vector2(1,1);
 	$"../Chat_Layer/Chat_Box".margin_top = 73;
 	$"../Chat_Layer/Chat_Box".margin_right = 300;
@@ -223,6 +224,8 @@ func _screen_resized():
 		$Alert_Text.get_font("normal_font").size =16;
 		$Skirmish_Subtext.get_font("normal_font").size =24;
 		$Input_GUIs.margin_top = -120;
+		$"../Chat_Layer/Chat_Box".get_font("normal_font").size = 14;
+		$"../Chat_Layer/Line_Edit".get_font("font").size = 14;
 		$Alert_Text.margin_top = $Skirmish_Subtext.margin_top + 70;
 	else:
 		$Input_GUIs.rect_scale = Vector2(3,3);
