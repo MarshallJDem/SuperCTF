@@ -66,7 +66,7 @@ func _process(delta):
 		$Score_Label.bbcode_text = "[center][color=black]SEARCHING " + str(OS.get_system_time_secs() - start_time);
 		$Time_Label.visible = false;
 		$Skirmish_Subtext.visible = true;
-		$Skirmish_Subtext.bbcode_text = "[center][color=black] This is a skirmish lobby for waiting in matchmaking queue."
+		$Skirmish_Subtext.bbcode_text = "[center][color=black]"# "This is a skirmish lobby for waiting in matchmaking queue."
 		$Cancel_Button.visible = true;
 	else:
 		$Cancel_Button.visible = false;
