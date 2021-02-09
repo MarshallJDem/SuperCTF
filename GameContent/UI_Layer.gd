@@ -18,6 +18,8 @@ var ultimate_HUD_laser_B = preload("res://Assets/GUI/HUD/ultimate_HUD_laser_B.pn
 var ultimate_HUD_laser_R = preload("res://Assets/GUI/HUD/ultimate_HUD_laser_R.png");
 var ultimate_HUD_gunner_B = preload("res://Assets/GUI/HUD/ultimate_HUD_gunner_B.png");
 var ultimate_HUD_gunner_R = preload("res://Assets/GUI/HUD/ultimate_HUD_gunner_R.png");
+var camera_HUD_ON = preload("res://Assets/GUI/HUD/camera_HUD_ON.png");
+var camera_HUD_OFF = preload("res://Assets/GUI/HUD/camera_HUD_OFF.png");
 
 
 func _ready():
@@ -149,7 +151,14 @@ func _process(delta):
 		if local_player.get_node("Flag_Holder").get_child_count() > 0:
 			#$Input_GUIs/Ability_GUIs/UTILITY_GUI.modulate = Color(1,1,1,0.4);
 			pass;
-			
+		
+		# Camera Shift
+		$Input_GUIs/Ability_GUIs/SHIFT_GUI.modulate = Color(1,1,1,1);
+		if local_player.is_camera_extended():
+			$Input_GUIs/Ability_GUIs/SHIFT_GUI.set_texture(camera_HUD_ON)
+		else:
+			$Input_GUIs/Ability_GUIs/SHIFT_GUI.set_texture(camera_HUD_OFF)
+		
 		
 		# Ult 
 		var charge = local_player.get_node("Ability_Node").ult_charge

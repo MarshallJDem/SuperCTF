@@ -355,7 +355,10 @@ func get_vector_angle(dist):
 func set_look_direction(dir):
 	look_direction = dir;
 	$Player_Visuals._update_look_direction(dir);
-	
+
+# Returns true if the camera is currently extended, false otherwise
+func is_camera_extended():
+	return $Center_Pivot.extended
 
 # Updates this player's position with the new given position. Only ever called remotely
 remotesync func update_position(new_pos):

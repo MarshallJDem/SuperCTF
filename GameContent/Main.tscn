@@ -19,7 +19,7 @@
 [ext_resource path="res://Assets/GUI/HUD/grenade_HUD_B.png" type="Texture" id=17]
 [ext_resource path="res://Assets/GUI/HUD/dash_HUD.png" type="Texture" id=18]
 [ext_resource path="res://Chat_Text.tres" type="RichTextEffect" id=19]
-[ext_resource path="res://Assets/GUI/Shift-Key-GUI.png" type="Texture" id=20]
+[ext_resource path="res://Assets/GUI/HUD/camera_HUD_OFF.png" type="Texture" id=20]
 [ext_resource path="res://Assets/GUI/HUD/forcefield_HUD_B.png" type="Texture" id=21]
 [ext_resource path="res://Assets/Sound/score.wav" type="AudioStream" id=22]
 [ext_resource path="res://Assets/Sound/Countdown.wav" type="AudioStream" id=23]
@@ -389,11 +389,10 @@ texture = ExtResource( 28 )
 centered = false
 
 [node name="SHIFT_GUI" type="Sprite" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
-position = Vector2( 114, -25.6022 )
+position = Vector2( 122.314, -28.7334 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 20 )
 centered = false
-hframes = 2
 
 [node name="SPACE_GUI" type="Sprite" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
 position = Vector2( -94.5113, -26 )
@@ -499,8 +498,7 @@ margin_bottom = 44.1989
 rect_pivot_offset = Vector2( -533.113, 40.108 )
 custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "EXTEND
-CAMERA"
+text = "SHIFT"
 align = 1
 valign = 1
 __meta__ = {
