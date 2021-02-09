@@ -130,14 +130,14 @@ func _process(delta):
 			
 		if Globals.current_utility == Globals.Utilities.Grenade:
 			if local_player.team_id == 1:
-				$Input_GUIs/Ability_GUIs/UTILITY_GUI.set_texture(grenade_HUD_B);
-			else:
 				$Input_GUIs/Ability_GUIs/UTILITY_GUI.set_texture(grenade_HUD_R);
+			else:
+				$Input_GUIs/Ability_GUIs/UTILITY_GUI.set_texture(grenade_HUD_B);
 		elif Globals.current_utility == Globals.Utilities.Landmine:
 			if local_player.team_id == 1:
-				$Input_GUIs/Ability_GUIs/UTILITY_GUI.set_texture(landmine_HUD_B);
-			else:
 				$Input_GUIs/Ability_GUIs/UTILITY_GUI.set_texture(landmine_HUD_R);
+			else:
+				$Input_GUIs/Ability_GUIs/UTILITY_GUI.set_texture(landmine_HUD_B);
 		if utility_time_left == 0:
 			$Input_GUIs/Ability_GUIs/Utility_GUI_Text.text = "RCLICK";
 			$Input_GUIs/Ability_GUIs/UTILITY_GUI.modulate = Color(1,1,1,1);
@@ -156,19 +156,19 @@ func _process(delta):
 		
 		if Globals.current_class == Globals.Classes.Bullet:
 			if local_player.team_id == 1:
-				$Input_GUIs/Ability_GUIs/ULT_GUI.set_texture(ultimate_HUD_gunner_B);
-			else:
 				$Input_GUIs/Ability_GUIs/ULT_GUI.set_texture(ultimate_HUD_gunner_R);
+			else:
+				$Input_GUIs/Ability_GUIs/ULT_GUI.set_texture(ultimate_HUD_gunner_B);
 		elif Globals.current_class == Globals.Classes.Demo:
 			if local_player.team_id == 1:
-				$Input_GUIs/Ability_GUIs/ULT_GUI.set_texture(ultimate_HUD_demo_B);
-			else:
 				$Input_GUIs/Ability_GUIs/ULT_GUI.set_texture(ultimate_HUD_demo_R);
+			else:
+				$Input_GUIs/Ability_GUIs/ULT_GUI.set_texture(ultimate_HUD_demo_B);
 		elif Globals.current_class == Globals.Classes.Laser:
 			if local_player.team_id == 1:
-				$Input_GUIs/Ability_GUIs/ULT_GUI.set_texture(ultimate_HUD_laser_B);
-			else:
 				$Input_GUIs/Ability_GUIs/ULT_GUI.set_texture(ultimate_HUD_laser_R);
+			else:
+				$Input_GUIs/Ability_GUIs/ULT_GUI.set_texture(ultimate_HUD_laser_B);
 		
 		$Input_GUIs/Ability_GUIs/ULT_GUI.modulate = Color(1,1,1,0.5);
 		if charge == 100:
