@@ -40,15 +40,12 @@ func _ready():
 	else:
 		$Input_GUIs.visible = true;
 		$Alert_Text.visible = true;
+	show_move_gui = true;
 
 func _process(delta):
 	if Globals.isServer:
 		return;
-	# Show / Hide move gui depending on whether loadout is visible
-	show_move_gui = false; # Decided to remove this GUI at least temporarily
-	if show_move_gui == true:
-		show_move_gui = false;
-		$Move_GUI_Fade_Timer.start();
+	# Show / Hide move gui 
 	if show_move_gui:
 		$Input_GUIs/Move_GUIs.modulate = Color(1,1,1,1);
 		$Input_GUIs/Ability_GUIs.modulate = Color(0,0,0,0);
@@ -191,12 +188,16 @@ func _process(delta):
 		if Input.is_key_pressed(KEY_SPACE):
 			$"Input_GUIs/Ability_GUIs/SPACE_GUI".modulate = $"Input_GUIs/Ability_GUIs/SPACE_GUI".modulate.darkened(0.5);
 		if Input.is_key_pressed(KEY_W):
+			attempt_hide_move_gui()
 			$"Input_GUIs/Move_GUIs/W_GUI".modulate = $"Input_GUIs/Move_GUIs/W_GUI".modulate.darkened(0.5);
 		if Input.is_key_pressed(KEY_A):
+			attempt_hide_move_gui()
 			$"Input_GUIs/Move_GUIs/A_GUI".modulate = $"Input_GUIs/Move_GUIs/A_GUI".modulate.darkened(0.5);
 		if Input.is_key_pressed(KEY_S):
+			attempt_hide_move_gui()
 			$"Input_GUIs/Move_GUIs/S_GUI".modulate = $"Input_GUIs/Move_GUIs/S_GUI".modulate.darkened(0.5);
 		if Input.is_key_pressed(KEY_D):
+			attempt_hide_move_gui()
 			$"Input_GUIs/Move_GUIs/D_GUI".modulate = $"Input_GUIs/Move_GUIs/D_GUI".modulate.darkened(0.5);
 		if Input.is_key_pressed(KEY_E):
 			$"Input_GUIs/Ability_GUIs/E_GUI".modulate = $"Input_GUIs/Ability_GUIs/E_GUI".modulate.darkened(0.5);
@@ -207,6 +208,10 @@ func _process(delta):
 		if Input.is_key_pressed(KEY_Q):
 			$"Input_GUIs/Ability_GUIs/ULT_GUI".modulate = $"Input_GUIs/Ability_GUIs/ULT_GUI".modulate.darkened(0.5);
 
+func attempt_hide_move_gui():
+	if show_move_gui == true:
+		show_move_gui = false;
+		$Move_GUI_Fade_Timer.start();
 func _screen_resized():
 	var window_size = OS.get_window_size();
 	$"../Chat_Layer/Chat_Box".margin_bottom = window_size.y * (0.6);
