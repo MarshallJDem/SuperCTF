@@ -16,7 +16,7 @@ var skirmishIP = "superctf.com:42480";
 var skirmishMap = "TehoMap1";
 var port = 42480;
 var serverPrivateToken;
-var isServer = false;
+var isServer = true;
 var allowedPlayers = [];
 var matchID;
 var matchType;
