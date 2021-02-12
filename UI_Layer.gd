@@ -103,9 +103,6 @@ func set_view(state):
 	current_state = state;
 
 func _process(delta):
-	
-	
-	
 	var code = "";
 	var players = "";
 	var players_in_party = 0;

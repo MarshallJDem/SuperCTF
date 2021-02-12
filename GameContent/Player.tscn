@@ -1,7 +1,8 @@
-[gd_scene load_steps=32 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://GameContent/Player.gd" type="Script" id=1]
 [ext_resource path="res://GameContent/Player_Visuals.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Assets/GUI/flag_arrow.png" type="Texture" id=3]
 [ext_resource path="res://GameContent/Center_Pivot.gd" type="Script" id=4]
 [ext_resource path="res://GameContent/Camera.gd" type="Script" id=5]
 [ext_resource path="res://GameContent/Player_Area2D.gd" type="Script" id=6]
@@ -20,7 +21,6 @@
 [ext_resource path="res://Assets/Sound/Powerup.wav" type="AudioStream" id=21]
 [ext_resource path="res://Assets/Shaders/Vignette_Red.shader" type="Shader" id=22]
 [ext_resource path="res://Assets/Shaders/Vignette_Blue.shader" type="Shader" id=23]
-[ext_resource path="res://Assets/GUI/arrow_G.png" type="Texture" id=24]
 [ext_resource path="res://GameContent/Home_Pointer.gd" type="Script" id=25]
 
 [sub_resource type="CircleShape2D" id=1]
@@ -308,4 +308,4 @@ script = ExtResource( 25 )
 [node name="Home_Pointer" type="Sprite" parent="Home_Pointer_Pivot"]
 position = Vector2( 1, 0 )
 scale = Vector2( 2, 2 )
-texture = ExtResource( 24 )
+texture = ExtResource( 3 )

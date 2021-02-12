@@ -23,32 +23,28 @@ func _point_at_home(player_position, home_position):
 	#the -PI/2 makes the end of the arrow face the flag home
 	Arrow.rotation = player_position.angle_to_point(home_position) - PI/2;
 
+var arrow_animation_t = 0.0;
 
-func _move_arrow(player_position, home_position, delta, home_visible):
+func _update_arrow(player_position, home_position, delta):
 	
-	if home_visible:
-		#Target position is on top of the flag home
-		target_position = (home_position - player_position);
-		#minus a multiple of the normalized version of this vector so it stays flag_home_boundary pixels away
-		target_position = target_position - (target_position.normalized()) * flag_home_boundary;
+	# Animate bounce
+	arrow_animation_t += delta;
+	player_boundary = 40 + (sin(2 * PI * arrow_animation_t) * 2);
+	
+	# Determine pos
+	var angle = player_position.angle_to_point(home_position);
+	self.position = -Vector2(cos(angle)*player_boundary, sin(angle)*player_boundary);
+	
+	# Determine alpha
+	var total_dist = (home_position - player_position).length()
+	var alpha = 1.0;
+	if total_dist > 175:
+		alpha = 1.0;
+	elif total_dist <= 125:
+		alpha = 0.0;
 	else:
-		var angle = player_position.angle_to_point(home_position);
-		target_position = -Vector2(cos(angle)*player_boundary, sin(angle)*player_boundary);
+		alpha = (total_dist - 125)/50;
+	if alpha > 0.8:
+		alpha = 0.8
+	self.modulate = Color(1.0,1.0,1.0,alpha);
 	
-	# Get the distance from where we are now to where we want to be
-	var distance = (target_position - self.position).length();
-	
-	# Figure out what percentage of the distance we need to travel (basically our speed / the total distance gives us a percentage of the total distance we should travel)
-	var t = 1.0;
-	# Checking this makes sure that t will be 1.0 if we would have overshot
-	
-	if delta * arrow_speed < distance:
-		if distance != 0:
-			
-			t = (delta * arrow_speed)/distance;
-	
-	# Travel t percentage from where we are to where we want to go.
-	var new_pos = lerp(self.position, target_position, t);
-	self.position = new_pos;
-	
-	return(distance)
