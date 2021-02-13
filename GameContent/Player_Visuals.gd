@@ -10,6 +10,7 @@ var team_id = 0;
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	Globals.connect("skin_changed", self, "skin_changed");
 	pass # Replace with function body.
 
 func _update_animation(position_delta):
@@ -82,6 +83,10 @@ func _update_team_id(t):
 
 func _start_shoot_animation():
 	$Shoot_Animation_Timer.start()
+
+func skin_changed(body_index, head_index):
+	## JAMJAR IMPLEMENT
+	return
 
 func refresh_textures():
 	var t = "B";
