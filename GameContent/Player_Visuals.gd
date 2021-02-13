@@ -10,6 +10,7 @@ var team_id = 0;
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	Globals.connect("skin_changed", self, "skin_changed");
 	pass # Replace with function body.
 
 func _update_animation(position_delta):
