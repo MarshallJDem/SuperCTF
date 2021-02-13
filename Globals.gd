@@ -1,7 +1,7 @@
 extends Node
 
 # Whether to run in testing mode (for development uses)
-var testing = false;
+var testing = true;
 var experimental = false;
 var localTesting = false; # Used for running a server locally on the machine
 var localTestingBackend = false; # Used for when the backend is running locally on this machine

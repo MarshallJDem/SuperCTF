@@ -306,6 +306,7 @@ one_shot = true
 script = ExtResource( 25 )
 
 [node name="Home_Pointer" type="Sprite" parent="Home_Pointer_Pivot"]
+visible = false
 position = Vector2( 1, 0 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 3 )
