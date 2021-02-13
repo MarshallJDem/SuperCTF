@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://GameContent/Flag_Home.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Items/powerup_spawner.png" type="Texture" id=2]
+[ext_resource path="res://Assets/GUI/arrow_G.png" type="Texture" id=3]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 6.50538
@@ -26,3 +27,14 @@ position = Vector2( 0.246002, 2.09093 )
 rotation = 1.5708
 scale = Vector2( 1.19413, 1.01917 )
 shape = SubResource( 1 )
+
+[node name="ScoreHelper" type="Sprite" parent="."]
+visible = false
+position = Vector2( -0.0160217, -26.5789 )
+rotation = 3.14159
+z_index = 4096
+texture = ExtResource( 3 )
+
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
+position = Vector2( 0, -26.9361 )
+scale = Vector2( 0.044, 0.027 )

@@ -23,6 +23,7 @@ func _ready():
 	if Globals.isServer:
 		print("Checking is server");
 		get_tree().change_scene("res://GameContent/Main.tscn");
+	print(Globals.mainServerIP + "getLeaderboardData");
 	$HTTPRequest_GetLeaderboard.request(Globals.mainServerIP + "getLeaderboardData");
 	get_tree().set_screen_stretch(SceneTree.STRETCH_MODE_VIEWPORT, SceneTree.STRETCH_ASPECT_EXPAND,Vector2(1920,1080), 1);
 	
@@ -53,7 +54,7 @@ func create_guest():
 func join_MM_queue(queueType):
 	print("Token : " + Globals.userToken);
 	var query = "?queueType=" + str(queueType);
-	$HTTPRequest_JoinMMQueue.request(Globals.mainServerIP + "joinMMQueue" + query, ["authorization: Bearer " + Globals.userToken]);
+	$HTTPRequest_JoinMMQueue.request(Globals.mainServerIP + "joinMMQ" + query, ["authorization: Bearer " + Globals.userToken]);
 func logout():
 	Globals.call_logout_http();
 	
@@ -105,6 +106,7 @@ func _Leaderboard_Refresh_Ended():
 # Called when the joinMMQueue HTTP request completes
 func _HTTP_JoinMMQueue_Completed(result, response_code, headers, body):
 	var json = JSON.parse(body.get_string_from_utf8())
+	print(body.get_string_from_utf8());
 	if(response_code == 200):
 		$UI_Layer.set_view($UI_Layer.VIEW_IN_QUEUE);
 	elif(response_code == 400):

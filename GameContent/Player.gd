@@ -3,7 +3,7 @@ extends KinematicBody2D
 var control = false;
 # The ID of this player 0,1,2 etc. NOT the network unique ID
 var player_id = -1;
-var team_id = -1;
+var team_id = 0;
 var BASE_SPEED = 200;
 const SPRINT_SPEED = 50;
 const FLAG_SLOWDOWN_SPEED = -25;
@@ -121,6 +121,25 @@ func _physics_process(delta: float) -> void:
 	
 	update();
 	
+	
+	#check if the player is the one we are controlling
+	if Globals.testing or player_id == Globals.localPlayerID:
+		
+		var flagHome = get_tree().get_root().get_node("MainScene/Map/YSort/Flag_Home-" + str(team_id));
+		if has_flag():
+			#get the players flag home
+			
+			#point the home pointer to the flag home
+			$Home_Pointer_Pivot._point_at_home(self.position, flagHome.position)
+			$Home_Pointer_Pivot/Home_Pointer.visible = true
+			$Home_Pointer_Pivot._update_arrow(self.position, flagHome.position, delta);
+			
+		else:
+			$Home_Pointer_Pivot/Home_Pointer.visible = false
+	else:
+		$Home_Pointer_Pivot/Home_Pointer.visible = false
+		
+	
 	if $Invincibility_Timer.time_left > 0:
 		var t = $Invincibility_Timer.time_left / $Invincibility_Timer.wait_time 
 		var x =  (t * 10);
@@ -150,7 +169,8 @@ func _physics_process(delta: float) -> void:
 
 
 func update_class(c):
-	$Player_Visuals._update_class(c, team_id);
+	$Player_Visuals._update_team_id(team_id);
+	$Player_Visuals._update_class(c);
 
 func loadout_class_updated():
 	update_class(Globals.current_class);
@@ -335,7 +355,10 @@ func get_vector_angle(dist):
 func set_look_direction(dir):
 	look_direction = dir;
 	$Player_Visuals._update_look_direction(dir);
-	
+
+# Returns true if the camera is currently extended, false otherwise
+func is_camera_extended():
+	return $Center_Pivot.extended
 
 # Updates this player's position with the new given position. Only ever called remotely
 remotesync func update_position(new_pos):
@@ -365,15 +388,25 @@ func deactivate_camera():
 # Called when this player is hit by a projectile
 func hit_by_projectile(attacker_id, projectile_type):
 	var attacker = get_tree().get_root().get_node("MainScene/Players/P" + str(attacker_id));
-	if attacker != null:
+	if attacker != null and is_instance_valid(attacker):
 		attacker.stats["kills"] += 1;
 		attacker.get_node("Ability_Node").ult_charge += 10;
 	else:
 		print_stack();
 	if projectile_type == 0 || projectile_type == 1 || projectile_type == 2 || projectile_type == 3: # Bullet or Laser or Landmine
 		die();
-		var attacker_team_id = get_tree().get_root().get_node("MainScene/NetworkController").players[attacker_id]["team_id"]
-		var attacker_name = get_tree().get_root().get_node("MainScene/NetworkController").players[attacker_id]["name"]
+		var attacker_team_id = 0;
+		var attacker_name = "a Player";
+		var players_dict = get_tree().get_root().get_node("MainScene/NetworkController").players;
+		
+		if players_dict.has(attacker_id):
+			attacker_team_id = players_dict[attacker_id]["team_id"];
+			attacker_name = players_dict[attacker_id]["name"];
+		elif attacker != null and is_instance_valid(attacker):
+			attacker_team_id = attacker.team_id;
+			attacker_name = attacker.player_name;
+		
+		get_tree().get_root().get_node("MainScene/NetworkController").players[attacker_id]["name"]
 		var color_1 = "red"
 		var color_2 = "blue"
 		if team_id == 1:

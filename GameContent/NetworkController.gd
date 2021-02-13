@@ -89,7 +89,8 @@ func init_map_for_testing():
 
 func _process(delta):
 	SCORE_LIMIT = get_game_var("scoreLimit");
-	if server != null and server.is_listening():
+	if server != null and server.is_listening() and (server.get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_CONNECTED || 
+	server.get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_CONNECTING):
 		server.poll();
 	if client != null and (client.get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_CONNECTED || 
 	client.get_connection_status() == NetworkedMultiplayerPeer.CONNECTION_CONNECTING):

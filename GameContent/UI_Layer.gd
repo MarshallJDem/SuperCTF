@@ -3,6 +3,24 @@ extends CanvasLayer
 var start_time = OS.get_system_time_secs();
 var show_move_gui = true;
 
+var camo_HUD_B = preload("res://Assets/GUI/HUD/camo_HUD_B.png");
+var camo_HUD_R = preload("res://Assets/GUI/HUD/camo_HUD_R.png");
+var forcefield_HUD_B = preload("res://Assets/GUI/HUD/forcefield_HUD_B.png");
+var forcefield_HUD_R = preload("res://Assets/GUI/HUD/forcefield_HUD_R.png");
+var grenade_HUD_B = preload("res://Assets/GUI/HUD/grenade_HUD_B.png");
+var grenade_HUD_R = preload("res://Assets/GUI/HUD/grenade_HUD_R.png");
+var landmine_HUD_B = preload("res://Assets/GUI/HUD/landmine_HUD_B.png");
+var landmine_HUD_R = preload("res://Assets/GUI/HUD/landmine_HUD_R.png");
+var dash_HUD = preload("res://Assets/GUI/HUD/dash_HUD.png");
+var ultimate_HUD_demo_B = preload("res://Assets/GUI/HUD/ultimate_HUD_demo_B.png");
+var ultimate_HUD_demo_R = preload("res://Assets/GUI/HUD/ultimate_HUD_demo_R.png");
+var ultimate_HUD_laser_B = preload("res://Assets/GUI/HUD/ultimate_HUD_laser_B.png");
+var ultimate_HUD_laser_R = preload("res://Assets/GUI/HUD/ultimate_HUD_laser_R.png");
+var ultimate_HUD_gunner_B = preload("res://Assets/GUI/HUD/ultimate_HUD_gunner_B.png");
+var ultimate_HUD_gunner_R = preload("res://Assets/GUI/HUD/ultimate_HUD_gunner_R.png");
+var camera_HUD_ON = preload("res://Assets/GUI/HUD/camera_HUD_ON.png");
+var camera_HUD_OFF = preload("res://Assets/GUI/HUD/camera_HUD_OFF.png");
+
 
 func _ready():
 	if Globals.isServer:
@@ -22,15 +40,12 @@ func _ready():
 	else:
 		$Input_GUIs.visible = true;
 		$Alert_Text.visible = true;
+	show_move_gui = true;
 
 func _process(delta):
 	if Globals.isServer:
 		return;
-	# Show / Hide move gui depending on whether loadout is visible
-	show_move_gui = false; # Decided to remove this GUI at least temporarily
-	if show_move_gui == true:
-		show_move_gui = false;
-		$Move_GUI_Fade_Timer.start();
+	# Show / Hide move gui 
 	if show_move_gui:
 		$Input_GUIs/Move_GUIs.modulate = Color(1,1,1,1);
 		$Input_GUIs/Ability_GUIs.modulate = Color(0,0,0,0);
@@ -50,7 +65,7 @@ func _process(delta):
 		$Score_Label.bbcode_text = "[center][color=black]SEARCHING " + str(OS.get_system_time_secs() - start_time);
 		$Time_Label.visible = false;
 		$Skirmish_Subtext.visible = true;
-		$Skirmish_Subtext.bbcode_text = "[center][color=black] This is a skirmish lobby for waiting in matchmaking queue."
+		$Skirmish_Subtext.bbcode_text = "[center][color=black]"# "This is a skirmish lobby for waiting in matchmaking queue."
 		$Cancel_Button.visible = true;
 	else:
 		$Cancel_Button.visible = false;
@@ -60,43 +75,6 @@ func _process(delta):
 		$Skirmish_Subtext.visible = true;
 		$Skirmish_Subtext.bbcode_text = "[center][color=black]Flag cannot be recovered. You can score without your flag home."
 	
-	if !Globals.is_typing_in_chat:
-		if Input.is_key_pressed(KEY_E):
-			$"Input_GUIs/Ability_GUIs/E_GUI".frame = 1;
-		else:
-			$"Input_GUIs/Ability_GUIs/E_GUI".frame = 0;
-		if Input.is_key_pressed(KEY_SPACE):
-			$"Input_GUIs/Ability_GUIs/SPACE_GUI".frame = 1;
-		else:
-			$"Input_GUIs/Ability_GUIs/SPACE_GUI".frame = 0;
-		if Input.is_key_pressed(KEY_W):
-			$"Input_GUIs/Move_GUIs/W_GUI".frame = 1;
-		else:
-			$"Input_GUIs/Move_GUIs/W_GUI".frame = 0;
-		if Input.is_key_pressed(KEY_A):
-			$"Input_GUIs/Move_GUIs/A_GUI".frame = 1;
-		else:
-			$"Input_GUIs/Move_GUIs/A_GUI".frame = 0;
-		if Input.is_key_pressed(KEY_S):
-			$"Input_GUIs/Move_GUIs/S_GUI".frame = 1;
-		else:
-			$"Input_GUIs/Move_GUIs/S_GUI".frame = 0;
-		if Input.is_key_pressed(KEY_D):
-			$"Input_GUIs/Move_GUIs/D_GUI".frame = 1;
-		else:
-			$"Input_GUIs/Move_GUIs/D_GUI".frame = 0;
-		if Input.is_key_pressed(KEY_E):
-			$"Input_GUIs/Ability_GUIs/E_GUI".frame = 1;
-		else:
-			$"Input_GUIs/Ability_GUIs/E_GUI".frame = 0;
-		if Input.is_key_pressed(KEY_SHIFT):
-			$"Input_GUIs/Ability_GUIs/SHIFT_GUI".frame = 1;
-		else:
-			$"Input_GUIs/Ability_GUIs/SHIFT_GUI".frame = 0;
-		if Input.is_action_pressed("clickR"):
-			$Input_GUIs/Ability_GUIs/UTILITY_GUI.frame = 1;
-		else:
-			$Input_GUIs/Ability_GUIs/UTILITY_GUI.frame = 0;
 	
 	var time = get_tree().get_root().get_node("MainScene/NetworkController/Match_Time_Limit_Timer").time_left;
 	var seconds = int(time) % 60;
@@ -110,30 +88,36 @@ func _process(delta):
 	elif Globals.localPlayerID != null and get_tree().get_root().get_node("MainScene/Players").has_node("P" + str(Globals.localPlayerID)):
 		local_player = get_tree().get_root().get_node("MainScene/Players/P" + str(Globals.localPlayerID));
 	if local_player != null:
+		
 		# Teleport button
 		var teleport_time_left = local_player.get_node("Teleport_Timer").time_left;
 		var teleport_wait_time = local_player.get_node("Teleport_Timer").wait_time;
 		if teleport_time_left == 0:
-			$Input_GUIs/Ability_GUIs/Teleport_GUI_Text.text = "DASH";
+			$Input_GUIs/Ability_GUIs/Teleport_GUI_Text.text = "SPACE";
 			$Input_GUIs/Ability_GUIs/SPACE_GUI.modulate = Color(1,1,1,1);
 		else:
-			$Input_GUIs/Ability_GUIs/Teleport_GUI_Text.text = "%0.2f" % teleport_time_left;
+			$Input_GUIs/Ability_GUIs/Teleport_GUI_Text.text = "%0.0f" % (teleport_time_left + 0.5);
 			$Input_GUIs/Ability_GUIs/SPACE_GUI.modulate = Color(1,1,1,0.2 + 0.4 * ((teleport_wait_time - teleport_time_left) / teleport_wait_time) );
 			
 		# Ability button
 		var ability_time_left = local_player.get_node("Ability_Node/Cooldown_Timer").time_left;
 		var ability_wait_time = local_player.get_node("Ability_Node/Cooldown_Timer").wait_time;
 		
+		if Globals.current_ability == Globals.Abilities.Forcefield:
+			if local_player.team_id == 1:
+				$Input_GUIs/Ability_GUIs/E_GUI.set_texture(forcefield_HUD_R);
+			else:
+				$Input_GUIs/Ability_GUIs/E_GUI.set_texture(forcefield_HUD_B);
+		elif Globals.current_ability == Globals.Abilities.Camo:
+			if local_player.team_id == 1:
+				$Input_GUIs/Ability_GUIs/E_GUI.set_texture(camo_HUD_R);
+			else:
+				$Input_GUIs/Ability_GUIs/E_GUI.set_texture(camo_HUD_B);
 		if ability_time_left == 0:
-			var t = "";
-			if Globals.current_ability == Globals.Abilities.Forcefield:
-				t = "FORCEFIELD";
-			elif Globals.current_ability == Globals.Abilities.Camo:
-				t = "CAMO"
-			$Input_GUIs/Ability_GUIs/Ability_GUI_Text.text = t;
+			$Input_GUIs/Ability_GUIs/Ability_GUI_Text.text = "E";
 			$Input_GUIs/Ability_GUIs/E_GUI.modulate = Color(1,1,1,1);
 		else:
-			$Input_GUIs/Ability_GUIs/Ability_GUI_Text.text = "%0.2f" % ability_time_left;
+			$Input_GUIs/Ability_GUIs/Ability_GUI_Text.text = "%0.0f" % (ability_time_left + 0.5);
 			$Input_GUIs/Ability_GUIs/E_GUI.modulate = Color(1,1,1,0.2 + 0.4 * ((ability_wait_time - ability_time_left) / ability_wait_time) );
 		var stacks = local_player.get_node("Ability_Node").ability_stacks;
 		$Input_GUIs/Ability_GUIs/Ability_Sub_GUI_Text.text = ("+" + str(stacks)) if stacks > 0 else "";
@@ -141,31 +125,98 @@ func _process(delta):
 		# Utility
 		var utility_time_left = local_player.get_node("Utility_Node/Cooldown_Timer").time_left;
 		var utility_wait_time = local_player.get_node("Utility_Node/Cooldown_Timer").wait_time;
+		
+			
+		if Globals.current_utility == Globals.Utilities.Grenade:
+			if local_player.team_id == 1:
+				$Input_GUIs/Ability_GUIs/UTILITY_GUI.set_texture(grenade_HUD_R);
+			else:
+				$Input_GUIs/Ability_GUIs/UTILITY_GUI.set_texture(grenade_HUD_B);
+		elif Globals.current_utility == Globals.Utilities.Landmine:
+			if local_player.team_id == 1:
+				$Input_GUIs/Ability_GUIs/UTILITY_GUI.set_texture(landmine_HUD_R);
+			else:
+				$Input_GUIs/Ability_GUIs/UTILITY_GUI.set_texture(landmine_HUD_B);
 		if utility_time_left == 0:
-			var t = "";
-			if Globals.current_utility == Globals.Utilities.Grenade:
-				t = "GRENADE";
-			elif Globals.current_utility == Globals.Utilities.Landmine:
-				t = "LANDMINE"
-			$Input_GUIs/Ability_GUIs/Utility_GUI_Text.text = t;
+			$Input_GUIs/Ability_GUIs/Utility_GUI_Text.text = "RCLICK";
 			$Input_GUIs/Ability_GUIs/UTILITY_GUI.modulate = Color(1,1,1,1);
 		else:
-			$Input_GUIs/Ability_GUIs/Utility_GUI_Text.text = "%0.2f" % utility_time_left;
+			$Input_GUIs/Ability_GUIs/Utility_GUI_Text.text = "%0.0f" % (utility_time_left + 0.5);
 			$Input_GUIs/Ability_GUIs/UTILITY_GUI.modulate = Color(1,1,1,0.2 + 0.4 * ((utility_wait_time - utility_time_left) / utility_wait_time) );
 		
 		# If player is holding a flag
 		if local_player.get_node("Flag_Holder").get_child_count() > 0:
 			#$Input_GUIs/Ability_GUIs/UTILITY_GUI.modulate = Color(1,1,1,0.4);
 			pass;
-			
 		
-		# Ult Charge
-		$Input_GUIs/Ability_GUIs/ULT_Sub_GUI_Text.text = "%" + str(local_player.get_node("Ability_Node").ult_charge);
+		# Camera Shift
+		$Input_GUIs/Ability_GUIs/SHIFT_GUI.modulate = Color(1,1,1,1);
+		if local_player.is_camera_extended():
+			$Input_GUIs/Ability_GUIs/SHIFT_GUI.set_texture(camera_HUD_ON)
+		else:
+			$Input_GUIs/Ability_GUIs/SHIFT_GUI.set_texture(camera_HUD_OFF)
+		
+		
+		# Ult 
+		var charge = local_player.get_node("Ability_Node").ult_charge
+		
+		if Globals.current_class == Globals.Classes.Bullet:
+			if local_player.team_id == 1:
+				$Input_GUIs/Ability_GUIs/ULT_GUI.set_texture(ultimate_HUD_gunner_R);
+			else:
+				$Input_GUIs/Ability_GUIs/ULT_GUI.set_texture(ultimate_HUD_gunner_B);
+		elif Globals.current_class == Globals.Classes.Demo:
+			if local_player.team_id == 1:
+				$Input_GUIs/Ability_GUIs/ULT_GUI.set_texture(ultimate_HUD_demo_R);
+			else:
+				$Input_GUIs/Ability_GUIs/ULT_GUI.set_texture(ultimate_HUD_demo_B);
+		elif Globals.current_class == Globals.Classes.Laser:
+			if local_player.team_id == 1:
+				$Input_GUIs/Ability_GUIs/ULT_GUI.set_texture(ultimate_HUD_laser_R);
+			else:
+				$Input_GUIs/Ability_GUIs/ULT_GUI.set_texture(ultimate_HUD_laser_B);
+		
+		$Input_GUIs/Ability_GUIs/ULT_GUI.modulate = Color(1,1,1,0.5);
+		if charge == 100:
+			$Input_GUIs/Ability_GUIs/ULT_GUI.modulate = Color(1,1,1,1.0);
+		$Input_GUIs/Ability_GUIs/ULT_Sub_GUI_Text.text = "%" + str(charge);
+		$Input_GUIs/Ability_GUIs/ULT_GUI_Text.text = "Q";
+	
+	if !Globals.is_typing_in_chat:
+		if Input.is_key_pressed(KEY_E):
+			$"Input_GUIs/Ability_GUIs/E_GUI".modulate = $"Input_GUIs/Ability_GUIs/E_GUI".modulate.darkened(0.5);
+		if Input.is_key_pressed(KEY_SPACE):
+			$"Input_GUIs/Ability_GUIs/SPACE_GUI".modulate = $"Input_GUIs/Ability_GUIs/SPACE_GUI".modulate.darkened(0.5);
+		if Input.is_key_pressed(KEY_W):
+			attempt_hide_move_gui()
+			$"Input_GUIs/Move_GUIs/W_GUI".modulate = $"Input_GUIs/Move_GUIs/W_GUI".modulate.darkened(0.5);
+		if Input.is_key_pressed(KEY_A):
+			attempt_hide_move_gui()
+			$"Input_GUIs/Move_GUIs/A_GUI".modulate = $"Input_GUIs/Move_GUIs/A_GUI".modulate.darkened(0.5);
+		if Input.is_key_pressed(KEY_S):
+			attempt_hide_move_gui()
+			$"Input_GUIs/Move_GUIs/S_GUI".modulate = $"Input_GUIs/Move_GUIs/S_GUI".modulate.darkened(0.5);
+		if Input.is_key_pressed(KEY_D):
+			attempt_hide_move_gui()
+			$"Input_GUIs/Move_GUIs/D_GUI".modulate = $"Input_GUIs/Move_GUIs/D_GUI".modulate.darkened(0.5);
+		if Input.is_key_pressed(KEY_E):
+			$"Input_GUIs/Ability_GUIs/E_GUI".modulate = $"Input_GUIs/Ability_GUIs/E_GUI".modulate.darkened(0.5);
+		if Input.is_key_pressed(KEY_SHIFT):
+			$"Input_GUIs/Ability_GUIs/SHIFT_GUI".modulate = $"Input_GUIs/Ability_GUIs/SHIFT_GUI".modulate.darkened(0.5);
+		if Input.is_action_pressed("clickR"):
+			$"Input_GUIs/Ability_GUIs/UTILITY_GUI".modulate = $"Input_GUIs/Ability_GUIs/UTILITY_GUI".modulate.darkened(0.5);
+		if Input.is_key_pressed(KEY_Q):
+			$"Input_GUIs/Ability_GUIs/ULT_GUI".modulate = $"Input_GUIs/Ability_GUIs/ULT_GUI".modulate.darkened(0.5);
 
+func attempt_hide_move_gui():
+	if show_move_gui == true:
+		show_move_gui = false;
+		$Move_GUI_Fade_Timer.start();
 func _screen_resized():
 	var window_size = OS.get_window_size();
 	$"../Chat_Layer/Chat_Box".margin_bottom = window_size.y * (0.6);
-	$"../Chat_Layer/Chat_Box".get_font("normal_font").size = 8;
+	$"../Chat_Layer/Chat_Box".get_font("normal_font").size = 12;
+	$"../Chat_Layer/Line_Edit".get_font("font").size = 12;
 	$"../Chat_Layer/Line_Edit".rect_scale= Vector2(1,1);
 	$"../Chat_Layer/Chat_Box".margin_top = 73;
 	$"../Chat_Layer/Chat_Box".margin_right = 300;
@@ -187,6 +238,8 @@ func _screen_resized():
 		$Alert_Text.get_font("normal_font").size =16;
 		$Skirmish_Subtext.get_font("normal_font").size =24;
 		$Input_GUIs.margin_top = -120;
+		$"../Chat_Layer/Chat_Box".get_font("normal_font").size = 14;
+		$"../Chat_Layer/Line_Edit".get_font("font").size = 14;
 		$Alert_Text.margin_top = $Skirmish_Subtext.margin_top + 70;
 	else:
 		$Input_GUIs.rect_scale = Vector2(3,3);

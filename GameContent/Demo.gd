@@ -78,11 +78,10 @@ func detonate():
 			z_index = stuck_player.z_index + 5;
 	
 	if get_tree().is_network_server():
-		if stuck_player != null:
+		if stuck_player != null and is_instance_valid(stuck_player):
 			# Ignore invincibility because dash gives u temporary invincibility
 			if stuck_player.alive == true and Globals.testing == false and stuck_player.get_node("Invincibility_Timer").time_left == 0:
 				stuck_player.rpc("receive_hit", player_id, 3);
-
 	$Detonation_Timer.stop();
 	$Death_Timer.start();
 	$Explosion_Audio.play();
@@ -98,7 +97,7 @@ func _death_timer_ended():
 	visible = false;
 	if get_tree().is_network_server():
 		yield(get_tree().create_timer(1), "timeout");
-		rpc("die");
+		rpc("die"); # WARNING : Sometimes this throws an error if the demo dies in the time of this yield.
 	
 remotesync func die():
 	call_deferred("queue_free");
