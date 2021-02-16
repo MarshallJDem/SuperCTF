@@ -31,6 +31,8 @@ var Game_Results_Screen = preload("res://Game_Results_Screen.tscn");
 #	- position: Vector2D
 #	- spawn_pos: Vector2D
 #	- DD_vote: bool
+#	- skin_head: int
+#	- skin_body: int
 
 # flag_data Struct (Indexed by flag id)
 #	- holder_player_id: int

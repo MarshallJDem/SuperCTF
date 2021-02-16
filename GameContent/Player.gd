@@ -360,6 +360,9 @@ func set_look_direction(dir):
 func is_camera_extended():
 	return $Center_Pivot.extended
 
+func skin_changed(body_index, head_index):
+	$Player_Visuals.skin_changed(body_index, head_index)
+
 # Updates this player's position with the new given position. Only ever called remotely
 remotesync func update_position(new_pos):
 	if is_network_master():
