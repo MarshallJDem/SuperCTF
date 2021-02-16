@@ -92,13 +92,13 @@ func skin_changed(body_index, head_index):
 		#if it does, set the body texture to the new skin
 		$Sprite_Body.set_texture(load(body));
 	else:
-		print("No skin found at "+ body)
+		print("Error in Player_Visuals.gd No skin found at "+ body)
 	
 	var head = "res://Assets/Player/Skins/" + str(head_index) + "_head.png";
 	if ResourceLoader.exists(head):
 		$Sprite_Head.set_texture(load(head));
 	else:
-		print("No skin found at "+ head)
+		print("Error in Player_Visuals.gd No skin found at "+ head)
 
 func refresh_textures():
 	var t = "B";
