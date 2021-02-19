@@ -2,9 +2,9 @@ extends Node
 
 # Whether to run in testing mode (for development uses)
 var testing = false;
-var experimental = false;
+var experimental = true;
 var localTesting = false; # Used for running a server locally on the machine
-var localTestingBackend = false; # Used for when the backend is running locally on this machine
+var localTestingBackend = true; # Used for when the backend is running locally on this machine
 var remoteSkirmish = false; # Used for running the skirmish lobby on a remote computer (so you can run it in the editor and catch bugs)
 
 var temporaryQuickplayDisable = true;
@@ -185,7 +185,7 @@ func _enter_tree():
 		else:
 			serverIP = skirmishIP;
 	if localTestingBackend:
-		mainServerIP = "http://localhost:42501/";
+		mainServerIP = "http://localhost:42401/";
 		
 
 func _ready():
