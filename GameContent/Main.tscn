@@ -1,4 +1,4 @@
-[gd_scene load_steps=51 format=2]
+[gd_scene load_steps=53 format=2]
 
 [ext_resource path="res://GameContent/Main.gd" type="Script" id=1]
 [ext_resource path="res://GameContent/Player.tscn" type="PackedScene" id=2]
@@ -6,8 +6,6 @@
 [ext_resource path="res://GameContent/UI_Layer.gd" type="Script" id=4]
 [ext_resource path="res://fonts/Pixel_Game_UI.tres" type="DynamicFont" id=5]
 [ext_resource path="res://GameContent/LineEdit.gd" type="Script" id=6]
-[ext_resource path="res://fonts/Pixel_SubTitle.tres" type="DynamicFont" id=7]
-[ext_resource path="res://fonts/Pixel_Title.tres" type="DynamicFont" id=8]
 [ext_resource path="res://Hover_Button_Style.tres" type="StyleBox" id=9]
 [ext_resource path="res://Pressed_Button_Style.tres" type="StyleBox" id=10]
 [ext_resource path="res://Normal_Button_Style.tres" type="StyleBox" id=11]
@@ -57,14 +55,34 @@ extra_spacing_top = 4
 extra_spacing_bottom = 4
 font_data = ExtResource( 25 )
 
-[sub_resource type="DynamicFont" id=6]
+[sub_resource type="DynamicFont" id=20]
 size = 12
-outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
+outline_size = 2
 font_data = ExtResource( 25 )
 
-[sub_resource type="DynamicFont" id=7]
+[sub_resource type="DynamicFont" id=22]
+size = 50
+outline_size = 2
+font_data = ExtResource( 25 )
+
+[sub_resource type="DynamicFont" id=21]
 size = 25
-outline_color = Color( 0, 0, 0, 1 )
+outline_size = 2
+font_data = ExtResource( 25 )
+
+[sub_resource type="DynamicFont" id=19]
+size = 150
+outline_size = 2
+font_data = ExtResource( 25 )
+
+[sub_resource type="DynamicFont" id=23]
+size = 50
+outline_size = 2
+font_data = ExtResource( 25 )
+
+[sub_resource type="DynamicFont" id=24]
+size = 50
+outline_size = 2
 font_data = ExtResource( 25 )
 
 [sub_resource type="DynamicFont" id=8]
@@ -73,12 +91,12 @@ font_data = ExtResource( 25 )
 
 [sub_resource type="DynamicFont" id=9]
 size = 30
-outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
+outline_size = 2
 font_data = ExtResource( 25 )
 
 [sub_resource type="DynamicFont" id=10]
 size = 8
-outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
+outline_size = 2
 font_data = ExtResource( 25 )
 
 [sub_resource type="StyleBoxEmpty" id=11]
@@ -180,7 +198,7 @@ margin_bottom = 261.0
 rect_clip_content = false
 mouse_filter = 2
 custom_styles/normal = SubResource( 4 )
-custom_fonts/normal_font = SubResource( 6 )
+custom_fonts/normal_font = SubResource( 20 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
 scroll_active = false
@@ -217,7 +235,7 @@ margin_top = 30.0
 margin_bottom = 120.0
 rect_clip_content = false
 size_flags_stretch_ratio = 0.0
-custom_fonts/normal_font = ExtResource( 7 )
+custom_fonts/normal_font = SubResource( 22 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
 scroll_active = false
@@ -231,7 +249,7 @@ margin_top = 99.8129
 margin_bottom = 189.813
 rect_clip_content = false
 size_flags_stretch_ratio = 0.0
-custom_fonts/normal_font = SubResource( 7 )
+custom_fonts/normal_font = SubResource( 21 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
 scroll_active = false
@@ -242,7 +260,7 @@ __meta__ = {
 [node name="Countdown_Label" type="Label" parent="UI_Layer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_fonts/font = ExtResource( 8 )
+custom_fonts/font = SubResource( 19 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 align = 1
 valign = 1
@@ -257,7 +275,7 @@ margin_left = -32.6702
 margin_right = 29.3298
 grow_horizontal = 2
 grow_vertical = 2
-custom_fonts/font = ExtResource( 7 )
+custom_fonts/font = SubResource( 23 )
 custom_colors/font_color = Color( 0, 0.180392, 1, 1 )
 align = 1
 valign = 1
@@ -274,7 +292,7 @@ margin_left = -33.055
 margin_right = 28.9451
 grow_horizontal = 2
 grow_vertical = 2
-custom_fonts/font = ExtResource( 7 )
+custom_fonts/font = SubResource( 24 )
 custom_colors/font_color = Color( 1, 0, 0, 1 )
 align = 1
 valign = 1
