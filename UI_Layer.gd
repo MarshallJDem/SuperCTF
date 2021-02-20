@@ -109,7 +109,7 @@ func _process(delta):
 	if Globals.player_party_data != null:
 		code = str(Globals.player_party_data.partyCode);
 		for i in Globals.player_party_data.players:
-			players += str(i.values()[0]) + "\n";
+			players += str(i.name) + "\n";
 			players_in_party += 1;
 		if Globals.player_party_data.partyHostID != Globals.player_uid:
 			$RankedButton.disabled = true;
