@@ -49,4 +49,5 @@ func _input(event):
 	if !Globals.is_typing_in_chat:
 		if event is InputEventKey and event.pressed:
 			if event.scancode == KEY_SHIFT:
-				extended = !extended;
+				if !event.is_echo():
+					extended = !extended;
