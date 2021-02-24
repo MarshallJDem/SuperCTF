@@ -105,11 +105,12 @@ func _Leaderboard_Refresh_Ended():
 	
 # Called when the joinMMQueue HTTP request completes
 func _HTTP_JoinMMQueue_Completed(result, response_code, headers, body):
-	var json = JSON.parse(body.get_string_from_utf8())
 	print(body.get_string_from_utf8());
 	if(response_code == 200):
+		var json = JSON.parse(body.get_string_from_utf8())
 		$UI_Layer.set_view($UI_Layer.VIEW_IN_QUEUE);
 	elif(response_code == 400):
+		var json = JSON.parse(body.get_string_from_utf8())
 		if(json.result.failReason != null):
 			Globals.create_popup(str(json.result.failReason));
 		$UI_Layer.set_view($UI_Layer.VIEW_MAIN);
