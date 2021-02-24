@@ -160,7 +160,7 @@ func start_server():
 				else:
 					print("<ERROR> Map not found");
 					print_stack();
-			players[i] = {"name" : str(player.values()[0]), "team_id" : team_id, "user_id": int(player.keys()[0]), "network_id": 1, "spawn_pos": spawn_pos, "position": spawn_pos, "class" : Globals.Classes.Bullet, "DD_vote" : false};
+			players[i] = {"name" : str(player.name), "team_id" : team_id, "user_id": int(player.uid), "network_id": 1, "spawn_pos": spawn_pos, "position": spawn_pos, "class" : Globals.Classes.Bullet, "DD_vote" : false};
 			i += 1;
 		print(players);
 		start_match();
