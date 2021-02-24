@@ -317,9 +317,12 @@ func _HTTP_PollPlayerStatus_Completed(result, response_code, headers, body):
 			Globals.player_old_MMR = Globals.player_MMR;
 			Globals.player_MMR = int(json.result.mmr);
 	if json.result.has("partyData"):
-		print(json.result.partyData);
-		Globals.knownPartyData = json.result.partyData;
-		Globals.player_party_data = json.result.partyData;
+		if json.result.partyData.empty():
+			Globals.knownPartyData = null
+			Globals.player_party_data = null
+		else:
+			Globals.knownPartyData = json.result.partyData;
+			Globals.player_party_data = json.result.partyData;
 	if(player_status < 10 and int(json.result.status) >= 10):
 		print("Found Match : " + str(json.result.status));
 		var matchID = str(json.result.status);
