@@ -205,7 +205,7 @@ func _splash_start_pressed():
 		OS.window_fullscreen = true;
 
 func _join_party_pressed():
-	if Globals.player_party_data.players.size() > 1:
+	if Globals.player_party_data != null and Globals.player_party_data.players.size() > 1:
 		if $HTTPRequest_LeaveParty.get_http_client_status() == 0:
 			$HTTPRequest_LeaveParty.request(Globals.mainServerIP + "leaveParty", ["authorization: Bearer " + Globals.userToken]);
 	else:
