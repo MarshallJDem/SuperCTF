@@ -160,10 +160,10 @@ func _process(delta):
 		$QuickplayButton.disabled = false;
 		$QuickplayWarning.visible = false;
 		$QuickplayButton.text = "Find Match"
-		if players_in_party > 2:
-			$QuickplayButton.disabled = true;
-			$QuickplayWarning.visible = true;
-			$QuickplayWarning.bbcode_text = "[center][color=gray]Max party size is 2 currently"
+		#if players_in_party > 2:
+		#	$QuickplayButton.disabled = true;
+		#	$QuickplayWarning.visible = true;
+		#	$QuickplayWarning.bbcode_text = "[center][color=gray]Max party size is 2 currently"
 		if Globals.player_party_data != null and Globals.player_party_data.partyHostID != Globals.player_uid:
 			$QuickplayButton.disabled = true;
 			$QuickplayWarning.visible = true;
