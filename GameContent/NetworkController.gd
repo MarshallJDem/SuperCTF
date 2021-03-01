@@ -160,7 +160,7 @@ func start_server():
 				else:
 					print("<ERROR> Map not found");
 					print_stack();
-			players[i] = {"name" : str(player.values()[0]), "team_id" : team_id, "user_id": int(player.keys()[0]), "network_id": 1, "spawn_pos": spawn_pos, "position": spawn_pos, "class" : Globals.Classes.Bullet, "DD_vote" : false};
+			players[i] = {"name" : str(player.name), "team_id" : team_id, "user_id": int(player.uid), "network_id": 1, "spawn_pos": spawn_pos, "position": spawn_pos, "class" : Globals.Classes.Bullet, "DD_vote" : false};
 			i += 1;
 		print(players);
 		start_match();
@@ -368,7 +368,7 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 			# If the user is one of the players in the current match or this is a skirmish
 			var allowed = false;
 			for player in Globals.allowedPlayers:
-				if str(player.keys()[0]) == str(user_id):
+				if str(player.uid) == str(user_id):
 					allowed = true;
 			var player_id_collision = null;
 			for player_id in players:
@@ -382,7 +382,7 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 				var message = player_name + " connected";
 				get_tree().get_root().get_node("MainScene/Chat_Layer/Line_Edit").rpc("receive_message", "[color=green]" + message +  "[/color]", -1);
 			else:
-				print("Disconnecting player " + str(network_id) + " because they are not in the allowed players list : " + to_json(Globals.allowedPlayers));
+				print("Disconnecting player " + str(network_id) + " " + str(json.result.user.uid) + " because they are not in the allowed players list : " + to_json(Globals.allowedPlayers));
 				server.disconnect_peer(network_id, 1000, "You are not a player in this match")
 				return;
 			

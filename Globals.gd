@@ -2,7 +2,7 @@ extends Node
 
 # Whether to run in testing mode (for development uses)
 var testing = false;
-var experimental = false;
+var experimental = true;
 var localTesting = false; # Used for running a server locally on the machine
 var localTestingBackend = false; # Used for when the backend is running locally on this machine
 var remoteSkirmish = false; # Used for running the skirmish lobby on a remote computer (so you can run it in the editor and catch bugs)
@@ -185,7 +185,7 @@ func _enter_tree():
 		else:
 			serverIP = skirmishIP;
 	if localTestingBackend:
-		mainServerIP = "http://localhost:42501/";
+		mainServerIP = "http://localhost:42401/";
 		
 
 func _ready():
@@ -317,9 +317,12 @@ func _HTTP_PollPlayerStatus_Completed(result, response_code, headers, body):
 			Globals.player_old_MMR = Globals.player_MMR;
 			Globals.player_MMR = int(json.result.mmr);
 	if json.result.has("partyData"):
-		print(json.result.partyData);
-		Globals.knownPartyData = json.result.partyData;
-		Globals.player_party_data = json.result.partyData;
+		if json.result.partyData.empty():
+			Globals.knownPartyData = null
+			Globals.player_party_data = null
+		else:
+			Globals.knownPartyData = json.result.partyData;
+			Globals.player_party_data = json.result.partyData;
 	if(player_status < 10 and int(json.result.status) >= 10):
 		print("Found Match : " + str(json.result.status));
 		var matchID = str(json.result.status);
