@@ -356,7 +356,7 @@ custom_colors/default_color = Color( 0.368627, 0.368627, 0.368627, 1 )
 bbcode_enabled = true
 bbcode_text = "[color=black]NEWS:
 
-Happy March and welcome [color=blue][url=https://itch.io]Itch.io[/url][color=black] and [color=blue][url=https://iogames.space]iogames[/url][color=black] players! (And the rest of course)
+Happy March and welcome [color=blue][url=https://crazygames.com]crazygames.com[/url][color=black] and [color=blue][url=https://iogames.space]iogames[/url][color=black] players! (And the rest of course)
 
 [color=green]March 1st update[color=black]: We are now posting the game around again! Cosmetics are  in development!
 
@@ -367,7 +367,7 @@ Twitter:[color=blue] [url]https://twitter.com/SuperCTFGame[/url][color=black]
 "
 text = "NEWS:
 
-Happy March and welcome Itch.io and iogames players! (And the rest of course)
+Happy March and welcome crazygames.com and iogames players! (And the rest of course)
 
 March 1st update: We are now posting the game around again! Cosmetics are  in development!
 
