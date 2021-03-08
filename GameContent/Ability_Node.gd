@@ -64,7 +64,8 @@ func ult_pressed():
 		$Ult_Timer.start();
 		ult_charge = 0;
 		player.get_node("Weapon_Node").ult_active = true;
-
+		player.get_node("Fire_Particles").emitting = true;
+		
 func _ult_charge_timer_ended():
 	var previous_charge = ult_charge;
 	ult_charge += 1;
@@ -75,6 +76,7 @@ func _ult_charge_timer_ended():
 		ult_charge = 100;
 func _ult_timer_ended():
 	player.get_node("Weapon_Node").ult_active = false;
+	player.get_node("Fire_Particles").emitting = false;
 
 func set_ability(a):
 	Globals.current_ability = a;

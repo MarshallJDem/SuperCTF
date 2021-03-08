@@ -1,4 +1,4 @@
-[gd_scene load_steps=55 format=2]
+[gd_scene load_steps=54 format=2]
 
 [ext_resource path="res://GameContent/Main.gd" type="Script" id=1]
 [ext_resource path="res://GameContent/Player.tscn" type="PackedScene" id=2]
@@ -6,8 +6,6 @@
 [ext_resource path="res://GameContent/UI_Layer.gd" type="Script" id=4]
 [ext_resource path="res://fonts/Pixel_Game_UI.tres" type="DynamicFont" id=5]
 [ext_resource path="res://GameContent/LineEdit.gd" type="Script" id=6]
-[ext_resource path="res://Assets/Particles/fire_particles_abbility_shaped.tscn" type="PackedScene" id=7]
-[ext_resource path="res://Assets/Particles/Color Gradients/Purple Fire Gradiant.tres" type="Gradient" id=8]
 [ext_resource path="res://Hover_Button_Style.tres" type="StyleBox" id=9]
 [ext_resource path="res://Pressed_Button_Style.tres" type="StyleBox" id=10]
 [ext_resource path="res://Normal_Button_Style.tres" type="StyleBox" id=11]
@@ -32,6 +30,7 @@
 [ext_resource path="res://GameContent/Move_Stick.gd" type="Script" id=30]
 [ext_resource path="res://Assets/GUI/Cog.png" type="Texture" id=31]
 [ext_resource path="res://GameContent/Chat_Box.gd" type="Script" id=32]
+[ext_resource path="res://Assets/Particles/fire_particles_ability_shaped.tscn" type="PackedScene" id=34]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0, 0, 0, 0.145098 )
@@ -413,6 +412,9 @@ scale = Vector2( 2, 2 )
 texture = ExtResource( 28 )
 centered = false
 
+[node name="Fire_Particles" parent="UI_Layer/Input_GUIs/Ability_GUIs/ULT_GUI" instance=ExtResource( 34 )]
+position = Vector2( 10.4993, 9.65939 )
+
 [node name="SHIFT_GUI" type="Sprite" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
 position = Vector2( 122.314, -28.7334 )
 scale = Vector2( 2, 2 )
@@ -425,9 +427,13 @@ scale = Vector2( 2, 2 )
 texture = ExtResource( 18 )
 centered = false
 
-[node name="CPUParticles2D" parent="UI_Layer/Input_GUIs/Ability_GUIs/SPACE_GUI" instance=ExtResource( 7 )]
-position = Vector2( 9.86991, 8.9263 )
-color_ramp = ExtResource( 8 )
+[node name="PowerupParticles" parent="UI_Layer/Input_GUIs/Ability_GUIs/SPACE_GUI" instance=ExtResource( 27 )]
+show_behind_parent = true
+position = Vector2( 9.86938, 17.6328 )
+amount = 3
+lifetime = 0.5
+emission_rect_extents = Vector2( 15, 10 )
+scale_amount = 1.0
 
 [node name="Teleport_GUI_Text" type="Label" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
 margin_left = -140.476
