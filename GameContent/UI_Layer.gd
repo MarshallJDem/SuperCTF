@@ -179,6 +179,9 @@ func _process(delta):
 		$Input_GUIs/Ability_GUIs/ULT_GUI.modulate = Color(1,1,1,0.5);
 		if charge == 100:
 			$Input_GUIs/Ability_GUIs/ULT_GUI.modulate = Color(1,1,1,1.0);
+			$Input_GUIs/Ability_GUIs/ULT_GUI/Fire_Particles.emitting = true
+		else:
+			$Input_GUIs/Ability_GUIs/ULT_GUI/Fire_Particles.emitting = false
 		$Input_GUIs/Ability_GUIs/ULT_Sub_GUI_Text.text = "%" + str(charge);
 		$Input_GUIs/Ability_GUIs/ULT_GUI_Text.text = "Q";
 	

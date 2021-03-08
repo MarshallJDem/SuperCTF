@@ -5,7 +5,7 @@
 [sub_resource type="Curve" id=1]
 _data = [ Vector2( 0.0295858, 0.705966 ), 0.0, 0.0, 0, 0, Vector2( 0.881657, 0.683239 ), 0.0, 0.0, 0, 0 ]
 
-[node name="Fire Particles" type="CPUParticles2D"]
+[node name="Fire_Particles" type="CPUParticles2D"]
 show_behind_parent = true
 amount = 500
 lifetime = 0.7

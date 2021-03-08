@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=2]
+[gd_scene load_steps=30 format=2]
 
 [ext_resource path="res://GameContent/Player.gd" type="Script" id=1]
 [ext_resource path="res://GameContent/Player_Visuals.tscn" type="PackedScene" id=2]
@@ -14,6 +14,7 @@
 [ext_resource path="res://Assets/Sound/Flag_Drop.wav" type="AudioStream" id=12]
 [ext_resource path="res://Assets/Sound/Teleport.wav" type="AudioStream" id=13]
 [ext_resource path="res://fonts/Pixel_Chat.tres" type="DynamicFont" id=14]
+[ext_resource path="res://Assets/Particles/fire_particles_ability_shaped.tscn" type="PackedScene" id=15]
 [ext_resource path="res://GameContent/Ability_Node.gd" type="Script" id=17]
 [ext_resource path="res://GameContent/Utility_Node.gd" type="Script" id=18]
 [ext_resource path="res://GameContent/Weapon_Node.gd" type="Script" id=19]
@@ -55,6 +56,14 @@ amount = 3
 lifetime = 0.5
 emission_rect_extents = Vector2( 25, 10 )
 initial_velocity = 120.0
+
+[node name="Fire_Particles" parent="." instance=ExtResource( 15 )]
+position = Vector2( 0, 5.64 )
+emitting = false
+amount = 1000
+lifetime = 1.2
+emission_rect_extents = Vector2( 10, 10 )
+spread = 52.63
 
 [node name="Weapon_Node" type="Node2D" parent="."]
 z_index = 4
