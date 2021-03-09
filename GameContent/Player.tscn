@@ -65,6 +65,7 @@ position = Vector2( 0, 5.64 )
 emitting = false
 amount = 1000
 lifetime = 1.2
+speed_scale = 2.0
 emission_rect_extents = Vector2( 10, 10 )
 spread = 52.63
 
