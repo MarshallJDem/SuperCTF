@@ -425,8 +425,10 @@ centered = false
 [node name="PowerupParticles" parent="UI_Layer/Input_GUIs/Ability_GUIs/SPACE_GUI" instance=ExtResource( 27 )]
 show_behind_parent = true
 position = Vector2( 9.86938, 17.6328 )
+emitting = false
 amount = 3
-lifetime = 0.5
+lifetime = 0.2
+speed_scale = 0.5
 emission_rect_extents = Vector2( 15, 10 )
 scale_amount = 1.0
 
