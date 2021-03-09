@@ -179,9 +179,11 @@ func _process(delta):
 		$Input_GUIs/Ability_GUIs/ULT_GUI.modulate = Color(1,1,1,0.5);
 		if charge == 100:
 			$Input_GUIs/Ability_GUIs/ULT_GUI.modulate = Color(1,1,1,1.0);
-			$Input_GUIs/Ability_GUIs/ULT_GUI/Fire_Particles.emitting = true
+			#emit fire behind the ult button
+			$Input_GUIs/Ability_GUIs/ULT_GUI/Fire_Particles.start(local_player.team_id) 
 		else:
-			$Input_GUIs/Ability_GUIs/ULT_GUI/Fire_Particles.emitting = false
+			#stop emitting the fire particles behind the ult button
+			$Input_GUIs/Ability_GUIs/ULT_GUI/Fire_Particles.stop()
 		$Input_GUIs/Ability_GUIs/ULT_Sub_GUI_Text.text = "%" + str(charge);
 		$Input_GUIs/Ability_GUIs/ULT_GUI_Text.text = "Q";
 	
