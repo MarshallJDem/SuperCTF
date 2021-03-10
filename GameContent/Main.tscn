@@ -1,4 +1,4 @@
-[gd_scene load_steps=54 format=2]
+[gd_scene load_steps=55 format=2]
 
 [ext_resource path="res://GameContent/Main.gd" type="Script" id=1]
 [ext_resource path="res://GameContent/Player.tscn" type="PackedScene" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://GameContent/UI_Layer.gd" type="Script" id=4]
 [ext_resource path="res://fonts/Pixel_Game_UI.tres" type="DynamicFont" id=5]
 [ext_resource path="res://GameContent/LineEdit.gd" type="Script" id=6]
+[ext_resource path="res://Assets/GUI/arrow_P.png" type="Texture" id=7]
 [ext_resource path="res://Hover_Button_Style.tres" type="StyleBox" id=9]
 [ext_resource path="res://Pressed_Button_Style.tres" type="StyleBox" id=10]
 [ext_resource path="res://Normal_Button_Style.tres" type="StyleBox" id=11]
@@ -343,6 +344,7 @@ position = Vector2( 0, 100 )
 scale = Vector2( 3, 3 )
 emitting = false
 lifetime = 0.5
+texture = ExtResource( 7 )
 
 [node name="Move_GUIs" type="Node2D" parent="UI_Layer/Input_GUIs"]
 scale = Vector2( 0.8, 0.8 )
@@ -414,6 +416,7 @@ centered = false
 
 [node name="Fire_Particles" parent="UI_Layer/Input_GUIs/Ability_GUIs/ULT_GUI" instance=ExtResource( 34 )]
 position = Vector2( 10.4993, 9.65939 )
+emitting = false
 
 [node name="SHIFT_GUI" type="Sprite" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
 position = Vector2( 122.314, -28.7334 )
@@ -429,13 +432,14 @@ centered = false
 
 [node name="PowerupParticles" parent="UI_Layer/Input_GUIs/Ability_GUIs/SPACE_GUI" instance=ExtResource( 27 )]
 show_behind_parent = true
-position = Vector2( 9.86938, 17.6328 )
+position = Vector2( 9.869, 11.437 )
 emitting = false
-amount = 3
+amount = 4
 lifetime = 0.2
 speed_scale = 0.5
+texture = ExtResource( 7 )
 emission_rect_extents = Vector2( 15, 10 )
-scale_amount = 1.0
+scale_amount = 0.5
 
 [node name="Teleport_GUI_Text" type="Label" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
 margin_left = -140.476

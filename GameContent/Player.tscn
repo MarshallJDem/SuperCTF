@@ -62,6 +62,7 @@ initial_velocity = 120.0
 
 [node name="Fire_Particles" parent="." instance=ExtResource( 15 )]
 position = Vector2( 0, 9.276 )
+emitting = false
 amount = 1000
 lifetime = 1.2
 speed_scale = 2.0
