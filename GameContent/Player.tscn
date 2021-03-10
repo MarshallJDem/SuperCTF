@@ -58,13 +58,12 @@ emission_rect_extents = Vector2( 25, 10 )
 initial_velocity = 120.0
 
 [node name="Fire_Particles" parent="." instance=ExtResource( 15 )]
-position = Vector2( 0, 5.64 )
-emitting = false
+position = Vector2( 0, 9.276 )
 amount = 1000
 lifetime = 1.2
 speed_scale = 2.0
-emission_rect_extents = Vector2( 10, 10 )
-spread = 52.63
+emission_rect_extents = Vector2( 11, 10 )
+spread = 10.0
 
 [node name="Weapon_Node" type="Node2D" parent="."]
 z_index = 4
