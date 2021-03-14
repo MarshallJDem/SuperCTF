@@ -10,10 +10,6 @@ func _ready():
 	$Player_Stats.bbcode_text = "[center]" + str(stats[player_id]["kills"]) + "\n\n" + str(stats[player_id]["deaths"]) + "\n\n" + str(stats[player_id]["captures"]) + "\n\n" + str(stats[player_id]["recovers"]);
 	$Player_Name.bbcode_text = "[center][color=" + ("red" if players[player_id]["team_id"] == 1 else "blue") + "]" + str(players[player_id]["name"]);
 	var c = players[player_id]["class"];
-	var t = "B";
-	if(players[player_id]["team_id"] == 1):
-		
-		t = "R";
 	var n;
 	if c == Globals.Classes.Bullet:
 		n = "gunner";
@@ -21,5 +17,5 @@ func _ready():
 		n = "laser";
 	elif c == Globals.Classes.Demo:
 		n = "demo";
-	$Player_Sprite.set_texture(load("res://Assets/Player/" + str(n) + "_head_" +t+ ".png"));
+	$Player_Sprite.set_texture(load("res://Assets/Player/Heads/" + str(players[player_id]["team_id"]) + ".png"));
 

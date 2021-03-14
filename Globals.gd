@@ -433,15 +433,28 @@ func _input(event):
 		if event.scancode == KEY_F:
 			#OS.window_fullscreen = !OS.window_fullscreen;
 			pass;
+		var skin_emit = -1
 		if event.scancode == KEY_0:
-			current_skin_body = 0;
-			current_skin_head = 0;
-			emit_signal("skin_changed", 0, 0);
+			skin_emit = 0
 		if event.scancode == KEY_1:
-			current_skin_body = 1;
-			current_skin_head = 1;
-			emit_signal("skin_changed", 1, 1);
+			skin_emit = 1
+		if event.scancode == KEY_2:
+			skin_emit = 2
+		if event.scancode == KEY_3:
+			skin_emit = 3
+		if event.scancode == KEY_4:
+			skin_emit = 4
+		if event.scancode == KEY_5:
+			skin_emit = 5
 		if event.scancode == KEY_6:
-			current_skin_body = 6;
-			current_skin_head = 6;
-			emit_signal("skin_changed", 6, 6);
+			skin_emit = 6
+		if event.scancode == KEY_7:
+			skin_emit = 7
+		if event.scancode == KEY_8:
+			skin_emit = 8
+		if event.scancode == KEY_9:
+			skin_emit = 9
+		if skin_emit != -1:
+			current_skin_body = skin_emit;
+			current_skin_head = skin_emit;
+			emit_signal("skin_changed", skin_emit, skin_emit);

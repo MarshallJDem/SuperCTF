@@ -47,21 +47,26 @@ func _physics_process(delta: float) -> void:
 		elif look_direction == 7:
 			$Sprite_Gun.position.y = +20 * $Shoot_Animation_Timer.time_left;
 			$Sprite_Gun.position.x = 20 * $Shoot_Animation_Timer.time_left;
+	$Sprite_Arms.position.x = $Sprite_Gun.position.x
+	$Sprite_Arms.position.y = $Sprite_Gun.position.y
 
 func _update_look_direction(dir):
 	look_direction = dir;
 	$Sprite_Head.frame = dir;
 	$Sprite_Gun.frame = dir;
 	$Sprite_Body.frame = dir;
+	$Sprite_Arms.frame = dir;
 	$Sprite_Legs.frame = dir + (int((1-($Leg_Animation_Timer.time_left / $Leg_Animation_Timer.wait_time)) * 4)%4) * $Sprite_Legs.hframes;
 	if dir == 2 or dir == 3:
 		$Sprite_Head.z_index =1;
 		$Sprite_Body.z_index =0;
 		$Sprite_Gun.z_index =2;
+		$Sprite_Arms.z_index =2;
 	else:
 		$Sprite_Head.z_index =2;
 		$Sprite_Body.z_index =0;
 		$Sprite_Gun.z_index =1;
+		$Sprite_Arms.z_index =1;
 
 func _update_class(c):
 	var n = "gunner"
@@ -95,20 +100,27 @@ func refresh_textures():
 		t = "R";
 	
 	#store skin in body variable
-	var body = "res://Assets/Player/Skins/" + str(body_skin) + "_body.png";
+	var body = "res://Assets/Player/Bodies/" + str(body_skin) + ".png";
 	#check if the skin exists
 	if ResourceLoader.exists(body):
 		#if it does, set the body texture to the new skin
 		$Sprite_Body.set_texture(load(body));
 	else:
-		print("Error in Player_Visuals.gd No skin found at "+ body)
+		print("Error in Player_Visuals.gd No body found at "+ body)
 	
-	var head = "res://Assets/Player/Skins/" + str(head_skin) + "_head.png";
+	var head = "res://Assets/Player/Heads/" + str(head_skin) + ".png";
 	if ResourceLoader.exists(head):
 		$Sprite_Head.set_texture(load(head));
 	else:
-		print("Error in Player_Visuals.gd No skin found at "+ head)
-	var gun = "res://Assets/Player/" + str(current_class_name) + "_gun_" + str(t) + ".png";
+		print("Error in Player_Visuals.gd No head found at "+ head)
+		
+	var arms = "res://Assets/Player/Arms/" + str(body_skin) + ".png";
+	if ResourceLoader.exists(arms):
+		$Sprite_Arms.set_texture(load(arms));
+	else:
+		print("Error in Player_Visuals.gd No arms found at "+ arms)
+	
+	var gun = "res://Assets/Player/Guns/" + str(body_skin) + ".png";
 	if ResourceLoader.exists(gun):
 		$Sprite_Gun.set_texture(load(gun));
 

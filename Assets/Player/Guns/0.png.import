@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/6_head.png-8accbcf7409302be88c714a7a31c6ad3.stex"
+path="res://.import/0.png-d2ae2f6dc4cb1e4928b8ae659b15151d.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Player/Skins/6_head.png"
-dest_files=[ "res://.import/6_head.png-8accbcf7409302be88c714a7a31c6ad3.stex" ]
+source_file="res://Assets/Player/Guns/0.png"
+dest_files=[ "res://.import/0.png-d2ae2f6dc4cb1e4928b8ae659b15151d.stex" ]
 
 [params]
 
