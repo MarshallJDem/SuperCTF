@@ -292,6 +292,7 @@ remotesync func enable_powerup(type):
 		$Powerup_Timer.wait_time = 1;
 		$Ability_Node.ability_stacks += 1;
 		text = "[wave amp=50 freq=12][color=red]^^ +1 INSTANT ABILITY USE ^^";
+		get_tree().get_root().get_node("MainScene/UI_Layer/Input_GUIs/Ability_GUIs/E_GUI/PowerupParticles").start(type);
 	elif type == 4:
 		DASH_COOLDOWN_PMODIFIER = -2.0;
 		$Powerup_Timer.wait_time = 10;
@@ -318,6 +319,7 @@ func stop_powerups():
 	$Ability_Node.reduced_cooldown_enabled = false;
 	if Globals.testing or is_network_master():
 		get_tree().get_root().get_node("MainScene/UI_Layer/Input_GUIs/PowerupParticles").stop();
+		#Stop the powerup particle emmitters 
 		get_tree().get_root().get_node("MainScene/UI_Layer/Input_GUIs/Ability_GUIs/SPACE_GUI/PowerupParticles").stop();
 	$PowerupParticles.stop();
 
