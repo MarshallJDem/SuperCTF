@@ -1,4 +1,4 @@
-[gd_scene load_steps=55 format=2]
+[gd_scene load_steps=56 format=2]
 
 [ext_resource path="res://GameContent/Main.gd" type="Script" id=1]
 [ext_resource path="res://GameContent/Player.tscn" type="PackedScene" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://fonts/Pixel_Game_UI.tres" type="DynamicFont" id=5]
 [ext_resource path="res://GameContent/LineEdit.gd" type="Script" id=6]
 [ext_resource path="res://Assets/GUI/arrow_P.png" type="Texture" id=7]
+[ext_resource path="res://Assets/GUI/arrow_R.png" type="Texture" id=8]
 [ext_resource path="res://Hover_Button_Style.tres" type="StyleBox" id=9]
 [ext_resource path="res://Pressed_Button_Style.tres" type="StyleBox" id=10]
 [ext_resource path="res://Normal_Button_Style.tres" type="StyleBox" id=11]
@@ -401,6 +402,19 @@ position = Vector2( -20.6783, -25.8934 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 21 )
 centered = false
+
+[node name="PowerupParticles2" parent="UI_Layer/Input_GUIs/Ability_GUIs/E_GUI" instance=ExtResource( 27 )]
+show_behind_parent = true
+position = Vector2( 9.869, 11.437 )
+emitting = false
+amount = 10
+lifetime = 0.2
+one_shot = true
+speed_scale = 0.5
+explosiveness = 0.37
+texture = ExtResource( 8 )
+emission_rect_extents = Vector2( 15, 10 )
+scale_amount = 0.5
 
 [node name="UTILITY_GUI" type="Sprite" parent="UI_Layer/Input_GUIs/Ability_GUIs"]
 position = Vector2( 54.2329, -26.4901 )
