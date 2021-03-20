@@ -356,9 +356,9 @@ custom_colors/default_color = Color( 0.368627, 0.368627, 0.368627, 1 )
 bbcode_enabled = true
 bbcode_text = "[color=black]NEWS:
 
-Happy March and welcome [color=blue][url=https://crazygames.com]crazygames.com[/url][color=black] and [color=blue][url=https://iogames.space]iogames[/url][color=black] players! (And the rest of course)
+Happy... mid February...  and welcome [color=blue][url=https://itch.io]Itch.io[/url][color=black] and [color=blue][url=https://iogames.space]iogames[/url][color=black] players! (And the rest of course)
 
-[color=green]March 1st update[color=black]: We are now posting the game around again! Cosmetics are  in development!
+[color=green]February 13th update[color=black]: A big UI update has just been released! Cosmetics are  in development!
 
 [color=red]If you are having any issues, please report them on our discord!
 [color=black]
@@ -367,9 +367,9 @@ Twitter:[color=blue] [url]https://twitter.com/SuperCTFGame[/url][color=black]
 "
 text = "NEWS:
 
-Happy March and welcome crazygames.com and iogames players! (And the rest of course)
+Happy... mid February...  and welcome Itch.io and iogames players! (And the rest of course)
 
-March 1st update: We are now posting the game around again! Cosmetics are  in development!
+February 13th update: A big UI update has just been released! Cosmetics are  in development!
 
 If you are having any issues, please report them on our discord!
 
@@ -747,14 +747,14 @@ visible = false
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 12 )
-frame = 2
+frame = 3
 playing = true
 
 [node name="Red_Sprite" type="AnimatedSprite" parent="UI_Layer/Flags/Flag"]
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 17 )
-frame = 1
+frame = 2
 playing = true
 
 [node name="Area2D" type="Area2D" parent="UI_Layer/Flags/Flag" groups=[
@@ -779,7 +779,7 @@ script = ExtResource( 3 )
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 12 )
-frame = 1
+frame = 2
 playing = true
 
 [node name="Red_Sprite" type="AnimatedSprite" parent="UI_Layer/Flags/Flag3"]
@@ -787,6 +787,7 @@ visible = false
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 17 )
+frame = 1
 playing = true
 
 [node name="Area2D" type="Area2D" parent="UI_Layer/Flags/Flag3" groups=[

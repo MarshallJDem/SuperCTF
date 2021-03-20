@@ -12,7 +12,7 @@ var temporaryQuickplayDisable = true;
 #Game Servers (Both clients and servers use these vars, but in different ways. overlapping would not work)
 var serverIP = "";
 var serverPublicToken;
-var skirmishIP = "superctf.com:42480";
+var skirmishIP = "superctf.com/gameserver/42480";
 var skirmishMap = "TehoMap1";
 var port = 42480;
 var serverPrivateToken;
@@ -158,7 +158,7 @@ func _enter_tree():
 		skirmishMap = "SquareZagv6"
 		mainServerIP = "https://www.superctf.com" + ":42501/";
 		if !isServer:
-			skirmishIP = "superctf.com:42490";
+			skirmishIP = "superctf.com/gameserver/42490";
 			serverIP = skirmishIP;
 			#get_tree().change_scene("res://GameContent/Main.tscn");
 	if remoteSkirmish:
