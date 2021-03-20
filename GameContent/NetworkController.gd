@@ -213,6 +213,7 @@ remotesync func cancel_match():
 func join_server():
 	client = WebSocketClient.new();
 	client.verify_ssl = false;
+	# TODO make this work on backend
 	var url = "ws://" + Globals.serverIP;
 	if Globals.useSecure:
 		url = "wss://" + Globals.serverIP;
