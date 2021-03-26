@@ -17,7 +17,7 @@ func _input(event):
 			# Send message / cancel
 			if Globals.is_typing_in_chat:
 				if self.text != "":
-					rpc("receive_message", self.text, Globals.localPlayerID);
+					rpc("receive_message", self.text, Globals.localPlayerID if !get_tree().is_network_server() else 1);
 					add_message(self.text, Globals.localPlayerID);
 				self.text = "";
 				self.release_focus();
@@ -51,6 +51,12 @@ func process_command(command):
 		return;
 	if command == "/shutdown" and get_tree().is_network_server():
 		get_tree().quit();
+	if command == "/addbot 0" and get_tree().is_network_server():
+		get_tree().get_root().get_node("MainScene/NetworkController").add_bot(0)
+		return
+	if command == "/addbot 1" and get_tree().is_network_server():
+		get_tree().get_root().get_node("MainScene/NetworkController").add_bot(1)
+		return
 	var first_space = command.findn(" ", 0);
 	var verb = command.substr(1, first_space-1);
 	var second_space = command.findn(" ", first_space+1);
@@ -71,9 +77,14 @@ func add_message(message, sender_id):
 	var player_name = "BOB";
 	var color = "red";
 	if !Globals.testing and sender_id != -1:
-		player_name = get_tree().get_root().get_node("MainScene/NetworkController").players[sender_id]["name"];
-		if get_tree().get_root().get_node("MainScene/NetworkController").players[sender_id]["team_id"] == 0:
-			color = "blue";
+		if get_tree().get_root().get_node("MainScene/NetworkController").players.has(sender_id):
+			var player = get_tree().get_root().get_node("MainScene/NetworkController").players[sender_id]
+			player_name = player["name"];
+			if player["team_id"] == 0:
+				color = "blue";
+		else:
+			print("ERROR: PLAYER ISNTANCE WAS NOT VALID")
+			print_stack()
 	if sender_id == -1:
 		get_parent().get_parent().get_node("Chat_Layer/Chat_Box").bbcode_text = get_parent().get_parent().get_node("Chat_Layer/Chat_Box").bbcode_text + message + "\n";
 	else:

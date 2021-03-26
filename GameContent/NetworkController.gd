@@ -8,6 +8,8 @@ var		game_vars	= Globals.game_var_defaults.duplicate();
 var		scores		= [];
 var		round_num	= 0;
 
+var bot_id_tracker = 0 # For assigning unique ids to bots. First one will be -1
+
 var server = null;
 var client = null;
 var isSuddenDeath = false;
@@ -31,6 +33,7 @@ var Game_Results_Screen = preload("res://Game_Results_Screen.tscn");
 #	- position: Vector2D
 #	- spawn_pos: Vector2D
 #	- DD_vote: bool
+#	- BOT: bool
 
 # flag_data Struct (Indexed by flag id)
 #	- holder_player_id: int
@@ -45,7 +48,6 @@ func _ready():
 		Globals.serverIP = Globals.skirmishIP;
 	if Globals.matchType == 0:
 		Globals.mapName = Globals.skirmishMap;
-	
 	
 		
 	spawn_map(Globals.mapName);
@@ -160,7 +162,7 @@ func start_server():
 				else:
 					print("<ERROR> Map not found");
 					print_stack();
-			players[i] = {"name" : str(player.name), "team_id" : team_id, "user_id": int(player.uid), "network_id": 1, "spawn_pos": spawn_pos, "position": spawn_pos, "class" : Globals.Classes.Bullet, "DD_vote" : false};
+			players[i] = {"name" : str(player.name), "team_id" : team_id, "user_id": int(player.uid), "network_id": 1, "spawn_pos": spawn_pos, "position": spawn_pos, "class" : Globals.Classes.Bullet, "DD_vote" : false, "BOT" : false};
 			i += 1;
 		print(players);
 		start_match();
@@ -340,6 +342,7 @@ remotesync func update_players_data(players_data, round_is_running):
 	self.round_is_running = round_is_running;
 	update_player_objects();
 
+
 # Resync the clocks between server and clients by using current server time elapsed 
 remotesync func update_timing_sync(time_elapsed):
 	if !get_tree().is_network_server():
@@ -395,31 +398,46 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 					server.disconnect_peer(players[player_id_collision]['network_id'], 1000, "A new computer has connected as this player");
 			# Else if this is a skirmish, and there is no collision, allocate a new player for this connection
 			elif Globals.matchType == 0:
+				# Choose team
 				var team_id = 0;
+				# How many players are on each team
 				var b=0; var r=0;
+				var bots_b=0; var bots_r=0;
+				# Go through teams and count up players
 				for player_id in players:
 					if players[player_id]["team_id"] == 0:
 						b += 1;
+						if players[player_id]["BOT"] == true:
+							bots_b += 1
+							b -= 1 # dont double count bots
 					else:
 						r += 1;
+						if players[player_id]["BOT"] == true:
+							bots_r += 1
+							r -= 1 # dont double count bots
+				# If there are more REAL players on blue team, assign to red
 				if b > r:
 					team_id = 1;
-				var spawn_pos = Vector2(0,0);
-				if team_id == 0:
-					var spawn = get_tree().get_root().get_node_or_null("MainScene/Map/YSort/BlueSpawn_Location");
-					if spawn != null:
-						spawn_pos = spawn.position;
-					else:
-						print("<ERROR> Map not found");
-						print_stack();
-				else:
-					var spawn = get_tree().get_root().get_node_or_null("MainScene/Map/YSort/RedSpawn_Location");
-					if spawn != null:
-						spawn_pos = spawn.position;
-					else:
-						print("<ERROR> Map not found");
-						print_stack();
-				players[user_id] = {"name" : player_name, "team_id" : team_id, "user_id": user_id, "network_id": network_id,"spawn_pos": spawn_pos, "position": spawn_pos, "class" : Globals.Classes.Bullet, "DD_vote" : false};
+					# Remove a bot from red team
+	#				var removed_a_bot = false
+	#				for player_id in players:
+	#					if players[player_id]["team_id"] == 1 and players[player_id]["BOT"] == true:
+	#						players.erase(player_id);
+	#						print("Removed a bot from red team " + str(player_id))
+	#						removed_a_bot = true
+	#						break
+	#				if !removed_a_bot:
+	#					print("ERROR: WE SHOULD HAVE REMOVED A BOT FROM RED TEAM BUT WE COULDNT FIND ONE")
+				else: # Else assign to blue
+					team_id = 0;
+					# Add a bot to red team
+	#				bot_id_tracker -= 1
+	#				var bot_id = bot_id_tracker
+	#				players[bot_id] = {"name" : "BOT"+str(bot_id), "team_id" : 1, "user_id": bot_id, "network_id": 1,"spawn_pos": get_default_spawn_for_team(1), "position": get_default_spawn_for_team(1), "class" : Globals.Classes.Bullet, "DD_vote" : false, "BOT" : false};
+	#				print("Added a bot to red team " + str(bot_id))
+				# Get spawn points
+				var spawn_pos = get_default_spawn_for_team(team_id)
+				players[user_id] = {"name" : player_name, "team_id" : team_id, "user_id": user_id, "network_id": network_id,"spawn_pos": spawn_pos, "position": spawn_pos, "class" : Globals.Classes.Bullet, "DD_vote" : false, "BOT" : false};
 				player_id_collision = user_id;
 				print("Added a new player for Skirmish of networkID : " + str(network_id) + " | userID : " + str(user_id) + " | name : " + str(player_name));
 			else: #Else if there is no collision and this is a match, then something has gone wrong. Disconnect the peer
@@ -444,6 +462,23 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 			print("WE SHOULD BE DISCONNECTING A player because the checkUser backend call failed with a non 200 status BUT WE DON'T KNOW THEIR NETWORKID'");
 			#server.disconnect_peer(player_check_queue[0]['networkID'], 1000, "An Unknown Error Occurred.")
 
+func get_default_spawn_for_team(team_id):
+	var spawn_pos = Vector2(0,0)
+	if team_id == 0:
+		var spawn = get_tree().get_root().get_node_or_null("MainScene/Map/YSort/BlueSpawn_Location");
+		if spawn != null:
+			spawn_pos = spawn.position;
+		else:
+			print("<ERROR> Map not found");
+			print_stack();
+	else:
+		var spawn = get_tree().get_root().get_node_or_null("MainScene/Map/YSort/RedSpawn_Location");
+		if spawn != null:
+			spawn_pos = spawn.position;
+		else:
+			print("<ERROR> Map not found");
+			print_stack();
+	return spawn_pos
 
 func update_flags_data():
 	for node in get_tree().get_nodes_in_group("Flags"):
@@ -472,6 +507,17 @@ remote func user_ready(id, userToken):
 remotesync func test_ping():
 	print("Test Ping");
 
+func add_bot(team_id):
+	if !get_tree().is_network_server():
+		return
+	bot_id_tracker -= 1
+	var bot_id = bot_id_tracker
+	players[bot_id] = {"name" : "BOT"+str(-1*bot_id), "team_id" : team_id, 
+	"user_id": bot_id, "network_id": 1,"spawn_pos": get_default_spawn_for_team(team_id), 
+	"position": get_default_spawn_for_team(team_id), "class" : Globals.Classes.Bullet, 
+	"DD_vote" : false, "BOT" : true};
+	rpc("update_players_data",players,round_is_running)
+	
 func spawn_player(id):
 	
 	var p = get_tree().get_root().get_node_or_null("MainScene/Players/P" + str(id));
@@ -487,6 +533,7 @@ func spawn_player(id):
 	player.position = players[id]["position"];
 	player.start_pos = players[id]["spawn_pos"];
 	player.current_class = players[id]["class"];
+	player.is_bot = players[id]["BOT"]
 	print("Spawning Player " + str(players[id]));
 	player.player_name = players[id]["name"];
 	if players[id]["network_id"] == get_tree().get_network_unique_id():

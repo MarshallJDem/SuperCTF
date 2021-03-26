@@ -118,6 +118,10 @@ __meta__ = {
 [node name="Test_Player" parent="." instance=ExtResource( 2 )]
 position = Vector2( 15.6066, 14.9669 )
 
+[node name="Test_Enemy" parent="." instance=ExtResource( 2 )]
+position = Vector2( 15.6066, 14.9669 )
+is_bot = true
+
 [node name="Players" type="Node" parent="."]
 
 [node name="Loadout_Menu" parent="." instance=ExtResource( 26 )]

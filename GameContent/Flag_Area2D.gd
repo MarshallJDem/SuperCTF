@@ -56,7 +56,10 @@ func collided_with_player(player):
 		# Do it only if this is not a sudden death
 		if !get_tree().get_root().get_node("MainScene/NetworkController").isSuddenDeath:
 			player.stats["recovers"] += 1;
-			flag.rpc("return_home");
+			if Globals.testing:
+				flag.return_home()
+			else:
+				flag.rpc("return_home");
 			return;
 		else: # SUDDEN DEATH, you cannot recover. Give a warning
 			flag.rpc("enable_warning" , "[center]Can't recover in\nSudden Death");
