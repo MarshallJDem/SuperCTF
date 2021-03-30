@@ -39,8 +39,8 @@ func collided_with_player(player):
 	# If this flag is already in another player's posession, ignore it
 	if get_parent().get_parent().name == "Flag_Holder":
 		return;
-	# If the player just dropped this flag, ignore it
-	if player.player_id == player_id_drop_buffer:
+	# If the player just dropped this flag, ignore it (bots get exemption)
+	if !player.is_bot and player.player_id == player_id_drop_buffer:
 		return;
 	# If the player is not alive, ignore it
 	if !player.alive:

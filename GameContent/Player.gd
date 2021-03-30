@@ -106,10 +106,10 @@ func _physics_process(delta: float) -> void:
 	if control:
 		activate_camera();
 		# Don't look around if we're shooting a laser
-		if Globals.current_class != Globals.Classes.Laser or $Weapon_Node/Laser_Timer.time_left == 0:
+		if (!is_bot) and ( Globals.current_class != Globals.Classes.Laser or $Weapon_Node/Laser_Timer.time_left == 0):
 			update_look_direction();
 		# Move around as long as we aren't typing in chat
-		if !Globals.is_typing_in_chat:
+		if !Globals.is_typing_in_chat and !is_bot:
 			move_on_inputs();
 	if is_instance_valid(camera_ref):
 		camera_ref.get_node("Canvas_Layer/Vignette_Blue").visible = false;
@@ -157,7 +157,7 @@ func _physics_process(delta: float) -> void:
 	if !Globals.testing and get_tree().has_network_peer() and !is_network_master() and !get_tree().is_network_server():
 		position = lerp(lerp_start_pos, lerp_end_pos, clamp(float(OS.get_ticks_msec() - time_of_last_received_pos)/float(Globals.player_lerp_time), 0.0, 1.0));
 	
-	if !Globals.testing and get_tree().has_network_peer() and is_network_master() and !get_tree().is_network_server():
+	if !Globals.testing and get_tree().has_network_peer() and is_network_master() and (!get_tree().is_network_server() or (get_tree().is_network_server() and is_bot)):
 		rpc_unreliable("update_position", position);
 	
 	# Animation
@@ -346,8 +346,10 @@ func update_look_direction(pos_override = null):
 	var dir = int((octant + 9) + 4) % 8
 	if dir != look_direction: # If it changed since last time
 		set_look_direction(dir);
-		if !Globals.testing:
+		if !Globals.testing and !get_tree().is_network_server():
 			rpc_unreliable_id(1, "send_look_direction", dir, player_id);
+		elif !Globals.testing and get_tree().is_network_server() and is_bot:
+			send_look_direction(dir,player_id)
 	return dir
 
 

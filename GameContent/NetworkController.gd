@@ -513,9 +513,10 @@ func add_bot(team_id):
 	bot_id_tracker -= 1
 	var bot_id = bot_id_tracker
 	players[bot_id] = {"name" : "BOT"+str(-1*bot_id), "team_id" : team_id, 
-	"user_id": bot_id, "network_id": 1,"spawn_pos": get_default_spawn_for_team(team_id), 
-	"position": get_default_spawn_for_team(team_id), "class" : Globals.Classes.Bullet, 
-	"DD_vote" : false, "BOT" : true};
+		"user_id": bot_id, "network_id": 1,"spawn_pos": get_default_spawn_for_team(team_id), 
+		"position": get_default_spawn_for_team(team_id), "class" : Globals.Classes.Bullet, 
+		"DD_vote" : false, "BOT" : true};
+	
 	rpc("update_players_data",players,round_is_running)
 	
 func spawn_player(id):
@@ -612,10 +613,12 @@ remotesync func round_ended(scoring_team_id, scoring_player_id, time_limit_reach
 			get_tree().get_root().get_node("MainScene/UI_Layer").set_big_label_text("TIME LIMIT REACHED", Globals.localPlayerTeamID);
 	else:
 		print("Player : " + str(scoring_player_id) + " won a point for team : " + str(scoring_team_id));
+		# Visuals 
+		get_tree().get_root().get_node("MainScene").slowdown_music();
+		get_tree().get_root().get_node("MainScene/UI_Layer").set_big_label_text(str(players[scoring_player_id]['name']) + "\nSCORED!", scoring_team_id);
+		get_tree().get_root().get_node("MainScene/Score_Audio").play();
+		
 		if !get_tree().is_network_server():
-			get_tree().get_root().get_node("MainScene").slowdown_music();
-			get_tree().get_root().get_node("MainScene/UI_Layer").set_big_label_text(str(players[scoring_player_id]['name']) + "\nSCORED!", scoring_team_id);
-			get_tree().get_root().get_node("MainScene/Score_Audio").play();
 			var scoring_player = get_tree().get_root().get_node_or_null("MainScene/Players/P" + str(scoring_player_id));
 			var local_player = get_tree().get_root().get_node_or_null("MainScene/Players/P" + str(Globals.localPlayerID));
 			if local_player != null:
@@ -638,6 +641,8 @@ remotesync func round_ended(scoring_team_id, scoring_player_id, time_limit_reach
 			print_stack();
 	# Else if we are the server
 	else:
+		for p in get_tree().get_nodes_in_group("Players"):
+			p.control = false;
 		if Globals.matchType != 0 and !time_limit_reached:
 			scores[scoring_team_id] = scores[scoring_team_id] + 1;
 			rpc("set_scores", scores);
@@ -646,13 +651,14 @@ remotesync func round_ended(scoring_team_id, scoring_player_id, time_limit_reach
 
 # Resets all objects in the game scene by deleting them
 func reset_game_objects(kill_players = false):
-	# Remove any old player nodes
+	# Refresh player properties
 	for player in get_tree().get_root().get_node("MainScene/Players").get_children():
 		player.position = player.start_pos;
 		player.visible = true;
 		player.stop_powerups();
 		if player.player_id == Globals.localPlayerID:
 			player.activate_camera();
+		# Remove any old player nodes
 		if kill_players:
 			player.call_deferred("free");
 	# Remove any old flags
@@ -793,6 +799,12 @@ remotesync func start_round():
 		else:
 			print_stack();
 	else:
+		var is_first = true
+		for p in get_tree().get_nodes_in_group("Players"):
+			p.control = true
+			if is_first:
+				p.activate_camera();
+				is_first = false
 		if Globals.matchType != 0 and !isSuddenDeath:
 			rpc("resume_match_time_limit", $Match_Time_Limit_Timer.time_left);
 

@@ -3,8 +3,6 @@ extends Node2D
 
 onready var player = $".."
 
-var active = false
-
 var enemy_target = null
 
 var path = null
@@ -19,17 +17,18 @@ var state = DEFENDING
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	if player.is_bot:
-		active = true
-	else:
+	if !player.is_bot:
 		return
 	
-	enemy_target = get_tree().get_root().get_node("MainScene/Test_Player")
+	if Globals.testing:
+		enemy_target = get_tree().get_root().get_node("MainScene/Test_Player")
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if !active:
+	if !player.is_bot:
+		return;
+	if !player.control:
 		return;
 	
 	# Update state machine
@@ -93,7 +92,7 @@ func _process(delta):
 	
 	
 func _input(event):
-	if !active:
+	if !player.is_bot:
 		return;
 	if event is InputEventMouseButton:
 		pass
@@ -110,6 +109,16 @@ func attack_in_direction(dir, random_angle = 0):
 	player.get_node("Weapon_Node").shoot_on_inputs(dir)
 	
 func update_state_machine():
+	# Pick an enemy target
+	var closest_enemy = null
+	for p in get_tree().get_nodes_in_group("Players"):
+		if p.alive and p.team_id != player.team_id:
+			if closest_enemy == null:
+				closest_enemy = p
+			elif p.position.distance_to(player.position) < closest_enemy.position.distance_to(player.position):
+				closest_enemy = p
+	enemy_target = closest_enemy
+	
 	# Check if our flag is home
 	var flagHome = get_tree().get_root().get_node("MainScene/Map/YSort/Flag_Home-" + str(player.team_id));
 	var flag_id = flagHome.flag_id
@@ -124,8 +133,8 @@ func update_state_machine():
 		state = CAPTURING
 		return
 	
+	# Check if enemy is on our side of map and we should defend
 	if is_instance_valid(enemy_target):
-		# Check if enemy is on our side of map
 		if (player.team_id == 1 and enemy_target.position.x >= 0) or (player.team_id == 0 and enemy_target.position.x <= 0):
 			state = DEFENDING
 			return
@@ -153,3 +162,5 @@ func move(delta):
 			path.remove(0)
 		# Update the distance to walk
 		distance_to_walk -= distance_to_next_point
+	
+	
