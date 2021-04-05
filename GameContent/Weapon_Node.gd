@@ -51,7 +51,11 @@ func class_changed():
 
 func update_cooldown_lengths():
 	if Globals.current_class == Globals.Classes.Bullet:
-		$Cooldown_Timer.wait_time = float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("bulletCooldown"))/1000.0;
+		var cd = float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("bulletCooldown"))/1000.0
+		$Cooldown_Timer.wait_time = cd;
+		# add some random delay for bots to make them less OP
+		if player.is_bot:
+			$Cooldown_Timer.wait_time = cd + rand_range(0,1000)/1000
 	elif Globals.current_class == Globals.Classes.Laser:
 		$Cooldown_Timer.wait_time = float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("laserCooldown"))/1000.0;
 	elif Globals.current_class == Globals.Classes.Demo:
@@ -106,14 +110,16 @@ func _draw():
 		draw_circle(target_position, size + 0.5, Color(red + 0.1,green + 0.1,blue + 0.1,progress));
 
 
-func shoot_on_inputs():
+func shoot_on_inputs(direction_override = null):
 	if Globals.is_typing_in_chat:
 		return;
 	# Check for mouse input	
-	if (Globals.control_scheme == Globals.Control_Schemes.keyboard and Input.is_action_pressed("clickL")) or (Globals.control_scheme == Globals.Control_Schemes.touchscreen and get_tree().get_root().get_node("MainScene/UI_Layer/Shoot_Stick").stick_vector != Vector2(0,0)):
+	if direction_override != null or (Globals.control_scheme == Globals.Control_Schemes.keyboard and Input.is_action_pressed("clickL")) or (Globals.control_scheme == Globals.Control_Schemes.touchscreen and get_tree().get_root().get_node("MainScene/UI_Layer/Shoot_Stick").stick_vector != Vector2(0,0)):
 		var direction = ((get_global_mouse_position() - global_position).normalized());
 		if Globals.control_scheme == Globals.Control_Schemes.touchscreen:
 			direction = get_tree().get_root().get_node("MainScene/UI_Layer/Shoot_Stick").stick_vector.normalized();
+		if direction_override != null:
+			direction = direction_override
 		# Only accepts clicks if we're not aiming a laser
 		if $Laser_Timer.time_left == 0:
 			if !player.attempt_drop_flag():

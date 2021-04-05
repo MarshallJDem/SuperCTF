@@ -3,7 +3,7 @@ extends Node
 # Whether to run in testing mode (for development uses)
 var testing = false;
 var experimental = true;
-var localTesting = false; # Used for running a server locally on the machine
+var localTesting = false; # Used for running a gameserver locally on the machine
 var localTestingBackend = false; # Used for when the backend is running locally on this machine
 var remoteSkirmish = false; # Used for running the skirmish lobby on a remote computer (so you can run it in the editor and catch bugs)
 
@@ -20,7 +20,7 @@ var isServer = false;
 var allowedPlayers = [];
 var matchID;
 var matchType;
-var mapName = "SquareZagv6";
+var mapName = "TehoMap1";
 var allowCommands = false;
 var useSecure = true;
 var gameserverStatus = 0;
@@ -155,7 +155,7 @@ func _enter_tree():
 	#experimental =  true;#OS.has_feature("debug") and !OS.has_feature("editor");
 	if experimental:
 		allowCommands = true;
-		skirmishMap = "SquareZagv6"
+		skirmishMap = "TehoMap1"
 		mainServerIP = "https://www.superctf.com" + ":42501/";
 		if !isServer:
 			skirmishIP = "superctf.com/gameserver/42490";
@@ -204,7 +204,7 @@ func _ready():
 func _process(delta):
 	if get_tree().get_root().has_node("MainScene/NetworkController"):
 		Globals.player_lerp_time = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("playerLagTime");
-	if !isServer:
+	if !isServer and !testing:
 		if Globals.userToken != null:
 			attempt_ConfirmClientConnection();
 			attempt_PollPlayerStatus();

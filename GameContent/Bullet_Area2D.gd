@@ -30,8 +30,11 @@ func collided_with_bullet(bullet):
 	# If this bullet was shot by the same team, ignore it
 	if get_parent().team_id == bullet.team_id:
 		return;
-	if get_tree().is_network_server():
-		get_parent().rpc("receive_death");
+	if Globals.testing or get_tree().is_network_server():
+		if Globals.testing:
+			get_parent().receive_death()
+		else:
+			get_parent().rpc("receive_death");
 		flagged_for_death = true;
 	else:
 		# Only do a preliminary death if both bullets are done compensating lag
