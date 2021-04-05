@@ -317,7 +317,8 @@ func update_player_objects():
 			Globals.localPlayerTeamID = players[player_id]["team_id"];
 		var player_node = get_tree().get_root().get_node_or_null("MainScene/Players/P" + str(player_id));
 		if player_node != null:
-			player_node.set_team_id(players[player_id]["team_id"], players[player_id]["spawn_pos"]);
+			player_node.set_team_id(players[player_id]["team_id"])
+			player_node.start_pos = players[player_id]["spawn_pos"]
 			player_node.player_name = players[player_id]["name"];
 			player_node.update_class(players[player_id]["class"]);
 			player_node.set_network_master(players[player_id]['network_id']);
@@ -682,7 +683,7 @@ remotesync func round_ended(scoring_team_id, scoring_player_id, time_limit_reach
 		$Round_End_Timer.start()
 
 # Resets all objects in the game scene by deleting them
-func reset_game_objects(kill_players = false):
+remotesync func reset_game_objects(kill_players = false):
 	# Refresh player properties
 	for player in get_tree().get_root().get_node("MainScene/Players").get_children():
 		player.position = player.start_pos;
@@ -735,7 +736,7 @@ remotesync func load_new_round(suddenDeath = false):
 	round_num += 1;
 	round_is_ended = false;
 	match_is_running = true;
-	reset_game_objects()
+	
 	# If we're the server, instruct other to spawn game nodes
 	if get_tree().is_network_server():
 		# Update score
@@ -745,8 +746,13 @@ remotesync func load_new_round(suddenDeath = false):
 			rearrange_teams()
 			if !Globals.testing:
 				rpc("update_player_objects")
+				rpc("reset_game_objects")
 			else:
 				update_player_objects()
+				reset_game_objects()
+	
+	# Were double dipping this function B/C we need it to run rpc for spawn points
+	reset_game_objects()
 	
 	var home0 = get_tree().get_root().get_node("MainScene/Map/YSort/Flag_Home-" + str(0));
 	var home1 = get_tree().get_root().get_node("MainScene/Map/YSort/Flag_Home-" + str(1));
