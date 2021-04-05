@@ -435,7 +435,9 @@ func hit_by_projectile(attacker_id, projectile_type):
 			else:
 				print_stack();
 			
-
+func set_team_id(id):
+	team_id = id
+	$Player_Visuals._update_team_id(id)
 # "Kills" the player. Only for visuals on client - the server handles the respawning.
 func die():
 	visible = false;

@@ -72,13 +72,13 @@ script = ExtResource( 1 )
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 5 )
-frame = 1
 playing = true
 
 [node name="Red_Sprite" type="AnimatedSprite" parent="."]
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 10 )
+frame = 3
 playing = true
 
 [node name="Area2D" type="Area2D" parent="." groups=[

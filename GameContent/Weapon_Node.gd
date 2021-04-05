@@ -51,7 +51,11 @@ func class_changed():
 
 func update_cooldown_lengths():
 	if Globals.current_class == Globals.Classes.Bullet:
-		$Cooldown_Timer.wait_time = float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("bulletCooldown"))/1000.0;
+		var cd = float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("bulletCooldown"))/1000.0
+		$Cooldown_Timer.wait_time = cd;
+		# add some random delay for bots to make them less OP
+		if player.is_bot:
+			$Cooldown_Timer.wait_time = cd + rand_range(0,1000)/1000
 	elif Globals.current_class == Globals.Classes.Laser:
 		$Cooldown_Timer.wait_time = float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("laserCooldown"))/1000.0;
 	elif Globals.current_class == Globals.Classes.Demo:

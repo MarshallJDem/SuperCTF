@@ -27,13 +27,14 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if !player.is_bot:
+		last_endpoint = null
 		return;
 	if !player.control:
+		last_endpoint = null
 		return;
 	
 	# Update state machine
 	update_state_machine()
-	print(state)
 	
 	var enemy_team_id = 0 if player.team_id == 1 else 1
 	
@@ -73,7 +74,8 @@ func _process(delta):
 	player.update_look_direction(target_pos)
 	
 	# Shooting
-	if enemy_target != null:
+	# If enemy is within reasonable range
+	if enemy_target != null and enemy_target.position.distance_to(player.position) < 1000:
 		if state == RECOVERING:
 			# Shoot
 			attack_in_direction(dir, rand_range(0,PI/8) - PI/16)
@@ -96,12 +98,36 @@ func _input(event):
 		return;
 	if event is InputEventMouseButton:
 		pass
+
+var last_endpoint = null
+
 func update_nav(pos):
 	var nav = get_tree().get_root().get_node("MainScene/Map/BOT_Navigation")
 	if !is_instance_valid(nav):
 		print("ERROR: NAV INSTANCE WAS NOT VALID")
 		return
-	path = nav.get_simple_path(player.position, pos)
+	# Dont do fancy randomizing if our target might be changing constantly
+	if state == RECOVERING or state == DEFENDING:
+		path = nav.get_simple_path(player.position, pos)
+		last_endpoint = null
+	# Check if were still on the same path. If not, reroute
+	elif last_endpoint != pos:
+		path = nav.get_simple_path(player.position, pos)
+		last_endpoint = pos
+		# Randomize path
+		for iterator in range(path.size()-2):
+			var i = iterator + 1
+			var attempts = 0
+			while attempts < 10:
+				var new_pos = nav.get_closest_point(path[i] + Vector2(rand_range(0,100)-50, rand_range(0,100)-50))
+				# If this new position doesn't add complexity, use it as the new target
+				var test_path1 = nav.get_simple_path(path[i-1], new_pos)
+				var test_path2 = nav.get_simple_path(new_pos, path[i+1])
+				if test_path1.size() <= 2 and test_path2.size() <= 2:
+					path[i] = new_pos
+					break
+				attempts += 1
+	
 	nav.get_node("Line2D").points = path
 
 func attack_in_direction(dir, random_angle = 0):
@@ -141,12 +167,12 @@ func update_state_machine():
 	
 	state = ATTACKING
 	return
-	
 
 func move(delta):
 	if path == null:
 		return;
 	
+		
 	# Calculate the movement distance for this frame
 	var distance_to_walk = player.BASE_SPEED*3/4 * delta
 	
@@ -162,5 +188,5 @@ func move(delta):
 			path.remove(0)
 		# Update the distance to walk
 		distance_to_walk -= distance_to_next_point
-	
-	
+
+	path.insert(0, player.position)

@@ -317,7 +317,7 @@ func update_player_objects():
 			Globals.localPlayerTeamID = players[player_id]["team_id"];
 		var player_node = get_tree().get_root().get_node_or_null("MainScene/Players/P" + str(player_id));
 		if player_node != null:
-			player_node.team_id = players[player_id]["team_id"];
+			player_node.set_team_id(players[player_id]["team_id"]);
 			player_node.player_name = players[player_id]["name"];
 			player_node.update_class(players[player_id]["class"]);
 			player_node.set_network_master(players[player_id]['network_id']);
@@ -400,41 +400,7 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 			elif Globals.matchType == 0:
 				# Choose team
 				var team_id = 0;
-				# How many players are on each team
-				var b=0; var r=0;
-				var bots_b=0; var bots_r=0;
-				# Go through teams and count up players
-				for player_id in players:
-					if players[player_id]["team_id"] == 0:
-						b += 1;
-						if players[player_id]["BOT"] == true:
-							bots_b += 1
-							b -= 1 # dont double count bots
-					else:
-						r += 1;
-						if players[player_id]["BOT"] == true:
-							bots_r += 1
-							r -= 1 # dont double count bots
-				# If there are more REAL players on blue team, assign to red
-				if b > r:
-					team_id = 1;
-					# Remove a bot from red team
-	#				var removed_a_bot = false
-	#				for player_id in players:
-	#					if players[player_id]["team_id"] == 1 and players[player_id]["BOT"] == true:
-	#						players.erase(player_id);
-	#						print("Removed a bot from red team " + str(player_id))
-	#						removed_a_bot = true
-	#						break
-	#				if !removed_a_bot:
-	#					print("ERROR: WE SHOULD HAVE REMOVED A BOT FROM RED TEAM BUT WE COULDNT FIND ONE")
-				else: # Else assign to blue
-					team_id = 0;
-					# Add a bot to red team
-	#				bot_id_tracker -= 1
-	#				var bot_id = bot_id_tracker
-	#				players[bot_id] = {"name" : "BOT"+str(bot_id), "team_id" : 1, "user_id": bot_id, "network_id": 1,"spawn_pos": get_default_spawn_for_team(1), "position": get_default_spawn_for_team(1), "class" : Globals.Classes.Bullet, "DD_vote" : false, "BOT" : false};
-	#				print("Added a bot to red team " + str(bot_id))
+				team_id = allocate_bots_for_new_player()
 				# Get spawn points
 				var spawn_pos = get_default_spawn_for_team(team_id)
 				players[user_id] = {"name" : player_name, "team_id" : team_id, "user_id": user_id, "network_id": network_id,"spawn_pos": spawn_pos, "position": spawn_pos, "class" : Globals.Classes.Bullet, "DD_vote" : false, "BOT" : false};
@@ -461,6 +427,58 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 		else:
 			print("WE SHOULD BE DISCONNECTING A player because the checkUser backend call failed with a non 200 status BUT WE DON'T KNOW THEIR NETWORKID'");
 			#server.disconnect_peer(player_check_queue[0]['networkID'], 1000, "An Unknown Error Occurred.")
+
+# Figures out what team a new player should join and what bots to add
+func allocate_bots_for_new_player():
+	var team_id = 0
+	# How many players are on each team
+	var b=0; var r=0; #Real players
+	var bots_b=0; var bots_r=0;#Bots
+	# Go through teams and count up players
+	for player_id in players:
+		if players[player_id]["team_id"] == 0:
+			b += 1;
+			if players[player_id]["BOT"] == true:
+				bots_b += 1
+				b -= 1 # dont double count bots
+		else:
+			r += 1;
+			if players[player_id]["BOT"] == true:
+				bots_r += 1
+				r -= 1 # dont double count bots
+	# If there are more REAL players on blue team, assign to red
+	if b > r:
+		team_id = 1;
+		# Remove a bot from red team
+		var removed_a_bot = false
+		for player_id in players:
+			if players[player_id]["team_id"] == 1 and players[player_id]["BOT"] == true:
+				players.erase(player_id);
+				print("Removed a bot from red team " + str(player_id))
+				removed_a_bot = true
+				break
+		if !removed_a_bot:
+			print("ERROR: WE SHOULD HAVE REMOVED A BOT FROM RED TEAM BUT WE COULDNT FIND ONE")
+	else: # Else assign to blue
+		team_id = 0;
+		# If there are any bots on blue team, remove one
+		if bots_b > 0:
+			var removed_a_bot = false
+			for player_id in players:
+				if players[player_id]["team_id"] == 0 and players[player_id]["BOT"] == true:
+					players.erase(player_id);
+					print("Removed a bot from blue team " + str(player_id))
+					removed_a_bot = true
+					break
+			if !removed_a_bot:
+				print("ERROR: WE SHOULD HAVE REMOVED A BOT FROM RED TEAM BUT WE COULDNT FIND ONE")
+		# Else add a bot to red team
+		else:
+			bot_id_tracker -= 1
+			var bot_id = bot_id_tracker
+			add_bot(1)
+			print("Added a bot to red team " + str(bot_id))
+	return team_id
 
 func get_default_spawn_for_team(team_id):
 	var spawn_pos = Vector2(0,0)
@@ -566,9 +584,14 @@ func _client_disconnected(id):
 				get_tree().get_root().get_node("MainScene/Chat_Layer/Line_Edit").receive_message( "[color=red]" + message +  "[/color]", -1);
 				if Globals.matchType == 0:
 					print("Erasing player_id " + str(player_id) + " with name " + str(players[player_id]["name"]));
+					var team_id = players[player_id]["team_id"]
 					players.erase(player_id);
+					compensate_bots_for_player_leaving(team_id)
+					# If this is a skirmish and there are no players left, reset some stuff
 					if players.size() == 0:
 						game_vars = Globals.game_var_defaults.duplicate();
+						for flag in get_tree().get_nodes_in_group("Flags"):
+							flag.rpc("return_home")
 	if player_id == -1:
 		print("COULDNT FIND PLAYER IN PLAYERS DATA TO DELETE FOR NETWORKID : " + str(id));
 		return;
@@ -588,7 +611,16 @@ func _client_disconnected(id):
 	else: # This will disable DD buttons etc on game results screen
 		if $Match_End_Timer.time_left > 0:
 			$Match_End_Timer.stop();
-	
+
+func compensate_bots_for_player_leaving(team_id):
+	var enemy_team_id = 1 if team_id == 0 else 0
+	# Try first compensating by deleting an enemy bot
+	for id in players:
+		if players[id]["team_id"] == enemy_team_id and players[id]["BOT"] == false:
+			players.erase[id]
+			return
+	# If no enemy bots were found, add one for this team since theyre losing a player
+	add_bot(team_id)
 
 # Goes back to title screen and drops the socket connection and resets the game
 func leave_match():
@@ -703,11 +735,18 @@ remotesync func load_new_round(suddenDeath = false):
 	round_num += 1;
 	round_is_ended = false;
 	match_is_running = true;
-	reset_game_objects();
+	reset_game_objects()
 	# If we're the server, instruct other to spawn game nodes
 	if get_tree().is_network_server():
 		# Update score
 		rpc("set_scores", scores);
+		# Rearrange teams if this is a skirmish
+		if Globals.matchType == 0:
+			rearrange_teams()
+			if !Globals.testing:
+				rpc("update_player_objects")
+			else:
+				update_player_objects()
 	
 	var home0 = get_tree().get_root().get_node("MainScene/Map/YSort/Flag_Home-" + str(0));
 	var home1 = get_tree().get_root().get_node("MainScene/Map/YSort/Flag_Home-" + str(1));
@@ -740,6 +779,36 @@ remotesync func load_new_round(suddenDeath = false):
 		$Round_Start_Timer.set_wait_time(3);
 		$Round_Start_Timer.start();
 
+# Rearrange the teams and removes extraneous bots. Used inbetween rounds of skirmish
+func rearrange_teams():
+	# Delete all bots
+	for player_id in players:
+		if players[player_id]["BOT"]:
+			players.erase(player_id)
+	
+	# Shuffle real player ids
+	var ids = players.keys()
+	ids.shuffle()
+	
+	# Assign to teams
+	var i = 0
+	var teams = [0,1]
+	teams.shuffle() # Shuffle blue vs red
+	for id in ids:
+		# If in first half, assign to team 1
+		if i < ids.size()/2:
+			players[id]["team_id"] = teams[0]
+			players[id]["spawn_pos"] = get_default_spawn_for_team(teams[0])
+		else: # Else team 2
+			players[id]["team_id"] = teams[1]
+			players[id]["spawn_pos"] = get_default_spawn_for_team(teams[1])
+	
+	# If teams are uneven, assign one bot to first team
+	if ids.size()%2 != 0:
+		add_bot(teams[0])
+	
+	
+	
 # For when a player joins mid round
 remote func load_mid_round(players, scores, round_start_timer_timeleft, round_num, round_time_elapsed, flags_data, game_vars):
 	print("Loading in the middle of a round" + str(round_num));
