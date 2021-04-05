@@ -480,8 +480,9 @@ func respawn():
 	start_temporary_invincibility();
 	if is_network_master():
 		get_tree().get_root().get_node("MainScene/UI_Layer").clear_big_label_text();
-		camera_ref.get_parent().remove_child(camera_ref);
-		$Center_Pivot.add_child(camera_ref);
+		if is_instance_valid(camera_ref):
+			camera_ref.get_parent().remove_child(camera_ref);
+			$Center_Pivot.add_child(camera_ref);
 	else:
 		lerp_start_pos = position;
 		lerp_end_pos = position;

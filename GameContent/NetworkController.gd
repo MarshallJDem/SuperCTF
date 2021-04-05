@@ -616,8 +616,8 @@ func compensate_bots_for_player_leaving(team_id):
 	var enemy_team_id = 1 if team_id == 0 else 0
 	# Try first compensating by deleting an enemy bot
 	for id in players:
-		if players[id]["team_id"] == enemy_team_id and players[id]["BOT"] == false:
-			players.erase[id]
+		if players[id]["team_id"] == enemy_team_id and players[id]["BOT"] == true:
+			players.erase(id)
 			return
 	# If no enemy bots were found, add one for this team since theyre losing a player
 	add_bot(team_id)
