@@ -317,7 +317,7 @@ func update_player_objects():
 			Globals.localPlayerTeamID = players[player_id]["team_id"];
 		var player_node = get_tree().get_root().get_node_or_null("MainScene/Players/P" + str(player_id));
 		if player_node != null:
-			player_node.set_team_id(players[player_id]["team_id"]);
+			player_node.set_team_id(players[player_id]["team_id"], players[player_id]["spawn_pos"]);
 			player_node.player_name = players[player_id]["name"];
 			player_node.update_class(players[player_id]["class"]);
 			player_node.set_network_master(players[player_id]['network_id']);
@@ -802,6 +802,7 @@ func rearrange_teams():
 		else: # Else team 2
 			players[id]["team_id"] = teams[1]
 			players[id]["spawn_pos"] = get_default_spawn_for_team(teams[1])
+		i += 1
 	
 	# If teams are uneven, assign one bot to first team
 	if ids.size()%2 != 0:
