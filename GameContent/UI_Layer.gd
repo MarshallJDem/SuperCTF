@@ -212,7 +212,12 @@ func _process(delta):
 			$"Input_GUIs/Ability_GUIs/UTILITY_GUI".modulate = $"Input_GUIs/Ability_GUIs/UTILITY_GUI".modulate.darkened(0.5);
 		if Input.is_key_pressed(KEY_Q):
 			$"Input_GUIs/Ability_GUIs/ULT_GUI".modulate = $"Input_GUIs/Ability_GUIs/ULT_GUI".modulate.darkened(0.5);
-
+		if Input.is_action_just_pressed("score_board"):
+			if ($ScoreBoard.visible) == false:
+				$ScoreBoard.visible = true
+			else:
+				$ScoreBoard.visible = false
+			
 func attempt_hide_move_gui():
 	if show_move_gui == true:
 		show_move_gui = false;
