@@ -1,0 +1,109 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://fonts/Pixel_SubTitle.tres" type="DynamicFont" id=1]
+
+[node name="ScoreBoard" type="PanelContainer"]
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Teams" type="HBoxContainer" parent="."]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 706.0
+margin_bottom = 95.0
+custom_constants/separation = 50
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Team_1" type="VBoxContainer" parent="Teams"]
+margin_right = 334.0
+margin_bottom = 88.0
+
+[node name="Team_1_Name" type="Label" parent="Teams/Team_1"]
+margin_right = 334.0
+margin_bottom = 70.0
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0.054902, 0, 1, 1 )
+text = "Blue Team"
+
+[node name="Columns" type="HBoxContainer" parent="Teams/Team_1"]
+margin_top = 74.0
+margin_right = 334.0
+margin_bottom = 88.0
+
+[node name="Name_Column" type="VBoxContainer" parent="Teams/Team_1/Columns"]
+margin_right = 38.0
+margin_bottom = 14.0
+
+[node name="Name_Column_Title" type="Label" parent="Teams/Team_1/Columns/Name_Column"]
+margin_right = 38.0
+margin_bottom = 14.0
+text = "Name"
+
+[node name="Kills_Column" type="VBoxContainer" parent="Teams/Team_1/Columns"]
+margin_left = 42.0
+margin_right = 69.0
+margin_bottom = 14.0
+
+[node name="Kills_Column_Title" type="Label" parent="Teams/Team_1/Columns/Kills_Column"]
+margin_right = 27.0
+margin_bottom = 14.0
+text = "Kills"
+
+[node name="Deaths_Column" type="VBoxContainer" parent="Teams/Team_1/Columns"]
+margin_left = 73.0
+margin_right = 118.0
+margin_bottom = 14.0
+
+[node name="Deaths_Column_Title" type="Label" parent="Teams/Team_1/Columns/Deaths_Column"]
+margin_right = 45.0
+margin_bottom = 14.0
+text = "Deaths"
+
+[node name="Team_2" type="VBoxContainer" parent="Teams"]
+margin_left = 384.0
+margin_right = 699.0
+margin_bottom = 88.0
+
+[node name="Team_2_Name" type="Label" parent="Teams/Team_2"]
+margin_right = 315.0
+margin_bottom = 70.0
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 1, 0, 0, 1 )
+text = "Red Team"
+
+[node name="Columns2" type="HBoxContainer" parent="Teams/Team_2"]
+margin_top = 74.0
+margin_right = 315.0
+margin_bottom = 88.0
+
+[node name="Name_Column2" type="VBoxContainer" parent="Teams/Team_2/Columns2"]
+margin_right = 38.0
+margin_bottom = 14.0
+
+[node name="Name_Column_Title2" type="Label" parent="Teams/Team_2/Columns2/Name_Column2"]
+margin_right = 38.0
+margin_bottom = 14.0
+text = "Name"
+
+[node name="Kills_Column2" type="VBoxContainer" parent="Teams/Team_2/Columns2"]
+margin_left = 42.0
+margin_right = 69.0
+margin_bottom = 14.0
+
+[node name="Kills_Column_Title2" type="Label" parent="Teams/Team_2/Columns2/Kills_Column2"]
+margin_right = 27.0
+margin_bottom = 14.0
+text = "Kills"
+
+[node name="Deaths_Column2" type="VBoxContainer" parent="Teams/Team_2/Columns2"]
+margin_left = 73.0
+margin_right = 118.0
+margin_bottom = 14.0
+
+[node name="Deaths_Column_Title2" type="Label" parent="Teams/Team_2/Columns2/Deaths_Column2"]
+margin_right = 45.0
+margin_bottom = 14.0
+text = "Deaths"
