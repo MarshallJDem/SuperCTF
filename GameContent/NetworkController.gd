@@ -683,7 +683,7 @@ remotesync func round_ended(scoring_team_id, scoring_player_id, time_limit_reach
 		$Round_End_Timer.start()
 
 # Resets all objects in the game scene by deleting them
-remotesync func reset_game_objects(kill_players = false):
+func reset_game_objects(kill_players = false):
 	# Refresh player properties
 	for player in get_tree().get_root().get_node("MainScene/Players").get_children():
 		player.position = player.start_pos;
@@ -717,14 +717,22 @@ remotesync func reset_game_objects(kill_players = false):
 
 # Loads up a new round but does not start it yet
 # WARNING - you will likely need to make these edits in "load_mid_round" too
-remotesync func load_new_round(suddenDeath = false):
+remotesync func load_new_round(suddenDeath = false, new_player_data = null):
+	print("Loading New Round" + str(round_num + 1));
 	game_loaded = true;
 	isSuddenDeath = suddenDeath;
+	# Reset ults for sudden death
 	if isSuddenDeath:
 		scores = [0,0];
 		for player in get_tree().get_root().get_node("MainScene/Players").get_children():
 			player.get_node("Ability_Node").ult_charge = 0;
-	print("Loading New Round" + str(round_num + 1));
+	
+	# Sometimes we directly pass new player data (in between rounds of skirmish)
+	# This helps us switch up teams and not run into async issues with RPC
+	if new_player_data != null:
+		players = new_player_data
+		update_player_objects()
+	
 	if round_num == 0:
 		# Start syncing time with server. Game time elapse at this point would be 0
 		Globals.match_start_time = OS.get_system_time_msecs();
@@ -741,17 +749,7 @@ remotesync func load_new_round(suddenDeath = false):
 	if get_tree().is_network_server():
 		# Update score
 		rpc("set_scores", scores);
-		# Rearrange teams if this is a skirmish
-		if Globals.matchType == 0:
-			rearrange_teams()
-			if !Globals.testing:
-				rpc("update_player_objects")
-				rpc("reset_game_objects")
-			else:
-				update_player_objects()
-				reset_game_objects()
 	
-	# Were double dipping this function B/C we need it to run rpc for spawn points
 	reset_game_objects()
 	
 	var home0 = get_tree().get_root().get_node("MainScene/Map/YSort/Flag_Home-" + str(0));
@@ -1063,7 +1061,12 @@ func _round_end_timer_ended():
 		if game_over:
 			rpc("end_match", winning_team_id);
 		else:
-			rpc("load_new_round");
+				# Rearrange teams if this is a skirmish
+			if Globals.matchType == 0:
+				rearrange_teams()
+				rpc("load_new_round", false, players);
+			else:
+				rpc("load_new_round");
 
 # Called when the Round_Start_Timer ends
 func _round_start_timer_ended():
