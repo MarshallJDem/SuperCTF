@@ -133,6 +133,8 @@ func update_nav(pos):
 func attack_in_direction(dir, random_angle = 0):
 	dir = Vector2((dir.x * cos(random_angle)) - (sin(random_angle)*dir.y),(dir.x * sin(random_angle)) + (cos(random_angle) * dir.y)) 
 	player.get_node("Weapon_Node").shoot_on_inputs(dir)
+	#if player.has_flag():
+		
 	
 func update_state_machine():
 	# Pick an enemy target
