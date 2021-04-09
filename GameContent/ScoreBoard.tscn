@@ -1,8 +1,11 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://fonts/Pixel_SubTitle.tres" type="DynamicFont" id=1]
+[ext_resource path="res://fonts/Pixel_Chat_Corrected.tres" type="DynamicFont" id=2]
 
 [node name="ScoreBoard" type="PanelContainer"]
+modulate = Color( 1, 1, 1, 0.870588 )
+grow_horizontal = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -11,7 +14,7 @@ __meta__ = {
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 706.0
-margin_bottom = 95.0
+margin_bottom = 106.0
 custom_constants/separation = 50
 __meta__ = {
 "_edit_use_anchors_": false
@@ -19,7 +22,7 @@ __meta__ = {
 
 [node name="Team_1" type="VBoxContainer" parent="Teams"]
 margin_right = 334.0
-margin_bottom = 88.0
+margin_bottom = 99.0
 
 [node name="Team_1_Name" type="Label" parent="Teams/Team_1"]
 margin_right = 334.0
@@ -31,41 +34,44 @@ text = "Blue Team"
 [node name="Columns" type="HBoxContainer" parent="Teams/Team_1"]
 margin_top = 74.0
 margin_right = 334.0
-margin_bottom = 88.0
+margin_bottom = 99.0
 
 [node name="Name_Column" type="VBoxContainer" parent="Teams/Team_1/Columns"]
-margin_right = 38.0
-margin_bottom = 14.0
+margin_right = 56.0
+margin_bottom = 25.0
 
 [node name="Name_Column_Title" type="Label" parent="Teams/Team_1/Columns/Name_Column"]
-margin_right = 38.0
-margin_bottom = 14.0
+margin_right = 56.0
+margin_bottom = 25.0
+custom_fonts/font = ExtResource( 2 )
 text = "Name"
 
 [node name="Kills_Column" type="VBoxContainer" parent="Teams/Team_1/Columns"]
-margin_left = 42.0
-margin_right = 69.0
-margin_bottom = 14.0
+margin_left = 60.0
+margin_right = 104.0
+margin_bottom = 25.0
 
 [node name="Kills_Column_Title" type="Label" parent="Teams/Team_1/Columns/Kills_Column"]
-margin_right = 27.0
-margin_bottom = 14.0
+margin_right = 44.0
+margin_bottom = 25.0
+custom_fonts/font = ExtResource( 2 )
 text = "Kills"
 
 [node name="Deaths_Column" type="VBoxContainer" parent="Teams/Team_1/Columns"]
-margin_left = 73.0
-margin_right = 118.0
-margin_bottom = 14.0
+margin_left = 108.0
+margin_right = 180.0
+margin_bottom = 25.0
 
 [node name="Deaths_Column_Title" type="Label" parent="Teams/Team_1/Columns/Deaths_Column"]
-margin_right = 45.0
-margin_bottom = 14.0
+margin_right = 72.0
+margin_bottom = 25.0
+custom_fonts/font = ExtResource( 2 )
 text = "Deaths"
 
 [node name="Team_2" type="VBoxContainer" parent="Teams"]
 margin_left = 384.0
 margin_right = 699.0
-margin_bottom = 88.0
+margin_bottom = 99.0
 
 [node name="Team_2_Name" type="Label" parent="Teams/Team_2"]
 margin_right = 315.0
