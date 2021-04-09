@@ -700,12 +700,11 @@ __meta__ = {
 }
 
 [node name="ScoreBoard" parent="UI_Layer" instance=ExtResource( 33 )]
-visible = false
-margin_left = 544.286
-margin_top = 264.583
-margin_right = 1257.29
-margin_bottom = 366.583
-grow_horizontal = 2
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_top = 232.0
+margin_bottom = -735.0
 
 [node name="Score_Audio" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 22 )
