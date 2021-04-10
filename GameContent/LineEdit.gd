@@ -17,7 +17,7 @@ func _input(event):
 			# Send message / cancel
 			if Globals.is_typing_in_chat:
 				if self.text != "":
-					rpc("receive_message", self.text, Globals.localPlayerID if !get_tree().is_network_server() else 1);
+					rpc("send_message", self.text, Globals.localPlayerID if !get_tree().is_network_server() else 1);
 					add_message(self.text, Globals.localPlayerID);
 				self.text = "";
 				self.release_focus();
@@ -33,15 +33,48 @@ func _input(event):
 			Globals.is_typing_in_chat = false;
 			self.mouse_filter = Control.MOUSE_FILTER_IGNORE;
 
-remotesync func receive_message(message, sender_id):
-	if Globals.localPlayerID == sender_id:
-		return;
+# Called by a client on the server to verify a chat and then the server sends it to everyone
+remotesync func send_message(message, sender_id):
+	if !get_tree().is_network_server():
+		return
 	if message.left(1) == "/":
-		if Globals.allowCommands and get_tree().is_network_server():
+		if Globals.allowCommands:
 			process_command(message);
 			add_message(message, sender_id);
+		return
+	
+	var http = HTTPRequest.new();
+	add_child(http);
+	http.connect("request_completed", self, "_HTTP_GameServerFilterChat_Completed")
+	http.request(Globals.mainServerIP + "gameServerFilterChat?" + "chatString=" + str(message) + "&senderID=" + str(sender_id), ["authorization: Bearer " + Globals.serverPrivateToken], false);
+	yield(http, "request_completed");
+	http.call_deferred("free");
+
+func _HTTP_GameServerFilterChat_Completed(result, response_code, headers, body):
+	if(response_code == 200):
+		# Extract vars from response
+		var json = JSON.parse(body.get_string_from_utf8());
+		var message = json.result.chatString;
+		var filtered_message = json.result.filteredChatString;
+		var sender_id = json.result.senderID;
+		# Send filtered message to everyone
+		rpc("receive_message", filtered_message, sender_id)
 	else:
-		add_message(message, sender_id);
+		# Extract vars from response
+		var json = JSON.parse(body.get_string_from_utf8());
+		var message = json.result.chatString;
+		var sender_id = json.result.senderID;
+		var fail_reason = json.result.failReason;
+		print("FILTER CHAT FAILED FOR MESSAGE '" + str(message) + "' WITH RESPONSE_CODE " + str(response_code) + " AND FAIL REASON '" + str(fail_reason) + "'")
+		rpc("receive_message", "[color=red]>> There was an error with the chat servers <<[/color]", -1)
+	
+
+remotesync func receive_message(message, sender_id):
+	# Dont add this message for the player that sent it. They show it locally instantly
+	if Globals.localPlayerID == sender_id:
+		return;
+	add_message(message, sender_id);
+
 func process_command(command):
 	if command == "/endmatch 0":
 		get_tree().get_root().get_node("MainScene/NetworkController").rpc("end_match",0);
