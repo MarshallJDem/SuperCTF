@@ -1,11 +1,13 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://fonts/Pixel_SubTitle.tres" type="DynamicFont" id=1]
 [ext_resource path="res://fonts/Pixel_Chat_Corrected.tres" type="DynamicFont" id=2]
+[ext_resource path="res://GameContent/ScoreBoard.gd" type="Script" id=3]
 
 [node name="ScoreBoard" type="PanelContainer"]
 modulate = Color( 1, 1, 1, 0.870588 )
 grow_horizontal = 2
+script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
