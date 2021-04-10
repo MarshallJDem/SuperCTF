@@ -56,14 +56,14 @@ func _HTTP_GameServerFilterChat_Completed(result, response_code, headers, body):
 		var json = JSON.parse(body.get_string_from_utf8());
 		var message = json.result.chatString;
 		var filtered_message = json.result.filteredChatString;
-		var sender_id = json.result.senderID;
+		var sender_id = int(json.result.senderID);
 		# Send filtered message to everyone
 		rpc("receive_message", filtered_message, sender_id)
 	else:
 		# Extract vars from response
 		var json = JSON.parse(body.get_string_from_utf8());
 		var message = json.result.chatString;
-		var sender_id = json.result.senderID;
+		var sender_id = int(json.result.senderID);
 		var fail_reason = json.result.failReason;
 		print("FILTER CHAT FAILED FOR MESSAGE '" + str(message) + "' WITH RESPONSE_CODE " + str(response_code) + " AND FAIL REASON '" + str(fail_reason) + "'")
 		rpc("receive_message", "[color=red]>> There was an error with the chat servers <<[/color]", -1)
