@@ -116,9 +116,10 @@ func add_message(message, sender_id):
 			if player["team_id"] == 0:
 				color = "blue";
 		else:
-			print("ERROR: PLAYER ISNTANCE WAS NOT VALID")
+			print("ERROR: PLAYER INSTANCE WAS NOT VALID WHEN ADDING A MESSAGE FOR CHAT")
 			print_stack()
 	if sender_id == -1:
 		get_parent().get_parent().get_node("Chat_Layer/Chat_Box").bbcode_text = get_parent().get_parent().get_node("Chat_Layer/Chat_Box").bbcode_text + message + "\n";
 	else:
 		get_parent().get_parent().get_node("Chat_Layer/Chat_Box").bbcode_text = get_parent().get_parent().get_node("Chat_Layer/Chat_Box").bbcode_text + "[color=" + color + "]" + str(player_name) + "[/color][color=#000000]: " + message + "[/color]" + "\n";
+	get_parent().get_parent().get_node("Chat_Layer/Chat_Box/Chat_Fade_Timer").start()

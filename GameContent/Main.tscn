@@ -162,6 +162,7 @@ mouse_filter = 2
 custom_styles/normal = SubResource( 4 )
 custom_fonts/normal_font = SubResource( 5 )
 bbcode_enabled = true
+bbcode_text = "[chat]"
 scroll_active = false
 scroll_following = true
 custom_effects = [ ExtResource( 19 ) ]
