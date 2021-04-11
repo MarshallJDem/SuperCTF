@@ -185,7 +185,7 @@ func _enter_tree():
 		else:
 			serverIP = skirmishIP;
 	if localTestingBackend:
-		mainServerIP = "http://localhost:42401/";
+		mainServerIP = "http://127.0.0.1:42401/";
 		
 
 func _ready():

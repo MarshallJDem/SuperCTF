@@ -46,7 +46,8 @@ remotesync func send_message(message, sender_id):
 	var http = HTTPRequest.new();
 	add_child(http);
 	http.connect("request_completed", self, "_HTTP_GameServerFilterChat_Completed")
-	http.request(Globals.mainServerIP + "gameServerFilterChat?" + "chatString=" + str(message) + "&senderID=" + str(sender_id), ["authorization: Bearer " + Globals.serverPrivateToken], false);
+	var message_query = message.http_escape()
+	http.request(Globals.mainServerIP + "gameServerFilterChat?" + "chatString=" + str(message_query) + "&senderID=" + str(sender_id), ["authorization: Bearer " + Globals.serverPrivateToken], false);
 	yield(http, "request_completed");
 	http.call_deferred("free");
 
@@ -67,7 +68,6 @@ func _HTTP_GameServerFilterChat_Completed(result, response_code, headers, body):
 		var fail_reason = json.result.failReason;
 		print("FILTER CHAT FAILED FOR MESSAGE '" + str(message) + "' WITH RESPONSE_CODE " + str(response_code) + " AND FAIL REASON '" + str(fail_reason) + "'")
 		rpc("receive_message", "[color=red]>> There was an error with the chat servers <<[/color]", -1)
-	
 
 remotesync func receive_message(message, sender_id):
 	# Dont add this message for the player that sent it. They show it locally instantly

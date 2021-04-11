@@ -25,8 +25,10 @@ func _screen_resized():
 
 func _close_button_pressed():
 	Globals.toggle_options_menu();
+	
 func _fullscreen_button_pressed():
 	OS.window_fullscreen = !OS.window_fullscreen;
+	
 func _master_volume_slider_changed(v):
 	var value = float(v)/100.0;
 	
@@ -35,6 +37,7 @@ func _master_volume_slider_changed(v):
 		AudioServer.set_bus_volume_db(0, -500);
 	else:
 		AudioServer.set_bus_volume_db(0, -21.5 + (value-0.5)*30);
+		
 func _music_volume_slider_changed(v):
 	var value = float(v)/100.0;
 	Globals.volume_sliders.y =v;
