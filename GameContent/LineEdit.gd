@@ -73,7 +73,7 @@ remotesync func receive_message(message, sender_id, unfiltered_message = null):
 	# Dont add this message for the player that sent it. They show it locally instantly
 	if Globals.localPlayerID == sender_id:
 		return;
-	if Globals.profanity_filter_enabled and unfiltered_message != null:
+	if !Globals.profanity_filter_enabled and unfiltered_message != null:
 		add_message(unfiltered_message, sender_id);
 	else:
 		add_message(message, sender_id);
