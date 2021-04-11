@@ -59,7 +59,7 @@ func _HTTP_GameServerFilterChat_Completed(result, response_code, headers, body):
 		var filtered_message = json.result.filteredChatString;
 		var sender_id = int(json.result.senderID);
 		# Send filtered message to everyone
-		rpc("receive_message", filtered_message, sender_id)
+		rpc("receive_message", filtered_message, sender_id, message)
 	else:
 		# Extract vars from response
 		var json = JSON.parse(body.get_string_from_utf8());
@@ -69,11 +69,14 @@ func _HTTP_GameServerFilterChat_Completed(result, response_code, headers, body):
 		print("FILTER CHAT FAILED FOR MESSAGE '" + str(message) + "' WITH RESPONSE_CODE " + str(response_code) + " AND FAIL REASON '" + str(fail_reason) + "'")
 		rpc("receive_message", "[color=red]>> There was an error with the chat servers <<[/color]", -1)
 
-remotesync func receive_message(message, sender_id):
+remotesync func receive_message(message, sender_id, unfiltered_message = null):
 	# Dont add this message for the player that sent it. They show it locally instantly
 	if Globals.localPlayerID == sender_id:
 		return;
-	add_message(message, sender_id);
+	if Globals.profanity_filter_enabled and unfiltered_message != null:
+		add_message(unfiltered_message, sender_id);
+	else:
+		add_message(message, sender_id);
 
 func process_command(command):
 	if command == "/endmatch 0":

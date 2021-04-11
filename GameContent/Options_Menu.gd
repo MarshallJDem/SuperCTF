@@ -6,10 +6,15 @@ func _ready():
 	$CanvasLayer/Control/MusicVolume_Slider.connect("value_changed", self, "_music_volume_slider_changed");
 	$CanvasLayer/Control/Close_Button.connect("button_up", self, "_close_button_pressed");
 	$CanvasLayer/Control/Fullscreen_Button.connect("button_up", self, "_fullscreen_button_pressed");
+	$CanvasLayer/Control/Profanity_Button.connect("pressed", self, "_profanity_button_pressed");
 	$CanvasLayer/Control/MasterVolume_Slider.value = Globals.volume_sliders.x;
 	$CanvasLayer/Control/MusicVolume_Slider.value = Globals.volume_sliders.y;
 	get_tree().connect("screen_resized", self, "_screen_resized");
 	_screen_resized();
+
+func _process(delta):
+	$CanvasLayer/Control/Profanity_Label.bbcode_text = "[color=white]Profanity Filter (" + ("ON" if Globals.profanity_filter_enabled else "OFF") + ")"
+	$CanvasLayer/Control/Profanity_Button.text = "Turn " + ("OFF" if Globals.profanity_filter_enabled else "ON")
 
 func _screen_resized():
 	if Globals.options_menu_should_scale:
@@ -22,6 +27,9 @@ func _screen_resized():
 		else:
 			s = window_size.x / 1920;
 		$CanvasLayer/Control.rect_scale = Vector2(s,s);
+
+func _profanity_button_pressed():
+	Globals.profanity_filter_enabled = !Globals.profanity_filter_enabled
 
 func _close_button_pressed():
 	Globals.toggle_options_menu();
