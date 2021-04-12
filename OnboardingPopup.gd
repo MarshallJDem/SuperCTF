@@ -55,7 +55,7 @@ func _CreateAccount_HTTP_Completed(result, response_code, headers, body):
 		yield(get_tree().create_timer(0.5), "timeout");
 		self.call_deferred("free");
 		return;
-	elif response_code == 409:
+	elif response_code >= 400 and response_code < 500:
 		var json = JSON.parse(body.get_string_from_utf8())
 		if json.result.has("failReason"):
 			var reason = json.result.failReason;
