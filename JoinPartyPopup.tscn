@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://fonts/pixel.TTF" type="DynamicFontData" id=1]
 [ext_resource path="res://Hover_Button_Style.tres" type="StyleBox" id=2]
@@ -18,12 +18,17 @@ outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
 font_data = ExtResource( 1 )
 
 [sub_resource type="DynamicFont" id=5]
+size = 25
+outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=6]
 size = 32
 outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
 extra_spacing_top = 12
 font_data = ExtResource( 1 )
 
-[sub_resource type="DynamicFont" id=6]
+[sub_resource type="DynamicFont" id=7]
 size = 28
 outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
 extra_spacing_top = 5
@@ -61,19 +66,19 @@ __meta__ = {
 }
 
 [node name="ColorRect" type="ColorRect" parent="Control"]
-margin_left = -32.0
-margin_top = 726.0
-margin_right = 1577.0
-margin_bottom = 1137.0
+margin_left = -14938.0
+margin_top = 527.0
+margin_right = 1614.0
+margin_bottom = 13839.0
 color = Color( 0, 0, 0, 0.729412 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ColorRect8" type="ColorRect" parent="Control"]
-margin_left = 387.0
-margin_top = 844.0
-margin_right = 1528.0
+margin_left = 386.0
+margin_top = 582.0
+margin_right = 1527.0
 margin_bottom = 1044.0
 color = Color( 0, 0, 0, 1 )
 __meta__ = {
@@ -82,9 +87,9 @@ __meta__ = {
 
 [node name="ColorRect9" type="ColorRect" parent="Control"]
 margin_left = -9793.0
-margin_top = 720.0
+margin_top = 521.984
 margin_right = 12691.0
-margin_bottom = 726.0
+margin_bottom = 527.984
 color = Color( 0, 0, 0, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -93,116 +98,96 @@ __meta__ = {
 [node name="ColorRect3" type="ColorRect" parent="Control"]
 anchor_top = -0.000249114
 anchor_bottom = -0.000249114
-margin_left = 1577.0
-margin_top = 726.269
+margin_left = 1614.0
+margin_top = 526.269
 margin_right = 1952.0
-margin_bottom = 871.269
+margin_bottom = 603.269
 color = Color( 0, 0, 0, 0.729412 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ColorRect4" type="ColorRect" parent="Control"]
-margin_left = 1577.0
-margin_top = 968.0
+margin_left = 1614.0
+margin_top = 708.0
 margin_right = 1952.0
-margin_bottom = 1137.0
-color = Color( 0, 0, 0, 0.729412 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="ColorRect10" type="ColorRect" parent="Control"]
-margin_left = -3875.0
-margin_top = 1137.0
-margin_right = 5744.0
-margin_bottom = 7334.0
-color = Color( 0, 0, 0, 0.729412 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="ColorRect11" type="ColorRect" parent="Control"]
-margin_left = -9651.0
-margin_top = 726.0
-margin_right = -32.0
-margin_bottom = 1137.0
+margin_bottom = 5059.0
 color = Color( 0, 0, 0, 0.729412 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ColorRect12" type="ColorRect" parent="Control"]
-margin_left = 1952.44
-margin_top = 726.34
-margin_right = 11571.4
-margin_bottom = 1137.34
+margin_left = 1952.0
+margin_top = 526.0
+margin_right = 11572.0
+margin_bottom = 6712.0
 color = Color( 0, 0, 0, 0.729412 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ColorRect5" type="ColorRect" parent="Control"]
-margin_left = 1778.0
-margin_top = 871.0
+margin_left = 1815.0
+margin_top = 603.0
 margin_right = 1952.0
-margin_bottom = 968.0
+margin_bottom = 708.0
 color = Color( 0, 0, 0, 0.729412 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ColorRect6" type="ColorRect" parent="Control"]
-margin_left = 1577.0
-margin_top = 867.0
-margin_right = 1778.0
-margin_bottom = 871.0
+margin_left = 1614.0
+margin_top = 603.229
+margin_right = 1815.0
+margin_bottom = 607.229
 color = Color( 0, 0.27451, 1, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ColorRect7" type="ColorRect" parent="Control"]
-margin_left = 1577.0
-margin_top = 968.0
-margin_right = 1778.0
-margin_bottom = 972.0
+margin_left = 1614.0
+margin_top = 704.229
+margin_right = 1815.0
+margin_bottom = 708.229
 color = Color( 0, 0.27451, 1, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ColorRect13" type="ColorRect" parent="Control"]
-margin_left = 1577.0
-margin_top = 871.0
-margin_right = 1582.0
-margin_bottom = 972.0
+margin_left = 1614.0
+margin_top = 607.229
+margin_right = 1619.0
+margin_bottom = 708.229
 color = Color( 0, 0.27451, 1, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ColorRect14" type="ColorRect" parent="Control"]
-margin_left = 1772.82
-margin_top = 868.862
-margin_right = 1777.82
-margin_bottom = 969.862
+margin_left = 1809.82
+margin_top = 605.092
+margin_right = 1814.82
+margin_bottom = 706.092
 color = Color( 0, 0.27451, 1, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ColorRect2" type="ColorRect" parent="Control"]
-margin_left = 390.888
-margin_top = 847.696
-margin_right = 1523.89
-margin_bottom = 1039.7
+margin_left = 391.0
+margin_top = 585.0
+margin_right = 1524.0
+margin_bottom = 1039.0
 
 [node name="TitleText" type="RichTextLabel" parent="Control"]
 margin_left = 496.156
-margin_top = 867.575
+margin_top = 618.864
 margin_right = 1478.16
-margin_bottom = 1020.58
+margin_bottom = 771.869
 rect_clip_content = false
 custom_fonts/normal_font = SubResource( 4 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
@@ -213,13 +198,34 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="TitleText2" type="RichTextLabel" parent="Control"]
+margin_left = 496.0
+margin_top = 823.494
+margin_right = 1448.0
+margin_bottom = 1075.49
+rect_clip_content = false
+custom_fonts/normal_font = SubResource( 5 )
+custom_colors/default_color = Color( 0.368627, 0.368627, 0.368627, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]Parties allow you to queue on the
+same team with your friends. They do not
+(yet) allow you to make private
+custom lobbies"
+text = "Parties allow you to queue on the
+same team with your friends. They do not
+(yet) allow you to make private
+custom lobbies"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="LineEdit" type="LineEdit" parent="Control"]
 margin_left = 732.336
-margin_top = 936.535
+margin_top = 687.824
 margin_right = 1214.34
-margin_bottom = 1026.53
+margin_bottom = 777.819
 rect_clip_content = true
-custom_fonts/font = SubResource( 5 )
+custom_fonts/font = SubResource( 6 )
 align = 1
 placeholder_text = "6969"
 caret_blink = true
@@ -230,27 +236,27 @@ __meta__ = {
 
 [node name="Button" type="Button" parent="Control"]
 margin_left = 1237.65
-margin_top = 938.2
+margin_top = 689.489
 margin_right = 1446.65
-margin_bottom = 1024.2
+margin_bottom = 775.489
 rect_clip_content = true
 custom_styles/hover = ExtResource( 2 )
 custom_styles/pressed = ExtResource( 4 )
 custom_styles/normal = ExtResource( 3 )
-custom_fonts/font = SubResource( 6 )
+custom_fonts/font = SubResource( 7 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Enter"
 
 [node name="Cancel_Button" type="Button" parent="Control"]
 margin_left = 499.949
-margin_top = 938.2
+margin_top = 689.489
 margin_right = 708.949
-margin_bottom = 1024.2
+margin_bottom = 775.489
 rect_clip_content = true
 custom_styles/hover = ExtResource( 2 )
 custom_styles/pressed = ExtResource( 4 )
 custom_styles/normal = ExtResource( 3 )
-custom_fonts/font = SubResource( 6 )
+custom_fonts/font = SubResource( 7 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Cancel"
 __meta__ = {

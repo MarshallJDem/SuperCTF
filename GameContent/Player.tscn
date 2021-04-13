@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=2]
+[gd_scene load_steps=30 format=2]
 
 [ext_resource path="res://GameContent/Player.gd" type="Script" id=1]
 [ext_resource path="res://GameContent/Player_Visuals.tscn" type="PackedScene" id=2]
@@ -14,6 +14,7 @@
 [ext_resource path="res://Assets/Sound/Flag_Drop.wav" type="AudioStream" id=12]
 [ext_resource path="res://Assets/Sound/Teleport.wav" type="AudioStream" id=13]
 [ext_resource path="res://fonts/Pixel_Chat.tres" type="DynamicFont" id=14]
+[ext_resource path="res://GameContent/BOT.gd" type="Script" id=15]
 [ext_resource path="res://GameContent/Ability_Node.gd" type="Script" id=17]
 [ext_resource path="res://GameContent/Utility_Node.gd" type="Script" id=18]
 [ext_resource path="res://GameContent/Weapon_Node.gd" type="Script" id=19]
@@ -44,7 +45,9 @@ height = 13.2677
 radius = 2.37617
 height = 5.37553
 
-[node name="Player" type="KinematicBody2D"]
+[node name="Player" type="KinematicBody2D" groups=[
+"Players",
+]]
 collision_mask = 524322
 script = ExtResource( 1 )
 
@@ -309,3 +312,6 @@ script = ExtResource( 25 )
 position = Vector2( 1, 0 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 3 )
+
+[node name="BOT" type="Node2D" parent="."]
+script = ExtResource( 15 )
