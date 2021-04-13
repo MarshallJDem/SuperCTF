@@ -17,18 +17,18 @@ size = 32
 outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
 font_data = ExtResource( 1 )
 
-[sub_resource type="DynamicFont" id=7]
+[sub_resource type="DynamicFont" id=5]
 size = 25
 outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
 font_data = ExtResource( 1 )
 
-[sub_resource type="DynamicFont" id=5]
+[sub_resource type="DynamicFont" id=6]
 size = 32
 outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
 extra_spacing_top = 12
 font_data = ExtResource( 1 )
 
-[sub_resource type="DynamicFont" id=6]
+[sub_resource type="DynamicFont" id=7]
 size = 28
 outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
 extra_spacing_top = 5
@@ -204,7 +204,7 @@ margin_top = 823.494
 margin_right = 1448.0
 margin_bottom = 1075.49
 rect_clip_content = false
-custom_fonts/normal_font = SubResource( 7 )
+custom_fonts/normal_font = SubResource( 5 )
 custom_colors/default_color = Color( 0.368627, 0.368627, 0.368627, 1 )
 bbcode_enabled = true
 bbcode_text = "[center]Parties allow you to queue on the
@@ -225,7 +225,7 @@ margin_top = 687.824
 margin_right = 1214.34
 margin_bottom = 777.819
 rect_clip_content = true
-custom_fonts/font = SubResource( 5 )
+custom_fonts/font = SubResource( 6 )
 align = 1
 placeholder_text = "6969"
 caret_blink = true
@@ -243,7 +243,7 @@ rect_clip_content = true
 custom_styles/hover = ExtResource( 2 )
 custom_styles/pressed = ExtResource( 4 )
 custom_styles/normal = ExtResource( 3 )
-custom_fonts/font = SubResource( 6 )
+custom_fonts/font = SubResource( 7 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Enter"
 
@@ -256,7 +256,7 @@ rect_clip_content = true
 custom_styles/hover = ExtResource( 2 )
 custom_styles/pressed = ExtResource( 4 )
 custom_styles/normal = ExtResource( 3 )
-custom_fonts/font = SubResource( 6 )
+custom_fonts/font = SubResource( 7 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Cancel"
 __meta__ = {
