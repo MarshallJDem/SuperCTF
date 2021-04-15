@@ -358,7 +358,7 @@ bbcode_text = "[color=black]NEWS:
 
 Happy April! And welcome to our new [color=blue][url=https://crazygames.com]CrazyGames.com[/url][color=black] players! (And the rest of course)
 
-[color=green]April 12th update[color=black]: Bots are now available to play around with in the skirmish lobby. Cosmetics are nearly complete!
+[color=green]TODAY APRIL 15 IS OUR RELEASE DATE. WE HAVE WAY MORE PLAYERS THAN USUAL AND THINGS ARE CRASHING. IF YOU HAVE TROUBLES PLEASE CHECK BACK LATER TODAY. THANKYOU AND SORRY!
 
 [color=red]If you are having any issues, please report them on our discord!
 [color=black]
@@ -369,7 +369,7 @@ text = "NEWS:
 
 Happy April! And welcome to our new CrazyGames.com players! (And the rest of course)
 
-April 12th update: Bots are now available to play around with in the skirmish lobby. Cosmetics are nearly complete!
+TODAY APRIL 15 IS OUR RELEASE DATE. WE HAVE WAY MORE PLAYERS THAN USUAL AND THINGS ARE CRASHING. IF YOU HAVE TROUBLES PLEASE CHECK BACK LATER TODAY. THANKYOU AND SORRY!
 
 If you are having any issues, please report them on our discord!
 
@@ -747,14 +747,13 @@ visible = false
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 12 )
-frame = 2
+frame = 1
 playing = true
 
 [node name="Red_Sprite" type="AnimatedSprite" parent="UI_Layer/Flags/Flag"]
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 17 )
-frame = 1
 playing = true
 
 [node name="Area2D" type="Area2D" parent="UI_Layer/Flags/Flag" groups=[
@@ -779,7 +778,6 @@ script = ExtResource( 3 )
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 12 )
-frame = 1
 playing = true
 
 [node name="Red_Sprite" type="AnimatedSprite" parent="UI_Layer/Flags/Flag3"]
@@ -787,6 +785,7 @@ visible = false
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 17 )
+frame = 3
 playing = true
 
 [node name="Area2D" type="Area2D" parent="UI_Layer/Flags/Flag3" groups=[
