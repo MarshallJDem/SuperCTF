@@ -417,7 +417,6 @@ func hit_by_projectile(attacker_id, projectile_type):
 			attacker_team_id = attacker.team_id;
 			attacker_name = attacker.player_name;
 		
-		get_tree().get_root().get_node("MainScene/NetworkController").players[attacker_id]["name"]
 		var color_1 = "red"
 		var color_2 = "blue"
 		if team_id == 1:
