@@ -2,10 +2,11 @@ extends Node
 
 # Whether to run in testing mode (for development uses)
 var testing = false;
-var experimental = true;
+var experimental = false;
 var localTesting = false; # Used for running a gameserver locally on the machine
 var localTestingBackend = false; # Used for when the backend is running locally on this machine
 var remoteSkirmish = false; # Used for running the skirmish lobby on a remote computer (so you can run it in the editor and catch bugs)
+var directLiveSkirmish = false; # Used to connect directly to the live skirmish without entering MMQueue
 
 var temporaryQuickplayDisable = true;
 
