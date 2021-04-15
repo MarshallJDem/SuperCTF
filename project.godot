@@ -77,6 +77,10 @@ clickR={
  ]
 }
 
+[logging]
+
+file_logging/enable_file_logging.pc=false
+
 [rendering]
 
 quality/driver/driver_name="GLES2"
