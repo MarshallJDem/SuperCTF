@@ -1,8 +1,47 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=11 format=2]
 
-[ext_resource path="res://fonts/Pixel_SubTitle.tres" type="DynamicFont" id=1]
-[ext_resource path="res://fonts/Pixel_Chat_Corrected.tres" type="DynamicFont" id=2]
+[ext_resource path="res://fonts/pixel.TTF" type="DynamicFontData" id=1]
 [ext_resource path="res://GameContent/ScoreBoard.gd" type="Script" id=3]
+
+[sub_resource type="DynamicFont" id=1]
+size = 50
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=2]
+outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
+extra_spacing_top = 3
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=3]
+outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
+extra_spacing_top = 3
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=4]
+outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
+extra_spacing_top = 3
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=5]
+size = 50
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=6]
+outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
+extra_spacing_top = 3
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=7]
+outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
+extra_spacing_top = 3
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=8]
+outline_color = Color( 0.988235, 0.0784314, 0.0313726, 1 )
+extra_spacing_top = 3
+font_data = ExtResource( 1 )
 
 [node name="ScoreBoard" type="PanelContainer"]
 modulate = Color( 1, 1, 1, 0.870588 )
@@ -29,7 +68,7 @@ margin_bottom = 99.0
 [node name="Team_1_Name" type="Label" parent="Teams/Team_1"]
 margin_right = 334.0
 margin_bottom = 70.0
-custom_fonts/font = ExtResource( 1 )
+custom_fonts/font = SubResource( 1 )
 custom_colors/font_color = Color( 0.054902, 0, 1, 1 )
 text = "Blue Team"
 
@@ -45,7 +84,7 @@ margin_bottom = 25.0
 [node name="Name_Column_Title" type="Label" parent="Teams/Team_1/Columns/Name_Column"]
 margin_right = 56.0
 margin_bottom = 25.0
-custom_fonts/font = ExtResource( 2 )
+custom_fonts/font = SubResource( 2 )
 text = "Name"
 
 [node name="Kills_Column" type="VBoxContainer" parent="Teams/Team_1/Columns"]
@@ -56,7 +95,7 @@ margin_bottom = 25.0
 [node name="Kills_Column_Title" type="Label" parent="Teams/Team_1/Columns/Kills_Column"]
 margin_right = 44.0
 margin_bottom = 25.0
-custom_fonts/font = ExtResource( 2 )
+custom_fonts/font = SubResource( 3 )
 text = "Kills"
 
 [node name="Deaths_Column" type="VBoxContainer" parent="Teams/Team_1/Columns"]
@@ -67,7 +106,7 @@ margin_bottom = 25.0
 [node name="Deaths_Column_Title" type="Label" parent="Teams/Team_1/Columns/Deaths_Column"]
 margin_right = 72.0
 margin_bottom = 25.0
-custom_fonts/font = ExtResource( 2 )
+custom_fonts/font = SubResource( 4 )
 text = "Deaths"
 
 [node name="Team_2" type="VBoxContainer" parent="Teams"]
@@ -78,40 +117,43 @@ margin_bottom = 99.0
 [node name="Team_2_Name" type="Label" parent="Teams/Team_2"]
 margin_right = 315.0
 margin_bottom = 70.0
-custom_fonts/font = ExtResource( 1 )
+custom_fonts/font = SubResource( 5 )
 custom_colors/font_color = Color( 1, 0, 0, 1 )
 text = "Red Team"
 
 [node name="Columns2" type="HBoxContainer" parent="Teams/Team_2"]
 margin_top = 74.0
 margin_right = 315.0
-margin_bottom = 88.0
+margin_bottom = 99.0
 
 [node name="Name_Column2" type="VBoxContainer" parent="Teams/Team_2/Columns2"]
-margin_right = 38.0
-margin_bottom = 14.0
+margin_right = 56.0
+margin_bottom = 25.0
 
 [node name="Name_Column_Title2" type="Label" parent="Teams/Team_2/Columns2/Name_Column2"]
-margin_right = 38.0
-margin_bottom = 14.0
+margin_right = 56.0
+margin_bottom = 25.0
+custom_fonts/font = SubResource( 6 )
 text = "Name"
 
 [node name="Kills_Column2" type="VBoxContainer" parent="Teams/Team_2/Columns2"]
-margin_left = 42.0
-margin_right = 69.0
-margin_bottom = 14.0
+margin_left = 60.0
+margin_right = 104.0
+margin_bottom = 25.0
 
 [node name="Kills_Column_Title2" type="Label" parent="Teams/Team_2/Columns2/Kills_Column2"]
-margin_right = 27.0
-margin_bottom = 14.0
+margin_right = 44.0
+margin_bottom = 25.0
+custom_fonts/font = SubResource( 7 )
 text = "Kills"
 
 [node name="Deaths_Column2" type="VBoxContainer" parent="Teams/Team_2/Columns2"]
-margin_left = 73.0
-margin_right = 118.0
-margin_bottom = 14.0
+margin_left = 108.0
+margin_right = 180.0
+margin_bottom = 25.0
 
 [node name="Deaths_Column_Title2" type="Label" parent="Teams/Team_2/Columns2/Deaths_Column2"]
-margin_right = 45.0
-margin_bottom = 14.0
+margin_right = 72.0
+margin_bottom = 25.0
+custom_fonts/font = SubResource( 8 )
 text = "Deaths"
