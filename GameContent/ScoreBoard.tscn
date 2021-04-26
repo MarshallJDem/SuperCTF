@@ -54,7 +54,7 @@ __meta__ = {
 [node name="Teams" type="HBoxContainer" parent="."]
 margin_left = 7.0
 margin_top = 7.0
-margin_right = 706.0
+margin_right = 813.0
 margin_bottom = 106.0
 custom_constants/separation = 50
 __meta__ = {
@@ -62,11 +62,11 @@ __meta__ = {
 }
 
 [node name="Team_1" type="VBoxContainer" parent="Teams"]
-margin_right = 334.0
+margin_right = 378.0
 margin_bottom = 99.0
 
 [node name="Team_1_Name" type="Label" parent="Teams/Team_1"]
-margin_right = 334.0
+margin_right = 378.0
 margin_bottom = 70.0
 custom_fonts/font = SubResource( 1 )
 custom_colors/font_color = Color( 0.054902, 0, 1, 1 )
@@ -74,7 +74,7 @@ text = "Blue Team"
 
 [node name="Columns" type="HBoxContainer" parent="Teams/Team_1"]
 margin_top = 74.0
-margin_right = 334.0
+margin_right = 378.0
 margin_bottom = 99.0
 
 [node name="Name_Column" type="VBoxContainer" parent="Teams/Team_1/Columns"]
@@ -109,13 +109,35 @@ margin_bottom = 25.0
 custom_fonts/font = SubResource( 4 )
 text = "Deaths"
 
+[node name="Captures_Column" type="VBoxContainer" parent="Teams/Team_1/Columns"]
+margin_left = 184.0
+margin_right = 278.0
+margin_bottom = 25.0
+
+[node name="Captures_Column_Title" type="Label" parent="Teams/Team_1/Columns/Captures_Column"]
+margin_right = 94.0
+margin_bottom = 25.0
+custom_fonts/font = SubResource( 4 )
+text = "Captures"
+
+[node name="Recovers_Column" type="VBoxContainer" parent="Teams/Team_1/Columns"]
+margin_left = 282.0
+margin_right = 378.0
+margin_bottom = 25.0
+
+[node name="Recovers_Column_Title" type="Label" parent="Teams/Team_1/Columns/Recovers_Column"]
+margin_right = 96.0
+margin_bottom = 25.0
+custom_fonts/font = SubResource( 4 )
+text = "Recovers"
+
 [node name="Team_2" type="VBoxContainer" parent="Teams"]
-margin_left = 384.0
-margin_right = 699.0
+margin_left = 428.0
+margin_right = 806.0
 margin_bottom = 99.0
 
 [node name="Team_2_Name" type="Label" parent="Teams/Team_2"]
-margin_right = 315.0
+margin_right = 378.0
 margin_bottom = 70.0
 custom_fonts/font = SubResource( 5 )
 custom_colors/font_color = Color( 1, 0, 0, 1 )
@@ -123,7 +145,7 @@ text = "Red Team"
 
 [node name="Columns2" type="HBoxContainer" parent="Teams/Team_2"]
 margin_top = 74.0
-margin_right = 315.0
+margin_right = 378.0
 margin_bottom = 99.0
 
 [node name="Name_Column2" type="VBoxContainer" parent="Teams/Team_2/Columns2"]
@@ -157,3 +179,25 @@ margin_right = 72.0
 margin_bottom = 25.0
 custom_fonts/font = SubResource( 8 )
 text = "Deaths"
+
+[node name="Captures_Column2" type="VBoxContainer" parent="Teams/Team_2/Columns2"]
+margin_left = 184.0
+margin_right = 278.0
+margin_bottom = 25.0
+
+[node name="Captures_Column_Title2" type="Label" parent="Teams/Team_2/Columns2/Captures_Column2"]
+margin_right = 94.0
+margin_bottom = 25.0
+custom_fonts/font = SubResource( 4 )
+text = "Captures"
+
+[node name="Recovers_Column2" type="VBoxContainer" parent="Teams/Team_2/Columns2"]
+margin_left = 282.0
+margin_right = 378.0
+margin_bottom = 25.0
+
+[node name="Recovers_Column_Title2" type="Label" parent="Teams/Team_2/Columns2/Recovers_Column2"]
+margin_right = 96.0
+margin_bottom = 25.0
+custom_fonts/font = SubResource( 4 )
+text = "Recovers"
