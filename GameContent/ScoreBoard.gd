@@ -30,54 +30,54 @@ func setup():
 				#make a label for player name and add it to the scoreboard
 				var player_label = make_new_label("0e00ff")
 				player_label.text = players_data[str(current_player)]["name"]
-				$Teams/Team_1/Columns/Name_Column.add_child(player_label)
+				$MarginContainer/Teams/Team_1/Columns/Name_Column.add_child(player_label)
 				
 				#make a label for player kills and add it to the scoreboard
 				player_label = make_new_label("0e00ff")
 				player_label.text = str(stats_data[str(current_player)]["kills"])
-				$Teams/Team_1/Columns/Kills_Column.add_child(player_label)
+				$MarginContainer/Teams/Team_1/Columns/Kills_Column.add_child(player_label)
 				
 				#make a label for player deaths and add it to the scoreboard
 				player_label = make_new_label("0e00ff")
 				player_label.text = str(stats_data[str(current_player)]["deaths"])
-				$Teams/Team_1/Columns/Deaths_Column.add_child(player_label)
+				$MarginContainer/Teams/Team_1/Columns/Deaths_Column.add_child(player_label)
 				
 				#make a label for player captures and add it to the scoreboard
 				player_label = make_new_label("0e00ff")
 				player_label.text = str(stats_data[str(current_player)]["captures"])
-				$Teams/Team_1/Columns/Captures_Column.add_child(player_label)
+				$MarginContainer/Teams/Team_1/Columns/Captures_Column.add_child(player_label)
 				
 				#make a label for player recovers and add it to the scoreboard
 				player_label = make_new_label("0e00ff")
 				player_label.text = str(stats_data[str(current_player)]["recovers"])
-				$Teams/Team_1/Columns/Recovers_Column.add_child(player_label)
+				$MarginContainer/Teams/Team_1/Columns/Recovers_Column.add_child(player_label)
 			
 			elif players_data[str(current_player)]["team_id"] == 1:
 				
 				#make a label for player name and add it to the scoreboard
 				var player_label = make_new_label("ff0000")
 				player_label.text = players_data[str(current_player)]["name"]
-				$Teams/Team_2/Columns2/Name_Column2.add_child(player_label)
+				$MarginContainer/Teams/Team_2/Columns2/Name_Column2.add_child(player_label)
 				
 				#make a label for player kills and add it to the scoreboard
 				player_label = make_new_label("ff0000")
 				player_label.text = str(stats_data[str(current_player)]["kills"])
-				$Teams/Team_2/Columns2/Kills_Column2.add_child(player_label)
+				$MarginContainer/Teams/Team_2/Columns2/Kills_Column2.add_child(player_label)
 				
 				#make a label for player deaths and add it to the scoreboard
 				player_label = make_new_label("ff0000")
 				player_label.text = str(stats_data[str(current_player)]["deaths"])
-				$Teams/Team_2/Columns2/Deaths_Column2.add_child(player_label)
+				$MarginContainer/Teams/Team_2/Columns2/Deaths_Column2.add_child(player_label)
 				
 				#make a label for player captures and add it to the scoreboard
 				player_label = make_new_label("ff0000")
 				player_label.text = str(stats_data[str(current_player)]["captures"])
-				$Teams/Team_2/Columns2/Captures_Column2.add_child(player_label)
+				$MarginContainer/Teams/Team_2/Columns2/Captures_Column2.add_child(player_label)
 				
 				#make a label for player recovers and add it to the scoreboard
 				player_label = make_new_label("ff0000")
 				player_label.text = str(stats_data[str(current_player)]["recovers"])
-				$Teams/Team_2/Columns2/Recovers_Column2.add_child(player_label)
+				$MarginContainer/Teams/Team_2/Columns2/Recovers_Column2.add_child(player_label)
 				
 			else:
 				print("error player had team id "+str(players_data[str(current_player)]["team_id"]))
@@ -103,18 +103,18 @@ func _refresh():
 		if players_data[str(current_player)]["team_id"] == 0:
 			blue_players += 1
 			#set all stats to current stats_data stats
-			$Teams/Team_1/Columns/Kills_Column.get_child(blue_players).text = str(stats_data[str(current_player)]["kills"])
-			$Teams/Team_1/Columns/Deaths_Column.get_child(blue_players).text = str(stats_data[str(current_player)]["deaths"])
-			$Teams/Team_1/Columns/Captures_Column.get_child(blue_players).text = str(stats_data[str(current_player)]["captures"])
-			$Teams/Team_1/Columns/Recovers_Column.get_child(blue_players).text = str(stats_data[str(current_player)]["recovers"])
+			$MarginContainer/Teams/Team_1/Columns/Kills_Column.get_child(blue_players).text = str(stats_data[str(current_player)]["kills"])
+			$MarginContainer/Teams/Team_1/Columns/Deaths_Column.get_child(blue_players).text = str(stats_data[str(current_player)]["deaths"])
+			$MarginContainer/Teams/Team_1/Columns/Captures_Column.get_child(blue_players).text = str(stats_data[str(current_player)]["captures"])
+			$MarginContainer/Teams/Team_1/Columns/Recovers_Column.get_child(blue_players).text = str(stats_data[str(current_player)]["recovers"])
 		#if player is red
 		elif players_data[str(current_player)]["team_id"] == 1:
 			red_players += 1
 			#set all stats to current stats_data stats
-			$Teams/Team_2/Columns2/Kills_Column2.get_child(red_players).text = str(stats_data[str(current_player)]["kills"])
-			$Teams/Team_2/Columns2/Deaths_Column2.get_child(red_players).text = str(stats_data[str(current_player)]["deaths"])
-			$Teams/Team_2/Columns2/Captures_Column2.get_child(blue_players).text = str(stats_data[str(current_player)]["captures"])
-			$Teams/Team_2/Columns2/Recovers_Column2.get_child(blue_players).text = str(stats_data[str(current_player)]["recovers"])
+			$MarginContainer/Teams/Team_2/Columns2/Kills_Column2.get_child(red_players).text = str(stats_data[str(current_player)]["kills"])
+			$MarginContainer/Teams/Team_2/Columns2/Deaths_Column2.get_child(red_players).text = str(stats_data[str(current_player)]["deaths"])
+			$MarginContainer/Teams/Team_2/Columns2/Captures_Column2.get_child(blue_players).text = str(stats_data[str(current_player)]["captures"])
+			$MarginContainer/Teams/Team_2/Columns2/Recovers_Column2.get_child(blue_players).text = str(stats_data[str(current_player)]["recovers"])
 			
 		
 		
