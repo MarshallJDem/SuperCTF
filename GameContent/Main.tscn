@@ -231,6 +231,7 @@ __meta__ = {
 }
 
 [node name="UI_Layer" type="CanvasLayer" parent="."]
+layer = 100
 script = ExtResource( 4 )
 
 [node name="Score_Label" type="RichTextLabel" parent="UI_Layer"]
@@ -700,6 +701,7 @@ __meta__ = {
 }
 
 [node name="ScoreBoard" parent="UI_Layer" instance=ExtResource( 33 )]
+visible = false
 anchor_left = 0.5
 anchor_right = 0.5
 anchor_bottom = 1.0

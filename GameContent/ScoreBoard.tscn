@@ -45,158 +45,171 @@ font_data = ExtResource( 1 )
 
 [node name="ScoreBoard" type="PanelContainer"]
 modulate = Color( 1, 1, 1, 0.870588 )
+margin_left = -410.0
+margin_right = 410.0
+margin_bottom = 113.0
 grow_horizontal = 2
 script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Teams" type="HBoxContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="."]
 margin_left = 7.0
 margin_top = 7.0
-margin_right = 813.0
-margin_bottom = 106.0
+margin_right = 833.0
+margin_bottom = 146.0
+custom_constants/margin_right = 10
+custom_constants/margin_top = 20
+custom_constants/margin_left = 10
+custom_constants/margin_bottom = 20
+
+[node name="Teams" type="HBoxContainer" parent="MarginContainer"]
+margin_left = 10.0
+margin_top = 20.0
+margin_right = 816.0
+margin_bottom = 119.0
 custom_constants/separation = 50
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Team_1" type="VBoxContainer" parent="Teams"]
+[node name="Team_1" type="VBoxContainer" parent="MarginContainer/Teams"]
 margin_right = 378.0
 margin_bottom = 99.0
 
-[node name="Team_1_Name" type="Label" parent="Teams/Team_1"]
+[node name="Team_1_Name" type="Label" parent="MarginContainer/Teams/Team_1"]
 margin_right = 378.0
 margin_bottom = 70.0
 custom_fonts/font = SubResource( 1 )
 custom_colors/font_color = Color( 0.054902, 0, 1, 1 )
 text = "Blue Team"
 
-[node name="Columns" type="HBoxContainer" parent="Teams/Team_1"]
+[node name="Columns" type="HBoxContainer" parent="MarginContainer/Teams/Team_1"]
 margin_top = 74.0
 margin_right = 378.0
 margin_bottom = 99.0
 
-[node name="Name_Column" type="VBoxContainer" parent="Teams/Team_1/Columns"]
+[node name="Name_Column" type="VBoxContainer" parent="MarginContainer/Teams/Team_1/Columns"]
 margin_right = 56.0
 margin_bottom = 25.0
 
-[node name="Name_Column_Title" type="Label" parent="Teams/Team_1/Columns/Name_Column"]
+[node name="Name_Column_Title" type="Label" parent="MarginContainer/Teams/Team_1/Columns/Name_Column"]
 margin_right = 56.0
 margin_bottom = 25.0
 custom_fonts/font = SubResource( 2 )
 text = "Name"
 
-[node name="Kills_Column" type="VBoxContainer" parent="Teams/Team_1/Columns"]
+[node name="Kills_Column" type="VBoxContainer" parent="MarginContainer/Teams/Team_1/Columns"]
 margin_left = 60.0
 margin_right = 104.0
 margin_bottom = 25.0
 
-[node name="Kills_Column_Title" type="Label" parent="Teams/Team_1/Columns/Kills_Column"]
+[node name="Kills_Column_Title" type="Label" parent="MarginContainer/Teams/Team_1/Columns/Kills_Column"]
 margin_right = 44.0
 margin_bottom = 25.0
 custom_fonts/font = SubResource( 3 )
 text = "Kills"
 
-[node name="Deaths_Column" type="VBoxContainer" parent="Teams/Team_1/Columns"]
+[node name="Deaths_Column" type="VBoxContainer" parent="MarginContainer/Teams/Team_1/Columns"]
 margin_left = 108.0
 margin_right = 180.0
 margin_bottom = 25.0
 
-[node name="Deaths_Column_Title" type="Label" parent="Teams/Team_1/Columns/Deaths_Column"]
+[node name="Deaths_Column_Title" type="Label" parent="MarginContainer/Teams/Team_1/Columns/Deaths_Column"]
 margin_right = 72.0
 margin_bottom = 25.0
 custom_fonts/font = SubResource( 4 )
 text = "Deaths"
 
-[node name="Captures_Column" type="VBoxContainer" parent="Teams/Team_1/Columns"]
+[node name="Captures_Column" type="VBoxContainer" parent="MarginContainer/Teams/Team_1/Columns"]
 margin_left = 184.0
 margin_right = 278.0
 margin_bottom = 25.0
 
-[node name="Captures_Column_Title" type="Label" parent="Teams/Team_1/Columns/Captures_Column"]
+[node name="Captures_Column_Title" type="Label" parent="MarginContainer/Teams/Team_1/Columns/Captures_Column"]
 margin_right = 94.0
 margin_bottom = 25.0
 custom_fonts/font = SubResource( 4 )
 text = "Captures"
 
-[node name="Recovers_Column" type="VBoxContainer" parent="Teams/Team_1/Columns"]
+[node name="Recovers_Column" type="VBoxContainer" parent="MarginContainer/Teams/Team_1/Columns"]
 margin_left = 282.0
 margin_right = 378.0
 margin_bottom = 25.0
 
-[node name="Recovers_Column_Title" type="Label" parent="Teams/Team_1/Columns/Recovers_Column"]
+[node name="Recovers_Column_Title" type="Label" parent="MarginContainer/Teams/Team_1/Columns/Recovers_Column"]
 margin_right = 96.0
 margin_bottom = 25.0
 custom_fonts/font = SubResource( 4 )
 text = "Recovers"
 
-[node name="Team_2" type="VBoxContainer" parent="Teams"]
+[node name="Team_2" type="VBoxContainer" parent="MarginContainer/Teams"]
 margin_left = 428.0
 margin_right = 806.0
 margin_bottom = 99.0
 
-[node name="Team_2_Name" type="Label" parent="Teams/Team_2"]
+[node name="Team_2_Name" type="Label" parent="MarginContainer/Teams/Team_2"]
 margin_right = 378.0
 margin_bottom = 70.0
 custom_fonts/font = SubResource( 5 )
 custom_colors/font_color = Color( 1, 0, 0, 1 )
 text = "Red Team"
 
-[node name="Columns2" type="HBoxContainer" parent="Teams/Team_2"]
+[node name="Columns2" type="HBoxContainer" parent="MarginContainer/Teams/Team_2"]
 margin_top = 74.0
 margin_right = 378.0
 margin_bottom = 99.0
 
-[node name="Name_Column2" type="VBoxContainer" parent="Teams/Team_2/Columns2"]
+[node name="Name_Column2" type="VBoxContainer" parent="MarginContainer/Teams/Team_2/Columns2"]
 margin_right = 56.0
 margin_bottom = 25.0
 
-[node name="Name_Column_Title2" type="Label" parent="Teams/Team_2/Columns2/Name_Column2"]
+[node name="Name_Column_Title2" type="Label" parent="MarginContainer/Teams/Team_2/Columns2/Name_Column2"]
 margin_right = 56.0
 margin_bottom = 25.0
 custom_fonts/font = SubResource( 6 )
 text = "Name"
 
-[node name="Kills_Column2" type="VBoxContainer" parent="Teams/Team_2/Columns2"]
+[node name="Kills_Column2" type="VBoxContainer" parent="MarginContainer/Teams/Team_2/Columns2"]
 margin_left = 60.0
 margin_right = 104.0
 margin_bottom = 25.0
 
-[node name="Kills_Column_Title2" type="Label" parent="Teams/Team_2/Columns2/Kills_Column2"]
+[node name="Kills_Column_Title2" type="Label" parent="MarginContainer/Teams/Team_2/Columns2/Kills_Column2"]
 margin_right = 44.0
 margin_bottom = 25.0
 custom_fonts/font = SubResource( 7 )
 text = "Kills"
 
-[node name="Deaths_Column2" type="VBoxContainer" parent="Teams/Team_2/Columns2"]
+[node name="Deaths_Column2" type="VBoxContainer" parent="MarginContainer/Teams/Team_2/Columns2"]
 margin_left = 108.0
 margin_right = 180.0
 margin_bottom = 25.0
 
-[node name="Deaths_Column_Title2" type="Label" parent="Teams/Team_2/Columns2/Deaths_Column2"]
+[node name="Deaths_Column_Title2" type="Label" parent="MarginContainer/Teams/Team_2/Columns2/Deaths_Column2"]
 margin_right = 72.0
 margin_bottom = 25.0
 custom_fonts/font = SubResource( 8 )
 text = "Deaths"
 
-[node name="Captures_Column2" type="VBoxContainer" parent="Teams/Team_2/Columns2"]
+[node name="Captures_Column2" type="VBoxContainer" parent="MarginContainer/Teams/Team_2/Columns2"]
 margin_left = 184.0
 margin_right = 278.0
 margin_bottom = 25.0
 
-[node name="Captures_Column_Title2" type="Label" parent="Teams/Team_2/Columns2/Captures_Column2"]
+[node name="Captures_Column_Title2" type="Label" parent="MarginContainer/Teams/Team_2/Columns2/Captures_Column2"]
 margin_right = 94.0
 margin_bottom = 25.0
 custom_fonts/font = SubResource( 4 )
 text = "Captures"
 
-[node name="Recovers_Column2" type="VBoxContainer" parent="Teams/Team_2/Columns2"]
+[node name="Recovers_Column2" type="VBoxContainer" parent="MarginContainer/Teams/Team_2/Columns2"]
 margin_left = 282.0
 margin_right = 378.0
 margin_bottom = 25.0
 
-[node name="Recovers_Column_Title2" type="Label" parent="Teams/Team_2/Columns2/Recovers_Column2"]
+[node name="Recovers_Column_Title2" type="Label" parent="MarginContainer/Teams/Team_2/Columns2/Recovers_Column2"]
 margin_right = 96.0
 margin_bottom = 25.0
 custom_fonts/font = SubResource( 4 )
