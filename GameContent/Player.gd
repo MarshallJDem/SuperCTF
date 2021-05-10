@@ -385,6 +385,7 @@ remotesync func update_position(new_pos, server_forced = false):
 		# Mainly implemented to stop players from spawning with flag if they tab out on top of home (this could be fixed with timestamps instead too)
 		if position.distance_to(new_pos) > 200:
 			rpc("update_position", position, true)
+			return
 		position = new_pos;
 		return;
 	# Otherwise lerp
