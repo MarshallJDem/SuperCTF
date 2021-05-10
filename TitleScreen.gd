@@ -52,6 +52,9 @@ func create_guest():
 	else:
 		$HTTPRequest_CreateGuest.request(Globals.mainServerIP + "createGuest");
 func join_MM_queue(queueType):
+	if(Globals.directLiveSkirmish):
+		get_tree().change_scene("res://GameContent/Main.tscn");
+		return
 	print("Token : " + Globals.userToken);
 	var query = "?queueType=" + str(queueType);
 	$HTTPRequest_JoinMMQueue.request(Globals.mainServerIP + "joinMMQ" + query, ["authorization: Bearer " + Globals.userToken]);

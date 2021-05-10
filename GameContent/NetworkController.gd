@@ -42,7 +42,7 @@ var Game_Results_Screen = preload("res://Game_Results_Screen.tscn");
 
 func _ready():
 	
-	if !Globals.isServer and Globals.player_status == 1:
+	if !Globals.isServer and (Globals.player_status == 1 || Globals.directLiveSkirmish):
 		print("Overriding matchType and setting to 0 (This should not happen on servers)");
 		Globals.matchType = 0;
 		Globals.serverIP = Globals.skirmishIP;
