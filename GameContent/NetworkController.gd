@@ -164,7 +164,6 @@ func start_server():
 					print_stack();
 			players[i] = {"name" : str(player.name), "team_id" : team_id, "user_id": int(player.uid), "network_id": 1, "spawn_pos": spawn_pos, "position": spawn_pos, "class" : Globals.Classes.Bullet, "DD_vote" : false, "BOT" : false};
 			i += 1;
-		print(players);
 		start_match();
 
 
@@ -326,7 +325,8 @@ func update_player_objects():
 				player_node.control = round_is_running;
 				player_node.activate_camera();
 		else:
-			print("ERROR : FAILED TO FIND PLAYER OBJECT FOR PLAYERID : "  + str(player_id));
+			pass
+			#TODO TAKE CARE OF THIS. THIS HAPPENS A LOT PROBS BECAUSE THE OBJECT DOESN INSTANCE IMMEDIATELY
 
 remote func player_class_changed(new_class):
 	var sender_network_id = get_tree().get_rpc_sender_id();
@@ -338,7 +338,6 @@ remote func player_class_changed(new_class):
 
 
 remotesync func update_players_data(players_data, round_is_running):
-	print(players_data);
 	players = players_data;
 	self.round_is_running = round_is_running;
 	update_player_objects();
