@@ -7,6 +7,8 @@ var label_font = preload("res://fonts/Pixel_Chat_Corrected.tres")
 
 func _ready() -> void:
 	setup()
+	get_tree().connect("screen_resized", self, "_screen_resized");
+	_screen_resized()
 	
 func _process(delta: float) -> void:
 	_refresh()
@@ -117,7 +119,16 @@ func _refresh():
 			$MarginContainer/Teams/Team_2/Columns2/Recovers_Column2.get_child(blue_players).text = str(stats_data[str(current_player)]["recovers"])
 			
 		
-		
+func _screen_resized():
+	var window_size = OS.get_window_size();
+	var s;
+	# More horizontal than usual
+	if window_size.x / window_size.y > 1920.0/1080.0:
+		# Clip to height
+		s = window_size.y / 1080;
+	else:
+		s = window_size.x / 1920;
+	self.rect_scale = Vector2(s,s);
 		
 
 
