@@ -256,6 +256,8 @@ func move_on_inputs(input_override = null):
 	var new_pos = position;
 
 func attempt_dash():
+	if $Weapon_Node/Laser_Timer.time_left != 0:
+		return
 	if $Teleport_Timer.time_left != 0:
 		return;
 	dash_signaled = true;
