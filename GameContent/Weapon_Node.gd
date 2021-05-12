@@ -95,13 +95,12 @@ func _draw():
 		red = red + lightener;
 		green = green + lightener;
 		blue = blue + lightener;
-		var target_position = laser_target_position;
 		if laser_target_position == null:
 			$CollisionTester.position = Vector2(0,0);
 			$CollisionTester.move_and_collide(laser_direction * 1000.0)
 			var length = $CollisionTester.position.distance_to(Vector2.ZERO) + 10;
-			laser_target_position = laser_direction * length;
-			target_position = laser_direction * length;
+			laser_target_position = player.position + (laser_direction * length);
+		var target_position = laser_target_position - player.position;
 		var progress = 1 - ($Laser_Timer.time_left / $Laser_Timer.wait_time);
 		draw_line(laser_position, target_position, Color(red, green, blue, progress), size);
 		draw_circle(laser_position, size + 3, Color(red,green,blue,(sin((progress) * 2 * PI * 25 * (0.1 * (1.0+progress) ) )+1)/2.0));
@@ -315,7 +314,7 @@ func spawn_laser():
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE);
 	var laser = Laser.instance();
 	laser.position =  player.position + laser_position;
-	laser.target_pos = player.position + laser_target_position;
+	laser.target_pos = laser_target_position;
 	laser.player_id = player.player_id;
 	laser.team_id = player.team_id;
 	laser.z_index = (player.position.y + laser_target_position.y) - 2;
@@ -328,7 +327,7 @@ func spawn_laser():
 	laser_is_blank = false;
 
 func shoot_laser(d, width):
-	# Test to see if demo is spawning inside of forcefield
+	# Test to see if laser is spawning inside of forcefield
 	$CollisionTester.position = get_node("Laser_Starts/" + String(player.look_direction)).position ;
 	var forcefield_test = $CollisionTester.move_and_collide(d * 0.0);
 	
@@ -366,7 +365,7 @@ func shoot_laser(d, width):
 	if wall:
 		wall.layers = wall_layers;
 	var length = $CollisionTester.position.distance_to(Vector2.ZERO) + 10;
-	laser_target_position = laser_direction * length;
+	laser_target_position = player.position + (laser_direction * length);
 	var target_pos = laser_target_position;
 	var time_shot = OS.get_system_time_msecs() - Globals.match_start_time;
 	if is_blank:

@@ -57,7 +57,7 @@ animations = [ {
 points = PoolVector2Array( -10, -9.171, 23.751, -8.802, 23.926, 33.35, -10, 33.419 )
 
 [sub_resource type="DynamicFont" id=12]
-size = 8
+size = 19
 outline_size = 1
 outline_color = Color( 0.807843, 0.807843, 0.807843, 1 )
 font_data = ExtResource( 2 )
@@ -72,13 +72,13 @@ script = ExtResource( 1 )
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 5 )
+frame = 1
 playing = true
 
 [node name="Red_Sprite" type="AnimatedSprite" parent="."]
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 10 )
-frame = 3
 playing = true
 
 [node name="Area2D" type="Area2D" parent="." groups=[
@@ -93,18 +93,16 @@ shape = SubResource( 11 )
 
 [node name="Warning" type="RichTextLabel" parent="."]
 visible = false
-margin_left = -91.1031
-margin_top = -62.3964
-margin_right = 108.897
-margin_bottom = -22.3964
+margin_left = -125.234
+margin_top = -90.0128
+margin_right = 139.766
+margin_bottom = 5.98715
 rect_clip_content = false
 custom_fonts/normal_font = SubResource( 12 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
-bbcode_text = "[center]Can't recover in
-Sudden Death"
-text = "Can't recover in
-Sudden Death"
+bbcode_text = "[center]Can't score without your flag at home"
+text = "Can't score without your flag at home"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false

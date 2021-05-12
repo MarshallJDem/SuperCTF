@@ -372,11 +372,20 @@ func is_camera_extended():
 	return $Center_Pivot.extended
 
 # Updates this player's position with the new given position. Only ever called remotely
-remotesync func update_position(new_pos):
+remotesync func update_position(new_pos, server_forced = false):
 	if is_network_master():
+		if server_forced:
+			position = new_pos;
 		return;
+		
 	# Instantly update position for server
 	if get_tree().is_network_server():
+		# Dont let players move too far. Prevents hacking / exploits
+		# This will create a "rubberband" effect in cases of extreme lag
+		# Mainly implemented to stop players from spawning with flag if they tab out on top of home (this could be fixed with timestamps instead too)
+		if position.distance_to(new_pos) > 200:
+			rpc("update_position", position, true)
+			return
 		position = new_pos;
 		return;
 	# Otherwise lerp
@@ -385,6 +394,8 @@ remotesync func update_position(new_pos):
 	time_of_last_received_pos = OS.get_ticks_msec();
 	lerp_start_pos = position;
 	lerp_end_pos = new_pos;
+
+	
 
 # Activates the camera on this player
 func activate_camera():
