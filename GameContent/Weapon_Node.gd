@@ -96,10 +96,7 @@ func _draw():
 		green = green + lightener;
 		blue = blue + lightener;
 		if laser_target_position == null:
-			$CollisionTester.position = Vector2(0,0);
-			$CollisionTester.move_and_collide(laser_direction * 1000.0)
-			var length = $CollisionTester.position.distance_to(Vector2.ZERO) + 10;
-			laser_target_position = player.position + (laser_direction * length);
+			laser_target_position = player.position
 		var target_position = laser_target_position - player.position;
 		var progress = 1 - ($Laser_Timer.time_left / $Laser_Timer.wait_time);
 		draw_line(laser_position, target_position, Color(red, green, blue, progress), size);
@@ -286,7 +283,7 @@ remotesync func start_laser(direction, start_pos, target_pos, look_direction, ti
 	elif !get_tree().is_network_server():
 		wait_time = wait_time - ((OS.get_system_time_msecs() - Globals.match_start_time) - time_shot )/1000.0;
 	if wait_time <= 0:
-		wait_time = 0.05;
+		wait_time = 0.05;#
 	$Laser_Timer.wait_time = wait_time;
 	$Laser_Timer.start();
 	player.camera_ref.shake($Laser_Timer.wait_time, 0.5, true);
