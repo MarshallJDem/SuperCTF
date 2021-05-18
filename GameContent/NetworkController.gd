@@ -14,6 +14,7 @@ var server = null;
 var client = null;
 var isSuddenDeath = false;
 var isDD = false;
+var connection_attempts = 0
 
 var game_loaded = false;
 
@@ -212,6 +213,7 @@ remotesync func cancel_match():
 
 # Joins a server
 func join_server():
+	connection_attempts += 1
 	client = WebSocketClient.new();
 	client.verify_ssl = false;
 	# TODO make this work on backend
@@ -291,6 +293,10 @@ func _connection_ok():
 
 func _connection_failed():
 	print("Connection to serverfailed");
+	if connection_attempts < 3:
+		yield(get_tree().create_timer(1), "timeout");
+		join_server()
+		return
 	if Globals.matchType == 0:
 		Globals.create_popup("Something unknown went wrong when trying to connect to the skirmish lobby. You are still likely successfully in the matchmaking queue.");
 	else:
