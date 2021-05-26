@@ -5,7 +5,7 @@ var LeaderboardCell = preload("res://LeaderboardCell.tscn");
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	Globals.options_menu_should_scale = false;
-	if Globals.testing:
+	if Globals.testing or Globals.localTesting:
 		get_tree().change_scene("res://GameContent/Main.tscn");
 	$HTTPRequest_JoinMMQueue.connect("request_completed", self, "_HTTP_JoinMMQueue_Completed");
 	$HTTPRequest_CreateGuest.connect("request_completed", self, "_HTTP_CreateGuest_Completed");
