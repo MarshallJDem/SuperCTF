@@ -47,7 +47,7 @@ height = 13.2677
 radius = 2.37617
 height = 5.37553
 
-[sub_resource type="CanvasItemMaterial" id=9]
+[sub_resource type="CanvasItemMaterial" id=7]
 particles_animation = true
 particles_anim_h_frames = 1
 particles_anim_v_frames = 2
@@ -335,7 +335,7 @@ scale = Vector2( 2, 2 )
 texture = ExtResource( 3 )
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="."]
-material = SubResource( 9 )
+material = SubResource( 7 )
 emitting = false
 one_shot = true
 explosiveness = 0.2

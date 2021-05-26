@@ -9,8 +9,9 @@ var fire_gradiant_purple = preload("res://Assets/Particles/Color Gradients/Purpl
 func _ready() -> void:
 	pass
 
+#Remote sync to sync with all players
 #change color gradiant of fire particles. Can input team id
-func start(type):
+remotesync func _start(type):
 	#team id of blue
 	if type == 0:
 		self.color_ramp = fire_gradiant_blue
@@ -23,5 +24,8 @@ func start(type):
 	emitting = true;
 
 #stop emitting fire
-func stop():
+remotesync func _stop():
 	emitting = false;
+	
+	
+
