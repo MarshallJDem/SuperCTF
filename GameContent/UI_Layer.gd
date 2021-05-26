@@ -180,10 +180,10 @@ func _process(delta):
 		if charge == 100:
 			$Input_GUIs/Ability_GUIs/ULT_GUI.modulate = Color(1,1,1,1.0);
 			#emit fire behind the ult button
-			$Input_GUIs/Ability_GUIs/ULT_GUI/Fire_Particles.start(local_player.team_id) 
+			$Input_GUIs/Ability_GUIs/ULT_GUI/Fire_Particles._start(local_player.team_id) 
 		else:
 			#stop emitting the fire particles behind the ult button
-			$Input_GUIs/Ability_GUIs/ULT_GUI/Fire_Particles.stop()
+			$Input_GUIs/Ability_GUIs/ULT_GUI/Fire_Particles._stop()
 		$Input_GUIs/Ability_GUIs/ULT_Sub_GUI_Text.text = "%" + str(charge);
 		$Input_GUIs/Ability_GUIs/ULT_GUI_Text.text = "Q";
 	
