@@ -47,7 +47,7 @@ func _input(event):
 				ability_pressed();
 			if event.scancode == KEY_Q:
 				ult_pressed();
-			if event.scancode == KEY_P and Globals.testing:
+			if event.scancode == KEY_P and (Globals.testing or Globals.allowCommands):
 				#$Ult_Timer.start();
 				ult_charge = 100;
 				#player.get_node("Weapon_Node").ult_active = true;
