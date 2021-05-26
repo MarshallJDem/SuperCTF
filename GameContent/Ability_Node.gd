@@ -65,7 +65,10 @@ func ult_pressed():
 		ult_charge = 0;
 		player.get_node("Weapon_Node").ult_active = true;
 		#emit fire behind player of the color of the player's team
-		player.get_node("Fire_Particles").rpc("_start", player.team_id)
+		if Globals.testing:
+			player.get_node("Fire_Particles")._start(player.team_id)
+		else:
+			player.get_node("Fire_Particles").rpc("_start", player.team_id)
 		
 func _ult_charge_timer_ended():
 	var previous_charge = ult_charge;
