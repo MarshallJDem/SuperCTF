@@ -1058,8 +1058,10 @@ func _round_end_timer_ended():
 			if scores[0] == scores[1]:
 				rpc("load_new_round", true);
 			elif scores[0] > scores[1]: # Blue Wins
+				print("POGGERS1")
 				rpc("end_match", 0);
 			else: # Red Wins
+				print("POGGERS2")
 				rpc("end_match", 1);
 			return;
 		# If this is sudden death, just take the best score
@@ -1075,8 +1077,10 @@ func _round_end_timer_ended():
 					game_over = true;
 					winning_team_id = i;
 		if game_over:
+			print("POGGERS3")
 			rpc("end_match", winning_team_id);
 		else:
+			print("POGGERS4")
 			rpc("load_new_round");
 
 # Called when the Round_Start_Timer ends
