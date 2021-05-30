@@ -598,10 +598,10 @@ func _client_disconnected(id):
 					players.erase(player_id);
 					compensate_bots_for_player_leaving(team_id)
 					# If this is a skirmish and there are no players left, reset some stuff
-					if players.size() == 0:
+					if get_tree().get_network_connected_peers().size() == 0:
 						game_vars = Globals.game_var_defaults.duplicate();
 						for flag in get_tree().get_nodes_in_group("Flags"):
-							flag.rpc("return_home")
+							flag.return_home()
 	if player_id == -1:
 		print("COULDNT FIND PLAYER IN PLAYERS DATA TO DELETE FOR NETWORKID : " + str(id));
 		return;
