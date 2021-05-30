@@ -428,11 +428,15 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 			if match_is_running:
 				update_flags_data();
 				rpc_id(network_id, "load_mid_round", players, scores, $Round_Start_Timer.time_left, round_num, OS.get_system_time_msecs() - Globals.match_start_time, flags_data, game_vars); 
-
-			
-		else:
-			print("WE SHOULD BE DISCONNECTING A player because the checkUser backend call failed with a non 200 status BUT WE DON'T KNOW THEIR NETWORKID'");
-			#server.disconnect_peer(player_check_queue[0]['networkID'], 1000, "An Unknown Error Occurred.")
+		else: # Response failed for some reason.
+			var json = JSON.parse(body.get_string_from_utf8());
+			var network_id = -42
+			if json.result.has("networkID"):
+				network_id = int(json.result.networkID);
+			else:
+				print("OH SHIT WE AINT GOT A REAL NETWORKID CUZ GAMESERVERCHECKUSER FAILED TO GIVE ONE")
+			print("Disconnecting player of network_id " + str(network_id) + "because the checkUser backend call failed with a non 200 status");
+			server.disconnect_peer(network_id, 1000, "An Unknown Error Occurred.")
 
 # Figures out what team a new player should join and what bots to add
 func allocate_bots_for_new_player():
