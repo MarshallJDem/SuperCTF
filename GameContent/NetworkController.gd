@@ -608,7 +608,7 @@ func _client_disconnected(id):
 		print("COULDNT FIND PLAYER IN PLAYERS DATA TO DELETE FOR NETWORKID : " + str(id));
 		return;
 	if get_tree().is_network_server():
-		if $Match_End_Timer.time_left > 0:
+		if Globals.matchType != 0 and $Match_End_Timer.time_left > 0:
 			complete_match_end();
 			return;
 		for peer in  get_tree().get_network_connected_peers():
@@ -1045,6 +1045,11 @@ func _HTTP_GameServerEndMatch_Completed(result, response_code, headers, body):
 func _round_end_timer_ended():
 	# Only run if we are the server
 	if get_tree().is_network_server():
+		# Rearrange teams if this is a skirmish and start a new round
+		if Globals.matchType == 0:
+			rearrange_teams()
+			rpc("load_new_round", false, players);
+			return
 		var game_over = false;
 		var winning_team_id = -1;
 		# If the time ran out
@@ -1072,12 +1077,7 @@ func _round_end_timer_ended():
 		if game_over:
 			rpc("end_match", winning_team_id);
 		else:
-				# Rearrange teams if this is a skirmish
-			if Globals.matchType == 0:
-				rearrange_teams()
-				rpc("load_new_round", false, players);
-			else:
-				rpc("load_new_round");
+			rpc("load_new_round");
 
 # Called when the Round_Start_Timer ends
 func _round_start_timer_ended():
