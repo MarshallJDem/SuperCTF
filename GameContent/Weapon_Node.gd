@@ -76,7 +76,7 @@ func _process(delta):
 	update_cooldown_lengths();
 	
 	# Shooting on inputs
-	if player.control:
+	if player.control and player.alive:
 		# Move & Shoot around as long as we aren't typing in chat
 		if !Globals.is_typing_in_chat:
 			shoot_on_inputs();
