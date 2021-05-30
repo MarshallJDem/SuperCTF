@@ -25,10 +25,6 @@ config/icon="res://flag_frames/flagRed1.png"
 Globals="*res://Globals.gd"
 Global_Overlay="*res://Global_Overlay.tscn"
 
-[debug]
-
-settings/stdout/verbose_stdout=true
-
 [display]
 
 window/size/width=1920
