@@ -544,8 +544,10 @@ func add_bot(team_id):
 		"user_id": bot_id, "network_id": 1,"spawn_pos": get_default_spawn_for_team(team_id), 
 		"position": get_default_spawn_for_team(team_id), "class" : Globals.Classes.Bullet, 
 		"DD_vote" : false, "BOT" : true};
-	
-	rpc("update_players_data",players,round_is_running)
+	if get_tree().get_network_connected_peers().size() > 0:
+		rpc("update_players_data",players,round_is_running)
+	else:
+		update_players_data(players,round_is_running)
 	
 func spawn_player(id):
 	
