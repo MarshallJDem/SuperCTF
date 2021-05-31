@@ -356,7 +356,7 @@ custom_colors/default_color = Color( 0.368627, 0.368627, 0.368627, 1 )
 bbcode_enabled = true
 bbcode_text = "[color=black]NEWS:
 
-Happy May! And welcome to our new [color=blue][url=https://crazygames.com]CrazyGames.com[/url][color=black] players! (And the rest of course)
+Happy June! And welcome to our new [color=blue][url=https://crazygames.com]CrazyGames.com[/url][color=black] players! (And the rest of course)
 
 [color=green]The Cosmetics update is well under way and some beta versions will be available soon!
 
@@ -367,7 +367,7 @@ Twitter:[color=blue] [url]https://twitter.com/SuperCTFGame[/url][color=black]
 "
 text = "NEWS:
 
-Happy May! And welcome to our new CrazyGames.com players! (And the rest of course)
+Happy June! And welcome to our new CrazyGames.com players! (And the rest of course)
 
 The Cosmetics update is well under way and some beta versions will be available soon!
 
@@ -747,13 +747,14 @@ visible = false
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 12 )
+frame = 2
 playing = true
 
 [node name="Red_Sprite" type="AnimatedSprite" parent="UI_Layer/Flags/Flag"]
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 17 )
-frame = 3
+frame = 1
 playing = true
 
 [node name="Area2D" type="Area2D" parent="UI_Layer/Flags/Flag" groups=[
@@ -778,7 +779,7 @@ script = ExtResource( 3 )
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 12 )
-frame = 3
+frame = 1
 playing = true
 
 [node name="Red_Sprite" type="AnimatedSprite" parent="UI_Layer/Flags/Flag3"]
@@ -786,7 +787,6 @@ visible = false
 position = Vector2( 14, -16 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 17 )
-frame = 2
 playing = true
 
 [node name="Area2D" type="Area2D" parent="UI_Layer/Flags/Flag3" groups=[
