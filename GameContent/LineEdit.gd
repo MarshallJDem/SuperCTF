@@ -63,12 +63,14 @@ func _HTTP_GameServerFilterChat_Completed(result, response_code, headers, body):
 	else:
 		# Extract vars from response
 		var json = JSON.parse(body.get_string_from_utf8());
-		var message = json.result.chatString;
-		var sender_id = int(json.result.senderID);
-		var fail_reason = json.result.failReason;
-		print("FILTER CHAT FAILED FOR MESSAGE '" + str(message) + "' WITH RESPONSE_CODE " + str(response_code) + " AND FAIL REASON '" + str(fail_reason) + "'")
-		rpc("receive_message", "[color=red]>> There was an error with the chat servers <<[/color]", -1)
-
+		if(json.result.has("chatString")):
+			var message = json.result.chatString;
+			var sender_id = int(json.result.senderID);
+			var fail_reason = json.result.failReason;
+			print("FILTER CHAT FAILED FOR MESSAGE '" + str(message) + "' WITH RESPONSE_CODE " + str(response_code) + " AND FAIL REASON '" + str(fail_reason) + "'")
+			rpc("receive_message", message, sender_id, message)
+		else:
+			rpc("receive_message", "[color=red]>> There was an error with the chat servers <<[/color]", -1)
 remotesync func receive_message(message, sender_id, unfiltered_message = null):
 	# Dont add this message for the player that sent it. They show it locally instantly
 	if Globals.localPlayerID == sender_id:
