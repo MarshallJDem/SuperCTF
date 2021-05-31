@@ -428,11 +428,15 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 			if match_is_running:
 				update_flags_data();
 				rpc_id(network_id, "load_mid_round", players, scores, $Round_Start_Timer.time_left, round_num, OS.get_system_time_msecs() - Globals.match_start_time, flags_data, game_vars); 
-
-			
-		else:
-			print("WE SHOULD BE DISCONNECTING A player because the checkUser backend call failed with a non 200 status BUT WE DON'T KNOW THEIR NETWORKID'");
-			#server.disconnect_peer(player_check_queue[0]['networkID'], 1000, "An Unknown Error Occurred.")
+		else: # Response failed for some reason.
+			var json = JSON.parse(body.get_string_from_utf8());
+			var network_id = -42
+			if json.result.has("networkID"):
+				network_id = int(json.result.networkID);
+			else:
+				print("OH SHIT WE AINT GOT A REAL NETWORKID CUZ GAMESERVERCHECKUSER FAILED TO GIVE ONE")
+			print("Disconnecting player of network_id " + str(network_id) + "because the checkUser backend call failed with a non 200 status");
+			server.disconnect_peer(network_id, 1000, "An Unknown Error Occurred.")
 
 # Figures out what team a new player should join and what bots to add
 func allocate_bots_for_new_player():
@@ -540,8 +544,10 @@ func add_bot(team_id):
 		"user_id": bot_id, "network_id": 1,"spawn_pos": get_default_spawn_for_team(team_id), 
 		"position": get_default_spawn_for_team(team_id), "class" : Globals.Classes.Bullet, 
 		"DD_vote" : false, "BOT" : true};
-	
-	rpc("update_players_data",players,round_is_running)
+	if get_tree().get_network_connected_peers().size() > 0:
+		rpc("update_players_data",players,round_is_running)
+	else:
+		update_players_data(players,round_is_running)
 	
 func spawn_player(id):
 	
@@ -594,15 +600,15 @@ func _client_disconnected(id):
 					players.erase(player_id);
 					compensate_bots_for_player_leaving(team_id)
 					# If this is a skirmish and there are no players left, reset some stuff
-					if players.size() == 0:
+					if get_tree().get_network_connected_peers().size() == 0:
 						game_vars = Globals.game_var_defaults.duplicate();
 						for flag in get_tree().get_nodes_in_group("Flags"):
-							flag.rpc("return_home")
+							flag.return_home()
 	if player_id == -1:
 		print("COULDNT FIND PLAYER IN PLAYERS DATA TO DELETE FOR NETWORKID : " + str(id));
 		return;
 	if get_tree().is_network_server():
-		if $Match_End_Timer.time_left > 0:
+		if Globals.matchType != 0 and $Match_End_Timer.time_left > 0:
 			complete_match_end();
 			return;
 		for peer in  get_tree().get_network_connected_peers():
@@ -1039,6 +1045,11 @@ func _HTTP_GameServerEndMatch_Completed(result, response_code, headers, body):
 func _round_end_timer_ended():
 	# Only run if we are the server
 	if get_tree().is_network_server():
+		# Rearrange teams if this is a skirmish and start a new round
+		if Globals.matchType == 0:
+			rearrange_teams()
+			rpc("load_new_round", false, players);
+			return
 		var game_over = false;
 		var winning_team_id = -1;
 		# If the time ran out
@@ -1066,12 +1077,7 @@ func _round_end_timer_ended():
 		if game_over:
 			rpc("end_match", winning_team_id);
 		else:
-				# Rearrange teams if this is a skirmish
-			if Globals.matchType == 0:
-				rearrange_teams()
-				rpc("load_new_round", false, players);
-			else:
-				rpc("load_new_round");
+			rpc("load_new_round");
 
 # Called when the Round_Start_Timer ends
 func _round_start_timer_ended():

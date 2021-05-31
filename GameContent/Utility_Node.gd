@@ -20,7 +20,7 @@ func _utility_changed():
 	pass;
 
 func utility_pressed():
-	if $Cooldown_Timer.time_left == 0:
+	if $Cooldown_Timer.time_left == 0 and player.alive:
 		if Globals.current_utility == Globals.Utilities.Grenade:
 			aiming_grenade = true;
 
@@ -33,7 +33,7 @@ func utility_released(pos):
 			else:
 				rpc("shoot_grenade",pos, OS.get_system_time_msecs() - Globals.match_start_time);
 	elif Globals.current_utility == Globals.Utilities.Landmine:
-		if $Cooldown_Timer.time_left == 0:
+		if $Cooldown_Timer.time_left == 0 and player.alive:
 			if Globals.active_landmines < 3:
 				if Globals.testing:
 					place_landmine(player.position,landmines_placed);
@@ -46,6 +46,7 @@ func utility_released(pos):
 func _process(delta):
 	if !player.alive:
 		$Cooldown_Timer.stop();
+		aiming_grenade = false
 	if !player.control:
 		return;
 	update();
