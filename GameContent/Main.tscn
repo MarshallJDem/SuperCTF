@@ -140,6 +140,10 @@ __meta__ = {
 [node name="Test_Player" parent="." instance=ExtResource( 2 )]
 position = Vector2( 15.6066, 14.9669 )
 
+[node name="Test_Enemy" parent="." instance=ExtResource( 2 )]
+position = Vector2( 15.6066, 14.9669 )
+is_bot = true
+
 [node name="Players" type="Node" parent="."]
 
 [node name="Loadout_Menu" parent="." instance=ExtResource( 26 )]
@@ -180,6 +184,7 @@ mouse_filter = 2
 custom_styles/normal = SubResource( 4 )
 custom_fonts/normal_font = SubResource( 5 )
 bbcode_enabled = true
+bbcode_text = "[chat]"
 scroll_active = false
 scroll_following = true
 custom_effects = [ ExtResource( 19 ) ]

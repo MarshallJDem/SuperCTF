@@ -33,7 +33,7 @@ remotesync func return_home():
 	is_at_home = true;
 	position = home_position;
 	re_parent(get_tree().get_root().get_node("MainScene"));
-	if !get_tree().is_network_server():
+	if !Globals.testing and !get_tree().is_network_server():
 		var color = "blue" if team_id == 0 else "red";
 		var team_name = "BLUE TEAM" if team_id == 0 else "RED TEAM";
 		if get_tree().get_root().get_node("MainScene/NetworkController").players[Globals.localPlayerID]["team_id"] == team_id:

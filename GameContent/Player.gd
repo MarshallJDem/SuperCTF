@@ -34,6 +34,7 @@ var look_direction = 0;
 var current_class;
 # If this is true the player will dash once physics process is called
 var dash_signaled = false;
+export var is_bot = false;
 
 # Only accurately being tracked by server
 var stats = {"kills" : 0, "deaths": 0, "captures" : 0, "recovers" : 0};
@@ -48,8 +49,12 @@ func _ready():
 	last_position = position;
 	
 	if Globals.testing:
-		activate_camera();
-		control = true
+		if is_bot:
+			control = false
+			team_id = 1
+		else:
+			activate_camera();
+			control = true
 	
 	Globals.connect("class_changed", self, "loadout_class_updated");
 	if Globals.localPlayerID == player_id:
@@ -101,10 +106,10 @@ func _physics_process(delta: float) -> void:
 	if control:
 		activate_camera();
 		# Don't look around if we're shooting a laser
-		if Globals.current_class != Globals.Classes.Laser or $Weapon_Node/Laser_Timer.time_left == 0:
+		if (!is_bot) and ( Globals.current_class != Globals.Classes.Laser or $Weapon_Node/Laser_Timer.time_left == 0):
 			update_look_direction();
 		# Move around as long as we aren't typing in chat
-		if !Globals.is_typing_in_chat:
+		if !Globals.is_typing_in_chat and !is_bot:
 			move_on_inputs();
 	if is_instance_valid(camera_ref):
 		camera_ref.get_node("Canvas_Layer/Vignette_Blue").visible = false;
@@ -152,7 +157,7 @@ func _physics_process(delta: float) -> void:
 	if !Globals.testing and get_tree().has_network_peer() and !is_network_master() and !get_tree().is_network_server():
 		position = lerp(lerp_start_pos, lerp_end_pos, clamp(float(OS.get_ticks_msec() - time_of_last_received_pos)/float(Globals.player_lerp_time), 0.0, 1.0));
 	
-	if !Globals.testing and get_tree().has_network_peer() and is_network_master() and !get_tree().is_network_server():
+	if !Globals.testing and get_tree().has_network_peer() and is_network_master() and (!get_tree().is_network_server() or (get_tree().is_network_server() and is_bot)):
 		rpc_unreliable("update_position", position);
 	
 	# Animation
@@ -223,8 +228,11 @@ remotesync func teleport(start, end):
 		position = end;
 
 # Checks the current pressed keys and calculates a new player position using the KinematicBody2D
-func move_on_inputs():
+func move_on_inputs(input_override = null):
 	var input = Globals.get_input_vector();
+	if input_override != null:
+		print(input_override)
+		input = input_override
 	last_movement_input = input;
 	
 	var speed = BASE_SPEED + POWERUP_SPEED;
@@ -248,6 +256,8 @@ func move_on_inputs():
 	var new_pos = position;
 
 func attempt_dash():
+	if $Weapon_Node/Laser_Timer.time_left != 0:
+		return
 	if $Teleport_Timer.time_left != 0:
 		return;
 	dash_signaled = true;
@@ -326,10 +336,10 @@ func stop_powerups():
 	
 # Changes the sprite's frame to make it "look" at the mouse
 var previous_dist = Vector2(0,0);
-func update_look_direction():
-	var pos = get_global_mouse_position();
+func update_look_direction(pos_override = null):
+	var pos = get_global_mouse_position() if pos_override == null else pos_override
 	var dist = pos - position;
-	if Globals.control_scheme == Globals.Control_Schemes.touchscreen:
+	if !pos_override and Globals.control_scheme == Globals.Control_Schemes.touchscreen:
 		dist = get_tree().get_root().get_node("MainScene/UI_Layer/Shoot_Stick").stick_vector;
 		if dist == Vector2.ZERO:
 			dist = get_tree().get_root().get_node("MainScene/UI_Layer/Move_Stick").stick_vector;
@@ -339,11 +349,14 @@ func update_look_direction():
 	var angle = get_vector_angle(dist);
 	var adjustedAngle = -1 * (angle + (PI/8));
 	var octant = (adjustedAngle / (2 * PI)) * 8
-	var dir = int((octant + 9) + 4) % 8;
+	var dir = int((octant + 9) + 4) % 8
 	if dir != look_direction: # If it changed since last time
 		set_look_direction(dir);
-		if !Globals.testing:
+		if !Globals.testing and !get_tree().is_network_server():
 			rpc_unreliable_id(1, "send_look_direction", dir, player_id);
+		elif !Globals.testing and get_tree().is_network_server() and is_bot:
+			send_look_direction(dir,player_id)
+	return dir
 
 
 # Gets the angle that a vector is making
@@ -368,11 +381,20 @@ func skin_changed(body_index, head_index):
 	$Player_Visuals.skin_changed(body_index, head_index)
 
 # Updates this player's position with the new given position. Only ever called remotely
-remotesync func update_position(new_pos):
+remotesync func update_position(new_pos, server_forced = false):
 	if is_network_master():
+		if server_forced:
+			position = new_pos;
 		return;
+		
 	# Instantly update position for server
 	if get_tree().is_network_server():
+		# Dont let players move too far. Prevents hacking / exploits
+		# This will create a "rubberband" effect in cases of extreme lag
+		# Mainly implemented to stop players from spawning with flag if they tab out on top of home (this could be fixed with timestamps instead too)
+		if position.distance_to(new_pos) > 200:
+			rpc("update_position", position, true)
+			return
 		position = new_pos;
 		return;
 	# Otherwise lerp
@@ -381,6 +403,8 @@ remotesync func update_position(new_pos):
 	time_of_last_received_pos = OS.get_ticks_msec();
 	lerp_start_pos = position;
 	lerp_end_pos = new_pos;
+
+	
 
 # Activates the camera on this player
 func activate_camera():
@@ -413,7 +437,6 @@ func hit_by_projectile(attacker_id, projectile_type):
 			attacker_team_id = attacker.team_id;
 			attacker_name = attacker.player_name;
 		
-		get_tree().get_root().get_node("MainScene/NetworkController").players[attacker_id]["name"]
 		var color_1 = "red"
 		var color_2 = "blue"
 		if team_id == 1:
@@ -431,7 +454,9 @@ func hit_by_projectile(attacker_id, projectile_type):
 			else:
 				print_stack();
 			
-
+func set_team_id(id):
+	team_id = id
+	$Player_Visuals._update_team_id(id)
 # "Kills" the player. Only for visuals on client - the server handles the respawning.
 func die():
 	visible = false;
@@ -474,8 +499,9 @@ func respawn():
 	start_temporary_invincibility();
 	if is_network_master():
 		get_tree().get_root().get_node("MainScene/UI_Layer").clear_big_label_text();
-		camera_ref.get_parent().remove_child(camera_ref);
-		$Center_Pivot.add_child(camera_ref);
+		if is_instance_valid(camera_ref):
+			camera_ref.get_parent().remove_child(camera_ref);
+			$Center_Pivot.add_child(camera_ref);
 	else:
 		lerp_start_pos = position;
 		lerp_end_pos = position;

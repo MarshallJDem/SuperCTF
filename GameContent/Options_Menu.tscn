@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Hover_Button_Style.tres" type="StyleBox" id=1]
 [ext_resource path="res://Normal_Button_Style.tres" type="StyleBox" id=2]
@@ -7,6 +7,13 @@
 [ext_resource path="res://fonts/Pixel_SubTitle.tres" type="DynamicFont" id=5]
 [ext_resource path="res://fonts/Pixel_Title.tres" type="DynamicFont" id=6]
 [ext_resource path="res://GameContent/Options_Menu.gd" type="Script" id=7]
+[ext_resource path="res://fonts/pixel.TTF" type="DynamicFontData" id=8]
+
+[sub_resource type="DynamicFont" id=3]
+size = 17
+outline_color = Color( 0, 0, 0, 1 )
+extra_spacing_top = 9
+font_data = ExtResource( 8 )
 
 [sub_resource type="StyleBoxLine" id=1]
 content_margin_top = 0.0
@@ -36,9 +43,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -20.0
+margin_left = -18.8633
 margin_top = -20.0
-margin_right = 9980.0
+margin_right = 9981.14
 margin_bottom = 9980.0
 __meta__ = {
 "_edit_use_anchors_": false
@@ -120,7 +127,7 @@ Based on rtschutter's PureCTF
 
 The crew
 [color=gray]Captain: [color=blue]carshalljd				[color=gray]Backend Rutters:  [color=blue]PEDM
-[color=gray]Frontend Sails: [color=blue]JamJar		[color=gray]Intership Relations:  [color=blue]Teho
+[color=gray]Frontend Sails: [color=blue]JamJar		[color=gray]Flag Design:  [color=blue]Teho
 
 [color=white]Special thanks to
 [color=gray]rtschutter
@@ -138,7 +145,7 @@ Based on rtschutter's PureCTF
 
 The crew
 Captain: carshalljd				Backend Rutters:  PEDM
-Frontend Sails: JamJar		Intership Relations:  Teho
+Frontend Sails: JamJar		Flag Design:  Teho
 
 Special thanks to
 rtschutter
@@ -197,10 +204,12 @@ custom_fonts/normal_font = ExtResource( 4 )
 bbcode_enabled = true
 bbcode_text = "[color=gray]Grigoreen
 Shadowbane
-notjosh"
+notjosh
+Keirx"
 text = "Grigoreen
 Shadowbane
-notjosh"
+notjosh
+Keirx"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -273,6 +282,46 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Profanity_Label" type="RichTextLabel" parent="CanvasLayer/Control"]
+margin_left = 205.0
+margin_top = 43.0
+margin_right = 598.0
+margin_bottom = 104.0
+custom_fonts/normal_font = ExtResource( 4 )
+bbcode_enabled = true
+bbcode_text = "[color=white]Profanity Filter (ON)
+
+
+
+"
+text = "Profanity Filter (ON)
+
+
+
+"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Profanity_Button" type="Button" parent="CanvasLayer/Control"]
+margin_left = 647.276
+margin_top = 38.1425
+margin_right = 777.276
+margin_bottom = 96.1425
+custom_styles/hover = ExtResource( 1 )
+custom_styles/pressed = ExtResource( 3 )
+custom_styles/normal = ExtResource( 2 )
+custom_fonts/font = SubResource( 3 )
+custom_colors/font_color_disabled = Color( 0, 0, 0, 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
+custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
+text = "Turn Off"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="MasterVolume_Slider" type="HSlider" parent="CanvasLayer/Control"]
 margin_left = 533.26
 margin_top = -137.799
@@ -301,9 +350,9 @@ __meta__ = {
 
 [node name="Fullscreen_Button" type="Button" parent="CanvasLayer/Control"]
 margin_left = 320.266
-margin_top = 45.3416
+margin_top = 144.253
 margin_right = 668.266
-margin_bottom = 130.342
+margin_bottom = 229.254
 custom_styles/hover = ExtResource( 1 )
 custom_styles/pressed = ExtResource( 3 )
 custom_styles/normal = ExtResource( 2 )

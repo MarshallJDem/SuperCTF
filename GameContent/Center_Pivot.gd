@@ -23,6 +23,8 @@ func update_camera_offset_from_mouse():
 	var modifier = 0.03;
 	if Globals.control_scheme == Globals.Control_Schemes.touchscreen:
 		distance = 0.0;
+	if !is_instance_valid($'..'.camera_ref):
+		return
 	$'..'.camera_ref.smoothing_speed = 10;
 	if extended:
 		$'..'.camera_ref.smoothing_speed = 5;
