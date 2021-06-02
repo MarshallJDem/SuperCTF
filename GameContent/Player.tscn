@@ -14,7 +14,7 @@
 [ext_resource path="res://Assets/Sound/Flag_Drop.wav" type="AudioStream" id=12]
 [ext_resource path="res://Assets/Sound/Teleport.wav" type="AudioStream" id=13]
 [ext_resource path="res://fonts/Pixel_Chat.tres" type="DynamicFont" id=14]
-[ext_resource path="res://GameContent/BOT.gd" type="Script" id=15]
+[ext_resource path="res://Assets/Particles/fire_particles_ability_shaped.tscn" type="PackedScene" id=15]
 [ext_resource path="res://Assets/Player/Death Animations/Bat animation.png" type="Texture" id=16]
 [ext_resource path="res://GameContent/Ability_Node.gd" type="Script" id=17]
 [ext_resource path="res://GameContent/Utility_Node.gd" type="Script" id=18]
@@ -342,6 +342,3 @@ gravity = Vector2( 0, 0 )
 initial_velocity = 30.0
 scale_amount_curve = SubResource( 8 )
 anim_speed = 8.0
-
-[node name="BOT" type="Node2D" parent="."]
-script = ExtResource( 15 )

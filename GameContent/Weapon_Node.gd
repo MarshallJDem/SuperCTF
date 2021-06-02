@@ -51,11 +51,7 @@ func class_changed():
 
 func update_cooldown_lengths():
 	if Globals.current_class == Globals.Classes.Bullet:
-		var cd = float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("bulletCooldown"))/1000.0
-		$Cooldown_Timer.wait_time = cd;
-		# add some random delay for bots to make them less OP
-		if player.is_bot:
-			$Cooldown_Timer.wait_time = cd + rand_range(0,1000)/1000
+		$Cooldown_Timer.wait_time = float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("bulletCooldown"))/1000.0;
 	elif Globals.current_class == Globals.Classes.Laser:
 		$Cooldown_Timer.wait_time = float(get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("laserCooldown"))/1000.0;
 	elif Globals.current_class == Globals.Classes.Demo:
@@ -76,7 +72,7 @@ func _process(delta):
 	update_cooldown_lengths();
 	
 	# Shooting on inputs
-	if player.control and player.alive:
+	if player.control:
 		# Move & Shoot around as long as we aren't typing in chat
 		if !Globals.is_typing_in_chat:
 			shoot_on_inputs();
@@ -110,16 +106,14 @@ func _draw():
 		draw_circle(target_position, size + 0.5, Color(red + 0.1,green + 0.1,blue + 0.1,progress));
 
 
-func shoot_on_inputs(direction_override = null):
+func shoot_on_inputs():
 	if Globals.is_typing_in_chat:
 		return;
 	# Check for mouse input	
-	if direction_override != null or (Globals.control_scheme == Globals.Control_Schemes.keyboard and Input.is_action_pressed("clickL")) or (Globals.control_scheme == Globals.Control_Schemes.touchscreen and get_tree().get_root().get_node("MainScene/UI_Layer/Shoot_Stick").stick_vector != Vector2(0,0)):
+	if (Globals.control_scheme == Globals.Control_Schemes.keyboard and Input.is_action_pressed("clickL")) or (Globals.control_scheme == Globals.Control_Schemes.touchscreen and get_tree().get_root().get_node("MainScene/UI_Layer/Shoot_Stick").stick_vector != Vector2(0,0)):
 		var direction = ((get_global_mouse_position() - global_position).normalized());
 		if Globals.control_scheme == Globals.Control_Schemes.touchscreen:
 			direction = get_tree().get_root().get_node("MainScene/UI_Layer/Shoot_Stick").stick_vector.normalized();
-		if direction_override != null:
-			direction = direction_override
 		# Only accepts clicks if we're not aiming a laser
 		if $Laser_Timer.time_left == 0:
 			if !player.attempt_drop_flag():
@@ -287,7 +281,7 @@ remotesync func start_laser(direction, start_pos, target_pos, look_direction, ti
 	elif !get_tree().is_network_server():
 		wait_time = wait_time - ((OS.get_system_time_msecs() - Globals.match_start_time) - time_shot )/1000.0;
 	if wait_time <= 0:
-		wait_time = 0.05;#
+		wait_time = 0.05;
 	$Laser_Timer.wait_time = wait_time;
 	$Laser_Timer.start();
 	player.camera_ref.shake($Laser_Timer.wait_time, 0.5, true);
@@ -328,7 +322,7 @@ func spawn_laser():
 	laser_is_blank = false;
 
 func shoot_laser(d, width):
-	# Test to see if laser is spawning inside of forcefield
+	# Test to see if demo is spawning inside of forcefield
 	$CollisionTester.position = get_node("Laser_Starts/" + String(player.look_direction)).position ;
 	var forcefield_test = $CollisionTester.move_and_collide(d * 0.0);
 	

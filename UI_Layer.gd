@@ -109,7 +109,7 @@ func _process(delta):
 	if Globals.player_party_data != null:
 		code = str(Globals.player_party_data.partyCode);
 		for i in Globals.player_party_data.players:
-			players += str(i.name) + "\n";
+			players += str(i.values()[0]) + "\n";
 			players_in_party += 1;
 		if Globals.player_party_data.partyHostID != Globals.player_uid:
 			$RankedButton.disabled = true;
@@ -160,10 +160,10 @@ func _process(delta):
 		$QuickplayButton.disabled = false;
 		$QuickplayWarning.visible = false;
 		$QuickplayButton.text = "Find Match"
-		#if players_in_party > 2:
-		#	$QuickplayButton.disabled = true;
-		#	$QuickplayWarning.visible = true;
-		#	$QuickplayWarning.bbcode_text = "[center][color=gray]Max party size is 2 currently"
+		if players_in_party > 2:
+			$QuickplayButton.disabled = true;
+			$QuickplayWarning.visible = true;
+			$QuickplayWarning.bbcode_text = "[center][color=gray]Max party size is 2 currently"
 		if Globals.player_party_data != null and Globals.player_party_data.partyHostID != Globals.player_uid:
 			$QuickplayButton.disabled = true;
 			$QuickplayWarning.visible = true;
@@ -205,7 +205,7 @@ func _splash_start_pressed():
 		OS.window_fullscreen = true;
 
 func _join_party_pressed():
-	if Globals.player_party_data != null and Globals.player_party_data.players.size() > 1:
+	if Globals.player_party_data.players.size() > 1:
 		if $HTTPRequest_LeaveParty.get_http_client_status() == 0:
 			$HTTPRequest_LeaveParty.request(Globals.mainServerIP + "leaveParty", ["authorization: Bearer " + Globals.userToken]);
 	else:

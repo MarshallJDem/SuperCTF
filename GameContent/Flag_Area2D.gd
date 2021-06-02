@@ -39,8 +39,8 @@ func collided_with_player(player):
 	# If this flag is already in another player's posession, ignore it
 	if get_parent().get_parent().name == "Flag_Holder":
 		return;
-	# If the player just dropped this flag, ignore it (bots get exemption)
-	if !player.is_bot and player.player_id == player_id_drop_buffer:
+	# If the player just dropped this flag, ignore it
+	if player.player_id == player_id_drop_buffer:
 		return;
 	# If the player is not alive, ignore it
 	if !player.alive:
@@ -56,10 +56,7 @@ func collided_with_player(player):
 		# Do it only if this is not a sudden death
 		if !get_tree().get_root().get_node("MainScene/NetworkController").isSuddenDeath:
 			player.stats["recovers"] += 1;
-			if Globals.testing:
-				flag.return_home()
-			else:
-				flag.rpc("return_home");
+			flag.rpc("return_home");
 			return;
 		else: # SUDDEN DEATH, you cannot recover. Give a warning
 			flag.rpc("enable_warning" , "[center]Can't recover in\nSudden Death");

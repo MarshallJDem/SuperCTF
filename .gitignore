@@ -2,6 +2,3 @@
 *.pem
 *.crt
 HTTPS_Keys/
-HTML5_Export/
-Windows_Export/
-Linux_Export/

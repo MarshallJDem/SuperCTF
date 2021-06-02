@@ -52,9 +52,6 @@ func create_guest():
 	else:
 		$HTTPRequest_CreateGuest.request(Globals.mainServerIP + "createGuest");
 func join_MM_queue(queueType):
-	if(Globals.directLiveSkirmish):
-		get_tree().change_scene("res://GameContent/Main.tscn");
-		return
 	print("Token : " + Globals.userToken);
 	var query = "?queueType=" + str(queueType);
 	$HTTPRequest_JoinMMQueue.request(Globals.mainServerIP + "joinMMQ" + query, ["authorization: Bearer " + Globals.userToken]);
@@ -108,12 +105,11 @@ func _Leaderboard_Refresh_Ended():
 	
 # Called when the joinMMQueue HTTP request completes
 func _HTTP_JoinMMQueue_Completed(result, response_code, headers, body):
+	var json = JSON.parse(body.get_string_from_utf8())
 	print(body.get_string_from_utf8());
 	if(response_code == 200):
-		var json = JSON.parse(body.get_string_from_utf8())
 		$UI_Layer.set_view($UI_Layer.VIEW_IN_QUEUE);
 	elif(response_code == 400):
-		var json = JSON.parse(body.get_string_from_utf8())
 		if(json.result.failReason != null):
 			Globals.create_popup(str(json.result.failReason));
 		$UI_Layer.set_view($UI_Layer.VIEW_MAIN);

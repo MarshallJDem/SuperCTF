@@ -52,7 +52,7 @@ func _input(event):
 				ult_charge = 100;
 				#player.get_node("Weapon_Node").ult_active = true;
 func ability_pressed():
-	if ($Cooldown_Timer.time_left == 0 || ability_stacks > 0) and player.alive:
+	if $Cooldown_Timer.time_left == 0 || ability_stacks > 0:
 		if $Cooldown_Timer.time_left != 0 && ability_stacks > 0:
 			ability_stacks += -1;
 		if Globals.current_ability == Globals.Abilities.Forcefield:

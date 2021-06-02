@@ -6,14 +6,13 @@ var experimental = false;
 var localTesting = true; # Used for running a server locally on the machine
 var localTestingBackend = false; # Used for when the backend is running locally on this machine
 var remoteSkirmish = false; # Used for running the skirmish lobby on a remote computer (so you can run it in the editor and catch bugs)
-var directLiveSkirmish = false; # Used to connect directly to the live skirmish without entering MMQueue
 
 var temporaryQuickplayDisable = true;
 
 #Game Servers (Both clients and servers use these vars, but in different ways. overlapping would not work)
 var serverIP = "";
 var serverPublicToken;
-var skirmishIP = "superctf.com/gameserver/42480";
+var skirmishIP = "superctf.com:42480";
 var skirmishMap = "TehoMap1";
 var port = 42480;
 var serverPrivateToken;
@@ -21,7 +20,7 @@ var isServer = false;
 var allowedPlayers = [];
 var matchID;
 var matchType;
-var mapName = "TehoMap1";
+var mapName = "SquareZagv6";
 var allowCommands = false;
 var useSecure = true;
 var gameserverStatus = 0;
@@ -29,7 +28,6 @@ var gameserverStatus = 0;
 # Client data
 var localPlayerID;
 var localPlayerTeamID;
-var profanity_filter_enabled = true;
 
 #User data
 var userToken;
@@ -162,10 +160,10 @@ func _enter_tree():
 	#experimental =  true;#OS.has_feature("debug") and !OS.has_feature("editor");
 	if experimental:
 		allowCommands = true;
-		skirmishMap = "TehoMap1"
+		skirmishMap = "SquareZagv6"
 		mainServerIP = "https://www.superctf.com" + ":42501/";
 		if !isServer:
-			skirmishIP = "superctf.com/gameserver/42490";
+			skirmishIP = "superctf.com:42490";
 			serverIP = skirmishIP;
 			#get_tree().change_scene("res://GameContent/Main.tscn");
 	if remoteSkirmish:
@@ -192,7 +190,7 @@ func _enter_tree():
 		else:
 			serverIP = skirmishIP;
 	if localTestingBackend:
-		mainServerIP = "http://127.0.0.1:42401/";
+		mainServerIP = "http://localhost:42501/";
 		
 
 func _ready():
@@ -211,7 +209,7 @@ func _ready():
 func _process(delta):
 	if get_tree().get_root().has_node("MainScene/NetworkController"):
 		Globals.player_lerp_time = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("playerLagTime");
-	if !isServer and !testing:
+	if !isServer:
 		if Globals.userToken != null:
 			attempt_ConfirmClientConnection();
 			attempt_PollPlayerStatus();
@@ -324,12 +322,9 @@ func _HTTP_PollPlayerStatus_Completed(result, response_code, headers, body):
 			Globals.player_old_MMR = Globals.player_MMR;
 			Globals.player_MMR = int(json.result.mmr);
 	if json.result.has("partyData"):
-		if json.result.partyData.empty():
-			Globals.knownPartyData = null
-			Globals.player_party_data = null
-		else:
-			Globals.knownPartyData = json.result.partyData;
-			Globals.player_party_data = json.result.partyData;
+		print(json.result.partyData);
+		Globals.knownPartyData = json.result.partyData;
+		Globals.player_party_data = json.result.partyData;
 	if(player_status < 10 and int(json.result.status) >= 10):
 		print("Found Match : " + str(json.result.status));
 		var matchID = str(json.result.status);
@@ -397,7 +392,6 @@ func write_save_data():
 	file.store_string(str(AudioServer.get_bus_volume_db(1)) + "\n");
 	file.store_string(str(volume_sliders.x) + "\n");
 	file.store_string(str(volume_sliders.y) + "\n");
-	file.store_string(str(profanity_filter_enabled) + "\n");
 	#file.store_string(str(Global_Overlay.current_song));
 	file.close()
 
@@ -426,11 +420,9 @@ func load_save_data():
 		AudioServer.set_bus_volume_db(1,float(result["3"]));
 	if result.has("4") and result.has("5"):
 		volume_sliders = Vector2(int(result["4"]), int(result["5"]));
-	if result.has("6"):
-		profanity_filter_enabled = false if result["6"].to_lower() == "false" else true
 	return;
-	if result.has("7"):
-		Global_Overlay.saved_song_loaded(int(result["7"]));
+	if result.has("6"):
+		Global_Overlay.saved_song_loaded(int(result["6"]));
 	else:
 		Global_Overlay.saved_song_loaded(-1);
 
