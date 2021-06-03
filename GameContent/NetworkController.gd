@@ -34,8 +34,6 @@ var Game_Results_Screen = preload("res://Game_Results_Screen.tscn");
 #	- position: Vector2D
 #	- spawn_pos: Vector2D
 #	- DD_vote: bool
-#	- skin_head: int
-#	- skin_body: int
 #	- BOT: bool
 
 # flag_data Struct (Indexed by flag id)
@@ -362,15 +360,8 @@ func _timing_sync_timer_ended():
 	if get_tree().is_network_server():
 		rpc("update_timing_sync", OS.get_system_time_msecs() - Globals.match_start_time);
 		#rpc("resync_match_time_limit", $Match_Time_Limit_Timer.time_left, $Match_Time_Limit_Timer.paused);
-
-var local_test_networkID_storage = 0
-
 func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 	if get_tree().is_network_server():
-		# Get some precursor information about this player situation before making decisions
-		var player_name
-		var user_id
-		var network_id
 		if(response_code == 200):
 			# Get some precursor information about this player situation before making decisions
 			var json = JSON.parse(body.get_string_from_utf8());
@@ -535,7 +526,6 @@ remote func user_ready(id, userToken):
 		var repeats = 0;
 		var http = HTTPRequest.new();
 		add_child(http);
-		local_test_networkID_storage = net_id
 		http.connect("request_completed", self, "_HTTP_GameServerCheckUser_Completed")
 		http.request(Globals.mainServerIP + "gameServerCheckUser?" + "userToken=" + str(userToken) + "&networkID=" + str(id), ["authorization: Bearer " + Globals.serverPrivateToken], false);
 		yield(http, "request_completed");
