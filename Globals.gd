@@ -3,7 +3,7 @@ extends Node
 # Whether to run in testing mode (for development uses)
 var testing = false;
 var experimental = false;
-var localTesting = true; # Used for running a server locally on the machine
+var localTesting = false; # Used for running a gameserver locally on the machine
 var localTestingBackend = false; # Used for when the backend is running locally on this machine
 var remoteSkirmish = false; # Used for running the skirmish lobby on a remote computer (so you can run it in the editor and catch bugs)
 
@@ -65,7 +65,6 @@ var result_match_id = -1;
 signal class_changed();
 signal ability_changed();
 signal utility_changed();
-signal skin_changed(body_index, head_index);
 
 enum Classes { Bullet, Laser, Demo};
 var current_class = Classes.Bullet;
@@ -75,10 +74,6 @@ var current_ability = Abilities.Forcefield;
 
 enum Utilities { Grenade, Landmine};
 var current_utility = Utilities.Grenade;
-
-# Just an integer index of which skins the local player is using
-var current_skin_body = 0
-var current_skin_head = 0
 
 var active_landmines = 0;
 
@@ -184,9 +179,9 @@ func _enter_tree():
 		skirmishIP = "localhost:42401";
 		useSecure = false;
 		port = 42401
-		matchType = 0;
 		if isServer:
 			serverPrivateToken = "localhosttoken";
+			matchType = 0;
 		else:
 			serverIP = skirmishIP;
 	if localTestingBackend:
@@ -433,15 +428,3 @@ func _input(event):
 		if event.scancode == KEY_F:
 			#OS.window_fullscreen = !OS.window_fullscreen;
 			pass;
-		if event.scancode == KEY_0:
-			current_skin_body = 0;
-			current_skin_head = 0;
-			emit_signal("skin_changed", 0, 0);
-		if event.scancode == KEY_1:
-			current_skin_body = 1;
-			current_skin_head = 1;
-			emit_signal("skin_changed", 1, 1);
-		if event.scancode == KEY_6:
-			current_skin_body = 6;
-			current_skin_head = 6;
-			emit_signal("skin_changed", 6, 6);

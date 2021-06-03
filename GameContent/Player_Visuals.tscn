@@ -1,9 +1,9 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://Assets/Player/Skins/6_body.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Player/gunner_head_B.png" type="Texture" id=1]
 [ext_resource path="res://Assets/Player/gunner_gun_B.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Player/legs.png" type="Texture" id=3]
-[ext_resource path="res://Assets/Player/Skins/6_head.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Player/gunner_body_B.png" type="Texture" id=4]
 [ext_resource path="res://GameContent/Player_Visuals.gd" type="Script" id=5]
 
 [node name="Player_Visuals" type="Control"]
@@ -30,7 +30,7 @@ __meta__ = {
 }
 
 [node name="Sprite_Body" type="Sprite" parent="."]
-texture = ExtResource( 1 )
+texture = ExtResource( 4 )
 hframes = 8
 frame = 1
 __meta__ = {
@@ -38,7 +38,7 @@ __meta__ = {
 }
 
 [node name="Sprite_Head" type="Sprite" parent="."]
-texture = ExtResource( 4 )
+texture = ExtResource( 1 )
 hframes = 8
 frame = 1
 __meta__ = {

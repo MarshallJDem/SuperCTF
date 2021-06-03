@@ -179,11 +179,6 @@ func _process(delta):
 		$Input_GUIs/Ability_GUIs/ULT_GUI.modulate = Color(1,1,1,0.5);
 		if charge == 100:
 			$Input_GUIs/Ability_GUIs/ULT_GUI.modulate = Color(1,1,1,1.0);
-			#emit fire behind the ult button
-			$Input_GUIs/Ability_GUIs/ULT_GUI/Fire_Particles._start(local_player.team_id) 
-		else:
-			#stop emitting the fire particles behind the ult button
-			$Input_GUIs/Ability_GUIs/ULT_GUI/Fire_Particles._stop()
 		$Input_GUIs/Ability_GUIs/ULT_Sub_GUI_Text.text = "%" + str(charge);
 		$Input_GUIs/Ability_GUIs/ULT_GUI_Text.text = "Q";
 	
@@ -212,11 +207,7 @@ func _process(delta):
 			$"Input_GUIs/Ability_GUIs/UTILITY_GUI".modulate = $"Input_GUIs/Ability_GUIs/UTILITY_GUI".modulate.darkened(0.5);
 		if Input.is_key_pressed(KEY_Q):
 			$"Input_GUIs/Ability_GUIs/ULT_GUI".modulate = $"Input_GUIs/Ability_GUIs/ULT_GUI".modulate.darkened(0.5);
-		if Input.is_action_pressed("score_board"):
-			$ScoreBoard.visible = true
-		else:
-			$ScoreBoard.visible = false
-			
+
 func attempt_hide_move_gui():
 	if show_move_gui == true:
 		show_move_gui = false;
