@@ -420,7 +420,7 @@ func deactivate_camera():
 func hit_by_projectile(attacker_id, projectile_type):
 	var attacker = get_tree().get_root().get_node("MainScene/Players/P" + str(attacker_id));
 	if attacker != null and is_instance_valid(attacker):
-		attacker.stats["kills"] += 1;
+		increment_stats(1,0,0,0);
 		attacker.get_node("Ability_Node").ult_charge += 10;
 	else:
 		print_stack();
@@ -463,7 +463,7 @@ func die():
 	control = false;
 	alive = false;
 	$Weapon_Node.ult_active = false;
-	stats["deaths"] += 1;
+	increment_stats(0,1,0,0);
 	$Ability_Node.ability_stacks = 0;
 	spawn_death_particles();
 	stop_powerups();
@@ -509,6 +509,15 @@ func respawn():
 
 func get_stats():
 	return stats;
+
+func increment_stats(kills, deaths, captures, recovers):
+	stats["kills"] += kills
+	stats["deaths"] += deaths
+	stats["captures"] += captures
+	stats["recovers"] += recovers
+	
+	if get_tree().is_network_server():
+		get_tree().get_root().get_node("MainScene/NetworkController").rpc("");
 
 # Takes the given flag
 func take_flag(flag_id):

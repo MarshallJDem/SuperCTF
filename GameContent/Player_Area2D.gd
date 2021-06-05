@@ -106,7 +106,7 @@ func collided_with_flag_home(flag_home):
 				our_flag.rpc("enable_warning", "[center]Can't score without\nyour flag at home");
 		elif get_tree().is_network_server(): # Otherwise score if we're the server
 			print("Scoring : " + str(get_tree().get_root().get_node("MainScene/NetworkController").round_is_ended));
-			player.stats["captures"] += 1;
+			player.increment_stats(0,0,1,0);
 			get_tree().get_root().get_node("MainScene/NetworkController").rpc("round_ended", player.team_id, player.player_id);
 # Called when this player collides with a laser
 func collided_with_laser_body(laser_parent):

@@ -3,7 +3,7 @@ extends Node
 # Whether to run in testing mode (for development uses)
 var testing = false;
 var experimental = false;
-var localTesting = false; # Used for running a server locally on the machine
+var localTesting = true; # Used for running a server locally on the machine
 var localTestingBackend = false; # Used for when the backend is running locally on this machine
 var remoteSkirmish = false; # Used for running the skirmish lobby on a remote computer (so you can run it in the editor and catch bugs)
 var directLiveSkirmish = false; # Used to connect directly to the live skirmish without entering MMQueue
@@ -68,6 +68,9 @@ signal class_changed();
 signal ability_changed();
 signal utility_changed();
 signal skin_changed(body_index, head_index);
+
+# When the stats of a player changes alert networkcontorller to update scoreboard
+signal game_stats_changed();
 
 enum Classes { Bullet, Laser, Demo};
 var current_class = Classes.Bullet;

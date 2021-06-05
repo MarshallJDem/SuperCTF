@@ -11,6 +11,10 @@ func _ready() -> void:
 	_screen_resized()
 	
 func _process(delta: float) -> void:
+	if Input.is_action_pressed("score_board"):
+		self.visible = true
+	else:
+		self.visible = false
 	_refresh()
 	
 func make_new_label(color):
@@ -94,6 +98,9 @@ func setup():
 
 #refresh the score board to the current stats of the stats_data dictionary
 func _refresh():
+	var nc = get_tree().get_root().get_node("MainScene/NetworkController")
+	stats_data = nc.game_stats
+	players_data = nc.players
 	#counts how many blue players there are
 	var blue_players = 0
 	#counts how many red players there are

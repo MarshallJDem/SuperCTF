@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=2]
+[gd_scene load_steps=34 format=2]
 
 [ext_resource path="res://GameContent/Player.gd" type="Script" id=1]
 [ext_resource path="res://GameContent/Player_Visuals.tscn" type="PackedScene" id=2]
@@ -15,7 +15,6 @@
 [ext_resource path="res://Assets/Sound/Teleport.wav" type="AudioStream" id=13]
 [ext_resource path="res://fonts/Pixel_Chat.tres" type="DynamicFont" id=14]
 [ext_resource path="res://GameContent/BOT.gd" type="Script" id=15]
-[ext_resource path="res://Assets/Particles/fire_particles_ability_shaped.tscn" type="PackedScene" id=15]
 [ext_resource path="res://Assets/Player/Death Animations/Bat animation.png" type="Texture" id=16]
 [ext_resource path="res://GameContent/Ability_Node.gd" type="Script" id=17]
 [ext_resource path="res://GameContent/Utility_Node.gd" type="Script" id=18]
@@ -24,6 +23,7 @@
 [ext_resource path="res://Assets/Sound/Powerup.wav" type="AudioStream" id=21]
 [ext_resource path="res://Assets/Shaders/Vignette_Red.shader" type="Shader" id=22]
 [ext_resource path="res://Assets/Shaders/Vignette_Blue.shader" type="Shader" id=23]
+[ext_resource path="res://Assets/Particles/fire_particles_ability_shaped.tscn" type="PackedScene" id=24]
 [ext_resource path="res://GameContent/Home_Pointer.gd" type="Script" id=25]
 
 [sub_resource type="CircleShape2D" id=1]
@@ -70,7 +70,7 @@ lifetime = 0.5
 emission_rect_extents = Vector2( 25, 10 )
 initial_velocity = 120.0
 
-[node name="Fire_Particles" parent="." instance=ExtResource( 15 )]
+[node name="Fire_Particles" parent="." instance=ExtResource( 24 )]
 position = Vector2( 0, 9.276 )
 emitting = false
 amount = 1000
@@ -345,3 +345,6 @@ gravity = Vector2( 0, 0 )
 initial_velocity = 30.0
 scale_amount_curve = SubResource( 8 )
 anim_speed = 8.0
+
+[node name="BOT" type="Node2D" parent="."]
+script = ExtResource( 15 )
