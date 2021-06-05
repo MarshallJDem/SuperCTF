@@ -15,7 +15,8 @@ func _process(delta: float) -> void:
 		self.visible = true
 	else:
 		self.visible = false
-	_refresh()
+	if Input.is_key_pressed(KEY_R):
+		_refresh()
 	
 func make_new_label(color):
 	var new_label = Label.new()

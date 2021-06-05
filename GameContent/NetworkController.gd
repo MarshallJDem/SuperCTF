@@ -961,6 +961,7 @@ remotesync func synchronize_game_stats(sync_stats):
 		return
 	game_stats = sync_stats
 	
+	
 
 func get_game_stats():
 	var stats = {};
