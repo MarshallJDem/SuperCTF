@@ -649,6 +649,8 @@ func compensate_bots_for_player_leaving(team_id):
 # Goes back to title screen and drops the socket connection and resets the game
 func leave_match():
 	print("Leave Match");
+	if Globals.reactGodot:
+		get_tree().quit();
 	get_tree().change_scene("res://TitleScreen.tscn");
 	get_tree().call_deferred("set_network_peer", null);
 	call_deferred("free");
