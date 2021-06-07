@@ -957,6 +957,7 @@ func _game_stats_changed():
 	rpc("synchronize_game_stats", get_game_stats())
 
 remotesync func synchronize_game_stats(sync_stats):
+	print("NEW STATS")
 	if get_tree().is_network_server():
 		return
 	game_stats = sync_stats

@@ -23,8 +23,7 @@ func make_new_label(color):
 	new_label.set("custom_fonts/font", label_font)
 	new_label.set("custom_colors/font_color", (color))
 	return(new_label)
-	
-	
+
 #create labels for the current players and add them to the score board
 func setup():
 	#check if all players have stats
@@ -88,19 +87,16 @@ func setup():
 				
 			else:
 				print("error player had team id "+str(players_data[str(current_player)]["team_id"]))
-				
-		
-			
-		
 	else:
 		print("Error player_data and stat_data are not the same size")
-	
-
 
 #refresh the score board to the current stats of the stats_data dictionary
 func _refresh():
 	var nc = get_tree().get_root().get_node("MainScene/NetworkController")
 	stats_data = nc.game_stats
+	print("scoreboard stats")
+	print(nc.game_stats)
+	print(stats_data)
 	players_data = nc.players
 	#counts how many blue players there are
 	var blue_players = 0
@@ -125,8 +121,7 @@ func _refresh():
 			$MarginContainer/Teams/Team_2/Columns2/Deaths_Column2.get_child(red_players).text = str(stats_data[str(current_player)]["deaths"])
 			$MarginContainer/Teams/Team_2/Columns2/Captures_Column2.get_child(blue_players).text = str(stats_data[str(current_player)]["captures"])
 			$MarginContainer/Teams/Team_2/Columns2/Recovers_Column2.get_child(blue_players).text = str(stats_data[str(current_player)]["recovers"])
-			
-		
+
 func _screen_resized():
 	var window_size = OS.get_window_size();
 	var s;

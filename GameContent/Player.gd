@@ -517,7 +517,7 @@ func increment_stats(kills, deaths, captures, recovers):
 	stats["recovers"] += recovers
 	
 	if get_tree().is_network_server():
-		get_tree().get_root().get_node("MainScene/NetworkController").rpc("");
+		Globals.emit_signal("game_stats_changed");
 
 # Takes the given flag
 func take_flag(flag_id):
