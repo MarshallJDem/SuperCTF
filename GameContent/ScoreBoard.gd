@@ -17,6 +17,8 @@ func _process(delta: float) -> void:
 		self.visible = false
 	if Input.is_key_pressed(KEY_R):
 		_refresh()
+	if Input.is_key_pressed(KEY_Q):
+		setup()
 	
 func make_new_label(color):
 	var new_label = Label.new()
@@ -26,6 +28,9 @@ func make_new_label(color):
 
 #create labels for the current players and add them to the score board
 func setup():
+	
+	fetch_data()
+	
 	#check if all players have stats
 	if len(players_data) == len(stats_data):
 	
@@ -92,12 +97,9 @@ func setup():
 
 #refresh the score board to the current stats of the stats_data dictionary
 func _refresh():
-	var nc = get_tree().get_root().get_node("MainScene/NetworkController")
-	stats_data = nc.game_stats
-	print("scoreboard stats")
-	print(nc.game_stats)
-	print(stats_data)
-	players_data = nc.players
+	
+	fetch_data()
+	
 	#counts how many blue players there are
 	var blue_players = 0
 	#counts how many red players there are
@@ -133,5 +135,13 @@ func _screen_resized():
 		s = window_size.x / 1920;
 	self.rect_scale = Vector2(s,s);
 		
-
+		
+#get players and game stats from the network controller and update players_data and stats_data to the new values
+func fetch_data():
+	var nc = get_tree().get_root().get_node("MainScene/NetworkController")
+	stats_data = nc.game_stats
+	print("scoreboard stats")
+	print(nc.game_stats)
+	print(stats_data)
+	players_data = nc.players
 
