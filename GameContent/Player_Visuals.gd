@@ -10,6 +10,7 @@ var team_id = 0;
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	Globals.connect("skin_changed", self, "skin_changed");
 	pass # Replace with function body.
 
 func _update_animation(position_delta):
@@ -83,20 +84,30 @@ func _update_team_id(t):
 func _start_shoot_animation():
 	$Shoot_Animation_Timer.start()
 
+func skin_changed(body_index, head_index):
+	head_skin = head_index
+	body_skin = body_index
+	refresh_textures()
+
 func refresh_textures():
 	var t = "B";
 	if team_id == 1:
 		t = "R";
 	
-	#Use this once ready for new skins
-	#var new_head = ("res://Assets/Player/" + current_class_name + "_head_" + str(skin_number) + "_" + str(team_colour) + ".png")
+	#store skin in body variable
+	var body = "res://Assets/Player/Skins/" + str(body_skin) + "_body.png";
+	#check if the skin exists
+	if ResourceLoader.exists(body):
+		#if it does, set the body texture to the new skin
+		$Sprite_Body.set_texture(load(body));
+	else:
+		print("Error in Player_Visuals.gd No skin found at "+ body)
 	
-	var head = "res://Assets/Player/" + str(current_class_name) + "_head_" + str(t) + ".png";
+	var head = "res://Assets/Player/Skins/" + str(head_skin) + "_head.png";
 	if ResourceLoader.exists(head):
 		$Sprite_Head.set_texture(load(head));
-	var body = "res://Assets/Player/" + str(current_class_name) + "_body_" + str(t) + ".png";
-	if ResourceLoader.exists(body):
-		$Sprite_Body.set_texture(load(body));
+	else:
+		print("Error in Player_Visuals.gd No skin found at "+ head)
 	var gun = "res://Assets/Player/" + str(current_class_name) + "_gun_" + str(t) + ".png";
 	if ResourceLoader.exists(gun):
 		$Sprite_Gun.set_texture(load(gun));

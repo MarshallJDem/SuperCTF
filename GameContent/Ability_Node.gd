@@ -47,7 +47,7 @@ func _input(event):
 				ability_pressed();
 			if event.scancode == KEY_Q:
 				ult_pressed();
-			if event.scancode == KEY_P and Globals.testing:
+			if event.scancode == KEY_P and (Globals.testing or Globals.allowCommands):
 				#$Ult_Timer.start();
 				ult_charge = 100;
 				#player.get_node("Weapon_Node").ult_active = true;
@@ -64,7 +64,12 @@ func ult_pressed():
 		$Ult_Timer.start();
 		ult_charge = 0;
 		player.get_node("Weapon_Node").ult_active = true;
-
+		#emit fire behind player of the color of the player's team
+		if Globals.testing:
+			player.get_node("Fire_Particles")._start(player.team_id)
+		else:
+			player.get_node("Fire_Particles").rpc("_start", player.team_id)
+		
 func _ult_charge_timer_ended():
 	var previous_charge = ult_charge;
 	ult_charge += 1;
@@ -75,6 +80,8 @@ func _ult_charge_timer_ended():
 		ult_charge = 100;
 func _ult_timer_ended():
 	player.get_node("Weapon_Node").ult_active = false;
+	#stop fire behind player
+	player.get_node("Fire_Particles").rpc("_stop")
 
 func set_ability(a):
 	Globals.current_ability = a;

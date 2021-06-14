@@ -302,13 +302,15 @@ remotesync func enable_powerup(type):
 		$Powerup_Timer.wait_time = 1;
 		$Ability_Node.ability_stacks += 1;
 		text = "[wave amp=50 freq=12][color=red]^^ +1 INSTANT ABILITY USE ^^";
+		get_tree().get_root().get_node("MainScene/UI_Layer/Input_GUIs/Ability_GUIs/E_GUI/PowerupParticles").start(type);
 	elif type == 4:
 		DASH_COOLDOWN_PMODIFIER = -2.0;
 		$Powerup_Timer.wait_time = 10;
 		text = "[wave amp=50 freq=12][color=purple]˅˅˅˅˅˅^^ DASH RATE UP ^^";
+		get_tree().get_root().get_node("MainScene/UI_Layer/Input_GUIs/Ability_GUIs/SPACE_GUI/PowerupParticles").start(type);	
 	if Globals.testing or is_network_master():
 		get_tree().get_root().get_node("MainScene/UI_Layer/Input_GUIs/PowerupParticles").start(type);
-	
+		
 	# Only display message if this is our local player
 	if Globals.testing or player_id == Globals.localPlayerID:
 		$Powerup_Audio.play();
@@ -327,6 +329,8 @@ func stop_powerups():
 	$Ability_Node.reduced_cooldown_enabled = false;
 	if Globals.testing or is_network_master():
 		get_tree().get_root().get_node("MainScene/UI_Layer/Input_GUIs/PowerupParticles").stop();
+		#Stop the powerup particle emmitters 
+		get_tree().get_root().get_node("MainScene/UI_Layer/Input_GUIs/Ability_GUIs/SPACE_GUI/PowerupParticles").stop();
 	$PowerupParticles.stop();
 
 	
@@ -373,6 +377,9 @@ func set_look_direction(dir):
 func is_camera_extended():
 	return $Center_Pivot.extended
 
+func skin_changed(body_index, head_index):
+	$Player_Visuals.skin_changed(body_index, head_index)
+
 # Updates this player's position with the new given position. Only ever called remotely
 remotesync func update_position(new_pos, server_forced = false):
 	if is_network_master():
@@ -413,7 +420,7 @@ func deactivate_camera():
 func hit_by_projectile(attacker_id, projectile_type):
 	var attacker = get_tree().get_root().get_node("MainScene/Players/P" + str(attacker_id));
 	if attacker != null and is_instance_valid(attacker):
-		attacker.stats["kills"] += 1;
+		increment_stats(1,0,0,0);
 		attacker.get_node("Ability_Node").ult_charge += 10;
 	else:
 		print_stack();
@@ -456,7 +463,7 @@ func die():
 	control = false;
 	alive = false;
 	$Weapon_Node.ult_active = false;
-	stats["deaths"] += 1;
+	increment_stats(0,1,0,0);
 	$Ability_Node.ability_stacks = 0;
 	spawn_death_particles();
 	stop_powerups();
@@ -502,6 +509,15 @@ func respawn():
 
 func get_stats():
 	return stats;
+
+func increment_stats(kills, deaths, captures, recovers):
+	stats["kills"] += kills
+	stats["deaths"] += deaths
+	stats["captures"] += captures
+	stats["recovers"] += recovers
+	
+	if get_tree().is_network_server():
+		get_tree().get_root().get_node("MainScene/NetworkController").rpc("");
 
 # Takes the given flag
 func take_flag(flag_id):

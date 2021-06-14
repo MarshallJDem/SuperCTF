@@ -3,10 +3,11 @@ extends Node
 # Whether to run in testing mode (for development uses)
 var testing = false;
 var experimental = false;
-var localTesting = false; # Used for running a gameserver locally on the machine
-var localTestingBackend = false; # Used for when the backend is running locally on this machine
+var localTesting = false; # Used for running a server locally on the machine
+var localTestingBackend = true; # Used for when the backend is running locally on this machine
 var remoteSkirmish = false; # Used for running the skirmish lobby on a remote computer (so you can run it in the editor and catch bugs)
 var directLiveSkirmish = false; # Used to connect directly to the live skirmish without entering MMQueue
+var reactGodot = true;
 
 var temporaryQuickplayDisable = true;
 
@@ -67,6 +68,10 @@ var result_match_id = -1;
 signal class_changed();
 signal ability_changed();
 signal utility_changed();
+signal skin_changed(body_index, head_index);
+
+# When the stats of a player changes alert networkcontorller to update scoreboard
+signal game_stats_changed();
 
 enum Classes { Bullet, Laser, Demo};
 var current_class = Classes.Bullet;
@@ -76,6 +81,10 @@ var current_ability = Abilities.Forcefield;
 
 enum Utilities { Grenade, Landmine};
 var current_utility = Utilities.Grenade;
+
+# Just an integer index of which skins the local player is using
+var current_skin_body = 0
+var current_skin_head = 0
 
 var active_landmines = 0;
 
@@ -181,14 +190,13 @@ func _enter_tree():
 		skirmishIP = "localhost:42401";
 		useSecure = false;
 		port = 42401
+		matchType = 0;
 		if isServer:
 			serverPrivateToken = "localhosttoken";
-			matchType = 0;
 		else:
 			serverIP = skirmishIP;
 	if localTestingBackend:
 		mainServerIP = "http://127.0.0.1:42401/";
-		
 
 func _ready():
 	add_child(HTTPRequest_PollPlayerStatus);
@@ -203,13 +211,20 @@ func _ready():
 	HTTPRequest_Logout.connect("request_completed", self, "_HTTPRequest_Logout_Completed");
 	if OS.has_touchscreen_ui_hint():
 		control_scheme = Control_Schemes.touchscreen;
+	
+
+
 func _process(delta):
 	if get_tree().get_root().has_node("MainScene/NetworkController"):
 		Globals.player_lerp_time = get_tree().get_root().get_node("MainScene/NetworkController").get_game_var("playerLagTime");
+	
+	# Get state data
 	if !isServer and !testing:
 		if Globals.userToken != null:
 			attempt_ConfirmClientConnection();
 			attempt_PollPlayerStatus();
+		if reactGodot:
+			poll_react_local_storage();
 
 var volume_sliders = Vector2(50,50);
 func toggle_options_menu():
@@ -238,6 +253,8 @@ func _HTTP_CancelQueue_Completed(result, response_code, headers, body):
 		print("THERE WAS A PROBLEM WITH CANCELING QUEUE: status = " + str(response_code) + " body = " + str(body));
 
 func logout(reload = false):
+	if reactGodot:
+		get_tree().quit()
 	userToken = null;
 	write_save_data();
 	
@@ -409,11 +426,12 @@ func load_save_data():
 		result[str(index)] = line
 		index += 1
 	f.close();
-	userToken = result["1"];
-	if userToken == null || userToken == "Null" || userToken == "null" || userToken.length() < 5:
-		userToken = null;
-	else:
-		userToken = str(result["1"]);
+	if !reactGodot:
+		userToken = result["1"];
+		if userToken == null || userToken == "Null" || userToken == "null" || userToken.length() < 5:
+			userToken = null;
+		else:
+			userToken = str(result["1"]);
 	print("HERE IS THE I " + str(index) + " AND RETRIEVED TOKEN : " + str(userToken));
 	if result.has("2"):
 		AudioServer.set_bus_volume_db(0,float(result["2"]));
@@ -429,6 +447,46 @@ func load_save_data():
 	else:
 		Global_Overlay.saved_song_loaded(-1);
 
+func poll_react_local_storage():
+	var local_storage = JavaScript.eval("getLocalStorage()", true)
+	local_storage = "{\"reactQueryDevtoolsActiveQueryHash\":\"\\\"\\\\\\\"getLeaderboardData\\\\\\\"\\\"\",\"PLAYER\":\"\\\"{\\\\\\\"rank\\\\\\\":-1,\\\\\\\"partyData\\\\\\\":null,\\\\\\\"status\\\\\\\":\\\\\\\"1\\\\\\\",\\\\\\\"mmr\\\\\\\":-1}\\\"\",\"reactQueryDevtoolsHeight\":\"330\",\"TOKEN\":\"\\\"QLaai7vj5iFof4lhAa9SRz3mfYCWUleB7Cv\\\"\",\"reactQueryDevtoolsOpen\":\"false\"}"
+	# Format data for parsing
+	var rawPlayer = JSON.parse(local_storage).result.PLAYER
+	rawPlayer = rawPlayer.replace("\\\"", "\"").left(rawPlayer.length() - 1).right(1)
+	var playerData = JSON.parse(rawPlayer).result
+	var token = JSON.parse(local_storage).result.TOKEN.replace("\"","")
+
+	Globals.player_rank = int(playerData.rank);
+	#Globals.player_uid = int(playerData.uid);
+	#Globals.player_type = String(playerData.playerType);
+	# Keep track of changes in MMR for scorescreen
+	if Globals.player_MMR == -1:
+		Globals.player_MMR = int(playerData.mmr);
+		Globals.player_old_MMR = int(playerData.mmr);
+	elif int(playerData.mmr) != Globals.player_MMR:
+		Globals.player_old_MMR = Globals.player_MMR;
+		Globals.player_MMR = int(playerData.mmr);
+	
+	Globals.knownPartyData = playerData.partyData;
+	Globals.player_party_data = playerData.partyData;
+	
+	# Switch to skirmish
+	if(int(playerData.status) == 1 and player_status != 1):
+		get_tree().change_scene("res://GameContent/Main.tscn");
+		player_status = int(playerData.status);
+	# Switch to match
+	elif(player_status < 10 and int(playerData.status) >= 10):
+		print("Found Match : " + str(playerData.status));
+		var matchID = str(playerData.status);
+		var query = "matchID=" + str(matchID) + "&authority=client";
+		HTTPRequest_GetMatchData.request(Globals.mainServerIP + "getMatchData?" + query, ["authorization: Bearer " + Globals.userToken], false, HTTPClient.METHOD_GET);
+	# Quit game (Switch to titlescreen)
+	elif(int(playerData.status) == 0):
+		print("Quitting godot because player status is 0, which means we should be at titlescreen")
+		get_tree().quit()
+	player_status = int(playerData.status);
+	
+
 func _input(event):
 	if event is InputEventKey and event.pressed:
 		if is_typing_in_chat:
@@ -436,3 +494,17 @@ func _input(event):
 		if event.scancode == KEY_F:
 			#OS.window_fullscreen = !OS.window_fullscreen;
 			pass;
+		if event.scancode == KEY_R:
+			pass;
+		if event.scancode == KEY_0:
+			current_skin_body = 0;
+			current_skin_head = 0;
+			emit_signal("skin_changed", 0, 0);
+		if event.scancode == KEY_1:
+			current_skin_body = 1;
+			current_skin_head = 1;
+			emit_signal("skin_changed", 1, 1);
+		if event.scancode == KEY_6:
+			current_skin_body = 6;
+			current_skin_head = 6;
+			emit_signal("skin_changed", 6, 6);

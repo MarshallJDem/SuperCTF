@@ -55,7 +55,7 @@ func collided_with_player(player):
 	if !flag.is_at_home and flag.team_id == player.team_id:
 		# Do it only if this is not a sudden death
 		if !get_tree().get_root().get_node("MainScene/NetworkController").isSuddenDeath:
-			player.stats["recovers"] += 1;
+			player.increment_stats(0,0,0,1);
 			if Globals.testing:
 				flag.return_home()
 			else:
