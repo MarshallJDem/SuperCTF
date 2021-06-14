@@ -37,7 +37,7 @@ var dash_signaled = false;
 export var is_bot = false;
 
 # Only accurately being tracked by server
-var stats = {"kills" : 0, "deaths": 0, "captures" : 0, "recovers" : 0};
+var stats = Globals.default_player_stats.duplicate(true);
 
 var Ghost_Trail = preload("res://GameContent/Ghost_Trail.tscn");
 var Player_Death = preload("res://GameContent/Player_Death.tscn");

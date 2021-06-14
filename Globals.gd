@@ -61,6 +61,9 @@ var result_team0_score = 0;
 var result_team1_score = 0;
 var result_match_id = -1;
 
+# Default player stats
+var default_player_stats = {"kills" : 0, "deaths": 0, "captures" : 0, "recovers" : 0}
+
 # NOTES
 # Layer mask 4 : Demo Bullet
 

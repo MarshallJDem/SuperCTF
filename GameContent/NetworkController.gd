@@ -350,6 +350,8 @@ remote func player_class_changed(new_class):
 remotesync func update_players_data(players_data, round_is_running):
 	players = players_data;
 	self.round_is_running = round_is_running;
+	if get_tree().is_network_server():
+		_game_stats_changed()
 	update_player_objects();
 
 
@@ -388,6 +390,14 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 			#server.disconnect_peer(player_check_queue[0]['networkID'], 1000, "An Unknown Error Occurred.")
 			return
 		
+		add_player_to_game(player_name, user_id, network_id)
+
+
+func add_player_to_game(player_name, user_id, network_id):
+	var player_id_collision = null;
+	
+	# dont do auth related stuff on local testing 
+	if !Globals.localTesting:
 		# If this player disconnected already then dont make them a player
 		var is_connected = false;
 		for peer in get_tree().get_network_connected_peers():
@@ -400,7 +410,6 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 		for player in Globals.allowedPlayers:
 			if str(player.keys()[0]) == str(user_id):
 				allowed = true;
-		var player_id_collision = null;
 		for player_id in players:
 			if players[player_id]['user_id'] == user_id:
 				player_id_collision = player_id;
@@ -416,38 +425,47 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 			server.disconnect_peer(network_id, 1000, "You are not a player in this match")
 			return;
 		
-		
+	
 		# If there is a collision, disconnect original peer if there was one
 		if player_id_collision != null:
 			if players[player_id_collision]['network_id'] != 1:
 				print("Disconnecting peer " + str(players[player_id_collision]['network_id']) + " because a new player connected to the same user id " + str(user_id) + " and name " + str(player_name) +  " with new network id: " + str(network_id));
 				server.disconnect_peer(players[player_id_collision]['network_id'], 1000, "A new computer has connected as this player");
-		# Else if this is a skirmish, and there is no collision, allocate a new player for this connection
-		elif Globals.matchType == 0:
-			# Choose team
-			var team_id = 0;
-			team_id = adjust_bots_for_new_player()
-			# Get spawn points
-			var spawn_pos = get_default_spawn_for_team(team_id)
-			players[user_id] = {"name" : player_name, "team_id" : team_id, "user_id": user_id, "network_id": network_id,"spawn_pos": spawn_pos, "position": spawn_pos, "class" : Globals.Classes.Bullet, "DD_vote" : false, "BOT" : false};
-			player_id_collision = user_id;
-			print("Added a new player for Skirmish of networkID : " + str(network_id) + " | userID : " + str(user_id) + " | name : " + str(player_name));
-		else: #Else if there is no collision and this is a match, then something has gone wrong. Disconnect the peer
-			print("A PLAYER CONNECTED TO MATCH AND WAS IN ALLOWED PLAYER BUT WE HAD NO ALLOCATED SPOT FOR THEM. DISCONNECTING PEER");
-			server.disconnect_peer(network_id, 1000, "Something went wrong sorry! We don't know the issue yet.");
-		
+				return
+	
+	# Else if this is a skirmish, and there is no collision, allocate a new player for this connection
+	if Globals.matchType == 0 || Globals.localTesting:
+		# Choose team
+		var team_id = 0;
+		team_id = adjust_bots_for_new_player()
+		# Get spawn points
+		var spawn_pos = get_default_spawn_for_team(team_id)
+		players[user_id] = {"name" : player_name, "team_id" : team_id, "user_id": user_id, "network_id": network_id,"spawn_pos": spawn_pos, "position": spawn_pos, "class" : Globals.Classes.Bullet, "DD_vote" : false, "BOT" : false};
+		player_id_collision = user_id;
+		print("Added a new player for Skirmish of networkID : " + str(network_id) + " | userID : " + str(user_id) + " | name : " + str(player_name));
+	else: #Else if there is no collision and this is a match, then something has gone wrong. Disconnect the peer
+		print("A PLAYER CONNECTED TO MATCH AND WAS IN ALLOWED PLAYER BUT WE HAD NO ALLOCATED SPOT FOR THEM. DISCONNECTING PEER");
+		server.disconnect_peer(network_id, 1000, "Something went wrong sorry! We don't know the issue yet.");
+	
+	
+	if !Globals.localTesting:
 		# Through the above logic player_id_collision must no longer be null and we can now update the players data to tell people
 		players[player_id_collision]['name'] = player_name;
 		# TODO FORCE PLAYER TO USE EXISTING CLASS
 		players[player_id_collision]['class'] = Globals.Classes.Bullet;
 		players[player_id_collision]['network_id'] = network_id;
 		print("Authenticated new connection : " + str(network_id) + " and giving them control of player id " + str(player_id_collision) + " with name " + str(player_name));
-		rpc("update_players_data", players, round_is_running);
-		rpc("resync_match_time_limit", $Match_Time_Limit_Timer.time_left, $Match_Time_Limit_Timer.paused);
-		# If this user is joining mid match
-		if match_is_running:
-			update_flags_data();
-			rpc_id(network_id, "load_mid_round", players, scores, $Round_Start_Timer.time_left, round_num, OS.get_system_time_msecs() - Globals.match_start_time, flags_data, game_vars); 
+	
+	rpc("update_players_data", players, round_is_running);
+	rpc("resync_match_time_limit", $Match_Time_Limit_Timer.time_left, $Match_Time_Limit_Timer.paused);
+	
+	# If this user is joining mid match
+	if match_is_running:
+		update_flags_data();
+		rpc_id(network_id, "load_mid_round", players, scores, $Round_Start_Timer.time_left, round_num, OS.get_system_time_msecs() - Globals.match_start_time, flags_data, game_vars); 
+	
+	
+
 
 # Figures out what team a new player should join and adjusts bots to compensate
 func adjust_bots_for_new_player():
@@ -531,17 +549,22 @@ func update_flags_data():
 # Client calls this on the server to notify that the client's connection is ready
 remote func user_ready(id, userToken):
 	print("User Ready");
-	# Now if we are the server we will add this player to the queue of players to be checked
+	# Now if we are the server we will check this player's authentication
 	if get_tree().is_network_server():
 		var net_id = get_tree().get_rpc_sender_id();
-		var repeats = 0;
-		var http = HTTPRequest.new();
-		add_child(http);
-		local_test_networkID_storage = net_id
-		http.connect("request_completed", self, "_HTTP_GameServerCheckUser_Completed")
-		http.request(Globals.mainServerIP + "gameServerCheckUser?" + "userToken=" + str(userToken) + "&networkID=" + str(id), ["authorization: Bearer " + Globals.serverPrivateToken], false);
-		yield(http, "request_completed");
-		http.call_deferred("free");
+		
+		
+		if Globals.localTesting:
+			add_player_to_game(str(net_id), net_id, net_id) 
+		else:
+			var repeats = 0;
+			var http = HTTPRequest.new();
+			add_child(http);
+			local_test_networkID_storage = net_id
+			http.connect("request_completed", self, "_HTTP_GameServerCheckUser_Completed")
+			http.request(Globals.mainServerIP + "gameServerCheckUser?" + "userToken=" + str(userToken) + "&networkID=" + str(id), ["authorization: Bearer " + Globals.serverPrivateToken], false);
+			yield(http, "request_completed");
+			http.call_deferred("free");
 
 # A test function for sending a ping
 remotesync func test_ping():
@@ -971,13 +994,14 @@ func get_game_stats():
 		if player != null:
 			stats[player_id] = player.get_stats();
 		else:
-			print("I DONT KNOW WHY OR HOW BUT A PLAYER WASN'T SPAWNED ON THE SERVER WHEN GETTING STATS");
+			stats[player_id] = Globals.default_player_stats.duplicate(true);
 	return stats;
 
 remotesync func show_results_screen(scores, stats,players, results, matchType):
 	if get_tree().is_network_server():
 		return;
 	var scn = Game_Results_Screen.instance();
+	get_tree().get_root().get_node("MainScene").add_child(scn);
 	# Get local player user_id
 	var uid = players[Globals.localPlayerID]["user_id"];
 	if results != null:
