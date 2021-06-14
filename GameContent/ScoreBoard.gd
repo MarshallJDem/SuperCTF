@@ -121,8 +121,9 @@ func _refresh():
 			#get player info dictionary of the selected player
 			player = players_data.get(player_number)
 			
+			
 			#get stats dictionary of that player
-			stat = stats_data.get(stats_data.keys()[blue_players + red_players])
+			stat = stats_data.get(player_number)
 			
 			
 			#if player is blue
