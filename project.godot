@@ -29,8 +29,8 @@ Global_Overlay="*res://Global_Overlay.tscn"
 
 window/size/width=1920
 window/size/height=1080
-window/size/test_width=1070
-window/size/test_height=766
+window/size/test_width=960
+window/size/test_height=540
 mouse_cursor/custom_image="res://crosshair.png"
 mouse_cursor/custom_image_hotspot=Vector2( 18, 18 )
 window/stretch/mode="viewport"
