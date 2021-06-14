@@ -120,26 +120,27 @@ func _refresh():
 		for player_number in players_data:
 			#get player info dictionary of the selected player
 			player = players_data.get(player_number)
+			
 			#get stats dictionary of that player
-			stat = stats_data.get(player_number)
+			stat = stats_data.get(stats_data.keys()[blue_players + red_players])
 			
 			
 			#if player is blue
 			if player["team_id"] == 0:
 				blue_players += 1
 				#set all stats to current stats_data stats
-				$MarginContainer/Teams/Team_1/Columns/Kills_Column.get_child(blue_players).text = str(stat["kills"])
-				$MarginContainer/Teams/Team_1/Columns/Deaths_Column.get_child(blue_players).text = str(stat["deaths"])
-				$MarginContainer/Teams/Team_1/Columns/Captures_Column.get_child(blue_players).text = str(stat["captures"])
-				$MarginContainer/Teams/Team_1/Columns/Recovers_Column.get_child(blue_players).text = str(stat["recovers"])
+				$MarginContainer/Teams/Team_1/Columns/Kills_Column.get_child(blue_players-1).text = str(stat["kills"])
+				$MarginContainer/Teams/Team_1/Columns/Deaths_Column.get_child(blue_players-1).text = str(stat["deaths"])
+				$MarginContainer/Teams/Team_1/Columns/Captures_Column.get_child(blue_players-1).text = str(stat["captures"])
+				$MarginContainer/Teams/Team_1/Columns/Recovers_Column.get_child(blue_players-1).text = str(stat["recovers"])
 			#if player is red
 			elif player["team_id"] == 1:
 				red_players += 1
 				#set all stats to current stats_data stats
-				$MarginContainer/Teams/Team_2/Columns2/Kills_Column2.get_child(red_players).text = str(stat["kills"])
-				$MarginContainer/Teams/Team_2/Columns2/Deaths_Column2.get_child(red_players).text = str(stat["deaths"])
-				$MarginContainer/Teams/Team_2/Columns2/Captures_Column2.get_child(blue_players).text = str(stat["captures"])
-				$MarginContainer/Teams/Team_2/Columns2/Recovers_Column2.get_child(blue_players).text = str(stat["recovers"])
+				$MarginContainer/Teams/Team_2/Columns2/Kills_Column2.get_child(red_players-1).text = str(stat["kills"])
+				$MarginContainer/Teams/Team_2/Columns2/Deaths_Column2.get_child(red_players-1).text = str(stat["deaths"])
+				$MarginContainer/Teams/Team_2/Columns2/Captures_Column2.get_child(red_players-1).text = str(stat["captures"])
+				$MarginContainer/Teams/Team_2/Columns2/Recovers_Column2.get_child(red_players-1).text = str(stat["recovers"])
 				
 				
 	else:
@@ -167,6 +168,7 @@ func fetch_data():
 	print(nc.game_stats)
 	print(stats_data)
 	print("Player stats:")
-	print(players_data)
 	players_data = nc.players
+	print(players_data)
+	
 
