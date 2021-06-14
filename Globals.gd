@@ -2,12 +2,12 @@ extends Node
 
 # Whether to run in testing mode (for development uses)
 var testing = false;
-var experimental = false;
-var localTesting = false; # Used for running a server locally on the machine
-var localTestingBackend = true; # Used for when the backend is running locally on this machine
+var experimental = true;
+var localTesting = true; # Used for running a server locally on the machine
+var localTestingBackend = false; # Used for when the backend is running locally on this machine
 var remoteSkirmish = false; # Used for running the skirmish lobby on a remote computer (so you can run it in the editor and catch bugs)
 var directLiveSkirmish = false; # Used to connect directly to the live skirmish without entering MMQueue
-var reactGodot = true;
+var reactGodot = false;
 
 var temporaryQuickplayDisable = true;
 
@@ -220,7 +220,7 @@ func _process(delta):
 	
 	# Get state data
 	if !isServer and !testing:
-		if Globals.userToken != null:
+		if !reactGodot and Globals.userToken != null:
 			attempt_ConfirmClientConnection();
 			attempt_PollPlayerStatus();
 		if reactGodot:
@@ -447,9 +447,13 @@ func load_save_data():
 	else:
 		Global_Overlay.saved_song_loaded(-1);
 
+
+
 func poll_react_local_storage():
 	var local_storage = JavaScript.eval("getLocalStorage()", true)
-	local_storage = "{\"reactQueryDevtoolsActiveQueryHash\":\"\\\"\\\\\\\"getLeaderboardData\\\\\\\"\\\"\",\"PLAYER\":\"\\\"{\\\\\\\"rank\\\\\\\":-1,\\\\\\\"partyData\\\\\\\":null,\\\\\\\"status\\\\\\\":\\\\\\\"1\\\\\\\",\\\\\\\"mmr\\\\\\\":-1}\\\"\",\"reactQueryDevtoolsHeight\":\"330\",\"TOKEN\":\"\\\"QLaai7vj5iFof4lhAa9SRz3mfYCWUleB7Cv\\\"\",\"reactQueryDevtoolsOpen\":\"false\"}"
+	# If local storage didn't have valid info for us to use
+	if(local_storage == "" or local_storage == null or !JSON.parse(local_storage).result.has("PLAYER") or !JSON.parse(local_storage).result.has("TOKEN")):
+		return
 	# Format data for parsing
 	var rawPlayer = JSON.parse(local_storage).result.PLAYER
 	rawPlayer = rawPlayer.replace("\\\"", "\"").left(rawPlayer.length() - 1).right(1)
@@ -457,8 +461,9 @@ func poll_react_local_storage():
 	var token = JSON.parse(local_storage).result.TOKEN.replace("\"","")
 
 	Globals.player_rank = int(playerData.rank);
-	#Globals.player_uid = int(playerData.uid);
+	Globals.player_uid = int(playerData.uid);
 	#Globals.player_type = String(playerData.playerType);
+	Globals.userToken = token
 	# Keep track of changes in MMR for scorescreen
 	if Globals.player_MMR == -1:
 		Globals.player_MMR = int(playerData.mmr);
@@ -469,6 +474,11 @@ func poll_react_local_storage():
 	
 	Globals.knownPartyData = playerData.partyData;
 	Globals.player_party_data = playerData.partyData;
+	
+	# If we are just switching off the titlescreen, enable godot view
+	if(int(playerData.status) > 0 and player_status <= 0):
+		print("Enabling godot view because player status has just been switched off of 0")
+		JavaScript.eval("enableVisibility()", true)
 	
 	# Switch to skirmish
 	if(int(playerData.status) == 1 and player_status != 1):
@@ -481,9 +491,11 @@ func poll_react_local_storage():
 		var query = "matchID=" + str(matchID) + "&authority=client";
 		HTTPRequest_GetMatchData.request(Globals.mainServerIP + "getMatchData?" + query, ["authorization: Bearer " + Globals.userToken], false, HTTPClient.METHOD_GET);
 	# Quit game (Switch to titlescreen)
-	elif(int(playerData.status) == 0):
-		print("Quitting godot because player status is 0, which means we should be at titlescreen")
-		get_tree().quit()
+	elif(player_status != 0 and int(playerData.status) == 0):
+		print("Disabling godot view because player status is now 0, which means we should be at titlescreen")
+		get_tree().change_scene("res://Default_View.tscn");
+		get_tree().set_network_peer(null);
+		JavaScript.eval("disableVisibility()", true)
 	player_status = int(playerData.status);
 	
 
