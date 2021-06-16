@@ -37,7 +37,7 @@ var dash_signaled = false;
 export var is_bot = false;
 
 # Only accurately being tracked by server
-var stats = {"kills" : 0, "deaths": 0, "captures" : 0, "recovers" : 0};
+var stats = Globals.default_player_stats.duplicate(true);
 
 var Ghost_Trail = preload("res://GameContent/Ghost_Trail.tscn");
 var Player_Death = preload("res://GameContent/Player_Death.tscn");
@@ -517,7 +517,7 @@ func increment_stats(kills, deaths, captures, recovers):
 	stats["recovers"] += recovers
 	
 	if get_tree().is_network_server():
-		get_tree().get_root().get_node("MainScene/NetworkController").rpc("");
+		Globals.emit_signal("game_stats_changed");
 
 # Takes the given flag
 func take_flag(flag_id):
