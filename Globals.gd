@@ -153,6 +153,10 @@ func _enter_tree():
 		port = int(arguments["port"]);
 	if arguments.has("isServer"):
 		isServer = true if arguments["isServer"] == "true" else false;
+		if isServer:
+			print("I am a gameserver. Disabling reactGodot and switching to main.tscn")
+			reactGodot = false
+			get_tree().change_scene("res://GameContent/Main.tscn");
 	if arguments.has("serverPrivateToken"):
 		Globals.serverPrivateToken = arguments["serverPrivateToken"];
 	if arguments.has("allowedPlayers"):
