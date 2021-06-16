@@ -118,7 +118,6 @@ func _process(delta):
 			$QuickplayButton.disabled = true;
 			$QuickplayWarning.bbcode_text = "[center][color=gray]Must be party host"
 			$QuickplayWarning.visible = true;
-		else:
 			$RankedButton.disabled = false;
 			$RankedWarning.visible = false;
 			$QuickplayButton.disabled = false;

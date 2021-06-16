@@ -49,7 +49,10 @@ func _screen_resized():
 
 func _exit_pressed():
 	get_tree().set_network_peer(null);
-	get_tree().change_scene("res://TitleScreen.tscn");
+	if Globals.reactGodot:
+		get_tree().quit();
+	else:
+		get_tree().change_scene("res://TitleScreen.tscn");
 
 func _rematch_pressed():
 	var current_vote = get_tree().get_root().get_node("MainScene/NetworkController").players[Globals.localPlayerID]["DD_vote"];
