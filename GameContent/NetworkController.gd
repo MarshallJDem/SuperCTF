@@ -381,10 +381,6 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 			player_name = json.result.user.name;
 			user_id = int(json.result.user.uid);
 			network_id = int(json.result.networkID);
-		elif(Globals.localTesting):
-			network_id = local_test_networkID_storage
-			user_id = network_id
-			player_name = str(network_id)
 		else:
 			print("WE SHOULD BE DISCONNECTING A player because the checkUser backend call failed with a non 200 status BUT WE DON'T KNOW THEIR NETWORKID'");
 			#server.disconnect_peer(player_check_queue[0]['networkID'], 1000, "An Unknown Error Occurred.")
@@ -421,7 +417,7 @@ func add_player_to_game(player_name, user_id, network_id):
 			var message = player_name + " connected";
 			get_tree().get_root().get_node("MainScene/Chat_Layer/Line_Edit").rpc("receive_message", "[color=green]" + message +  "[/color]", -1);
 		else:
-			print("Disconnecting player " + str(network_id) + " because they are not in the allowed players list : " + to_json(Globals.allowedPlayers));
+			print("Disconnecting player " + str(network_id) + " " + str(user_id) + " because they are not in the allowed players list : " + to_json(Globals.allowedPlayers));
 			server.disconnect_peer(network_id, 1000, "You are not a player in this match")
 			return;
 		
