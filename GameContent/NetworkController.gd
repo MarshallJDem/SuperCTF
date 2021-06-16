@@ -390,6 +390,8 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 
 
 func add_player_to_game(player_name, user_id, network_id):
+	
+	# The ID of the player this client should take control of
 	var player_id_collision = null;
 	
 	# dont do auth related stuff on local testing 
@@ -439,7 +441,8 @@ func add_player_to_game(player_name, user_id, network_id):
 		players[user_id] = {"name" : player_name, "team_id" : team_id, "user_id": user_id, "network_id": network_id,"spawn_pos": spawn_pos, "position": spawn_pos, "class" : Globals.Classes.Bullet, "DD_vote" : false, "BOT" : false};
 		player_id_collision = user_id;
 		print("Added a new player for Skirmish of networkID : " + str(network_id) + " | userID : " + str(user_id) + " | name : " + str(player_name));
-	else: #Else if there is no collision and this is a match, then something has gone wrong. Disconnect the peer
+	
+	if player_id_collision == null: # if there is no collision and this is a match, then something has gone wrong. Disconnect the peer
 		print("A PLAYER CONNECTED TO MATCH AND WAS IN ALLOWED PLAYER BUT WE HAD NO ALLOCATED SPOT FOR THEM. DISCONNECTING PEER");
 		server.disconnect_peer(network_id, 1000, "Something went wrong sorry! We don't know the issue yet.");
 	
