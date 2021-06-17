@@ -22,8 +22,10 @@ func _process(delta: float) -> void:
 	
 func make_new_label(color):
 	var new_label = Label.new()
+	print(new_label.align)
 	new_label.set("custom_fonts/font", label_font)
 	new_label.set("custom_colors/font_color", (color))
+	new_label.set("align", "center")
 	return(new_label)
 
 #create labels for the current players and add them to the score board
@@ -36,6 +38,12 @@ func setup():
 	
 	#check if all players have stats
 	if len(players_data) == len(stats_data):
+		
+		for column in $MarginContainer/Teams/Team_1/Columns.get_children():
+			remove_nontitles(column)
+		
+		for column in $MarginContainer/Teams/Team_2/Columns2.get_children():
+			remove_nontitles(column)
 		
 		for player_number in players_data:
 			player = players_data.get(player_number)
@@ -130,18 +138,18 @@ func _refresh():
 			if player["team_id"] == 0:
 				blue_players += 1
 				#set all stats to current stats_data stats
-				$MarginContainer/Teams/Team_1/Columns/Kills_Column.get_child(blue_players-1).text = str(stat["kills"])
-				$MarginContainer/Teams/Team_1/Columns/Deaths_Column.get_child(blue_players-1).text = str(stat["deaths"])
-				$MarginContainer/Teams/Team_1/Columns/Captures_Column.get_child(blue_players-1).text = str(stat["captures"])
-				$MarginContainer/Teams/Team_1/Columns/Recovers_Column.get_child(blue_players-1).text = str(stat["recovers"])
+				$MarginContainer/Teams/Team_1/Columns/Kills_Column.get_child(blue_players).text = str(stat["kills"])
+				$MarginContainer/Teams/Team_1/Columns/Deaths_Column.get_child(blue_players).text = str(stat["deaths"])
+				$MarginContainer/Teams/Team_1/Columns/Captures_Column.get_child(blue_players).text = str(stat["captures"])
+				$MarginContainer/Teams/Team_1/Columns/Recovers_Column.get_child(blue_players).text = str(stat["recovers"])
 			#if player is red
 			elif player["team_id"] == 1:
 				red_players += 1
 				#set all stats to current stats_data stats
-				$MarginContainer/Teams/Team_2/Columns2/Kills_Column2.get_child(red_players-1).text = str(stat["kills"])
-				$MarginContainer/Teams/Team_2/Columns2/Deaths_Column2.get_child(red_players-1).text = str(stat["deaths"])
-				$MarginContainer/Teams/Team_2/Columns2/Captures_Column2.get_child(red_players-1).text = str(stat["captures"])
-				$MarginContainer/Teams/Team_2/Columns2/Recovers_Column2.get_child(red_players-1).text = str(stat["recovers"])
+				$MarginContainer/Teams/Team_2/Columns2/Kills_Column2.get_child(red_players).text = str(stat["kills"])
+				$MarginContainer/Teams/Team_2/Columns2/Deaths_Column2.get_child(red_players).text = str(stat["deaths"])
+				$MarginContainer/Teams/Team_2/Columns2/Captures_Column2.get_child(red_players).text = str(stat["captures"])
+				$MarginContainer/Teams/Team_2/Columns2/Recovers_Column2.get_child(red_players).text = str(stat["recovers"])
 				
 				
 	else:
@@ -172,4 +180,7 @@ func fetch_data():
 	players_data = nc.players
 	print(players_data)
 	
-
+func remove_nontitles(parent):
+	for child in parent.get_children():
+		if not ("Title" in child.name):
+			 child.queue_free()
