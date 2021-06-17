@@ -11,7 +11,7 @@ func _ready():
 	if !Globals.reactGodot:
 		get_tree().change_scene("res://TitleScreen.tscn");
 	
-	get_tree().set_screen_stretch(SceneTree.STRETCH_MODE_VIEWPORT, SceneTree.STRETCH_ASPECT_EXPAND,Vector2(1920,1080), 1);
+	#get_tree().set_screen_stretch(SceneTree.STRETCH_MODE_VIEWPORT, SceneTree.STRETCH_ASPECT_EXPAND,Vector2(1920,1080), 1);
 
 	pass # Replace with function body.
 
