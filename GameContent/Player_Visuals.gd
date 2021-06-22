@@ -3,8 +3,8 @@ extends Control
 var look_direction = 0;
 var current_class = Globals.Classes.Bullet;
 var current_class_name = "gunner";
-var equipped_head = 0;
-var equipped_body = 1;
+var equipped_head = 1;
+var equipped_body = 2;
 var gun_skin = 0;
 var team_id = 0;
 

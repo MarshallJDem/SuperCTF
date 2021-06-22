@@ -11,7 +11,7 @@ var		game_stats	= {};
 
 var bot_id_tracker = 0 # For assigning unique ids to bots. First one will be -1
 
-var default_equipped_cosmetics = {"equippedHead": 0, "equippedBody": 1}
+var default_equipped_cosmetics = {"equippedHead": 1, "equippedBody": 2}
 
 var server = null;
 var client = null;
