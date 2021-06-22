@@ -606,6 +606,8 @@ func spawn_player(id):
 	player.position = players[id]["position"];
 	player.start_pos = players[id]["spawn_pos"];
 	player.current_class = players[id]["class"];
+	player.update_class(players[id]["class"])
+	player.update_equipped_cosmetics(players[id]["equipped_cosmetics"])
 	player.is_bot = players[id]["BOT"]
 	print("Spawning Player " + str(players[id]));
 	player.player_name = players[id]["name"];
