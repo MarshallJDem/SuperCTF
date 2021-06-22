@@ -7,7 +7,7 @@ var localTesting = false; # Used for running a server locally on the machine
 var localTestingBackend = false; # Used for when the backend is running locally on this machine
 var remoteSkirmish = false; # Used for running the skirmish lobby on a remote computer (so you can run it in the editor and catch bugs)
 var directLiveSkirmish = false; # Used to connect directly to the live skirmish without entering MMQueue
-var reactGodot = false;
+var reactGodot = true;
 
 var temporaryQuickplayDisable = true;
 
@@ -71,7 +71,6 @@ var default_player_stats = {"kills" : 0, "deaths": 0, "captures" : 0, "recovers"
 signal class_changed();
 signal ability_changed();
 signal utility_changed();
-signal skin_changed(body_index, head_index);
 
 # When the stats of a player changes alert networkcontorller to update scoreboard
 signal game_stats_changed();
@@ -512,15 +511,3 @@ func _input(event):
 			pass;
 		if event.scancode == KEY_R:
 			pass;
-		if event.scancode == KEY_0:
-			current_skin_body = 0;
-			current_skin_head = 0;
-			emit_signal("skin_changed", 0, 0);
-		if event.scancode == KEY_1:
-			current_skin_body = 1;
-			current_skin_head = 1;
-			emit_signal("skin_changed", 1, 1);
-		if event.scancode == KEY_6:
-			current_skin_body = 6;
-			current_skin_head = 6;
-			emit_signal("skin_changed", 6, 6);

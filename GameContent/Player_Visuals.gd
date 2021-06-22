@@ -3,8 +3,8 @@ extends Control
 var look_direction = 0;
 var current_class = Globals.Classes.Bullet;
 var current_class_name = "gunner";
-var head_skin = 0;
-var body_skin = 0;
+var equipped_head = 0;
+var equipped_body = 1;
 var gun_skin = 0;
 var team_id = 0;
 
@@ -84,18 +84,13 @@ func _update_team_id(t):
 func _start_shoot_animation():
 	$Shoot_Animation_Timer.start()
 
-func skin_changed(body_index, head_index):
-	head_skin = head_index
-	body_skin = body_index
-	refresh_textures()
-
 func refresh_textures():
 	var t = "B";
 	if team_id == 1:
 		t = "R";
 	
 	#store skin in body variable
-	var body = "res://Assets/Player/Skins/" + str(body_skin) + "_body.png";
+	var body = "res://Assets/Player/Skins/" + str(equipped_body) + "_body_" + str(t) + ".png";
 	#check if the skin exists
 	if ResourceLoader.exists(body):
 		#if it does, set the body texture to the new skin
@@ -103,7 +98,7 @@ func refresh_textures():
 	else:
 		print("Error in Player_Visuals.gd No skin found at "+ body)
 	
-	var head = "res://Assets/Player/Skins/" + str(head_skin) + "_head.png";
+	var head = "res://Assets/Player/Skins/" + str(equipped_head) + "_head_" + str(t) + ".png";
 	if ResourceLoader.exists(head):
 		$Sprite_Head.set_texture(load(head));
 	else:
@@ -112,16 +107,12 @@ func refresh_textures():
 	if ResourceLoader.exists(gun):
 		$Sprite_Gun.set_texture(load(gun));
 
-func _change_head(skin_number):
-	head_skin = skin_number;
-	refresh_textures();
 
-func _change_body(skin_number):
-	body_skin = skin_number;
-	refresh_textures();
-
-func _change_gun(skin_number):
-	gun_skin = skin_number;
-	refresh_textures();
-
-
+func _update_equipped_cosmetics(equipped_cosmetics):
+	var new_head: int = 0 if !equipped_cosmetics.has("equippedHead") else equipped_cosmetics.equippedHead
+	var new_body: int = 1 if !equipped_cosmetics.has("equippedBody") else equipped_cosmetics.equippedBody
+	# Only refresh if data changed
+	if equipped_head != new_head or equipped_body != new_body:
+		equipped_head = new_head
+		equipped_body = new_body
+		refresh_textures();

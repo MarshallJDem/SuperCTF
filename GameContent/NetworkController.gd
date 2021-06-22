@@ -11,6 +11,8 @@ var		game_stats	= {};
 
 var bot_id_tracker = 0 # For assigning unique ids to bots. First one will be -1
 
+var default_equipped_cosmetics = {"equippedHead": 0, "equippedBody": 1}
+
 var server = null;
 var client = null;
 var isSuddenDeath = false;
@@ -167,7 +169,7 @@ func start_server():
 				else:
 					print("<ERROR> Map not found");
 					print_stack();
-			players[i] = {"name" : str(player.name), "team_id" : team_id, "user_id": int(player.uid), "network_id": 1, "spawn_pos": spawn_pos, "position": spawn_pos, "class" : Globals.Classes.Bullet, "DD_vote" : false, "BOT" : false};
+			players[i] = {"name" : str(player.name), "team_id" : team_id, "user_id": int(player.uid), "network_id": 1, "spawn_pos": spawn_pos, "position": spawn_pos, "class" : Globals.Classes.Bullet, "equipped_cosmetics": default_equipped_cosmetics.duplicate(true),"DD_vote" : false, "BOT" : false};
 			i += 1;
 		start_match();
 
@@ -330,6 +332,7 @@ func update_player_objects():
 			player_node.start_pos = players[player_id]["spawn_pos"]
 			player_node.player_name = players[player_id]["name"];
 			player_node.update_class(players[player_id]["class"]);
+			player_node.update_equipped_cosmetics(players[player_id]["equipped_cosmetics"]);
 			player_node.set_network_master(players[player_id]['network_id']);
 			if !get_tree().is_network_server() and players[player_id]['network_id'] == get_tree().get_network_unique_id():
 				player_node.control = round_is_running;
@@ -389,10 +392,10 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 			return
 		print("EQUIPPED COSMETICS")
 		print(equipped_cosmetics)
-		add_player_to_game(player_name, user_id, network_id)
+		add_player_to_game(player_name, user_id, network_id, equipped_cosmetics)
 
 
-func add_player_to_game(player_name, user_id, network_id):
+func add_player_to_game(player_name, user_id, network_id, equipped_cosmetics = null):
 	
 	# The ID of the player this client should take control of
 	var player_id_collision = null;
@@ -432,7 +435,6 @@ func add_player_to_game(player_name, user_id, network_id):
 			if players[player_id_collision]['network_id'] != 1:
 				print("Disconnecting peer " + str(players[player_id_collision]['network_id']) + " because a new player connected to the same user id " + str(user_id) + " and name " + str(player_name) +  " with new network id: " + str(network_id));
 				server.disconnect_peer(players[player_id_collision]['network_id'], 1000, "A new computer has connected as this player");
-				return
 	
 	# Else if this is a skirmish, and there is no collision, allocate a new player for this connection
 	if Globals.matchType == 0 || Globals.localTesting:
@@ -441,7 +443,7 @@ func add_player_to_game(player_name, user_id, network_id):
 		team_id = adjust_bots_for_new_player()
 		# Get spawn points
 		var spawn_pos = get_default_spawn_for_team(team_id)
-		players[user_id] = {"name" : player_name, "team_id" : team_id, "user_id": user_id, "network_id": network_id,"spawn_pos": spawn_pos, "position": spawn_pos, "class" : Globals.Classes.Bullet, "DD_vote" : false, "BOT" : false};
+		players[user_id] = {"name" : player_name, "team_id" : team_id, "user_id": user_id, "network_id": network_id,"spawn_pos": spawn_pos, "position": spawn_pos, "class" : Globals.Classes.Bullet,"equipped_cosmetics": default_equipped_cosmetics.duplicate(true), "DD_vote" : false, "BOT" : false};
 		player_id_collision = user_id;
 		print("Added a new player for Skirmish of networkID : " + str(network_id) + " | userID : " + str(user_id) + " | name : " + str(player_name));
 	
@@ -456,6 +458,8 @@ func add_player_to_game(player_name, user_id, network_id):
 		# TODO FORCE PLAYER TO USE EXISTING CLASS
 		players[player_id_collision]['class'] = Globals.Classes.Bullet;
 		players[player_id_collision]['network_id'] = network_id;
+		if equipped_cosmetics:
+			players[player_id_collision]['equipped_cosmetics'] = equipped_cosmetics
 		print("Authenticated new connection : " + str(network_id) + " and giving them control of player id " + str(player_id_collision) + " with name " + str(player_name));
 	
 	rpc("update_players_data", players, round_is_running);
@@ -580,6 +584,7 @@ func add_bot(team_id):
 	players[bot_id] = {"name" : "BOT"+str(-1*bot_id), "team_id" : team_id, 
 		"user_id": bot_id, "network_id": 1,"spawn_pos": get_default_spawn_for_team(team_id), 
 		"position": get_default_spawn_for_team(team_id), "class" : Globals.Classes.Bullet, 
+		"equipped_cosmetics": default_equipped_cosmetics.duplicate(true),
 		"DD_vote" : false, "BOT" : true};
 	if get_tree().get_network_connected_peers().size() > 0:
 		rpc("update_players_data",players,round_is_running)

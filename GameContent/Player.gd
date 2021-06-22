@@ -171,7 +171,8 @@ func _physics_process(delta: float) -> void:
 	$Name_Parent/Label_Name.bbcode_text = "[center][color=" + color + "]" + player_name;
 	last_position = position;
 
-
+func update_equipped_cosmetics(equipped_cosmetics):
+	$Player_Visuals.
 
 func update_class(c):
 	$Player_Visuals._update_team_id(team_id);
@@ -377,8 +378,6 @@ func set_look_direction(dir):
 func is_camera_extended():
 	return $Center_Pivot.extended
 
-func skin_changed(body_index, head_index):
-	$Player_Visuals.skin_changed(body_index, head_index)
 
 # Updates this player's position with the new given position. Only ever called remotely
 remotesync func update_position(new_pos, server_forced = false):
