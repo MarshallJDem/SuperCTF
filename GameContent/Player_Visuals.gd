@@ -10,7 +10,6 @@ var team_id = 0;
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	Globals.connect("skin_changed", self, "skin_changed");
 	pass # Replace with function body.
 
 func _update_animation(position_delta):
@@ -47,21 +46,25 @@ func _physics_process(delta: float) -> void:
 		elif look_direction == 7:
 			$Sprite_Gun.position.y = +20 * $Shoot_Animation_Timer.time_left;
 			$Sprite_Gun.position.x = 20 * $Shoot_Animation_Timer.time_left;
+	$Sprite_Arms.position = $Sprite_Gun.position
 
 func _update_look_direction(dir):
 	look_direction = dir;
 	$Sprite_Head.frame = dir;
 	$Sprite_Gun.frame = dir;
+	$Sprite_Arms.frame = dir;
 	$Sprite_Body.frame = dir;
 	$Sprite_Legs.frame = dir + (int((1-($Leg_Animation_Timer.time_left / $Leg_Animation_Timer.wait_time)) * 4)%4) * $Sprite_Legs.hframes;
 	if dir == 2 or dir == 3:
 		$Sprite_Head.z_index =1;
 		$Sprite_Body.z_index =0;
 		$Sprite_Gun.z_index =2;
+		$Sprite_Arms.z_index =3;
 	else:
 		$Sprite_Head.z_index =2;
 		$Sprite_Body.z_index =0;
 		$Sprite_Gun.z_index =1;
+		$Sprite_Arms.z_index =1.5;
 
 func _update_class(c):
 	var n = "gunner"
@@ -98,12 +101,21 @@ func refresh_textures():
 	else:
 		print("Error in Player_Visuals.gd No skin found at "+ body)
 	
+	#store skin in arms variable
+	var arms = "res://Assets/Player/Skins/" + str(equipped_body) + "_arms_" + str(t) + ".png";
+	#check if the skin exists
+	if ResourceLoader.exists(arms):
+		#if it does, set the arms texture to the new skin
+		$Sprite_Arms.set_texture(load(arms));
+	else:
+		print("Error in Player_Visuals.gd No skin found at "+ arms)
+	
 	var head = "res://Assets/Player/Skins/" + str(equipped_head) + "_head_" + str(t) + ".png";
 	if ResourceLoader.exists(head):
 		$Sprite_Head.set_texture(load(head));
 	else:
 		print("Error in Player_Visuals.gd No skin found at "+ head)
-	var gun = "res://Assets/Player/" + str(current_class_name) + "_gun_" + str(t) + ".png";
+	var gun = "res://Assets/Player/Weapons" + str(current_class_name) + "_gun_" + str(t) + ".png";
 	if ResourceLoader.exists(gun):
 		$Sprite_Gun.set_texture(load(gun));
 

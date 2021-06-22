@@ -12,14 +12,14 @@ var landmine_R = preload("res://Assets/Utilities/landmine_R.png");
 var forcefield_B = preload("res://Assets/GUI/forcefield_B.png");
 var forcefield_R = preload("res://Assets/GUI/forcefield_R.png");
 
-var bullet_gun_B = preload("res://Assets/Player/gunner_gun_B.png");
-var bullet_gun_R = preload("res://Assets/Player/gunner_gun_R.png");
+var bullet_gun_B = preload("res://Assets/Player/Weapons/gunner_gun_B.png");
+var bullet_gun_R = preload("res://Assets/Player/Weapons/gunner_gun_R.png");
 
-var demo_gun_B = preload("res://Assets/Player/demo_gun_B.png");
-var demo_gun_R = preload("res://Assets/Player/demo_gun_R.png");
+var demo_gun_B = preload("res://Assets/Player/Weapons/demo_gun_B.png");
+var demo_gun_R = preload("res://Assets/Player/Weapons/demo_gun_R.png");
 
-var laser_gun_B = preload("res://Assets/Player/laser_gun_B.png");
-var laser_gun_R = preload("res://Assets/Player/laser_gun_R.png");
+var laser_gun_B = preload("res://Assets/Player/Weapons/laser_gun_B.png");
+var laser_gun_R = preload("res://Assets/Player/Weapons/laser_gun_R.png");
 
 onready var Menu = $CanvasLayer/Control/ColorRect;
 var hidden = false;

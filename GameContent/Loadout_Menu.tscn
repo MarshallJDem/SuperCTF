@@ -1,14 +1,15 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://GameContent/Loadout_Menu.gd" type="Script" id=1]
 [ext_resource path="res://fonts/pixel.TTF" type="DynamicFontData" id=2]
-[ext_resource path="res://Assets/Player/gunner_gun_B.png" type="Texture" id=3]
-[ext_resource path="res://Assets/Player/demo_gun_B.png" type="Texture" id=4]
-[ext_resource path="res://Assets/Player/laser_gun_B.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Player/Weapons/gunner_gun_B.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Player/Weapons/laser_gun_B.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Player/Skins/2_arms_B.png" type="Texture" id=5]
 [ext_resource path="res://Assets/Utilities/landmine_B.png" type="Texture" id=6]
 [ext_resource path="res://Assets/Utilities/grenade_B.png" type="Texture" id=7]
 [ext_resource path="res://Assets/GUI/camo_GUI_B.png" type="Texture" id=8]
 [ext_resource path="res://Assets/GUI/forcefield_B.png" type="Texture" id=9]
+[ext_resource path="res://Assets/Player/Weapons/demo_gun_B.png" type="Texture" id=10]
 
 [sub_resource type="Theme" id=1]
 
@@ -526,9 +527,19 @@ texture = ExtResource( 3 )
 hframes = 8
 frame = 2
 
+[node name="Arms1" type="Sprite" parent="CanvasLayer/Control/ColorRect/Weapon1"]
+texture = ExtResource( 5 )
+hframes = 8
+frame = 2
+
 [node name="Weapon2" type="Sprite" parent="CanvasLayer/Control/ColorRect"]
 position = Vector2( 122.867, 256.775 )
 scale = Vector2( 8, 8 )
+texture = ExtResource( 4 )
+hframes = 8
+frame = 2
+
+[node name="Weapon4" type="Sprite" parent="CanvasLayer/Control/ColorRect/Weapon2"]
 texture = ExtResource( 5 )
 hframes = 8
 frame = 2
@@ -536,7 +547,12 @@ frame = 2
 [node name="Weapon3" type="Sprite" parent="CanvasLayer/Control/ColorRect"]
 position = Vector2( 131.578, 358.594 )
 scale = Vector2( 8, 8 )
-texture = ExtResource( 4 )
+texture = ExtResource( 10 )
+hframes = 8
+frame = 2
+
+[node name="Weapon5" type="Sprite" parent="CanvasLayer/Control/ColorRect/Weapon3"]
+texture = ExtResource( 5 )
 hframes = 8
 frame = 2
 
