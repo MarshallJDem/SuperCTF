@@ -375,17 +375,20 @@ func _HTTP_GameServerCheckUser_Completed(result, response_code, headers, body):
 		var player_name
 		var user_id
 		var network_id
+		var equipped_cosmetics
 		if(response_code == 200):
 			# Get some precursor information about this player situation before making decisions
 			var json = JSON.parse(body.get_string_from_utf8());
 			player_name = json.result.user.name;
 			user_id = int(json.result.user.uid);
 			network_id = int(json.result.networkID);
+			equipped_cosmetics = json.result.equippedCosmetics;
 		else:
 			print("WE SHOULD BE DISCONNECTING A player because the checkUser backend call failed with a non 200 status BUT WE DON'T KNOW THEIR NETWORKID'");
 			#server.disconnect_peer(player_check_queue[0]['networkID'], 1000, "An Unknown Error Occurred.")
 			return
-		
+		print("EQUIPPED COSMETICS")
+		print(equipped_cosmetics)
 		add_player_to_game(player_name, user_id, network_id)
 
 

@@ -7,7 +7,7 @@ var localTesting = false; # Used for running a server locally on the machine
 var localTestingBackend = false; # Used for when the backend is running locally on this machine
 var remoteSkirmish = false; # Used for running the skirmish lobby on a remote computer (so you can run it in the editor and catch bugs)
 var directLiveSkirmish = false; # Used to connect directly to the live skirmish without entering MMQueue
-var reactGodot = true;
+var reactGodot = false;
 
 var temporaryQuickplayDisable = true;
 
@@ -38,9 +38,9 @@ var player_MMR = -1;
 var player_rank = -1;
 var player_status = 0;
 var player_party_data;
+var player_cosmetics_data;
 var player_uid;
 var player_type;
-var knownPartyData;
 
 enum Control_Schemes { touchscreen, keyboard, controller};
 var control_scheme = Control_Schemes.keyboard;
@@ -279,7 +279,6 @@ func logout(reload = false):
 	player_type = null;
 	player_party_data = null;
 	player_uid = null;
-	knownPartyData = null;
 	player_old_MMR = -1;
 	
 	HTTPRequest_PollPlayerStatus.call_deferred("free");
@@ -344,10 +343,8 @@ func _HTTP_PollPlayerStatus_Completed(result, response_code, headers, body):
 			Globals.player_MMR = int(json.result.mmr);
 	if json.result.has("partyData"):
 		if json.result.partyData.empty():
-			Globals.knownPartyData = null
 			Globals.player_party_data = null
 		else:
-			Globals.knownPartyData = json.result.partyData;
 			Globals.player_party_data = json.result.partyData;
 	if(player_status < 10 and int(json.result.status) >= 10):
 		print("Found Match : " + str(json.result.status));
@@ -393,7 +390,7 @@ func attempt_PollPlayerStatus():
 	if OS.get_ticks_msec() - last_pollPlayerStatus_response > 1000:
 		# If were not already in the middle of a poll, poll it
 		if HTTPRequest_PollPlayerStatus.get_http_client_status() == 0:
-			var query = "?knownStatus=" + str(player_status) + "&knownMMR=" + str(player_MMR) + "&knownRank=" + str(player_rank) + "&knownPartyData=" + str(JSON.print(Globals.knownPartyData));
+			var query = "?knownStatus=" + str(player_status) + "&knownMMR=" + str(player_MMR) + "&knownRank=" + str(player_rank) + "&knownPartyData=" + str(JSON.print(Globals.player_party_data));
 			HTTPRequest_PollPlayerStatus.request(Globals.mainServerIP + "pollPlayerStatus" + query, ["authorization: Bearer " + Globals.userToken]);
 	
 func attempt_ConfirmClientConnection():
@@ -479,8 +476,8 @@ func poll_react_local_storage():
 		Globals.player_old_MMR = Globals.player_MMR;
 		Globals.player_MMR = int(playerData.mmr);
 	
-	Globals.knownPartyData = playerData.partyData;
 	Globals.player_party_data = playerData.partyData;
+	Globals.player_cosmetics_data = playerData.cosmeticsData
 	
 	# If we are just switching off the titlescreen, enable godot view
 	if(int(playerData.status) > 0 and player_status <= 0):
