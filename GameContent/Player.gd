@@ -172,7 +172,7 @@ func _physics_process(delta: float) -> void:
 	last_position = position;
 
 func update_equipped_cosmetics(equipped_cosmetics):
-	$Player_Visuals.
+	$Player_Visuals._update_equipped_cosmetics(equipped_cosmetics);
 
 func update_class(c):
 	$Player_Visuals._update_team_id(team_id);
