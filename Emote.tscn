@@ -1,7 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Emote.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Emotes/emote_2.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Animations/Emote_bounce_start.tres" type="Animation" id=4]
+[ext_resource path="res://Assets/Animations/Emote_bounce_middle.tres" type="Animation" id=5]
+[ext_resource path="res://Assets/Animations/Emote_bounce_end.tres" type="Animation" id=6]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -10,33 +13,6 @@ animations = [ {
 "name": "default",
 "speed": 5.0
 } ]
-
-[sub_resource type="Animation" id=2]
-resource_name = "Emote_bounce"
-tracks/0/type = "value"
-tracks/0/path = NodePath("Still Emote:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.13, 0.43, 0.73, 1 ),
-"transitions": PoolRealArray( 2, 0.5, 2, 0.615575, 1 ),
-"update": 0,
-"values": [ Vector2( -10, 10 ), Vector2( 0, -5 ), Vector2( 0, 2 ), Vector2( 0, -5 ), Vector2( -20, 20 ) ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("Still Emote:scale")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0, 0.13, 0.73, 1 ),
-"transitions": PoolRealArray( 1, 1, 1, 1 ),
-"update": 0,
-"values": [ Vector2( 1e-05, 1e-05 ), Vector2( 1, 1 ), Vector2( 1, 1 ), Vector2( 1e-05, 1e-05 ) ]
-}
 
 [node name="Emote" type="Node2D"]
 script = ExtResource( 1 )
@@ -50,10 +26,13 @@ scale = Vector2( 1e-05, 1e-05 )
 texture = ExtResource( 2 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/Emote_bounce = SubResource( 2 )
+anims/Emote_bounce_end = ExtResource( 6 )
+anims/Emote_bounce_middle = ExtResource( 5 )
+anims/Emote_bounce_start = ExtResource( 4 )
 
-[node name="Emote Timer" type="Timer" parent="."]
+[node name="Middle Emote Timer" type="Timer" parent="."]
 one_shot = true
 
 [node name="Fade Timer" type="Timer" parent="."]
 one_shot = true
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_animation_ended"]
